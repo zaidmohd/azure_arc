@@ -13,6 +13,6 @@ variable "AWS_SECRET_ACCESS_KEY" {
 }
 
 variable "cluster-name" {
-  default = "arc-eks-demo"
+  default = "zc-aws-eks-01"
   type    = string
 }
