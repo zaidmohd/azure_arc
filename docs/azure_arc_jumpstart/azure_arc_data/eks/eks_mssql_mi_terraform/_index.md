@@ -1,16 +1,16 @@
 ---
 type: docs
-title: "Data Controller Terraform plan"
-linkTitle: "Data Controller Terraform plan"
-weight: 1
+title: "SQL Managed Instance Terraform plan"
+linkTitle: "SQL Managed Instance Terraform plan"
+weight: 2
 description: >
 ---
 
-## Deploy an Azure Arc Data Controller (Vanilla) on EKS using Terraform
+## Deploy a SQL Managed Instance on EKS using Terraform
 
-The following README will guide you on how to deploy a "Ready to Go" environment so you can start using Azure Arc Data Services and deploy Azure data services on [Elastic Kubernetes Service (EKS)](https://aws.amazon.com/eks/) cluster, using [Terraform](https://www.terraform.io/).
+The following README will guide you on how to deploy a "Ready to Go" environment so you can start using Azure Arc Data Services and deploy Azure data services with SQL Managed Instance on an [Elastic Kubernetes Service (EKS)](https://aws.amazon.com/eks/) cluster using [Terraform](https://www.terraform.io/).
 
-By the end of this guide, you will have an EKS cluster deployed with an Azure Arc Data Controller and a Microsoft Windows Server 2019 (Datacenter) AWS EC2 instance VM, installed & pre-configured with all the required tools needed to work with Azure Arc Data Services:
+By the end of this guide, you will have an EKS cluster deployed with an Azure Arc Data Controller running a SQL Managed Instance, and a Microsoft Windows Server 2019 (Datacenter) AWS EC2 instance VM, installed and pre-configured with all the required tools needed to work with Azure Arc Data Services:
 
 ![Deployed Architecture](./34.png)
 
@@ -24,6 +24,7 @@ By the end of this guide, you will have an EKS cluster deployed with an Azure Ar
 * Edit *TF_VAR* variables values
 * *terraform init*
 * *terraform apply*
+* Automation scripts run in Client VM
 * EKS cleanup
 * *terraform destroy*
 
@@ -59,7 +60,7 @@ By the end of this guide, you will have an EKS cluster deployed with an Azure Ar
   For example:
 
   ```shell
-  az ad sp create-for-rbac -n "http://AzureArcK8s" --role contributor
+  az ad sp create-for-rbac -n "http://AzureArcData" --role contributor
   ```
 
   Output should look like this
@@ -67,8 +68,8 @@ By the end of this guide, you will have an EKS cluster deployed with an Azure Ar
   ```json
   {
   "appId": "XXXXXXXXXXXXXXXXXXXXXXXXXXXX",
-  "displayName": "AzureArcK8s",
-  "name": "http://AzureArcK8s",
+  "displayName": "AzureArcData",
+  "name": "http://AzureArcData",
   "password": "XXXXXXXXXXXXXXXXXXXXXXXXXXXX",
   "tenant": "XXXXXXXXXXXXXXXXXXXXXXXXXXXX"
   }
@@ -155,7 +156,7 @@ Read the below explanation to get familiar with the automation and deployment fl
       * Apply the *configmap.yml* file on the EKS cluster
       * Use Azure CLI to connect the EKS cluster to Azure as an Azure Arc enabled Kubernetes cluster
       * Create a custom location for use with the Azure Arc enabled Kubernetes cluster
-      * Deploy an ARM template that will deploy the Azure Arc data controller on the EKS cluster
+      * Deploy ARM templates that will deploy the Azure Arc data controller and SQL Managed Instance on the EKS cluster
       * Open another Powershell session which will execute a command to watch the deployed Azure Arc Data Controller Kubernetes pods
       * Unregister the logon script Windows schedule task so it will not run after first login
 
@@ -188,8 +189,8 @@ As mentioned, the Terraform plan will deploy an EKS cluster, the Azure Arc Data 
   * *export TF_VAR_SPN_CLIENT_SECRET*='Your Azure service principal password'
   * *export TF_VAR_SPN_TENANT_ID*='Your Azure tenant ID'
   * *export TF_VAR_SPN_AUTHORITY*=*https://login.microsoftonline.com* **Do not change**
-  * *export TF_VAR_deploy_SQLMI*=*'Boolean that sets whether or not to deploy SQL Managed Instance, for this data controller only scenario we leave it set to false'
-  * *export TF_VAR_deploy_PostgreSQL*=*'Boolean that sets whether or not to deploy PostgreSQL Hyperscale, for this data controller only scenario we leave it set to false'
+  * *export TF_VAR_deploy_SQLMI*=*'Boolean that sets whether or not to deploy SQL Managed Instance, for this scenario we set to true’
+  * *export TF_VAR_deploy_PostgreSQL*=*'Boolean that sets whether or not to deploy PostgreSQL Hyperscale, for this scenario we set to false'
   * *export TF_VAR_templateBaseUrl*=*'GitHub URL to the deployment template - filled in by default to point to Microsoft/Azure Arc repository, but you can point this to your forked repo as well - e.g. `https://raw.githubusercontent.com/your--github--account/azure_arc/your--branch/azure_arc_data_jumpstart/eks/terraform/.`'
   
     > **Note: If you are running in a Windows environment and need a Linux shell, check out Ubuntu from the Microsoft Store [here](https://www.microsoft.com/en-us/p/ubuntu/9nblggh4msv6#activetab=pivot:overviewtab) to get a Linux terminal on your Windows Machine.**
@@ -197,7 +198,7 @@ As mentioned, the Terraform plan will deploy an EKS cluster, the Azure Arc Data 
 * Navigate to the folder that has Terraform binaries.
 
   ```shell
-  cd azure_arc_data_jumpstart/eks/terraform
+  cd azure_arc_data_jumpstart/eks/mssql_mi/terraform/
   ```
 
 * Run the ```terraform init``` command which is used to initialize a working directory containing Terraform configuration files and load the required Terraform providers.
@@ -246,23 +247,25 @@ Now that we have both the EKS cluster and the Windows Server Client instance cre
 
 * Let the script to run it's course and **do not close** the PowerShell session, this will be done for you once completed. You will notice that the Azure Arc Data Controller gets deployed on the EKS cluster. **The logon script run time is approximately 10min long**.
 
-    Once the script will finish it's run, the logon script PowerShell session will be closed and the Azure Arc Data Controller will be deployed on the EKS cluster and be ready to use.
-    
+    Once the script will finish it's run, the logon script PowerShell session will be close and the Azure Arc Data Controller and SQL Managed Instance will be deployed on the EKS cluster and be ready to use.
+
     ![PowerShell logon script run](./01.gif)
 
     ![Resource Group](./27.png)
 
-* Another tool automatically deployed is Azure Data Studio along with the *Azure Data CLI*, the *Azure Arc* and the *PostgreSQL* extensions. Using the Desktop shortcut created for you, open Azure Data Studio and click the Extensions settings to see both extensions.
+* Another tool automatically deployed is Azure Data Studio along with the *Azure Data CLI*, the *Azure Arc* and the *PostgreSQL* extensions. Azure Data Studio is automatically opened after the deployment finishes.
+
+* From Azure Data Studio, click on the MSSQL_MI instance and view the sample AdventureWorks database.
 
   ![Azure Data Studio shortcut](./28.png)
 
-  ![Azure Data Studio extension](./29.png)
+  ![Sample AdventureWorks database](./29.png)
 
 ## Delete the deployment
 
 To completely delete the environment, follow the below steps.
 
-* Delete any Database resources (e.g. SQL MI, PostgreSQL), followed by the Data Controller Resource from the Azure Resource Group (i.e. via the Portal)
+* Delete any Database resources (e.g. SQL Managed Instance, PostgreSQL Hyperscale), followed by the Data Controller Resource from the Azure Resource Group (i.e. via the Portal)
 * Delete any remaining resources (Custom Location, Kubernetes - Azure Arc) from the Azure Resource Group (i.e. via the Portal)
 * Use terraform to delete all of the AWS resources as well as the Azure resource group. **The `terraform destroy` run time is approximately ~5-6min long**.
 
