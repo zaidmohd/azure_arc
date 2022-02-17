@@ -102,7 +102,7 @@ For you to get familiar with the automation and deployment flow, below is an exp
 
     3. Disable and prevent Windows Server Manager from running on startup.
 
-4. User RDP to Windows VM which will start the *LogonScript* script execution and will onboard the VM to Azure Arc.
+4. User RDP or connect using Azure Bastion to Windows VM which will start the *LogonScript* script execution and will onboard the VM to Azure Arc.
 
 ## Deployment
 
@@ -144,9 +144,13 @@ As mentioned, this deployment will leverage ARM templates. You will deploy a sin
 
 ## Windows Login & Post Deployment
 
-* Now that the Windows Server VM is created, it is time to login to it. Using its public IP, RDP to the VM.
+* Now that the Windows Server VM is created, it is time to login to it. If you have not chosen to deploy Azure Bastion in the ARM template, RDP to the VM using it's public Ip.
 
     ![Screenshot Azure VM public IP address](./03.jpg)
+
+* If you have chosen to deploy Azure Bastion in the ARM template, use it to connect to the VM.
+
+    ![Screenshot Azure VM Bastion connectivity](./04.jpg)
 
 * At first login, as mentioned in the "Automation Flow" section, a logon script will get executed. This script was created as part of the automated deployment process.
 
