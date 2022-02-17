@@ -158,22 +158,22 @@ As mentioned, this deployment will leverage ARM templates. You will deploy a sin
 
     > **Note: The script run time is ~1-2min long.**
 
-    ![Screenshot script output](./04.jpg)
-
     ![Screenshot script output](./05.jpg)
 
     ![Screenshot script output](./06.jpg)
 
     ![Screenshot script output](./07.jpg)
 
+    ![Screenshot script output](./08.jpg)
+
 * Upon successful run, a new Azure Arc-enabled server will be added to the resource group.
 
-![Screenshot Azure Arc-enabled server on resource group](./08.jpg)
+![Screenshot Azure Arc-enabled server on resource group](./09.jpg)
 
-![Screenshot Azure Arc-enabled server details](./09.jpg)
+![Screenshot Azure Arc-enabled server details](./10.jpg)
 
 ## Cleanup
 
 To delete the entire deployment, simply delete the resource group from the Azure portal.
 
-![Screenshot delete resource group](./10.jpg)
+![Screenshot delete resource group](./11.jpg)
