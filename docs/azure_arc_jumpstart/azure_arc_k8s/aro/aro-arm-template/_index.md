@@ -72,75 +72,75 @@ The following README will guide you on how to use the provided [Azure ARM Templa
   ```
 * Check your subscription quota for the DSv3 family.
 
+    > **Note: Azure Red Hat OpenShift requires a minimum of 40 cores to create and run an OpenShift cluster.**
+
   ```shell
   LOCATION=eastus
   az vm list-usage -l $LOCATION --query "[?contains(name.value, 'standardDSv3Family')]" -o table
-  ```
-
-  > **Note: Azure Red Hat OpenShift requires a minimum of 40 cores to create and run an OpenShift cluster.**
 
 * Get the Azure Red Hat OpenShift resource provider Id which needs to be assigned with the “Contributor” role.
 
   ```shell
-az ad sp list --filter "displayname eq 'Azure Red Hat OpenShift RP'" --query "[?appDisplayName=='Azure Red Hat OpenShift RP'].{name: appDisplayName, objectId: objectId}"
+  az ad sp list --filter "displayname eq 'Azure Red Hat OpenShift RP'" --query "[?appDisplayName=='Azure Red Hat OpenShift RP'].{name: appDisplayName, objectId: objectId}"
   ```
 
+  ![Screenshot of Azure resource provider for Aro](./01.png)
 
 ## Deployment
 
 * The deployment is using the template parameters file. Before initiating the deployment, edit the [*azuredeploy.parameters.json*](https://github.com/microsoft/azure_arc/blob/main/azure_arc_k8s_jumpstart/aro/arm_template/azuredeploy.parameters.json) file to match your environment.
 
-  ![Screenshot of Azure ARM template](./01.png)
+  ![Screenshot of Azure ARM template](./02.png)
 
-  To deploy the ARM template, navigate to the [deployment folder](https://github.com/microsoft/azure_arc/tree/main/azure_arc_k8s_jumpstart/aks/arm_template) and run the below command:
+  To deploy the ARM template, navigate to the [deployment folder](https://github.com/microsoft/azure_arc/tree/main/azure_arc_k8s_jumpstart/aro/arm_template) and run the below command:
 
   ```shell
   az group create --name <Name of the Azure resource group> --location <Azure Region>
   az deployment group create \
   --resource-group <Name of the Azure resource group> \
   --name <The name of this deployment> \
-  --template-uri https://raw.githubusercontent.com/microsoft/azure_arc/main/azure_arc_k8s_jumpstart/aks/arm_template/azuredeploy.json \
+  --template-uri https://raw.githubusercontent.com/microsoft/azure_arc/main/azure_arc_k8s_jumpstart/aro/arm_template/azuredeploy.json \
   --parameters <The *azuredeploy.parameters.json* parameters file location>
   ```
 
   For example:
 
   ```shell
-  az group create --name Arc-AKS-Demo --location "East US"
+  az group create --name Arc-Aro-Demo --location "East US"
   az deployment group create \
-  --resource-group Arc-AKS-Demo \
-  --name arcaksdemo01 \
-  --template-uri https://raw.githubusercontent.com/microsoft/azure_arc/main/azure_arc_k8s_jumpstart/aks/arm_template/azuredeploy.json \
+  --resource-group Arc-Aro-Demo \
+  --name arcarodemo01 \
+  --template-uri https://raw.githubusercontent.com/microsoft/azure_arc/main/azure_arc_k8s_jumpstart/aro/arm_template/azuredeploy.json \
   --parameters azuredeploy.parameters.json
   ```
 
-* Once the ARM template deployment is completed, a new AKS cluster in a new Azure resource group is created.
+    > **Note: It normally takes about 35 minutes to create a cluster..**
 
-  ![Screenshot of Azure Portal showing AKS resource](./02.png)
+* Once the ARM template deployment is completed, a new Azure Red Hat OpenShift cluster in a new Azure resource group is created.
 
-  ![Screenshot of Azure Portal showing AKS resource](./03.png)
+  ![Screenshot of Azure Portal showing Aro resource](./03.png)
+
+  ![Screenshot of Azure Portal showing Aro resource](./04.png)
 
 ## Connecting to Azure Arc
 
-* Now that you have a running AKS cluster, edit the environment variables section in the included [az_connect_aks](https://github.com/microsoft/azure_arc/blob/main/azure_arc_k8s_jumpstart/aks/arm_template/scripts/az_connect_aks.sh) shell script.
+* Now that you have a running Azure Red Hat OpenShift cluster, edit the environment variables section in the included [az_connect_aro](https://github.com/microsoft/azure_arc/blob/main/azure_arc_k8s_jumpstart/aro/arm_template/scripts/az_connect_aro.sh) shell script.
 
-  ![Screenshot of az_connect_aks shell script](./04.png)
+  ![Screenshot of az_connect_aro shell script](./05.png)
 
-* In order to keep your local environment clean and untouched, we will use [Azure Cloud Shell](https://docs.microsoft.com/en-us/azure/cloud-shell/overview) (located in the top-right corner in the Azure portal) to run the *az_connect_aks* shell script against the AKS cluster. **Make sure Cloud Shell is configured to use Bash.**
+* In order to keep your local environment clean and untouched, we will use [Azure Cloud Shell](https://docs.microsoft.com/en-us/azure/cloud-shell/overview) (located in the top-right corner in the Azure portal) to run the *az_connect_aro* shell script against the Aro cluster. **Make sure Cloud Shell is configured to use Bash.**
 
-  ![Screenshot of Azure Cloud Shell button in Visual Studio Code](./05.png)
+  ![Screenshot of Azure Cloud Shell button in Visual Studio Code](./06.png)
 
-* After editing the environment variables in the [*az_connect_aks*](https://github.com/microsoft/azure_arc/blob/main/azure_arc_k8s_jumpstart/aks/arm_template/scripts/az_connect_aks.sh) shell script to match your parameters, save the file and then upload it to the Cloud Shell environment and run it using the ```. ./az_connect_aks.sh``` command.
+* After editing the environment variables in the [*az_connect_aro*](https://github.com/microsoft/azure_arc/blob/main/azure_arc_k8s_jumpstart/aro/arm_template/scripts/az_connect_aro.sh) shell script to match your parameters, save the file and then upload it to the Cloud Shell environment and run it using the ```. ./az_connect_aro.sh``` command.
 
   > **Note: The extra dot is due to the script having an *export* function and needs to have the vars exported in the same shell session as the other commands.**
 
-  ![Screenshot showing upload of file to Cloud Shell](./06.png)
-
   ![Screenshot showing upload of file to Cloud Shell](./07.png)
 
-  ![Screenshot showing Cloud Shell with uploaded file](./08.png)
+  ![Screenshot showing upload of file to Cloud Shell](./08.png)
 
-* Once the script run has finished, the AKS cluster will be projected as a new Azure Arc cluster resource.
+* Once the script run has finished, the Aro cluster will be projected as a new Azure Arc cluster resource.
 
   ![Screenshot showing Azure Portal with Azure Arc-enabled Kubernetes resource](./09.png)
 
@@ -167,9 +167,9 @@ az group delete --name <Azure resource group name> --yes
 For example:
 
 ```shell
-az deployment group delete --name arcaksdemo01 --resource-group Arc-AKS-Demo
+az deployment group delete --name arcarodemo01 --resource-group Arc-Aro-Demo
 ```
 
 ```shell
-az group delete --name Arc-AKS-Demo --yes
+az group delete --name Arc-Aro-Demo --yes
 ```
