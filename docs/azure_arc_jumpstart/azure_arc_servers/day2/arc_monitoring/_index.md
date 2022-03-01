@@ -10,7 +10,6 @@ description: >
 
 The scenario will show you how to onboard Azure Arc-enabled servers to [Azure Monitor](https://docs.microsoft.com/en-us/azure/azure-monitor/overview), so you can monitor your Linux and Windows servers running on-premises or at other cloud providers.
 
-
 In this guide, you will create the following Azure resources that support this Azure Monitor scenario:
 
 * Log Analytics workspace.
@@ -26,14 +25,14 @@ In this guide, you will create the following Azure resources that support this A
 * Azure Dashboard: monitoring overview for Azure Arc-enabled servers.
 
 * Azure Policies to automate agents deployment:
-    
-    * Configure Log Analytics extension on Azure Arc enabled Windows servers.
 
-    * Configure Log Analytics extension on Azure Arc enabled Linux servers.
+  * Configure Log Analytics extension on Azure Arc enabled Windows servers.
 
-    * Configure Dependency agent on Azure Arc enabled Windows servers.
+  * Configure Log Analytics extension on Azure Arc enabled Linux servers.
 
-    * Configure Dependency agent on Azure Arc enabled Linux server.
+  * Configure Dependency agent on Azure Arc enabled Windows servers.
+
+  * Configure Dependency agent on Azure Arc enabled Linux server.
 
 > **Note: This guide assumes you already deployed VMs or servers that are running on-premises or other clouds and you have connected them to Azure Arc. If you haven't, this repository offers you a way to do so in an automated fashion:**
 
@@ -59,7 +58,7 @@ In this guide, you will create the following Azure resources that support this A
 * As mentioned, this guide starts at the point where you already deployed and connected VMs or bare-metal servers to Azure Arc. For this scenario, we will use the following instances that has been already connected to Azure Arc and is visible as a resource in Azure:
 
     ![Screenshot showing AWS cloud console with EC2 instance](./25.png)
-    
+
     > **Note: Ensure that the server you will use for this scenario is running an [OS supported by the Log Analytics Agent and the Dependency Agent](https://docs.microsoft.com/en-us/azure/azure-monitor/agents/agents-overview#supported-operating-systems) and meets the [firewall requirements](https://docs.microsoft.com/en-us/azure/azure-monitor/agents/log-analytics-agent#firewall-requirements).**
 
 * [Install or update Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest). Azure CLI should be running version 2.14 or later. Use ```az --version``` to check your current installed version.
@@ -90,7 +89,7 @@ In this guide, you will create the following Azure resources that support this A
 
    ![Screenshot showing az deployment group create being run](./05.png)
 
-* When the deployment is complete, you should be able to see the resource group with your Log Analytics workspace, azure dashboard, vminsights solution and three workbooks: 
+* When the deployment is complete, you should be able to see the resource group with your Log Analytics workspace, azure dashboard, vminsights solution and three workbooks:
 
     ![Screenshot showing Azure Portal with resources deployed](./06.png)
 
@@ -100,7 +99,7 @@ In this guide, you will create the following Azure resources that support this A
 
 ## Confirm that the Azure Monitor resources are deployed
 
-* Click on the **Policies** blade of the **resource group** where you deployed this scenario, and verify that the following **policies** are assigned: 
+* Click on the **Policies** blade of the **resource group** where you deployed this scenario, and verify that the following **policies** are assigned:
 
     ![Screenshot showing Azure Policies assigned at resource group](./12.png)
 
@@ -118,32 +117,33 @@ In this guide, you will create the following Azure resources that support this A
 
     ![Screenshot showing VMInsights solution of Log Analytics workspace](./11.png)
 
-* Go to **Monitor**, **Alerts** and click on **Action Groups**: 
+* Go to **Monitor**, **Alerts** and click on **Action Groups**:
 
     ![Screenshot showing steps to list action groups](./13.png)
 
-* Filter by **Subscription** and **Resource Group**, and verify the following **action group** is created: 
+* Filter by **Subscription** and **Resource Group**, and verify the following **action group** is created:
 
     ![Screenshot showing action group created](./14.png)
 
-* Click on the **action group name**, then on the **edit** button, and verify the **email account** is the one you provided in the **parameters file**: 
+* Click on the **action group name**, then on the **edit** button, and verify the **email account** is the one you provided in the **parameters file**:
 
     ![Screenshot showing how to click on action group name](./15.png)
 
     ![Screenshot showing action group email action](./16.png)
 
-* Go to **Monitor**, **Alerts** and click on **Alert rules**: 
+* Go to **Monitor**, **Alerts** and click on **Alert rules**:
 
     ![Screenshot showing steps to list alerts](./17.png)
 
-* Filter by **Subscription** and **Resource Group**, and verify the following **alerts** are enabled: 
+* Filter by **Subscription** and **Resource Group**, and verify the following **alerts** are enabled:
 
     ![Screenshot showing created alerts](./18.png)
 
     > **Note: This is just a small example of Azure Monitor alerts, based on log queries and log analytics workspace metrics. You may need to adjust alerts thresholds to your environment expected behaviour.**
 
 ## Deploying the Log Analytics Agent and the Dependency Agent
-This scenario is mainly based on the data collected from the Azure Arc-enabled servers into the Log Analytics workspace. Therefore, it is required to deploy on these servers the [Log Analytics Agent](https://docs.microsoft.com/en-us/azure/azure-monitor/agents/agents-overview#log-analytics-agent) and the [Dependency Agent](https://docs.microsoft.com/en-us/azure/azure-monitor/agents/agents-overview#dependency-agent). There are multiple [methods](https://docs.microsoft.com/en-us/azure/azure-monitor/agents/log-analytics-agent#installation-options) to deploy these agents. In this scenario, Azure Policies are used to deploy both agents in Windows and Linux. 
+
+This scenario is mainly based on the data collected from the Azure Arc-enabled servers into the Log Analytics workspace. Therefore, it is required to deploy on these servers the [Log Analytics Agent](https://docs.microsoft.com/en-us/azure/azure-monitor/agents/agents-overview#log-analytics-agent) and the [Dependency Agent](https://docs.microsoft.com/en-us/azure/azure-monitor/agents/agents-overview#dependency-agent). There are multiple [methods](https://docs.microsoft.com/en-us/azure/azure-monitor/agents/log-analytics-agent#installation-options) to deploy these agents. In this scenario, Azure Policies are used to deploy both agents in Windows and Linux.
 
 For **new** Azure Arc-enabled servers connected within the scope of the policies assignments, the policies will deploy the agents automatically.
 
@@ -172,6 +172,7 @@ For **existing** Azure Arc-enabled servers connected within the scope of the pol
    ![Screenshot showing agent extensions on Azure Arc-enabled server](./24.png)
 
 ## Azure Dashboard, Workbooks and VMInsights
+
 * It may take several hours for Update Management to collect enough data to show an assessment for your VM. In the screen below we can see the assessment is being performed. --> PARA VM INSIGHTS ME VALE
 
 ## Clean up environment
