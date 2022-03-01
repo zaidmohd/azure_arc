@@ -56,11 +56,9 @@ In this guide, you will create the following Azure resources that support this A
     git clone https://github.com/microsoft/azure_arc.git
     ```
 
-* As mentioned, this guide starts at the point where you already deployed and connected VMs or bare-metal servers to Azure Arc. For this scenario, as can be seen in the screenshots below, we will be using an Amazon Web Services (AWS) EC2 instance that has been already connected to Azure Arc and is visible as a resource in Azure.
+* As mentioned, this guide starts at the point where you already deployed and connected VMs or bare-metal servers to Azure Arc. For this scenario, we will use the following instances that has been already connected to Azure Arc and is visible as a resource in Azure:
 
-    ![Screenshot showing AWS cloud console with EC2 instance](./01.png)
-
-    ![Screenshot showing Azure Portal with Azure Arc-enabled server](./02.png)
+    ![Screenshot showing AWS cloud console with EC2 instance](./25.png)
     
     > **Note: Ensure that the server you will use for this scenario is running an [OS supported by the Log Analytics Agent and the Dependency Agent](https://docs.microsoft.com/en-us/azure/azure-monitor/agents/agents-overview#supported-operating-systems) and meets the [firewall requirements](https://docs.microsoft.com/en-us/azure/azure-monitor/agents/log-analytics-agent#firewall-requirements).**
 
@@ -149,7 +147,29 @@ This scenario is mainly based on the data collected from the Azure Arc-enabled s
 
 For **new** Azure Arc-enabled servers connected within the scope of the policies assignments, the policies will deploy the agents automatically.
 
-For **existing** Azure Arc-enabled servers connected within the scope of the policies assignments, you will need to manually create a remediation task for each policy.
+For **existing** Azure Arc-enabled servers connected within the scope of the policies assignments, you will need to manually create a remediation task for each policy. These are steps to create a remediation task:
+
+* When the Azure Policies are assigned, it takes around 30 minutes for the assignment to be applied to the defined scope. After those 30 minutes, Azure Policy will start the evaluation cycle against the Azure Arc-enabled servers and recognize them as "Non-compliant" if they don't have the Log Analytics Agent or the Dependency Agent installed. To check this, go to the **resource group** where you deployed this scenario, and click on the **Policies** blade:
+
+    ![Screenshot showing Azure Policies blade at resource group](./20.png)
+
+* Click on the **Remediation** tab. Check if any of the policies that deploy the agents have resources to remediate. If so, click on the **Remediate** button:
+
+    > **Note: The following steps must be followed for each policy with resources pending to be remediated. Please, start with the remediation of the Log Analytics agent policies followed by the remediation of the Dependency Agent policies.**
+
+    ![Screenshot showing how to start Azure policy remediation](./21.png)
+
+* Review the following settings and click on the **Remediate** button:
+
+    ![Screenshot showing how to remediate an Azure Policy](./22.png)
+
+* Once you have assigned remediation task, the policy will be evaluated again and show that the Azure Arc-enabled server is compliant:
+
+   ![Screenshot showing Azure Policy compliant results](./23.png)
+
+* The agents will be installed as extensions in the Azure Arc-enabled server:
+
+   ![Screenshot showing agent extensions on Azure Arc-enabled server](./24.png)
 
 ## Azure Dashboard, Workbooks and VMInsights
 * It may take several hours for Update Management to collect enough data to show an assessment for your VM. In the screen below we can see the assessment is being performed. --> PARA VM INSIGHTS ME VALE
