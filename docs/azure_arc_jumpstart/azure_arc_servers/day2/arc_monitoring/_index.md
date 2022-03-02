@@ -55,11 +55,11 @@ In this guide, you will create the following Azure resources that support this A
     git clone https://github.com/microsoft/azure_arc.git
     ```
 
-* As mentioned, this guide starts at the point where you already deployed and connected VMs or bare-metal servers to Azure Arc. For this scenario, we will use the following instances that has been already connected to Azure Arc and is visible as a resource in Azure:
+* As mentioned, this guide starts at the point where you already deployed and connected VMs or bare-metal servers to Azure Arc. For this scenario, we will use the following instances that have been already connected to Azure Arc and are visible as a resources in Azure:
 
     ![Screenshot showing AWS cloud console with EC2 instance](./25.png)
 
-    > **Note: Ensure that the server you will use for this scenario is running an [OS supported by the Log Analytics Agent and the Dependency Agent](https://docs.microsoft.com/en-us/azure/azure-monitor/agents/agents-overview#supported-operating-systems) and meets the [firewall requirements](https://docs.microsoft.com/en-us/azure/azure-monitor/agents/log-analytics-agent#firewall-requirements).**
+    > **Note: Ensure that the servers you will use for this scenario are running an [OS supported by the Log Analytics Agent and the Dependency Agent](https://docs.microsoft.com/en-us/azure/azure-monitor/agents/agents-overview#supported-operating-systems) and meets the [firewall requirements](https://docs.microsoft.com/en-us/azure/azure-monitor/agents/log-analytics-agent#firewall-requirements).**
 
 * [Install or update Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest). Azure CLI should be running version 2.14 or later. Use ```az --version``` to check your current installed version.
 
@@ -97,13 +97,13 @@ In this guide, you will create the following Azure resources that support this A
 
     ![Screenshot showing Azure Portal hidden resources](./19.png)
 
-## Confirm that the Azure Monitor resources are deployed
+## Confirm that all the Azure Monitor deployed resources are configured
 
-* Click on the **Policies** blade of the **resource group** where you deployed this scenario, and verify that the following **policies** are assigned:
+* Click on the **Policies** blade of the **resource group** where you deployed this scenario. Verify that the following **policies** are assigned:
 
     ![Screenshot showing Azure Policies assigned at resource group](./12.png)
 
-* Click on the **Agents Configuration** blade of the **Log Analytics workspace** and verify that the following **data sources** are enabled:
+* Click on the **Agents Configuration** blade of the **Log Analytics workspace**. Verify that the following **data sources** are enabled:
 
     ![Screenshot showing Windows Events of Log Analytics workspace](./07.png)
 
@@ -113,7 +113,7 @@ In this guide, you will create the following Azure resources that support this A
 
     ![Screenshot showing Syslog of Log Analytics workspace](./10.png)
 
-* Click on the **Solutions** blade of the **Log Analytics workspace** and verify that  **VM Insights** is enabled:
+* Click on the **Solutions** blade of the **Log Analytics workspace**. Verify that  **VMInsights** solution is enabled:
 
     ![Screenshot showing VMInsights solution of Log Analytics workspace](./11.png)
 
@@ -121,11 +121,11 @@ In this guide, you will create the following Azure resources that support this A
 
     ![Screenshot showing steps to list action groups](./13.png)
 
-* Filter by **Subscription** and **Resource Group**, and verify the following **action group** is created:
+* Filter by **Subscription** and **Resource Group**. Verify that the following **action group** is created:
 
     ![Screenshot showing action group created](./14.png)
 
-* Click on the **action group name**, then on the **edit** button, and verify the **email account** is the one you provided in the **parameters file**:
+* Click on the **action group name**, then on the **edit** button. Verify the **email account** is the one you provided in the **parameters file**:
 
     ![Screenshot showing how to click on action group name](./15.png)
 
@@ -135,11 +135,11 @@ In this guide, you will create the following Azure resources that support this A
 
     ![Screenshot showing steps to list alerts](./17.png)
 
-* Filter by **Subscription** and **Resource Group**, and verify the following **alerts** are enabled:
+* Filter by **Subscription** and **Resource Group**. Verify the following **alerts** are enabled:
 
     ![Screenshot showing created alerts](./18.png)
 
-    > **Note: This is just a small example of Azure Monitor alerts, based on log queries and log analytics workspace metrics. You may need to adjust alerts thresholds to your environment expected behaviour.**
+    > **Note: This is just a small example of Azure Monitor alerts, which are based on log queries and log analytics workspace metrics. You may need to adjust alerts thresholds to your environment expected behaviour.**
 
 ## Deploying the Log Analytics Agent and the Dependency Agent
 
@@ -173,7 +173,56 @@ For **existing** Azure Arc-enabled servers connected within the scope of the pol
 
 ## Azure Dashboard, Workbooks and VMInsights
 
-* It may take several hours for Update Management to collect enough data to show an assessment for your VM. In the screen below we can see the assessment is being performed. --> PARA VM INSIGHTS ME VALE
+Once the data starts arriving into the Log Analytics workspace, we can leverage Azure Monitor insights services like Azure Dashboard, Workbooks and VMInsights. It may take some hours for these services to have enough data to show.
+
+### VMInsights
+
+* Click on the **Insights** blade of one of the **Azure Arc-enabled servers** connected to the Log Analytics workspace:
+
+   ![Screenshot showing Insights blade on Azure Arc-enabled server](./27.png)
+
+* Click on the **Performance tab**, which includes a set of charts that target several key performance indicators (KPIs) to help you determine how well a machine is performing:
+
+   ![Screenshot showing Performance Insights on Azure Arc-enabled server](./28.png)
+
+* Click on the **Map tab**, which visualizes the VM dependencies by discovering running processes that have active network connections between servers; inbound and outbound connection latency; ports across any TCP-connected architecture over a specified time range. Feel free to use the built-in workbooks available in the upper right corner:
+
+   ![Screenshot showing Map Insights on Azure Arc-enabled server](./29.png)
+
+### Azure Dashboard and Workbooks
+
+* Locate the **Shared Dashboard** that was deployed in your resource group. Click on its **name** and then on the **Go to dashboard** link:
+
+   ![Screenshot showing shared dashboard in resource group](./30.png)
+
+   ![Screenshot showing Go to dashboard button](./31.png)
+
+* The goal of this dashboard is to provide a quick overview of the current status of the monitored Azure Arc-enabled servers. You can play with the dashboards controls **Auto refresh** and **UTC Time**. Note that this dashboard is made up of three tiles, each of them being a quick access button and a summary of the deployed Azure workbooks:
+  * **OSPerformanceAndCapacity:** provides a quick performance overview of the Azure Arc-enabled servers. In addition, it contains several charts with more insights of some key OS performance counters.
+  * **AlertsConsole:** console that shows the alerts that have been fired within a time range.
+  * **WindowsEvents:** Windows Events central visualizer.
+
+   ![Screenshot showing Azure Dashboard summary](./32.png)
+
+* To get into one of the pinned workbooks, like for example the **OSPerformanceAndCapacity** workbook, just click on the **Top servers** tile:
+
+   ![Screenshot showing how to get into the OSPerformanceAndCapacity workbook](./33.png)
+
+* This workbook, apart from the **Top servers** summary table available at the top of the **shared dashboard**, shows two charts for each of some the key OS performance counters:
+
+   ![Screenshot showing performance charts of the OSPerformanceAndCapacity workbook](./34.png)
+
+* In addition, at the bottom of this workbook, there are **two additional charts**. One of them shows which are the **processes that use more CPU for Windows machines**. The second one shows the **network usage by process per each Azure Arc-enabled server**:
+
+   ![Screenshot showing cpuusage and networkusage by processes charts of the OSPerformanceAndCapacity workbook](./35.png)
+
+* On the other hand, the **WindowsEvents workbook**, accessible from the **Shared Dashboard**, provides additional insights of the Windows Events collected. It shows the number of events by EventLog and Severity, along with its hourly distribution:
+
+   ![Screenshot showing top charts of the WindowsEvents workbook](./36.png)
+
+* At the bottom of the **WindowsEvents workbook**, click on one of the computers and its severity to load the table below, where all details per event are provided:
+
+   ![Screenshot showing top charts of the WindowsEvents workbook](./37.png)
 
 ## Clean up environment
 
@@ -199,3 +248,7 @@ Complete the following steps to clean up your environment.
     ```
 
     ![Screenshot showing az group delete being run](./26.png)
+
+## Acknowledgment
+
+My special thanks to my teammate **Diego Martínez Rellán** who contributed to the workbooks development.
