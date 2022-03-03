@@ -133,7 +133,7 @@ With Namespace-level GitOps config, the goal is to have Kubernetes resources dep
 
     The script will:
 
-  - Login to your Azure subscription using the SPN credentials
+  - Log in to your Azure subscription using the SPN credentials
   - Retrieve the cluster credentials (KUBECONFIG)
   - Create the GitOps configurations to deploy the Flux controllers and NGINX ingress controller on the Azure Arc connected cluster
   - Create the GitOps configurations to deploy the ["Hello Arc"](https://github.com/microsoft/azure-arc-jumpstart-apps/blob/main/hello-arc) application alongside an Ingress rule to make it available from outside the cluster
