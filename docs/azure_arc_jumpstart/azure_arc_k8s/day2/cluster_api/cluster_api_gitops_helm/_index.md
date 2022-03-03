@@ -204,7 +204,7 @@ With Namespace-level GitOps config, the goal is to have Kubernetes resources dep
   
     ![kubectl get pods -n hello-arc -w](./15.png)
 
-  - In **Your fork** of the "Azure Arc Jumpstart App" repository, open the *hello_arc.yaml* file (/hello-arc/releases/app/hello_arc.yaml).
+  - In **your fork** of the "Azure Arc Jumpstart App" repository, open the *hello_arc.yaml* file (/hello-arc/releases/app/hello_arc.yaml).
 
   - The external IP address of the Kubernetes Service seen using the ```kubectl get svc -n hello-arc``` command.
 
