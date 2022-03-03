@@ -152,7 +152,7 @@ With Namespace-level GitOps config, the goal is to have Kubernetes resources dep
 
 ## The "Hello Arc" Application & Components
 
-- Before kicking the GitOps flow, let's verify and "zoom in" to the Kubernetes resources deployed by running a few _kubectl_ commands.
+- Before kicking off the GitOps flow, let's verify and "zoom in" to the Kubernetes resources deployed by running a few _kubectl_ commands.
 
 - Show the Flux operator pods.
 
