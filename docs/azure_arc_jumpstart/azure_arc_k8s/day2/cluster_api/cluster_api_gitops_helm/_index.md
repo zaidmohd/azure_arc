@@ -135,7 +135,7 @@ With Namespace-level GitOps config, the goal is to have Kubernetes resources dep
 
   - Log in to your Azure subscription using the SPN credentials
   - Retrieve the cluster credentials (KUBECONFIG)
-  - Create the GitOps configurations to deploy the Flux controllers and NGINX ingress controller on the Azure Arc connected cluster
+  - Create the GitOps configurations to deploy the Flux controllers and NGINX ingress controller on the Azure Arc-connected cluster
   - Create the GitOps configurations to deploy the ["Hello Arc"](https://github.com/microsoft/azure-arc-jumpstart-apps/blob/main/hello-arc) application alongside an Ingress rule to make it available from outside the cluster
 
     > **Disclaimer: For the purpose of this guide, notice how the "*sync-interval 3s*" is set. The 3 seconds interval is useful for demo purposes since it will make the sync interval to rapidly track changes on the repository but it is recommended to have longer interval in your production environment (default value is 5min)**
