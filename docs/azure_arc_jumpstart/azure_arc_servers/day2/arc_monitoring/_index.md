@@ -2,7 +2,7 @@
 type: docs
 title: "Azure Monitor"
 linkTitle: "Azure Monitor"
-weight: 9
+weight: 12
 description: >
 ---
 
@@ -55,7 +55,7 @@ In this guide, you will create the following Azure resources that support this A
     git clone https://github.com/microsoft/azure_arc.git
     ```
 
-* As mentioned, this guide starts at the point where you already deployed and connected VMs or bare-metal servers to Azure Arc. For this scenario, we will use the following instances that have been already connected to Azure Arc and are visible as a resources in Azure:
+* As mentioned, this guide starts at the point where you already deployed and connected VMs or bare-metal servers to Azure Arc. **The resource group of these Azure Arc-enabled servers must be the same as the one that will be used for this scenario deployment.** This is required since the Azure Policies that deploy the Log Analytics agent and the Dependency agent are assigned at this resource group level. For this guide, we will use the following instances that have been already connected to Azure Arc and are visible as a resources in Azure:
 
     ![Screenshot showing AWS cloud console with EC2 instance](./01.png)
 
@@ -65,7 +65,7 @@ In this guide, you will create the following Azure resources that support this A
 
 ## Onboarding Azure Monitor
 
-* First, create a new resource group where all the resources mentioned above will be deployed. Please, run the below command, replacing the values in brackets with your own.
+* (Optional) If you already have a resource group with Azure Arc-enabled servers, please, proceed to the next step. Otherwise, create a new resource group for the scenario deployment and then, onboard your Azure Arc-enabled servers to that resource group. To create a new resource group, please, run the below command, replacing the values in brackets with your own:
 
     ```shell
     az group create --name <Name for your resource group> \
@@ -82,14 +82,14 @@ In this guide, you will create the following Azure resources that support this A
 * To deploy the ARM template, navigate to the [deployment folder](https://github.com/microsoft/azure_arc/tree/main/azure_arc_servers_jumpstart/monitoring) and run the below command:
 
     ```shell
-    az deployment group create --resource-group <Name of the Azure resource group you created> \
+    az deployment group create --resource-group <Name of the resource group where to deploy this scenario> \
         --template-file monitoring-template.json \
         --parameters monitoring-template.parameters.json
     ```
 
    ![Screenshot showing az deployment group create being run](./04.png)
 
-* When the deployment is complete, you should be able to see the resource group with your Log Analytics workspace, azure dashboard, vminsights solution and three workbooks:
+* When the deployment is complete, you should be able to see the resource group with your Log Analytics workspace, Azure dashboard, VMInsights solution and three Workbooks:
 
     ![Screenshot showing Azure Portal with resources deployed](./05.png)
 
@@ -226,28 +226,9 @@ Once the data starts arriving into the Log Analytics workspace, we can leverage 
 
 ## Clean up environment
 
-Complete the following steps to clean up your environment.
+To delete the entire deployment, simply delete the resource group from the Azure portal.
 
-* Remove the virtual machines from each environment by following the teardown instructions from each guide.
-
-* **[GCP Ubuntu instance](https://azurearcjumpstart.io/azure_arc_jumpstart/azure_arc_servers/gcp/gcp_terraform_ubuntu/)**
-* **[GCP Windows instance](https://azurearcjumpstart.io/azure_arc_jumpstart/azure_arc_servers/gcp/gcp_terraform_windows/)**
-* **[AWS Ubuntu EC2 instance](https://azurearcjumpstart.io/azure_arc_jumpstart/azure_arc_servers/aws/aws_terraform_ubuntu/)**
-* **[AWS Amazon Linux 2 EC2 instance](https://azurearcjumpstart.io/azure_arc_jumpstart/azure_arc_servers/aws/aws_terraform_al2/)**
-* **[Azure Ubuntu VM](https://azurearcjumpstart.io/azure_arc_jumpstart/azure_arc_servers/azure/azure_arm_template_linux/)**
-* **[Azure Windows VM](https://azurearcjumpstart.io/azure_arc_jumpstart/azure_arc_servers/azure/azure_arm_template_win/)**
-* **[VMware vSphere Ubuntu VM](https://azurearcjumpstart.io/azure_arc_jumpstart/azure_arc_servers/vmware/vmware_terraform_ubuntu/)**
-* **[VMware vSphere Windows Server VM](https://azurearcjumpstart.io/azure_arc_jumpstart/azure_arc_servers/vmware/vmware_terraform_winsrv/)**
-* **[Vagrant Ubuntu box](https://azurearcjumpstart.io/azure_arc_jumpstart/azure_arc_servers/vagrant/local_vagrant_ubuntu/)**
-* **[Vagrant Windows box](https://azurearcjumpstart.io/azure_arc_jumpstart/azure_arc_servers/vagrant/local_vagrant_windows/)**
-
-* Delete the resource group.
-
-    ```shell
-    az group delete --name <Name of your resource group>
-    ```
-
-    ![Screenshot showing az group delete being run](./35.png)
+![Screenshot showing how to delete resource group](./35.png)
 
 ## Acknowledgment
 
