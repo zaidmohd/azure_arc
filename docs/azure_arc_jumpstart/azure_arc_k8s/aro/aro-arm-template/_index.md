@@ -44,8 +44,8 @@ The following README will guide you on how to use the provided [Azure ARM Templa
     ```json
     {
     "appId": "XXXXXXXXXXXXXXXXXXXXXXXXXXXX",
-    "displayName": "AzureArcAro",
-    "name": "http://AzureArcAro",
+    "displayName": "AzureArcK8s",
+    "name": "http://AzureArcK8s",
     "password": "XXXXXXXXXXXXXXXXXXXXXXXXXXXX",
     "tenant": "XXXXXXXXXXXXXXXXXXXXXXXXXXXX"
     }
