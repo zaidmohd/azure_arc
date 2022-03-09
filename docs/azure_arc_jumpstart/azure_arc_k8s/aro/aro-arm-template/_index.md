@@ -36,7 +36,7 @@ The following README will guide you on how to use the provided [Azure ARM Templa
     For example:
 
     ```shell
-    az ad sp create-for-rbac -n "http://AzureArcAro" --role contributor
+    az ad sp create-for-rbac -n "http://AzureArcK8s" --role contributor
     ```
 
     Output should look like this:
