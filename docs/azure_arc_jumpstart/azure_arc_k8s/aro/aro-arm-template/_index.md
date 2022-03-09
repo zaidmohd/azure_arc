@@ -150,28 +150,8 @@ The following README will guide you on how to use the provided [Azure ARM Templa
 
   ![Screenshot showing Azure Portal with Azure Arc-enabled Kubernetes resource](./12.png)
 
-## Delete the deployment
+## Cleanup
 
-The most straightforward way is to delete the Azure Arc cluster resource via the Azure Portal, just select the cluster and delete it.
+To delete the entire deployment, simply delete the resource group from the Azure portal.
 
 ![Screenshot showing how to delete Azure Arc-enabled Kubernetes resource](./13.png)
-
-To cleanup the deployment, simply delete the Azure resource group.
-
-```shell
-az deployment group delete --name <Deployment name> --resource-group <Azure resource group name>
-```
-
-```shell
-az group delete --name <Azure resource group name> --yes
-```
-
-For example:
-
-```shell
-az deployment group delete --name arcarodemo01 --resource-group Arc-Aro-Demo
-```
-
-```shell
-az group delete --name Arc-Aro-Demo --yes
-```
