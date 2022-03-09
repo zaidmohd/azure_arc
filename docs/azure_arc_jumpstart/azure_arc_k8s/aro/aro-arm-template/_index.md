@@ -87,7 +87,7 @@ The following README will guide you on how to use the provided [Azure ARM Templa
 
 ## Deployment
 
-- The deployment is using the template parameters file. Before initiating the deployment, edit the [*azuredeploy.parameters.json*](https://github.com/microsoft/azure_arc/blob/main/azure_arc_k8s_jumpstart/aro/arm_template/azuredeploy.parameters.json) file to match your environment.
+- The deployment is using the template parameters file. Before initiating the deployment, edit the [_azuredeploy.parameters.json_](https://github.com/microsoft/azure_arc/blob/main/azure_arc_k8s_jumpstart/aro/arm_template/azuredeploy.parameters.json) file to match your environment.
 
   ![Screenshot of Azure ARM template](./02.png)
 
@@ -99,7 +99,7 @@ The following README will guide you on how to use the provided [Azure ARM Templa
   --resource-group <Name of the Azure resource group> \
   --name <The name of this deployment> \
   --template-uri https://raw.githubusercontent.com/microsoft/azure_arc/main/azure_arc_k8s_jumpstart/aro/arm_template/azuredeploy.json \
-  --parameters <The *azuredeploy.parameters.json* parameters file location>
+  --parameters <The _azuredeploy.parameters.json_ parameters file location>
   ```
 
   For example:
@@ -113,7 +113,7 @@ The following README will guide you on how to use the provided [Azure ARM Templa
   --parameters azuredeploy.parameters.json
   ```
 
-    > **NOTE: It normally takes about 35 minutes to create a cluster..**
+    > **NOTE: It normally takes about ~30-40 minutes for the ARO cluster to deploy.**
 
 - Once the ARM template deployment is completed, a new Azure Red Hat OpenShift cluster in a new Azure resource group is created.
 
@@ -139,7 +139,7 @@ The following README will guide you on how to use the provided [Azure ARM Templa
 
   ![Screenshot showing upload of file to Cloud Shell](./08.png)
 
-- Once the script run has finished, the Aro cluster will be projected as a new Azure Arc cluster resource.
+- Once the script run has finished, the Aro cluster will be projected as a new Azure Arc-enabled Kubernetes cluster resource.
 
   ![Screenshot showing Azure Portal with Azure Arc-enabled Kubernetes resource](./09.png)
 
@@ -153,7 +153,7 @@ The most straightforward way is to delete the Azure Arc cluster resource via the
 
 ![Screenshot showing how to delete Azure Arc-enabled Kubernetes resource](./12.png)
 
-If you want to nuke the entire environment, run the below commands.
+To cleanup the deployment, simply delete the Azure resource group.
 
 ```shell
 az deployment group delete --name <Deployment name> --resource-group <Azure resource group name>
