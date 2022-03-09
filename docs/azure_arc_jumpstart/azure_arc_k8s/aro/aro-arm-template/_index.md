@@ -71,7 +71,7 @@ The following README will guide you on how to use the provided [Azure ARM Templa
   ```
 - Check your subscription quota for the DSv3 family.
 
-    > **NOTE: Azure Red Hat OpenShift requires a minimum of 40 cores to create and run an OpenShift cluster.**
+    > **NOTE: Azure Red Hat OpenShift requires a [minimum of 40 cores](/azure/openshift/tutorial-create-cluster#before-you-begin) to create and run an OpenShift cluster.**
 
   ```shell
   LOCATION=eastus
