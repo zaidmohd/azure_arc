@@ -76,6 +76,9 @@ The following README will guide you on how to use the provided [Azure ARM Templa
   ```shell
   LOCATION=eastus
   az vm list-usage -l $LOCATION --query "[?contains(name.value, 'standardDSv3Family')]" -o table
+  ```
+
+  ![Screenshot of checking DSV3 family cores usage](./01.png)
 
 - Get the Azure Red Hat OpenShift resource provider Id which needs to be assigned with the “Contributor” role.
 
@@ -83,13 +86,13 @@ The following README will guide you on how to use the provided [Azure ARM Templa
   az ad sp list --filter "displayname eq 'Azure Red Hat OpenShift RP'" --query "[?appDisplayName=='Azure Red Hat OpenShift RP'].{name: appDisplayName, objectId: objectId}"
   ```
 
-  ![Screenshot of Azure resource provider for Aro](./01.png)
+  ![Screenshot of Azure resource provider for Aro](./02.png)
 
 ## Deployment
 
 - The deployment is using the template parameters file. Before initiating the deployment, edit the [_azuredeploy.parameters.json_](https://github.com/microsoft/azure_arc/blob/main/azure_arc_k8s_jumpstart/aro/arm_template/azuredeploy.parameters.json) file to match your environment.
 
-  ![Screenshot of Azure ARM template](./02.png)
+  ![Screenshot of Azure ARM template](./03.png)
 
   To deploy the ARM template, navigate to the [deployment folder](https://github.com/microsoft/azure_arc/tree/main/azure_arc_k8s_jumpstart/aro/arm_template) and run the below command:
 
@@ -117,41 +120,41 @@ The following README will guide you on how to use the provided [Azure ARM Templa
 
 - Once the ARM template deployment is completed, a new Azure Red Hat OpenShift cluster in a new Azure resource group is created.
 
-  ![Screenshot of Azure Portal showing Aro resource](./03.png)
-
   ![Screenshot of Azure Portal showing Aro resource](./04.png)
+
+  ![Screenshot of Azure Portal showing Aro resource](./05.png)
 
 ## Connecting to Azure Arc
 
 - Now that you have a running Azure Red Hat OpenShift cluster, edit the environment variables section in the included [az_connect_aro](https://github.com/microsoft/azure_arc/blob/main/azure_arc_k8s_jumpstart/aro/arm_template/scripts/az_connect_aro.sh) shell script.
 
-  ![Screenshot of az_connect_aro shell script](./05.png)
+  ![Screenshot of az_connect_aro shell script](./06.png)
 
 - In order to keep your local environment clean and untouched, we will use [Azure Cloud Shell](https://docs.microsoft.com/azure/cloud-shell/overview) (located in the top-right corner in the Azure portal) to run the *az_connect_aro* shell script against the Aro cluster. **Make sure Cloud Shell is configured to use Bash.**
 
-  ![Screenshot of Azure Cloud Shell button in Visual Studio Code](./06.png)
+  ![Screenshot of Azure Cloud Shell button in Visual Studio Code](./07.png)
 
 - After editing the environment variables in the [*az_connect_aro*](https://github.com/microsoft/azure_arc/blob/main/azure_arc_k8s_jumpstart/aro/arm_template/scripts/az_connect_aro.sh) shell script to match your parameters, save the file and then upload it to the Cloud Shell environment and run it using the ```. ./az_connect_aro.sh``` command.
 
   > **NOTE: The extra dot is due to the script having an *export* function and needs to have the vars exported in the same shell session as the other commands.**
 
-  ![Screenshot showing upload of file to Cloud Shell](./07.png)
-
   ![Screenshot showing upload of file to Cloud Shell](./08.png)
 
-- Once the script run has finished, the Aro cluster will be projected as a new Azure Arc-enabled Kubernetes cluster resource.
+  ![Screenshot showing upload of file to Cloud Shell](./09.png)
 
-  ![Screenshot showing Azure Portal with Azure Arc-enabled Kubernetes resource](./09.png)
+- Once the script run has finished, the Aro cluster will be projected as a new Azure Arc-enabled Kubernetes cluster resource.
 
   ![Screenshot showing Azure Portal with Azure Arc-enabled Kubernetes resource](./10.png)
 
   ![Screenshot showing Azure Portal with Azure Arc-enabled Kubernetes resource](./11.png)
 
+  ![Screenshot showing Azure Portal with Azure Arc-enabled Kubernetes resource](./12.png)
+
 ## Delete the deployment
 
 The most straightforward way is to delete the Azure Arc cluster resource via the Azure Portal, just select the cluster and delete it.
 
-![Screenshot showing how to delete Azure Arc-enabled Kubernetes resource](./12.png)
+![Screenshot showing how to delete Azure Arc-enabled Kubernetes resource](./13.png)
 
 To cleanup the deployment, simply delete the Azure resource group.
 
