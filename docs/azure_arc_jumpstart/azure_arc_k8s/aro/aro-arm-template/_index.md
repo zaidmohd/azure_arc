@@ -71,7 +71,7 @@ The following README will guide you on how to use the provided [Azure ARM Templa
   ```
 - Check your subscription quota for the DSv3 family.
 
-    > **Note: Azure Red Hat OpenShift requires a minimum of 40 cores to create and run an OpenShift cluster.**
+    > **NOTE: Azure Red Hat OpenShift requires a minimum of 40 cores to create and run an OpenShift cluster.**
 
   ```shell
   LOCATION=eastus
@@ -113,7 +113,7 @@ The following README will guide you on how to use the provided [Azure ARM Templa
   --parameters azuredeploy.parameters.json
   ```
 
-    > **Note: It normally takes about 35 minutes to create a cluster..**
+    > **NOTE: It normally takes about 35 minutes to create a cluster..**
 
 - Once the ARM template deployment is completed, a new Azure Red Hat OpenShift cluster in a new Azure resource group is created.
 
@@ -133,7 +133,7 @@ The following README will guide you on how to use the provided [Azure ARM Templa
 
 - After editing the environment variables in the [*az_connect_aro*](https://github.com/microsoft/azure_arc/blob/main/azure_arc_k8s_jumpstart/aro/arm_template/scripts/az_connect_aro.sh) shell script to match your parameters, save the file and then upload it to the Cloud Shell environment and run it using the ```. ./az_connect_aro.sh``` command.
 
-  > **Note: The extra dot is due to the script having an *export* function and needs to have the vars exported in the same shell session as the other commands.**
+  > **NOTE: The extra dot is due to the script having an *export* function and needs to have the vars exported in the same shell session as the other commands.**
 
   ![Screenshot showing upload of file to Cloud Shell](./07.png)
 
