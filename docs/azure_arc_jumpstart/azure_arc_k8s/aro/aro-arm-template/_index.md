@@ -12,7 +12,7 @@ The following README will guide you on how to use the provided [Azure ARM Templa
 
 ## Prerequisites
 
-* Clone the Azure Arc Jumpstart repository
+- Clone the Azure Arc Jumpstart repository
 
     ```shell
     git clone https://github.com/microsoft/azure_arc.git
