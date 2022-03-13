@@ -16,6 +16,7 @@ param (
     [string]$deploySQLMI,
     [string]$SQLMIHA,    
     [string]$deployPostgreSQL,
+    [string]$ArcK8sClusterName,
     [string]$templateBaseUrl
 )
 
@@ -36,6 +37,7 @@ param (
 [System.Environment]::SetEnvironmentVariable('deploySQLMI', $deploySQLMI,[System.EnvironmentVariableTarget]::Machine)
 [System.Environment]::SetEnvironmentVariable('SQLMIHA', $SQLMIHA,[System.EnvironmentVariableTarget]::Machine)
 [System.Environment]::SetEnvironmentVariable('deployPostgreSQL', $deployPostgreSQL,[System.EnvironmentVariableTarget]::Machine)
+[System.Environment]::SetEnvironmentVariable('ArcK8sClusterName', $ArcK8sClusterName,[System.EnvironmentVariableTarget]::Machine)
 [System.Environment]::SetEnvironmentVariable('templateBaseUrl', $templateBaseUrl,[System.EnvironmentVariableTarget]::Machine)
 
 # Create path
@@ -99,13 +101,13 @@ workflow ClientTools_01
                                 choco config get cacheLocation
                             }catch{
                                 Write-Output "Chocolatey not detected, trying to install now"
-                                iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+                                Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
                             }
                         }
                         if ([string]::IsNullOrWhiteSpace($using:chocolateyAppList) -eq $false){   
                             Write-Host "Chocolatey Apps Specified"  
                             
-                            $appsToInstall = $using:chocolateyAppList -split "," | foreach { "$($_.Trim())" }
+                            $appsToInstall = $using:chocolateyAppList -split "," | ForEach-Object { "$($_.Trim())" }
                         
                             foreach ($app in $appsToInstall)
                             {

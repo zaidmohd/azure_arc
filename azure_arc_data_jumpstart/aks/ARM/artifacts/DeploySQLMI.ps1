@@ -1,10 +1,11 @@
-Start-Transcript -Path C:\Temp\deploySQL.log
+Start-Transcript -Path C:\Temp\DeploySQLMI.log
 
 # Deployment environment variables
 $Env:TempDir = "C:\Temp"
 $controllerName = "jumpstart-dc"
 
 # Deploying Azure Arc SQL Managed Instance
+Write-Host "`n"
 Write-Host "Deploying Azure Arc SQL Managed Instance"
 Write-Host "`n"
 
@@ -66,14 +67,17 @@ $SQLParams = "$Env:TempDir\SQLMI.parameters.json"
 (Get-Content -Path $SQLParams) -replace 'replicasStage' ,$replicas | Set-Content -Path $SQLParams
 (Get-Content -Path $SQLParams) -replace 'pricingTier-stage' ,$pricingTier | Set-Content -Path $SQLParams
 
-az deployment group create --resource-group $env:resourceGroup --template-file "$Env:TempDir\SQLMI.json" --parameters "$Env:TempDir\SQLMI.parameters.json"
-Write-Host "`n"
+az deployment group create --resource-group $env:resourceGroup `
+                           --template-file "$Env:TempDir\SQLMI.json" `
+                           --parameters "$Env:TempDir\SQLMI.parameters.json"
 
+Write-Host "`n"
 Do {
     Write-Host "Waiting for SQL Managed Instance. Hold tight, this might take a few minutes...(45s sleeping loop)"
     Start-Sleep -Seconds 45
     $dcStatus = $(if(kubectl get sqlmanagedinstances -n arc | Select-String "Ready" -Quiet){"Ready!"}Else{"Nope"})
     } while ($dcStatus -eq "Nope")
+
 Write-Host "`n"
 Write-Host "Azure Arc SQL Managed Instance is ready!"
 Write-Host "`n"
@@ -93,13 +97,14 @@ if ( $env:SQLMIHA -eq $true )
 
 # Downloading demo database and restoring onto SQL MI
 $podname = "jumpstart-sql-0"
+Write-Host "`n"
 Write-Host "Downloading AdventureWorks database for MS SQL... (1/2)"
 kubectl exec $podname -n arc -c arc-sqlmi -- wget https://github.com/Microsoft/sql-server-samples/releases/download/adventureworks/AdventureWorks2019.bak -O /var/opt/mssql/data/AdventureWorks2019.bak 2>&1 | Out-Null
 Write-Host "Restoring AdventureWorks database for MS SQL. (2/2)"
 kubectl exec $podname -n arc -c arc-sqlmi -- /opt/mssql-tools/bin/sqlcmd -S localhost -U $Env:AZDATA_USERNAME -P $Env:AZDATA_PASSWORD -Q "RESTORE DATABASE AdventureWorks2019 FROM  DISK = N'/var/opt/mssql/data/AdventureWorks2019.bak' WITH MOVE 'AdventureWorks2017' TO '/var/opt/mssql/data/AdventureWorks2019.mdf', MOVE 'AdventureWorks2017_Log' TO '/var/opt/mssql/data/AdventureWorks2019_Log.ldf'" 2>&1 $null
 
 # Creating Azure Data Studio settings for SQL Managed Instance connection
-Write-Host ""
+Write-Host "`n"
 Write-Host "Creating Azure Data Studio settings for SQL Managed Instance connection"
 $settingsTemplate = "$Env:TempDir\settingsTemplate.json"
 

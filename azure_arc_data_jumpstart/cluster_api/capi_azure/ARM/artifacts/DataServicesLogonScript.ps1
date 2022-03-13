@@ -2,9 +2,14 @@ Start-Transcript -Path C:\Temp\DataServicesLogonScript.log
 
 # Deployment environment variables
 $Env:TempDir = "C:\Temp"
-$connectedClusterName = "Arc-Data-AKS"
+$connectedClusterName = $Env:ArcK8sClusterName
 
 Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled False
+
+# Required for azcopy
+$azurePassword = ConvertTo-SecureString $Env:spnClientSecret -AsPlainText -Force
+$psCred = New-Object System.Management.Automation.PSCredential($Env:spnClientId , $azurePassword)
+Connect-AzAccount -Credential $psCred -TenantId $Env:spnTenantId -ServicePrincipal
 
 # Login as service principal
 az login --service-principal --username $Env:spnClientId --password $Env:spnClientSecret --tenant $Env:spnTenantId
@@ -25,6 +30,7 @@ az -v
 # subscription user deployed ARM template to. This is needed in case Service 
 # Principal has access to multiple subscriptions, which can break the automation logic
 az account set --subscription $Env:subscriptionId
+
 
 # Installing Azure Data Studio extensions
 Write-Host "`n"
@@ -66,48 +72,32 @@ Write-Host "`n"
 az provider show --namespace Microsoft.AzureArcData -o table
 Write-Host "`n"
 
-# Making extension install dynamic
-az config set extension.use_dynamic_install=yes_without_prompt
-Write-Host "`n"
-az -v
+# Downloading CAPI Kubernetes cluster kubeconfig file
+Write-Host "Downloading CAPI Kubernetes cluster kubeconfig file"
+$sourceFile = "https://$Env:stagingStorageAccountName.blob.core.windows.net/staging-capi/config"
+$context = (Get-AzStorageAccount -ResourceGroupName $Env:resourceGroup).Context
+$sas = New-AzStorageAccountSASToken -Context $context -Service Blob -ResourceType Object -Permission racwdlup
+$sourceFile = $sourceFile + $sas
+azcopy cp --check-md5 FailIfDifferentOrMissing $sourceFile  "C:\Users\$Env:USERNAME\.kube\config"
 
-# Getting AKS cluster credentials kubeconfig file
-Write-Host "Getting AKS cluster credentials"
-Write-Host "`n"
-az aks get-credentials --resource-group $Env:resourceGroup `
-                       --name $Env:clusterName --admin
+# Downloading 'installCAPI.log' log file
+Write-Host "Downloading 'installCAPI.log' log file"
+$sourceFile = "https://$Env:stagingStorageAccountName.blob.core.windows.net/staging-capi/installCAPI.log"
+$sourceFile = $sourceFile + $sas
+azcopy cp --check-md5 FailIfDifferentOrMissing $sourceFile  "$Env:TempDir\installCAPI.log"
 
+Write-Host "`n"
 Write-Host "Checking kubernetes nodes"
 Write-Host "`n"
 kubectl get nodes
 Write-Host "`n"
 
-# Onboarding the AKS cluster as an Azure Arc-enabled Kubernetes cluster
-Write-Host "Onboarding the cluster as an Azure Arc-enabled Kubernetes cluster"
-Write-Host "`n"
-
 # Localize kubeconfig
 $Env:KUBECONTEXT = kubectl config current-context
 $Env:KUBECONFIG = "C:\Users\$Env:adminUsername\.kube\config"
-Start-Sleep -Seconds 10
-
-# Create Kubernetes - Azure Arc Cluster
-az connectedk8s connect --name $connectedClusterName `
-                        --resource-group $Env:resourceGroup `
-                        --location $Env:azureLocation `
-                        --tags 'Project=jumpstart_azure_arc_data_services' `
-                        --kube-config $Env:KUBECONFIG `
-                        --kube-context $Env:KUBECONTEXT
 
 Start-Sleep -Seconds 10
 
-# Enabling Container Insights and Microsoft Defender for Containers cluster extensions
-Write-Host "`n"
-Write-Host "Enabling Container Insights cluster extensions"
-az k8s-extension create --name "azuremonitor-containers" --cluster-name $connectedClusterName --resource-group $Env:resourceGroup --cluster-type connectedClusters --extension-type Microsoft.AzureMonitor.Containers --configuration-settings logAnalyticsWorkspaceResourceID=$workspaceId
-Write-Host "`n"
-
-# Monitor pods across arc namespace
 $kubectlMonShell = Start-Process -PassThru PowerShell {for (0 -lt 1) {kubectl get pod -n arc; Start-Sleep -Seconds 5; Clear-Host }}
 
 # Installing Azure Arc-enabled data services extension

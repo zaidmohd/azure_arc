@@ -10,9 +10,16 @@
         },
         "vmName": {
             "type": "string",
-            "defaultValue": "Arc-Data-CAPI-K8s",
+            "defaultValue": "Arc-Data-CAPI-MGMT",
             "metadata": {
                 "description": "The name of you Virtual Machine."
+            }
+        },
+        "ArcK8sClusterName": {
+            "type": "string",
+            "defaultValue": "Arc-DataSvc-CAPI",
+            "metadata": {
+                "description": "The name of the Cluster API workload cluster to be connected as an Azure Arc-enabled Kubernetes cluster (lowercase)"
             }
         },
         "adminUsername": {
@@ -30,12 +37,12 @@
         },
         "ubuntuOSVersion": {
             "type": "string",
-            "defaultValue": "18.04-LTS",
+            "defaultValue": "20_04-lts-gen2",
             "allowedValues": [
-                "18.04-LTS"
+                "20_04-lts-gen2"
             ],
             "metadata": {
-                "description": "The Ubuntu version for the VM. This will pick a fully patched image of this given Ubuntu version."
+                "description": "The Ubuntu version for the VM. This will pick a fully patched image of this given Ubuntu version"
             }
         },
         "azureLocation": {
@@ -47,7 +54,7 @@
         },
         "vmSize": {
             "type": "string",
-            "defaultValue": "Standard_D4s_v3",
+            "defaultValue": "Standard_D4s_v4",
             "metadata": {
                 "description": "The size of the VM"
             }
@@ -61,14 +68,14 @@
         },
         "subnetName": {
             "type": "string",
-            "defaultValue": "Arc-Data-CAPI-Subnet",
+            "defaultValue": "Arc-Data-CAPI-MGMT-Subnet",
             "metadata": {
                 "description": "Name of the subnet in the virtual network"
             }
         },
         "networkSecurityGroupName": {
             "type": "string",
-            "defaultValue": "Arc-Data-CAPI-K8s-NSG",
+            "defaultValue": "Arc-Data-CAPI-MGMT-NSG",
             "metadata": {
                 "description": "Name of the Network Security Group"
             }
@@ -101,6 +108,12 @@
             "type": "string",
             "metadata": {
                 "description": "Name for the staging storage account using to hold kubeconfig. This value is passed into the template as an output from mgmtStagingStorage.json"
+            }
+        },
+        "logAnalyticsWorkspaceName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the Log Analytics workspace used with cluster extensions"
             }
         },
         "templateBaseUrl": {
@@ -151,7 +164,7 @@
         },
         {
             "type": "Microsoft.Network/networkSecurityGroups",
-            "apiVersion": "2019-02-01",
+            "apiVersion": "2021-05-01",
             "name": "[parameters('networkSecurityGroupName')]",
             "location": "[parameters('azureLocation')]",
             "properties": {
@@ -197,7 +210,7 @@
         },        
         {
             "type": "Microsoft.Network/publicIpAddresses",
-            "apiVersion": "2019-02-01",
+            "apiVersion": "2021-05-01",
             "name": "[variables('publicIpAddressName')]",
             "location": "[parameters('azureLocation')]",
             "properties": {
@@ -212,7 +225,7 @@
         },
         {
             "type": "Microsoft.Compute/virtualMachines",
-            "apiVersion": "2019-03-01",
+            "apiVersion": "2021-07-01",
             "name": "[variables('vmName')]",
             "location": "[parameters('azureLocation')]",
             "tags": "[parameters('resourceTags')]",
@@ -234,7 +247,7 @@
                     },
                     "imageReference": {
                         "publisher": "Canonical",
-                        "offer": "UbuntuServer",
+                        "offer": "0001-com-ubuntu-server-focal",
                         "sku": "[parameters('ubuntuOSVersion')]",
                         "version": "latest"
                     }
@@ -266,7 +279,7 @@
         {
             "type": "Microsoft.Compute/virtualMachines/extensions",
             "name": "[concat(variables('vmName'),'/installscript_CAPI')]",
-            "apiVersion": "2019-07-01",
+            "apiVersion": "2021-11-01",
             "location": "[parameters('azureLocation')]",
             "dependsOn": [
                 "[concat('Microsoft.Compute/virtualMachines/', variables('vmName'))]"
@@ -279,7 +292,7 @@
                 "settings": {
                 },
                 "protectedSettings": {
-                    "commandToExecute": "[concat('bash installCAPI.sh', ' ', parameters('adminUsername'), ' ', parameters('spnClientId'), ' ', parameters('spnClientSecret'), ' ', parameters('spnTenantId'), ' ', parameters('vmName'), ' ', parameters('azureLocation'), ' ', parameters('stagingStorageAccountName'))]",
+                    "commandToExecute": "[concat('bash installCAPI.sh', ' ', parameters('adminUsername'), ' ', parameters('spnClientId'), ' ', parameters('spnClientSecret'), ' ', parameters('spnTenantId'), ' ', parameters('vmName'), ' ', parameters('azureLocation'), ' ', parameters('stagingStorageAccountName'), ' ', parameters('logAnalyticsWorkspaceName'), ' ', parameters('ArcK8sClusterName'), ' ',parameters('templateBaseUrl'))]",
                     "fileUris": [
                         "[uri(parameters('templateBaseUrl'), 'artifacts/installCAPI.sh')]"
                     ]
