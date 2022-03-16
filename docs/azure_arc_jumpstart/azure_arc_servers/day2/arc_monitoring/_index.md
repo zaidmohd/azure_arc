@@ -229,7 +229,3 @@ Once the data starts arriving into the Log Analytics workspace, we can leverage 
 To delete the entire deployment, simply delete the resource group from the Azure portal.
 
 ![Screenshot showing how to delete resource group](./35.png)
-
-## Acknowledgment
-
-My special thanks to my teammate **Diego Martínez Rellán** who contributed to the workbooks development.
