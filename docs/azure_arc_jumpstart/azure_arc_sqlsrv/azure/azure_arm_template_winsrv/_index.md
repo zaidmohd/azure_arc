@@ -39,7 +39,7 @@ By the end of the guide, you will have an Azure VM installed with Windows Server
 
     ```shell
     az login
-    az account set --subscription "<Target Azure Subscription ID"
+    az account set --subscription "<Subscription ID>"
     az ad sp create-for-rbac -n "<Unique SP Name>" --role contributor
     ```
 
