@@ -2,11 +2,11 @@
 type: docs
 title: "Monitoring, Alerting, and Visualization"
 linkTitle: "Monitoring, Alerting, and Visualization"
-weight: 12
+weight: 2
 description: >
 ---
 
-## Enable Azure Monitor on Azure Arc-enabled servers
+## Monitoring, Alerting, and Visualization on Azure Arc-enabled servers
 
 The scenario will show you how to onboard Azure Arc-enabled servers to [Azure Monitor](https://docs.microsoft.com/en-us/azure/azure-monitor/overview), so you can monitor your Linux and Windows servers running on-premises or at other cloud providers.
 
