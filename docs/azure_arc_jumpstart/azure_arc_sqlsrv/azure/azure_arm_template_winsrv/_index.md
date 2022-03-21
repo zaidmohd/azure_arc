@@ -116,10 +116,21 @@ As mentioned, this deployment will use an ARM Template. You will deploy a single
 
 * The deployment is using the ARM template parameters file. Before initiating the deployment, edit the [*azuredeploy.parameters.json*](https://github.com/microsoft/azure_arc/blob/main/azure_arc_sqlsrv_jumpstart/azure/arm_template/azuredeploy.parameters.json) file located in your local cloned repository folder. An example parameters file is located [here](https://github.com/microsoft/azure_arc/blob/main/azure_arc_sqlsrv_jumpstart/azure/arm_template/azuredeploy.parameters.example.json).
 
-* To deploy the ARM template, navigate to the local cloned [deployment folder](https://github.com/microsoft/azure_arc/tree/main/azure_arc_sqlsrv_jumpstart/azure/arm_template) and run the below command:
+* Create a Resource Group which will house the target for the ARM Template deployment using the following command:
 
     ```shell
     az group create --name <Name of the Azure resource group> --location <Azure Region> --tags "Project=jumpstart_azure_arc_sql"
+    ```
+
+    For example:
+
+    ```shell
+    az group create --name Arc-SQL-Demo --location "East US" --tags "Project=jumpstart_azure_arc_sql"
+    ```
+
+* To deploy the ARM template, navigate to the local cloned [deployment folder](https://github.com/microsoft/azure_arc/tree/main/azure_arc_sqlsrv_jumpstart/azure/arm_template) and run the below command:
+
+    ```shell
     az deployment group create \
     --resource-group <Name of the Azure resource group> \
     --name <The name of this deployment> \
@@ -127,12 +138,11 @@ As mentioned, this deployment will use an ARM Template. You will deploy a single
     --parameters <The *azuredeploy.parameters.json* parameters file location>
     ```
 
-    > **Note: Make sure that you are using the same Azure resource group name as the one you've just used in the *azuredeploy.parameters.json* file**
+    > **Note: Make sure that you are using the same Azure resource group name as the one you created in the previous step**
 
     For example:
 
     ```shell
-    az group create --name Arc-SQL-Demo --location "East US" --tags "Project=jumpstart_azure_arc_sql"
     az deployment group create \
     --resource-group Arc-SQL-Demo \
     --name arcsqlsrvdemo \
@@ -142,55 +152,37 @@ As mentioned, this deployment will use an ARM Template. You will deploy a single
 
 * Once Azure resources has been provisioned, you will be able to see it in Azure portal.
 
-    ![Screenshot showing ARM deployment](./01.jpg)
+    ![Screenshot showing ARM deployment](./deployment_complete_cli.png)
 
-    ![Screenshot showing Azure Portal with Azure resources](./02.jpg)
+    ![Screenshot showing Azure Portal with Azure resources](./deployment_complete_portal.png)
 
 ## Windows Login & Post Deployment
 
 * Now that the Windows Server VM has been deployed, it is time to login to it. Using it's public IP, RDP to the VM.
 
-    ![Screenshot showing Overview tab of Azure VM](./03.jpg)
+    ![Screenshot showing Overview tab of Azure VM](./sql_vm_portal.png)
 
 * At first login, as mentioned in the "Automation Flow" section, a logon script will get executed. This script was created as part of the automated deployment process.
 
     Let the script to run its course and **do not close** the PowerShell session, this will be done for you once completed.
 
-    > **Note: The script run time is ~10-15min long**
+    > **Note: The script run time is ~30min long**
 
-    ![Screenshot showing PowerShell script executing in VM](./04.jpg)
-
-    ![Screenshot showing showing PowerShell script executing in VM](./05.jpg)
-
-    ![Screenshot showing showing PowerShell script executing in VM](./06.jpg)
-
-    ![Screenshot showing showing PowerShell script executing in VM](./07.jpg)
-
-    ![Screenshot showing showing PowerShell script executing in VM](./08.jpg)
-
-    ![Screenshot showing showing PowerShell script executing in VM](./09.jpg)
-
-    ![Screenshot showing showing PowerShell script executing in VM](./10.jpg)
-
-    ![Screenshot showing showing PowerShell script executing in VM](./11.jpg)
-
-    ![Screenshot showing showing PowerShell script executing in VM](./12.jpg)
-
-    ![Screenshot showing showing PowerShell script executing in VM](./13.jpg)
+    ![Screenshot showing PowerShell script executing in VM](./post_deploy_script.png)
 
 * Upon successful run, in the Azure portal, notice you now have a new Azure Arc-enabled server (with the Microsoft Monitoring agent installed via an extension) and Azure Arc-enabled SQL resources as well as Azure Log Analytics added to the resource group.
 
-    ![Screenshot showing Azure Arc-enabled SQL resources](./14.jpg)
+    ![Screenshot showing Azure Arc-enabled SQL resources](./post_deployment_portal_vm.png)
 
-    ![Screenshot showing Azure Arc-enabled SQL resources](./15.jpg)
+    ![Screenshot showing Azure Arc-enabled SQL resources](./post_deployment_portal_arc.png)
 
-    ![Screenshot showing Azure Arc-enabled SQL resources](./16.jpg)
+    ![Screenshot showing Azure Arc-enabled SQL resources](./post_deployment_portal_arc_sql.png)
 
 * Open Microsoft SQL Server Management Studio (a Windows shortcut will be created for you) and validate the *AdventureWorksLT2019* sample database is deployed as well.
 
-    ![Screenshot showing SQL Management Studio](./17.jpg)
+    ![Screenshot showing SQL Management Studio](./sql_server_management_login.png)
 
-    ![Screenshot showing SQL Management Studio](./18.jpg)
+    ![Screenshot showing SQL Management Studio](./sql_server_management_data.png)
 
 ## Azure SQL Assessment
 
