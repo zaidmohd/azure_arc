@@ -154,7 +154,7 @@ As mentioned, this deployment will leverage ARM templates. You will deploy a sin
 
 ## Windows Login & Post Deployment
 
-- Now that first phase of the automation is completed, it is time to RDP to the Client VM using it's public IP.
+- Now that the first phase of the automation is completed, it is time to RDP to the Client VM using its public IP.
 
   ![Client VM public IP](./05.png)
 
