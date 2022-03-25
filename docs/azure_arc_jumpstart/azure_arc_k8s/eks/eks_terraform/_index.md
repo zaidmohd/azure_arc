@@ -221,12 +221,8 @@ In Azure, the most straightforward way is to delete the cluster or the resource 
 az group delete --name "Arc-EKS-Demo"
 ```
 
-![Screenshot showing delete resource function in Azure Portal](./image16.png)
+![Screenshot showing delete resource group function in Azure Portal](./delete_resource_group.png)
 
-![Screenshot showing delete resource group function in Azure Portal](./image17.png)
+To delete the EKS cluster and supporting components, use the ```terraform destroy --auto-approve``` command.
 
-On your AWS portal, select the cluster and delete it or alternatively, you can use the ```terraform destroy --auto-approve``` command.
-
-![Screenshot showing terraform destroy being run](./image18.png)
-
-![Screenshot showing terraform destroy being run](./image20.png)
+![Screenshot showing terraform destroy being run](./terraform_destroy.png)
