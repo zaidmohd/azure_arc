@@ -20,11 +20,6 @@ The following README will guide you on how to use the provided [Terraform](https
 
 * [Install](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html) and [Configure](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html#cli-quick-configuration) AWS CLI
 
-* Install **wget** package (required for the eks module)
-  * [Windows](https://builtvisible.com/download-your-website-with-wget/)
-  * [Mac](https://www.cyberciti.biz/faq/howto-install-wget-om-mac-os-x-mountain-lion-mavericks-snow-leopard/)
-  * [Linux](https://www.tecmint.com/install-wget-in-linux/)
-
 * [Install AWS IAM Authenticator](https://docs.aws.amazon.com/eks/latest/userguide/install-aws-iam-authenticator.html)
 
 * [Install or update Azure CLI to version 2.25.0 and above](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest). Use the below command to check your current installed version.
@@ -35,38 +30,22 @@ The following README will guide you on how to use the provided [Terraform](https
 
 * [Create a free Amazon Web Service's account](https://aws.amazon.com/free/)
 
-* [Install Helm 3](https://helm.sh/docs/intro/install/)
+* [Install Terraform >=1.0](https://learn.hashicorp.com/terraform/getting-started/install.html)
 
-* [Install Terraform >=0.12](https://learn.hashicorp.com/terraform/getting-started/install.html)
+* Login to Azure CLI
 
-* Create Azure service principal (SP)
-
-    To be able to complete the scenario and its related automation, Azure service principal assigned with the “Contributor” role is required. To create it, login to your Azure account run the below command (this can also be done in [Azure Cloud Shell](https://shell.azure.com/)).
+    To be able to complete the scenario and its related automation, you will need access to an Azure subscription in which you are assigned the role of at least "Contributor".
 
     ```shell
     az login
-    az ad sp create-for-rbac -n "<Unique SP Name>" --role contributor
+    az account set --subscription "<SubscriptionID>"
     ```
 
     For example:
 
     ```shell
-    az ad sp create-for-rbac -n "http://AzureArcK8s" --role contributor
+    az account set --subscription "d4617bb1-551c-4450-88a7-f3e4d17cbe46"
     ```
-
-    Output should look like this:
-
-    ```json
-    {
-    "appId": "XXXXXXXXXXXXXXXXXXXXXXXXXXXX",
-    "displayName": "AzureArcK8s",
-    "name": "http://AzureArcK8s",
-    "password": "XXXXXXXXXXXXXXXXXXXXXXXXXXXX",
-    "tenant": "XXXXXXXXXXXXXXXXXXXXXXXXXXXX"
-    }
-    ```
-
-    > **Note: The Jumpstart scenarios are designed with as much ease of use in-mind and adhering to security-related best practices whenever possible. It is optional but highly recommended to scope the service principal to a specific [Azure subscription and resource group](https://docs.microsoft.com/en-us/cli/azure/ad/sp?view=azure-cli-latest) as well considering using a [less privileged service principal account](https://docs.microsoft.com/en-us/azure/role-based-access-control/best-practices)**
 
 * [Enable subscription with](https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/resource-providers-and-types#register-resource-provider) the two resource providers for Azure Arc-enabled Kubernetes. Registration is an asynchronous process, and registration may take approximately 10 minutes.
 
@@ -102,35 +81,31 @@ The following README will guide you on how to use the provided [Terraform](https
 
   An access key grants programmatic access to your resources. To create an AWS Access Key for a user:
 
-  * Navigate to the [IAM Access page](https://console.aws.amazon.com/iam/home#/home).
+  * Navigate to the [IAM Access page](https://console.aws.amazon.com/iam/home#/home) and select the **Users** from the side menu.
 
-    ![Screenshot showing how to create AWS IAM key](./image0.png)
-
-  * Select the **Users** from the side menu.
-
-    ![Screenshot showing how to create AWS IAM key](./image1.png)
+    ![Screenshot showing how to create AWS IAM key](./aws_iam_users.png)
 
   * Select the **User** you want to create the access key for.
 
-    ![Screenshot showing how to create AWS IAM key](./image2.png)
+    ![Screenshot showing how to create AWS IAM key](./iam_user_select.png)
 
   * Select ***Security credentials** of the **User** selected.
 
-    ![Screenshot showing how to create AWS IAM key](./image3.png)
+    ![Screenshot showing how to create AWS IAM key](./iam_security_credentials.png)
 
   * Under **Access Keys** select **Create Access Keys**.
 
-    ![Screenshot showing how to create AWS IAM key](./image4.png)
+    ![Screenshot showing how to create AWS IAM key](./iam_create_access_key.png)
 
   * In the popup window it will show you the ***Access key ID*** and ***Secret access key***. Save both of these values to configure **AWS CLI** later
 
-    ![Screenshot showing how to create AWS IAM key](./image5.png)
+    ![Screenshot showing how to create AWS IAM key](./iam_show_access_key.png)
 
   * Set your credentials via the AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY, environment variables, representing your AWS Access Key and AWS Secret Key.
 
       ```shell
-      export TF_VAR_AWS_ACCESS_KEY_ID="an access key"
-      export TF_VAR_AWS_SECRET_ACCESS_KEY="a secret key"
+      export TF_VAR_AWS_ACCESS_KEY_ID="<AWS ACCESS KEY ID>"
+      export TF_VAR_AWS_SECRET_ACCESS_KEY="<AWS ACCESS KEY SECRET>"
       export TF_VAR_AWS_DEFAULT_REGION="us-west-2"
       ```
 
@@ -144,18 +119,30 @@ The following README will guide you on how to use the provided [Terraform](https
 
 * Run the ```terraform init``` command which will initialize Terraform, creating the state file to track our work:
 
-  ![Screenshot showing terraform init being run](./image6.png)
+  ![Screenshot showing terraform init being run](./terraform_init.png)
 
-* Deploy EKS by running the ```terraform apply --auto-approve``` command.
+* Plan the Terraform deployment by running the ```terraform plan -out=infra.out``` command.
   Wait for the plan to finish:
 
-  ![Screenshot showing terraform apply being run](./image7.png)
+  ![Screenshot showing terraform apply being run](./terraform_plan.png)
+
+* Deploy EKS by running the ```terraform apply "infra.out"``` command.
+  Wait for the plan to finish:
+
+  ![Screenshot showing terraform apply being run](./terraform_apply.png)
 
 * You will need the configuration output from Terraform in order to use kubectl to interact with your new cluster. Create your kube configuration directory, and output the configuration from Terraform into the config file using the Terraform output command:
 
+  **Mac/Linux**
   ```shell
   mkdir ~/.kube/
   terraform output -raw kubeconfig > ~/.kube/config
+  ```
+
+  **Windows**
+  ```shell
+  mkdir %USERPROFILE%\.kube
+  terraform output -raw kubeconfig > %USERPROFILE%\.kube\config
   ```
   
   Check to see if cluster is discoverable by ```kubectl``` by running:
