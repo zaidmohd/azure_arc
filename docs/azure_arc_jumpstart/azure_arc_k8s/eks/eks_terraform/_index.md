@@ -32,6 +32,8 @@ The following README will guide you on how to use the provided [Terraform](https
 
 * [Install Terraform >=1.0](https://learn.hashicorp.com/terraform/getting-started/install.html)
 
+* [Install Kubectl](https://kubernetes.io/docs/tasks/tools/)
+
 * Login to Azure CLI
 
     To be able to complete the scenario and its related automation, you will need access to an Azure subscription in which you are assigned the role of at least "Contributor".
@@ -154,8 +156,8 @@ The following README will guide you on how to use the provided [Terraform](https
   Output should look similar to this:
   
   ```shell
-  Client Version: version.Info{Major:"1", Minor:"15", GitVersion:"v1.15.5", GitCommit:"20c265fef0741dd71a66480e35bd69f18351daea", GitTreeState:"clean", BuildDate:"2019-10-15T19:16:51Z", GoVersion:"go1.12.10", Compiler:"gc", Platform:"darwin/amd64"}
-  Server Version: version.Info{Major:"1", Minor:"16+", GitVersion:"v1.16.8-eks-e16311", GitCommit:"e163110a04dcb2f39c3325af96d019b4925419eb", GitTreeState:"clean", BuildDate:"2020-03-27T22:37:12Z", GoVersion:"go1.13.8", Compiler:"gc", Platform:"linux/amd64"}
+  Client Version: version.Info{Major:"1", Minor:"23", GitVersion:"v1.23.0", GitCommit:"ab69524f795c42094a6630298ff53f3c3ebab7f4", GitTreeState:"clean", BuildDate:"2021-12-07T18:16:20Z", GoVersion:"go1.17.3", Compiler:"gc", Platform:"windows/amd64"}
+  Server Version: version.Info{Major:"1", Minor:"21+", GitVersion:"v1.21.5-eks-bc4871b", GitCommit:"5236faf39f1b7a7dabea8df12726f25608131aa9", GitTreeState:"clean", BuildDate:"2021-10-29T23:32:16Z", GoVersion:"go1.16.8", Compiler:"gc", Platform:"linux/amd64"}
   ```
 
 * Configure EKS Nodes to communicate to EKS Control Plane
@@ -167,7 +169,7 @@ The following README will guide you on how to use the provided [Terraform](https
   kubectl apply -f configmap.yml
   ```
 
-  ![Screenshot showing kubectl apply being run](./image8.png)
+  ![Screenshot showing kubectl apply being run](./kubectl_apply_configmap.png)
 
   Once this is complete, you should see your nodes from your autoscaling group either starting to join or joined to the cluster. Once the second column reads Ready the node can have deployments pushed to it. Again, your output may vary here:
 
@@ -175,30 +177,24 @@ The following README will guide you on how to use the provided [Terraform](https
   kubectl get nodes -o wide
   ```
 
-  ![Screenshot showing kubectl get nodes being run](./image9.png)
+  ![Screenshot showing kubectl get nodes being run](./kubectl_get_nodes.png)
 
 * Verify EKS deployment
 
   Once done, you will have a ready EKS cluster under the ***Elastic Kubernetes Service*** section in your AWS console.
 
-  ![Screenshot showing AWS cloud console](./image10.png)
+  ![Screenshot showing AWS cloud console](./aws_eks_search.png)
 
-  ![Screenshot showing AWS cloud console with EKS cluster](./image11.png)
+  ![Screenshot showing AWS cloud console with EKS cluster](./eks_cluster_console.png)
 
 ## Connecting to Azure Arc
 
 Now that you have a running EKS cluster, lets connect the EKS cluster to Azure Arc by:
 
-* Login to previously created [***Service Principal***](#prerequisites)
-
-    ```shell
-    az login --service-principal -u mySpnClientId -p mySpnClientSecret --tenant myTenantID
-    ```
-
 * Create a resource group
 
    ```shell
-   az group create --name arceksdemo -l EastUS -o table
+   az group create --name "Arc-EKS-Demo" --location "eastus"
    ```
 
    > Note:  Before deploying, make sure to check the Azure Arc-enabled Kubernetes region availability [page](https://azure.microsoft.com/en-us/global-infrastructure/services/?products=azure-arc).
@@ -206,23 +202,23 @@ Now that you have a running EKS cluster, lets connect the EKS cluster to Azure A
 * Deploy Arc binaries using Azure CLI:
 
   ```shell
-  az connectedk8s connect --name arceksdemo --resource-group arceksdemo --location 'eastus' --tags 'Project=jumpstart_azure_arc_k8s'
+  az connectedk8s connect --name "Arc-EKS-Demo" --resource-group "Arc-EKS-Demo" --location "eastus" --tags "Project=jumpstart_azure_arc_k8s"
   ```
 
 * Upon completion, you will have your EKS cluster connect as a new Azure Arc-enabled Kubernetes resource in a new resource group.
 
-  ![Screenshot showing ARM deployment](./image13.png)
+  ![Screenshot showing ARM deployment](./connectedk8s_onboard.png)
 
-  ![Screenshot showing Azure Portal with Azure Arc-enabled Kubernetes resource](./image14.png)
+  ![Screenshot showing Azure Portal with Azure Arc-enabled Kubernetes resource](./arc_cluster_portal.png)
 
-  ![Screenshot showing Azure POrtal with Azure Arc-enabled Kubernetes resource detail](./image15.png)
+  ![Screenshot showing Azure POrtal with Azure Arc-enabled Kubernetes resource detail](./arc_cluster_portal_connected.png)
 
 ## Delete the deployment
 
 In Azure, the most straightforward way is to delete the cluster or the resource group via the Azure Portal or through the CLI.
 
 ```shell
-az group delete --name arceksdemo
+az group delete --name "Arc-EKS-Demo"
 ```
 
 ![Screenshot showing delete resource function in Azure Portal](./image16.png)
