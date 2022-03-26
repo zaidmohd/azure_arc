@@ -85,15 +85,15 @@ The following README will guide you on how to use the provided [Terraform](https
 
   * Navigate to the [IAM Access page](https://console.aws.amazon.com/iam/home#/home) and select the **Users** from the side menu.
 
-    ![Screenshot showing how to create AWS IAM key](./aws_iam_users.png)
+    ![Screenshot showing AWS IAM users](./aws_iam_users.png)
 
   * Select the **User** you want to create the access key for.
 
-    ![Screenshot showing how to create AWS IAM key](./iam_user_select.png)
+    ![Screenshot showing AWS IAM user details](./iam_user_select.png)
 
   * Select ***Security credentials** of the **User** selected.
 
-    ![Screenshot showing how to create AWS IAM key](./iam_security_credentials.png)
+    ![Screenshot showing AWS IAM user security credentials](./iam_security_credentials.png)
 
   * Under **Access Keys** select **Create Access Keys**.
 
@@ -101,7 +101,7 @@ The following README will guide you on how to use the provided [Terraform](https
 
   * In the popup window it will show you the ***Access key ID*** and ***Secret access key***. Save both of these values to configure **AWS CLI** later
 
-    ![Screenshot showing how to create AWS IAM key](./iam_show_access_key.png)
+    ![Screenshot showing how to reveal the created AWS IAM key](./iam_show_access_key.png)
 
   * Set your credentials via the AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY, environment variables, representing your AWS Access Key and AWS Secret Key.
 
@@ -209,7 +209,7 @@ Now that you have a running EKS cluster, lets connect the EKS cluster to Azure A
 
 * Upon completion, you will have your EKS cluster connect as a new Azure Arc-enabled Kubernetes resource in a new resource group.
 
-  ![Screenshot showing ARM deployment](./connectedk8s_onboard.png)
+  ![Screenshot showing Azure CLI command to onboard EKS cluster](./connectedk8s_onboard.png)
 
   ![Screenshot showing Azure Portal with Azure Arc-enabled Kubernetes resource](./arc_cluster_portal.png)
 
