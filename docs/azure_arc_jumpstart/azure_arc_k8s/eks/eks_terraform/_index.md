@@ -197,7 +197,7 @@ Now that you have a running EKS cluster, lets connect the EKS cluster to Azure A
    az group create --name "Arc-EKS-Demo" --location "eastus"
    ```
 
-   > Note:  Before deploying, make sure to check the Azure Arc-enabled Kubernetes region availability [page](https://azure.microsoft.com/en-us/global-infrastructure/services/?products=azure-arc).
+   > NOTE:  Before deploying, make sure to check the Azure Arc-enabled Kubernetes region availability [page](https://azure.microsoft.com/en-us/global-infrastructure/services/?products=azure-arc).
 
 * Deploy Arc binaries using Azure CLI:
 
