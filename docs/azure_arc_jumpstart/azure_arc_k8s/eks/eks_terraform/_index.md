@@ -128,10 +128,10 @@ The following README will guide you on how to use the provided [Terraform](https
 
   ![Screenshot showing terraform plan being run](./terraform_plan.png)
 
+  > **NOTE:  Screenshot has been clipped for brevity**
+
 * Deploy EKS by running the ```terraform apply "infra.out"``` command.
   Wait for the plan to finish:
-
-   > **NOTE:  Screenshot has been clipped for brevity**
 
   ![Screenshot showing terraform apply being run](./terraform_apply.png)
 
