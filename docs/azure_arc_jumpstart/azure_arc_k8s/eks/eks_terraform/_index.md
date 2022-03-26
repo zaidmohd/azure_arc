@@ -72,7 +72,7 @@ The following README will guide you on how to use the provided [Terraform](https
   az extension add --name k8s-configuration
   ```
 
-  > **Note: If you already used this guide before and/or have the extensions installed, use the bellow commands:**
+  > **NOTE:  If you already used this guide before and/or have the extensions installed, use the bellow commands:**
 
   ```shell
   az extension update --name connectedk8s
@@ -126,10 +126,12 @@ The following README will guide you on how to use the provided [Terraform](https
 * Plan the Terraform deployment by running the ```terraform plan -out=infra.out``` command.
   Wait for the plan to finish:
 
-  ![Screenshot showing terraform apply being run](./terraform_plan.png)
+  ![Screenshot showing terraform plan being run](./terraform_plan.png)
 
 * Deploy EKS by running the ```terraform apply "infra.out"``` command.
   Wait for the plan to finish:
+
+   > **NOTE:  Screenshot has been clipped for brevity**
 
   ![Screenshot showing terraform apply being run](./terraform_apply.png)
 
@@ -197,7 +199,7 @@ Now that you have a running EKS cluster, lets connect the EKS cluster to Azure A
    az group create --name "Arc-EKS-Demo" --location "eastus"
    ```
 
-   > NOTE:  Before deploying, make sure to check the Azure Arc-enabled Kubernetes region availability [page](https://azure.microsoft.com/en-us/global-infrastructure/services/?products=azure-arc).
+   > **NOTE:  Before deploying, make sure to check the Azure Arc-enabled Kubernetes region availability [page](https://azure.microsoft.com/en-us/global-infrastructure/services/?products=azure-arc).**
 
 * Deploy Arc binaries using Azure CLI:
 
