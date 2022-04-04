@@ -465,7 +465,7 @@ After deployment is complete, its time to start exploring ArcBox. Most interacti
 
    ![Screenshot showing bookstore RBAC delete pods](./RBAC_03.png)
 
-  - Optionally, you can test the access usinh auth command
+  - Optionally, you can test the access using auth command
   
   ```shell
   kubectl --namespace bookstore auth can-i delete pods --as=jane
@@ -480,7 +480,7 @@ After deployment is complete, its time to start exploring ArcBox. Most interacti
   - Browse to the bookbuyer application _`https://arcbox.devops.com/bookbuyer`_
   - Browse to the bookstore application _`https://arcbox.devops.com/bookstore`_
   - Browse to the bookstore-v2 application _`https://arcbox.devops.com/bookstore-v2`_  
-  - Shell running the command _`kubectl -n bookbuyer logs bookbuyer-84dcd9c6dd-lvmgf bookbuyer -f | grep Identity:`_ command.
+  - Shell running the below commands.
   
     ```shell
     pod=$(kubectl --namespace bookbuyer get pods --selector=app=bookbuyer --output=jsonpath={.items..metadata.name})
@@ -506,6 +506,84 @@ After deployment is complete, its time to start exploring ArcBox. Most interacti
 - Wait for the changes to propagate and observe the counters increment for bookstore-v2 and freeze for bookstore. Also observe the changes on the bookbuyer pod logs.
 
   ![Screenshot showing Bookstore apps and shell GitOps 02](./OSM_05.png)
+
+### Additional Scenarios on _ArcBox-k3s_ cluster
+
+Optionally, you can try additional GitOps and RBAC scenarios on _ArcBox-k3s_ cluster. When remoted into the _ArcBox-Client_ virtual machine, here are some things to try:
+
+- Setup GitOps flow for Hello-Arc application on the _ArcBox-k3s_ cluster.
+  - Review and execute *k3s_helloarc_gitops.sh* script placed on the desktop.
+
+    ```shell
+    . ./k3s_helloarc_gitops.sh
+    ```
+
+  - You can now see that Azure Key Vault Secrets Provider and Flux (GitOps) extensions are now enabled in the extension tab section of the _ArcBox-k3s_ cluster resource in Azure.
+  - Browse to the Hello-Arc application to validate the Ingress certificate used from Key Vault _`https://arcbox.devops.com/hello-arc`_
+
+    ![Screenshot showing Hello-Arc App](./k3s_GitOps_01.png)
+
+  - Also, you can see below GitOps configurations on the _ArcBox-k3s_ cluster.
+  
+    - config-nginx to deploy NGINX-ingress controller.
+    - config-helloarc to deploy the "Hello Arc" web application.
+  
+      ![Screenshot showing Azure Arc GitOps configurations](./k3s_GitOps_02.png)
+  
+  - To show the GitOps flow for Hello-Arc application open 2 side-by-side browser windows.
+  
+    - Browse to the Hello-Arc application _`https://arcbox.k3sdevops.com/hello-arc`_  
+    - Shell running the command _`kubectl get pods -n hello-arc -w`_ command.
+    - End result should look like that:
+  
+      ![Screenshot showing Hello-Arc app and shell](./k3s_GitOps_03.png)
+  
+    - In your fork of the “Azure Arc Jumpstart Apps” repository, open the hello_arc.yaml file (/hello-arc/yaml/hello_arc.yaml). Change the text under the “MESSAGE” section and commit the change.
+
+      ![Screenshot showing hello-arc repo](./k3s_GitOps_04.png)
+
+    - Upon committing the changes, notice how the Kubernetes Pod rolling upgrade will start. Once the Pod is up & running, refresh the browser, the new “Hello Arc” application version window will show the new message, showing the rolling upgrade is completed and the GitOps flow is successful.
+
+      ![Screenshot showing Hello-Arc app and shell GitOps](./k3s_GitOps_05.png)
+
+- Deploy RBAC configuration for Hello-Arc application on the _ArcBox-k3s_ cluster.
+  - Review and execute *k3s_helloarc_rbac.sh* script placed on the desktop.
+
+    ```shell
+    . ./k3s_helloarc_rbac.sh
+    ```
+
+  - You can now see below GitOps configurations on the _ArcBox-k3s_ cluster.
+  
+    - config-helloarc-rbac to deploy the "Hello-Arc" application RBAC.
+  
+      ![Screenshot showing Azure Arc GitOps configurations](./k3s_RBAC_01.png)
+
+  - Show the hello-arc Namespace Role and Role Binding.
+  
+    ```shell
+    kubectl --namespace hello-arc get role
+    kubectl --namespace hello-arc get rolebindings.rbac.authorization.k8s.io
+    ```
+
+    ![Screenshot showing hello-arc RBAC get pods](./k3s_RBAC_02.png)
+
+  - Validate the RBAC role to get the pods as user Jane.
+
+    ```shell
+    kubectl --namespace hello-arc get pods --as=jane
+    ```
+
+    ![Screenshot showing hello-arc RBAC get pods](./k3s_RBAC_03.png)
+
+  - Validate the RBAC role to delete the pods as user Jane.
+
+    ```shell
+    pod=$(kubectl --namespace hello-arc get pods --selector=app=hello-arc --output=jsonpath={.items..metadata.name})
+    kubectl --namespace hello-arc delete pods $pod --as=jane
+    ```
+
+    ![Screenshot showing hello-arc RBAC delete pods](./k3s_RBAC_04.png)
 
 ### ArcBox Azure Monitor workbook
 
