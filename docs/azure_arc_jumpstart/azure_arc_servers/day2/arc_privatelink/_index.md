@@ -71,7 +71,7 @@ For you to get familiar with the automation and deployment flow, below is an exp
         - Azure VNET
         - Azure Bastion
         - Azure VPN Gateway and its public IP address
-        - Azure Windows Virtual Machine with a custom script extension that runs the **install_arc_agent.sh** script
+        - Azure Windows Virtual Machine with a custom script extension that runs the **Bootstrap.ps1** script
 
         > **NOTE: The [*installArcAgent.ps1*](https://github.com/microsoft/azure_arc/blob/main/azure_arc_servers_jumpstart/privatelink/artifacs/installArcAgent.ps1) script will enable the OS firewall and set up new rules for incoming and outgoing connections. By default all incoming and outgoing traffic will be allowed, except blocking Azure IMDS outbound traffic to the *169.254.169.254* remote address.**
 
