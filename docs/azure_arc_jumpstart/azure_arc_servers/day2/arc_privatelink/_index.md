@@ -59,21 +59,21 @@ For you to get familiar with the automation and deployment flow, below is an exp
 
 2. User deploys the ARM template at subscription level. The ARM template will create two resources groups with:
 
-    - Azure resource group:
+    - Azure resource group, automated by the template [**onPremisesdeploy.json**](https://github.com/microsoft/azure_arc/blob/main/azure_arc_servers_jumpstart/privatelink/ARM/onPremisesdeploy.parameters.json):
         - Azure Arc Private Link Scope
         - Azure Arc-enabled server
         - Azure Private Link Endpoint for the Azure Arc-enabled Server
-        - Three Azure Private DNS zones
+        - Three Azure Private DNS zones, to overwrite Azure Arc's public endpoints DNS configuration to connect using a private endpoint
         - Azure VPN Gateway and its public IP address
         - Azure VNET
 
-    - On-premises resource group:
+    - On-premises resource group, automated by the template [**onPremisesdeploy.json**](https://github.com/microsoft/azure_arc/blob/main/azure_arc_servers_jumpstart/privatelink/ARM/cloudDeploy.parameters.json):
         - Azure VNET
         - Azure Bastion
         - Azure VPN Gateway and its public IP address
         - Azure Windows Virtual Machine with a custom script extension that runs the **install_arc_agent.sh** script
 
-        > **NOTE: The [*install_arc_agent.sh*](https://github.com/microsoft/azure_arc/blob/main/azure_arc_servers_jumpstart/azure/linux/arm_template/scripts/install_arc_agent.sh) shell script will enable the OS firewall and set up new rules for incoming and outgoing connections. By default all incoming and outgoing traffic will be allowed, except blocking Azure IMDS outbound traffic to the *169.254.169.254* remote address.**
+        > **NOTE: The [*installArcAgent.ps1*](https://github.com/microsoft/azure_arc/blob/main/azure_arc_servers_jumpstart/privatelink/artifacs/installArcAgent.ps1) script will enable the OS firewall and set up new rules for incoming and outgoing connections. By default all incoming and outgoing traffic will be allowed, except blocking Azure IMDS outbound traffic to the *169.254.169.254* remote address.**
 
 3. User logs in to the on-premises VM using Azure Bastion to trigger the Azure Arc onboarding script.
 
@@ -83,7 +83,7 @@ As mentioned, this deployment will leverage ARM templates. You will deploy a sin
 
 - Before deploying the ARM template, login to Azure using AZ CLI with the ```az login``` command.
 
-- The deployment will use an ARM template parameters file to customize your environment. Before initiating the deployment, edit the [*nesteddeploy.parameters.json*](https://github.com/microsoft/azure_arc/blob/main/azure_arc_servers_jumpstart/privatelink/nesteddeploy.parameters.json) file located in your local cloned repository folder. Example parameters files is located [here](https://github.com/microsoft/azure_arc/blob/main/azure_arc_servers_jumpstart/privatelink/nesteddeploy.example.parameters.json).
+- The deployment will use an ARM template parameters file to customize your environment. Before initiating the deployment, edit the [*azuredeploy.parameters.json*](https://github.com/microsoft/azure_arc/blob/main/azure_arc_servers_jumpstart/privatelink/azuredeploy.parameters.json) file located in your local cloned repository folder. Example parameters files is located [here](https://github.com/microsoft/azure_arc/blob/main/azure_arc_servers_jumpstart/privatelink/azuredeploy.example.parameters.json).
 
 - To deploy the ARM template, navigate to the local cloned [deployment folder](https://github.com/microsoft/azure_arc/tree/main/azure_arc_servers_jumpstart/privatelink) and run the below command, start deploying resources:
 
@@ -99,8 +99,8 @@ As mentioned, this deployment will leverage ARM templates. You will deploy a sin
     ```shell
     az deployment sub create \
     --location eastus \
-    --template-uri https://raw.githubusercontent.com/microsoft/azure_arc/main/azure_arc_servers_jumpstart/azure/privatelink/nesteddeploy.json \
-    --parameters nesteddeploy.example.parameters.json
+    --template-uri https://raw.githubusercontent.com/microsoft/azure_arc/main/azure_arc_servers_jumpstart/azure/privatelink/azuredeploy.json \
+    --parameters azuredeploy.example.parameters.json
     ```
 
      > **NOTE: The deployment may take around 45 minutes to complete**
