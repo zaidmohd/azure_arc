@@ -59,7 +59,7 @@ For you to get familiar with the automation and deployment flow, below is an exp
 
 2. User deploys the ARM template at subscription level. The ARM template will create two resources groups with:
 
-    - Azure resource group, automated by the template [**onPremisesdeploy.json**](https://github.com/microsoft/azure_arc/blob/main/azure_arc_servers_jumpstart/privatelink/ARM/onPremisesdeploy.parameters.json):
+    - Azure resource group, automated by the template [**cloudDeploy.json**](https://github.com/microsoft/azure_arc/blob/main/azure_arc_servers_jumpstart/privatelink/ARM/cloudDeploy.parameters.json):
         - Azure Arc Private Link Scope
         - Azure Arc-enabled server
         - Azure Private Link Endpoint for the Azure Arc-enabled Server
@@ -67,7 +67,7 @@ For you to get familiar with the automation and deployment flow, below is an exp
         - Azure VPN Gateway and its public IP address
         - Azure VNET
 
-    - On-premises resource group, automated by the template [**onPremisesdeploy.json**](https://github.com/microsoft/azure_arc/blob/main/azure_arc_servers_jumpstart/privatelink/ARM/cloudDeploy.parameters.json):
+    - On-premises resource group, automated by the template [**onPremisesDeploy.json**](https://github.com/microsoft/azure_arc/blob/main/azure_arc_servers_jumpstart/privatelink/ARM/onPremisesDeploy.parameters.json):
         - Azure VNET
         - Azure Bastion
         - Azure VPN Gateway and its public IP address
