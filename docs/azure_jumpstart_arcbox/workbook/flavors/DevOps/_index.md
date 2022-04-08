@@ -150,3 +150,4 @@ Once configured, the report will provide an overview of the secure score, you ca
      ![Resources changed overtime](./security_changes.png)
 
      ![Resources changed overtime selected resources](./security_changes_resource.png)
+
