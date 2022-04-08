@@ -355,22 +355,6 @@ ArcBox uses an advanced automation flow to deploy and configure all necessary re
 
 After deployment is complete, its time to start exploring ArcBox. Most interactions with ArcBox will take place either from Azure itself (Azure portal, CLI or similar) or from inside the _ArcBox-Client_ virtual machine. When remoted into the client VM, here are some things to try:
 
-### Microsoft Defender for Cloud
-
-After you have finished the deployment of ArcBox, you can verify that Microsoft Defender for Cloud is working properly and alerting on security threats by running the below command to simulate an alert on the _ArcBox-CAPI-Data_ workload cluster:
-
-  ```bash
-  kubectl get pods --namespace=asc-alerttest-662jfi039n --kubeconfig arcbox-capi-data.kubeconfig
-  ```
-
-Within 30 minutes Microsoft Defender for Cloud will detect this event and trigger a security alert that you will see in the Azure Portal under Microsoft Defender for Cloud's security alerts and also on the security tab of your Azure Arc-enabled cluster.
-
-![Screenshot security alert in Microsoft Defender for Cloud](./defender_alert01.png)
-
-![Screenshot security alert in Microsoft Defender for Cloud](./defender_alert02.png)
-
-![Screenshot security alert in Microsoft Defender for Cloud](./defender_alert03.png)
-
 ### Key Vault integration
 
  ArcBox uses Azure Key Vault to store the TLS certificate used by the sample hello-arc and OSM applications. Here are some things to try to explore this integration with Key Vault further:
@@ -429,38 +413,38 @@ ArcBox deploys Kubernetes RBAC configuration on the bookstore application to lim
   
   - Show the bookstore Namespace Role and Role Binding.
   
-  ```shell
-  kubectl --namespace bookstore get role
-  kubectl --namespace bookstore get rolebindings.rbac.authorization.k8s.io
-  ```
+    ```shell
+    kubectl --namespace bookstore get role
+    kubectl --namespace bookstore get rolebindings.rbac.authorization.k8s.io
+    ```
 
-  ![Screenshot showing bookstore RBAC get Role](./capi_rbac01.png)
+    ![Screenshot showing bookstore RBAC get Role](./capi_rbac01.png)
 
   - Validate the RBAC role to get the pods as user Jane.
 
-  ```shell
-  kubectl --namespace bookstore get pods --as=jane
-  ```
+    ```shell
+    kubectl --namespace bookstore get pods --as=jane
+    ```
 
-  ![Screenshot showing bookstore RBAC get pods](./capi_rbac02.png)
+    ![Screenshot showing bookstore RBAC get pods](./capi_rbac02.png)
 
   - Validate the RBAC role to delete the pods as user Jane.
 
-  ```shell
-  $pod=kubectl --namespace bookstore get pods --selector=app=bookstore --output="jsonpath={.items..metadata.name}"
-  kubectl --namespace bookstore delete pods $pod --as=jane
-  ```
+    ```shell
+    $pod=kubectl --namespace bookstore get pods --selector=app=bookstore --output="jsonpath={.items..metadata.name}"
+    kubectl --namespace bookstore delete pods $pod --as=jane
+    ```
 
-   ![Screenshot showing bookstore RBAC delete pods](./capi_rbac03.png)
+    ![Screenshot showing bookstore RBAC delete pods](./capi_rbac03.png)
 
   - Optionally, you can test the access using [auth can-i](https://kubernetes.io/docs/reference/access-authn-authz/authorization/#checking-api-access) command to validate RBAC access
   
-  ```shell
-  kubectl --namespace bookstore auth can-i get pods --as=jane
-  kubectl --namespace bookstore auth can-i delete pods --as=jane
-  ```
+    ```shell
+    kubectl --namespace bookstore auth can-i get pods --as=jane
+    kubectl --namespace bookstore auth can-i delete pods --as=jane
+    ```
   
-  ![Screenshot showing bookstore RBAC auth can-i pods](./capi_rbac04.png)
+    ![Screenshot showing bookstore RBAC auth can-i pods](./capi_rbac04.png)
 
 ### OSM Traffic Split
 
@@ -507,6 +491,22 @@ ArcBox uses a GitOps configuration on the OSM bookstore application to split tra
 - Wait for the changes to propagate and observe the counters increment for bookstore-v2 and freeze for bookstore. Also, observe pod logs to validate bookbuyer is sending all the traffic to bookstore-v2.
 
   ![Screenshot showing Bookstore apps and shell GitOps and OSM 02](./capi_osm06.png)
+
+### Microsoft Defender for Cloud
+
+After you have finished the deployment of ArcBox, you can verify that Microsoft Defender for Cloud is working properly and alerting on security threats by running the below command to simulate an alert on the _ArcBox-CAPI-Data_ workload cluster:
+
+  ```bash
+  kubectl get pods --namespace=asc-alerttest-662jfi039n --kubeconfig arcbox-capi-data.kubeconfig
+  ```
+
+Within 30 minutes Microsoft Defender for Cloud will detect this event and trigger a security alert that you will see in the Azure Portal under Microsoft Defender for Cloud's security alerts and also on the security tab of your Azure Arc-enabled cluster.
+
+![Screenshot security alert in Microsoft Defender for Cloud](./defender_alert01.png)
+
+![Screenshot security alert in Microsoft Defender for Cloud](./defender_alert02.png)
+
+![Screenshot security alert in Microsoft Defender for Cloud](./defender_alert03.png)
 
 ### Additional Scenarios on _ArcBox-k3s_ cluster
 
