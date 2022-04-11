@@ -20,43 +20,47 @@ The following README will guide you on how to use the provided PowerShell script
     git clone https://github.com/microsoft/azure_arc.git
     ```
 
-- Enable subscription with the resource provider for Azure Arc-enabled vSphere. Registration is an asynchronous process, and registration may take approximately 10 minutes.
-
-  ```powershell
-  Register-AzResourceProvider -ProviderNamespace Microsoft.ConnectedVMwarevSphere
-  Get-AzResourceProvider -ListAvailable | Select-Object ProviderNamespace, RegistrationState | Select-String  -Pattern "Microsoft.ConnectedVMwarevSphere"
-  ```
-
 - Create Azure service principal (SP)
 
-    To connect a VM or bare-metal server to Azure Arc, Azure service principal assigned with the "Contributor" role is required. To create it, login to your Azure account run the below command (this can also be done in [Azure Cloud Shell](https://shell.azure.com/)).
+    To be able to complete the scenario and its related automation, an Azure service principal assigned with the “Contributor” role is required. To create it, login to your Azure account using PowerShell and run the below command.
 
-    ```shell
-    az login
-    az ad sp create-for-rbac -n "<Unique SP Name>" --role contributor
+    ```powershell
+    Connect-AzAccount
+    $sp = New-AzADServicePrincipal -DisplayName "<Unique SP Name>" -Role 'Contributor'
     ```
 
     For example:
 
+    ```powershell
+    $sp = New-AzADServicePrincipal -DisplayName "AzureStackHCI-VM-Jumpstart" -Role 'Contributor'
+    ```
+
+    This command will create a variable with a secure string as shown below:
+
     ```shell
-    az ad sp create-for-rbac -n "http://AzureArcServers" --role contributor
+    Secret                : System.Security.SecureString
+    ServicePrincipalNames : {XXXXXXXXXXXXXXXXXXXXXXXXXXXX, http://AzureStackHCI-VM-Jumpstart}
+    ApplicationId         : XXXXXXXXXXXXXXXXXXXXXXXXXXXX
+    ObjectType            : ServicePrincipal
+    DisplayName           : AzureStackHCI-VM-Jumpstart
+    Id                    : XXXXXXXXXXXXXXXXXXXXXXXXXXXX
+    Type                  :
     ```
 
-    Output should look like this:
+    To expose the generated password use the below code to export the secret:
 
-    ```json
-    {
-    "appId": "XXXXXXXXXXXXXXXXXXXXXXXXXXXX",
-    "displayName": "AzureArcvShepre",
-    "name": "http://AzureArcvSphere",
-    "password": "XXXXXXXXXXXXXXXXXXXXXXXXXXXX",
-    "tenant": "XXXXXXXXXXXXXXXXXXXXXXXXXXXX"
-    }
+    ```powershell
+    $BSTR = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($sp.Secret)
+    $UnsecureSecret = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto($BSTR)
     ```
 
-  > **Note: It is optional but highly recommended to scope the SP to a specific [Azure subscription](https://docs.microsoft.com/en-us/cli/azure/ad/sp?view=azure-cli-latest). To create an Automanage Account used by the Automanage services, you need the Owner or Contributor permissions on your subscription along with User Access Administrator roles.**
-  
+    Copy and save the Service Principal ApplicationId and Secret as you will need it for later on in the automation.
+
+    > **NOTE: It is optional but highly recommended to scope the SP to a specific [Azure subscription and resource group](https://docs.microsoft.com/en-us/powershell/module/az.resources/new-azadserviceprincipal?view=azps-5.4.0)**
+
   - As mentioned, this guide starts at the point where you already have an up and running VMware environment managed by vCenter. The automation will be run from a PowerShell window on a computer (can be your local computer) that has network connectivity to vCenter.
+
+      > **NOTE: the script will automatically uninstall any pre-existing Azure CLI versions in the workstation and will deploy the latest 64 bit version, as it is a requirement to deploy the Resource Bridge**
 
 ## Automation Flow
 
