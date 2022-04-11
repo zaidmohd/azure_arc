@@ -155,7 +155,7 @@ ArcBox uses an advanced automation flow to deploy and configure all necessary re
 
   ![Screenshot showing forking sample apps repo](./apps_fork2.png)
 
-- The name of your GitHub account is passed as a parameter to the template files so take note of your GitHub user name in your forked repo.
+- The name of your GitHub account is passed as the "githubUser" parameter to the template files so take note of your GitHub user name in your forked repo.
 
   ![Screenshot showing forking sample apps repo](./apps_fork3.png)
 
@@ -237,7 +237,7 @@ ArcBox uses an advanced automation flow to deploy and configure all necessary re
   - _`flavor`_ - Use the value "DevOps" to specify that you want to deploy the DevOps flavor of ArcBox
   - _`githubUser`_ - Specify the name of your GitHub account where you cloned the Sample Apps repo
 
-  ![Screenshot showing example parameters](./parameters.png)
+  ![Screenshot showing example parameters](./parameters_bugbash.png)
 
 - Now you will deploy the ARM template. Navigate to the local cloned [deployment folder](https://github.com/microsoft/azure_arc/tree/arcbox_devops/azure_jumpstart_arcbox) and run the below command:
 
@@ -277,7 +277,7 @@ ArcBox uses an advanced automation flow to deploy and configure all necessary re
   - _`logAnalyticsWorkspaceName`_ - Unique name for the ArcBox Log Analytics workspace
   - _`flavor`_ - Use the value "DevOps" to specify that you want to deploy the Devops flavor of ArcBox
 
-  ![Screenshot showing example parameters](./parameters_bicep.png)
+  ![Screenshot showing example parameters](./parameters_bugbash.png)
 
 - Now you will deploy the Bicep file. Navigate to the local cloned [deployment folder](https://github.com/microsoft/azure_arc/tree/arcbox_devops/azure_jumpstart_arcbox/bicep) and run the below command:
 
