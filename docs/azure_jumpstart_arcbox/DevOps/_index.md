@@ -204,9 +204,9 @@ ArcBox uses an advanced automation flow to deploy and configure all necessary re
 
   ![Screenshot showing Azure portal deployment of ArcBox](./portaldeploy.png)
 
-  ![Screenshot showing Azure portal deployment of ArcBox](./portaldeployinprogress.png)
+  ![Screenshot showing Azure portal deployment of ArcBox](./portaldeploy2.png)
 
-  ![Screenshot showing Azure portal deployment of ArcBox](./portaldeploymentcomplete.png)
+  ![Screenshot showing Azure portal deployment of ArcBox](./portaldeploy3.png)
 
 ## Deployment Option 2: ARM template with Azure CLI
 
