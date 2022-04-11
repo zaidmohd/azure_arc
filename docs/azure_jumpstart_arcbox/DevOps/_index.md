@@ -149,6 +149,16 @@ ArcBox uses an advanced automation flow to deploy and configure all necessary re
   az provider register --namespace Microsoft.ExtendedLocation --wait
   ```
 
+- Fork the [sample applications GitHub repo](https://github.com/microsoft/azure-arc-jumpstart-apps) to your own GitHub account. You will use this forked repo to make changes to the sample apps that will be applied using GitOps configurations. The name of your GitHub account is passed as a parameter to the template files so take note of your GitHub user name.
+
+  ![Screenshot showing forking sample apps repo](./apps_fork1.png)
+
+  ![Screenshot showing forking sample apps repo](./apps_fork2.png)
+
+- The name of your GitHub account is passed as a parameter to the template files so take note of your GitHub user name in your forked repo.
+
+  ![Screenshot showing forking sample apps repo](./apps_fork3.png)
+
 - Create Azure service principal (SP). To deploy ArcBox, an Azure service principal assigned with multiple role-based access control (RBAC) roles is required:
 
   - "Contributor" - Required for provisioning Azure resources
@@ -225,6 +235,7 @@ ArcBox uses an advanced automation flow to deploy and configure all necessary re
   - _`windowsAdminPassword`_ - Client Windows VM Password. Password must have 3 of the following: 1 lower case character, 1 upper case character, 1 number, and 1 special character. The value must be between 12 and 123 characters long.
   - _`logAnalyticsWorkspaceName`_ - Unique name for the ArcBox Log Analytics workspace
   - _`flavor`_ - Use the value "DevOps" to specify that you want to deploy the DevOps flavor of ArcBox
+  - _`githubUser`_ - Specify the name of your GitHub account where you cloned the Sample Apps repo
 
   ![Screenshot showing example parameters](./parameters.png)
 
