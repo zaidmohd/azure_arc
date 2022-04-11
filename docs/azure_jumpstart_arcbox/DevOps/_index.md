@@ -236,6 +236,8 @@ ArcBox uses an advanced automation flow to deploy and configure all necessary re
   - _`logAnalyticsWorkspaceName`_ - Unique name for the ArcBox Log Analytics workspace
   - _`flavor`_ - Use the value "DevOps" to specify that you want to deploy the DevOps flavor of ArcBox
   - _`githubUser`_ - Specify the name of your GitHub account where you cloned the Sample Apps repo
+  - _`githubAccount`_ - leave default as "microsoft"
+  - _`githubBranch`_ - leave default as "arcbox_devops"
 
   ![Screenshot showing example parameters](./parameters_bugbash.png)
 
@@ -276,6 +278,9 @@ ArcBox uses an advanced automation flow to deploy and configure all necessary re
   - _`windowsAdminPassword`_ - Client Windows VM Password. Password must have 3 of the following: 1 lower case character, 1 upper case character, 1 number, and 1 special character. The value must be between 12 and 123 characters long.
   - _`logAnalyticsWorkspaceName`_ - Unique name for the ArcBox Log Analytics workspace
   - _`flavor`_ - Use the value "DevOps" to specify that you want to deploy the Devops flavor of ArcBox
+  - _`githubUser`_ - Specify the name of your GitHub account where you cloned the Sample Apps repo
+  - _`githubAccount`_ - leave default as "microsoft"
+  - _`githubBranch`_ - leave default as "arcbox_devops"
 
   ![Screenshot showing example parameters](./parameters_bugbash.png)
 
@@ -321,6 +326,9 @@ ArcBox uses an advanced automation flow to deploy and configure all necessary re
   - **_`client_admin_username`_** - Admin username for Windows & Linux VMs
   - **_`client_admin_password`_** - Admin password for Windows VMs. Password must have 3 of the following: 1 lower case character, 1 upper case character, 1 number, and 1 special character. The value must be between 12 and 123 characters long.
   - **_`workspace_name`_** - Unique name for the ArcBox Log Analytics workspace
+  - **_`githubUser`_** - Specify the name of your GitHub account where you cloned the Sample Apps repo
+  - **_`githubAccount`_** - leave default as "microsoft"
+  - **_`githubBranch`_** - leave default as "arcbox_devops"
 
   > **NOTE: Any variables in bold are required. If any optional parameters are not provided, defaults will be used.**
 
