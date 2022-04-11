@@ -58,9 +58,9 @@ The following README will guide you on how to use the provided PowerShell script
 
     > **NOTE: It is optional but highly recommended to scope the SP to a specific [Azure subscription and resource group](https://docs.microsoft.com/en-us/powershell/module/az.resources/new-azadserviceprincipal?view=azps-5.4.0)**
 
-  - As mentioned, this guide starts at the point where you already have an up and running VMware environment managed by vCenter. The automation will be run from a PowerShell window on a computer (can be your local computer) that has network connectivity to vCenter.
+- As mentioned, this guide starts at the point where you already have an up and running VMware environment managed by vCenter. The automation will be run from a PowerShell window on a computer (can be your local computer) that has network connectivity to vCenter.
 
-      > **NOTE: the script will automatically uninstall any pre-existing Azure CLI versions in the workstation and will deploy the latest 64 bit version, as it is a requirement to deploy the Resource Bridge**
+    > **NOTE: the script will automatically uninstall any pre-existing Azure CLI versions in the workstation and will deploy the latest 64 bit version, as it is a requirement to deploy the Resource Bridge**
 
 ## Automation Flow
 
