@@ -362,7 +362,7 @@ After deployment, you should see the ArcBox resources inside your resource group
 
 After the template has finished deploying, the next step is to connect to the Client VM. There are three ways to connect to _ArcBox-Client_. Click on the 
   - [Direct RDP](https://github.com/microsoft/azure_arc/blob/arcbox_devops/docs/azure_jumpstart_arcbox/DevOps/_index.md#connecting-directly-with-rdp)
-  - [Azure Bastion]https://github.com/microsoft/azure_arc/blob/arcbox_devops/docs/azure_jumpstart_arcbox/DevOps/_index.md#connect-using-azure-bastion)
+  - [Azure Bastion](https://github.com/microsoft/azure_arc/blob/arcbox_devops/docs/azure_jumpstart_arcbox/DevOps/_index.md#connect-using-azure-bastion)
   - [Just-in-time access (JIT)](https://github.com/microsoft/azure_arc/blob/arcbox_devops/docs/azure_jumpstart_arcbox/DevOps/_index.md#connect-using-just-in-time-accessjit)
 
 #### Connecting directly with RDP
