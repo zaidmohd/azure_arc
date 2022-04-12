@@ -538,7 +538,7 @@ ArcBox uses a GitOps configuration on the OSM bookstore application to split tra
 
 - Wait for the changes to propagate and observe the counters increment for bookstore and bookstore-v2 as well. 
 
-  We have updated the Service Mesh Interface (SMI) Traffic Split policy to direct 75 percent of the traffic sent to the root bookstore service and 25 percent to bookstore-v2 service by modifying the weight fields for bookstore-v2 backend. Also, observe the changes on the bookbuyer pod logs in the PowerShell window.
+  We have updated the Service Mesh Interface (SMI) Traffic Split policy to direct 75 percent of the traffic sent to the root bookstore service and 25 percent to the bookstore-v2 service by modifying the weight fields for the bookstore-v2 backend. Also, observe the changes on the bookbuyer pod logs in the PowerShell window.
 
   ![Screenshot showing Bookstore apps and shell GitOps and OSM 01](./capi_osm03.png)
 
