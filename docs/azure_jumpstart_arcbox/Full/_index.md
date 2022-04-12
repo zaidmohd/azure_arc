@@ -55,8 +55,8 @@ ArcBox provides multiple paths for deploying and configuring ArcBox resources. D
 
 - Azure portal
 - ARM template via Azure CLI
-- Bicep
-- Terraform
+- Azure Bicep
+- HashiCorp Terraform
 
 ![Deployment flow diagram for ARM-based deployments](./deploymentflow.png)
 
@@ -124,7 +124,7 @@ ArcBox uses an advanced automation flow to deploy and configure all necessary re
   - "Security admin" - Required for installing Microsoft Defender for Cloud Azure-Arc enabled Kubernetes extension and dismiss alerts
   - "Security reader" - Required for being able to view Azure-Arc enabled Kubernetes Cloud Defender extension findings
   - "Monitoring Metrics Publisher" - Required for being Azure Arc-enabled data services billing, monitoring metrics, and logs management
-  - **(optional)** "User Access Administrator" - Required for automatically onboarding the Azure Arc-enabled SQL Server resource
+  - **(Optional)** "User Access Administrator" - Required for automatically onboarding the Azure Arc-enabled SQL Server resource
 
     > **NOTE: In the event a Service Principal with Owner cannot be created, the SQL Server can be onboarded to Azure Arc post deployment by following the [Azure Arc-enabled SQL Server onboarding](#azure-arc-enabled-sql-server-onboarding) steps below.**
 
@@ -214,7 +214,7 @@ ArcBox uses an advanced automation flow to deploy and configure all necessary re
 
   ![Screenshot showing az deployment group create](./azdeploy.png)
 
-## Deployment Option 3: Bicep deployment via Azure CLI
+## Deployment Option 3: Azure Bicep deployment via Azure CLI
 
 - Clone the Azure Arc Jumpstart repository
 
@@ -249,7 +249,7 @@ ArcBox uses an advanced automation flow to deploy and configure all necessary re
   az deployment group create -g "<resource-group-name>" -f "main.bicep" -p "main.parameters.json"
   ```
 
-## Deployment Option 4: Terraform Deployment
+## Deployment Option 4: HashiCorp Terraform Deployment
 
 - Clone the Azure Arc Jumpstart repository
 
@@ -445,6 +445,7 @@ The following tools are including on the _ArcBox-Client_ VM.
 - Terraform
 - Git
 - SqlQueryStress
+- ZoomIt
 
 ### Next steps
   
