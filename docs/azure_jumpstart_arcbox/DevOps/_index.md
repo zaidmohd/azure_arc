@@ -590,7 +590,7 @@ Optionally, you can explore additional GitOps and RBAC scenarios in a manual fas
     - Log in to your Azure subscription using your previously created service principal credentials
     - Connect to _ArcBox-K3s_ cluster
     - Create the GitOps configurations to install the Flux extension as well deploying the NGINX ingress controller and the “Hello Arc” application
-    - Create certificate with _arcbox.k3sdevops.com_ dns name and import to Azure Key Vault
+    - Create a certificate with _arcbox.k3sdevops.com_ DNS name and import to Azure Key Vault
     - Deploy the Azure Key Vault k8s extension instance
     - Create Kubernetes _SecretProviderClass_ to fetch the secrets from Azure Key Vault
     - Deploy an Kubernetes Ingress resource referencing the Secret created by the CSI driver
