@@ -69,7 +69,7 @@ The Azure Key Vault Provider for Secrets Store CSI Driver allows for the integra
 
 ArcBox deploys Azure Key Vault as part of the infrastructure provisioning. Also, it will hook the _ArcBox-CAPI-Data_ cluster to Azure Key Vault by deploying the [Azure Key Vault Secrets Provider extension](https://docs.microsoft.com/azure/azure-arc/kubernetes/tutorial-akv-secrets-provider).  
 
-A self signed certificate is synced from the Key Vault and configured as secret for the Kubernetes ingress for the Bookstore and Hello-Arc applications.
+A self-signed certificate is synced from the Key Vault and configured as the secret for the Kubernetes ingress for the Bookstore and Hello-Arc applications.
 
 ### Microsoft Defender for Cloud / k8s integration
 
