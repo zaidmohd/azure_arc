@@ -69,7 +69,7 @@ The Azure Key Vault Provider for Secrets Store CSI Driver allows for the integra
 
 ArcBox deploys Azure Key Vault as part of the infrastructure provisioning. Also, it will hook the _ArcBox-CAPI-Data_ cluster to Azure Key Vault by deploying the [Azure Key Vault Secrets Provider extension](https://docs.microsoft.com/azure/azure-arc/kubernetes/tutorial-akv-secrets-provider).  
 
-A self signed certificate is synced from the Key Vault and configured as secret for the Kubernetes ingress for the Bookstore and Hello-Arc applications.
+A self-signed certificate is synced from the Key Vault and configured as the secret for the Kubernetes ingress for the Bookstore and Hello-Arc applications.
 
 ### Microsoft Defender for Cloud / k8s integration
 
@@ -81,7 +81,7 @@ ArcBox deploys several management and operations services that work with ArcBox'
 
 ## ArcBox Azure Consumption Costs
 
-ArcBox resources generate Azure consumption charges from the underlying Azure resources including core compute, storage, networking and auxiliary services. Note that Azure consumption costs vary depending the region where ArcBox is deployed. Be mindful of your ArcBox deployments and ensure that you disable or delete ArcBox resources when not in use to avoid unwanted charges. Users may review cost analysis of ArcBox by using [Azure Cost Analysis](https://docs.microsoft.com/azure/cost-management-billing/costs/quick-acm-cost-analysis).
+ArcBox resources generate Azure consumption charges from the underlying Azure resources including core compute, storage, networking, and auxiliary services. Note that Azure consumption costs vary depending on the region where ArcBox is deployed. Be mindful of your ArcBox deployments and ensure that you disable or delete ArcBox resources when not in use to avoid unwanted charges. Users may review the cost analysis of ArcBox by using [Azure Cost Analysis](https://docs.microsoft.com/azure/cost-management-billing/costs/quick-acm-cost-analysis).
 
 ## Deployment Options and Automation Flow
 
@@ -101,14 +101,14 @@ ArcBox uses an advanced automation flow to deploy and configure all necessary re
 - User deploys the primary ARM template (_azuredeploy.json_), Bicep file (_main.bicep_), or Terraform plan (_main.tf_). These objects contain several nested objects that will run simultaneously.
   - Client virtual machine ARM template/plan - deploys the Client Windows VM. This is a Windows Server VM that comes preconfigured with kubeconfig files to work with the two Kubernetes clusters, as well multiple tools such as VSCode to make working with ArcBox simple and easy.
   - Storage account template/plan - used for staging files in automation scripts.
-  - Management artifacts template/plan - deploys Azure Log Analytics workspace, it's required Solutions, and Azure Policy artifacts.
+  - Management artifacts template/plan - deploys Azure Log Analytics workspace, its required Solutions, and Azure Policy artifacts.
 - User remotes into Client Windows VM, which automatically kicks off multiple scripts that:
   - Deploys OSM Extension on the _ArcBox-CAPI-Data_ cluster, create application namespaces and add namespaces to OSM control plane.
   - Applies five GitOps configurations on the _ArcBox-CAPI-Data_ cluster to deploy nginx-ingress controller, Hello Arc web application, Bookstore application and Bookstore RBAC/OSM configurations.
   - Creates certificate with DNS name _arcbox.devops.com_ and imports to Azure Key Vault.
   - Deploys Azure Key Vault Secrets Provider extension on the _ArcBox-CAPI-Data_ cluster.
   - Configures Ingress for Hello-Arc and Bookstore application with a self-signed TLS certificate from the Azure Key Vault.  
-  - Deploy an Azure Monitor workbook that provides example reports and metrics for monitoring and visualizing ArcBox various components.
+  - Deploy an Azure Monitor workbook that provides example reports and metrics for monitoring and visualizing ArcBox's various components.
 
 ## Prerequisites
 
@@ -414,13 +414,13 @@ If you already have Microsoft Defender for Servers enabled on your subscription 
 
 ## Using ArcBox
 
-After deployment is complete, its time to start exploring ArcBox. Most interactions with ArcBox will take place either from Azure itself (Azure portal, CLI or similar) or from inside the _ArcBox-Client_ virtual machine. When remoted into the VM, here are some things to try:
+After deployment is complete, it's time to start exploring ArcBox. Most interactions with ArcBox will take place either from Azure itself (Azure portal, CLI, or similar) or from inside the _ArcBox-Client_ virtual machine. When remoted into the VM, here are some things to try:
 
 ### Key Vault integration
 
  ArcBox uses Azure Key Vault to store the TLS certificate used by the sample Hello-Arc and OSM applications. Here are some things to try to explore this integration with Key Vault further:
 
-- Open the extension tab section of the _ArcBox-CAPI-Data_ cluster resource in Azure portal. You can now see that Azure Key Vault Secrets Provider, Flux (GitOps) and Open Service Mesh extensions are installed.
+- Open the extension tab section of the _ArcBox-CAPI-Data_ cluster resource in the Azure portal. You can now see that Azure Key Vault Secrets Provider, Flux (GitOps), and Open Service Mesh extensions are installed.
 
   ![Screenshot showing Azure Arc extensions ](./capi_keyvault01.png)
 
@@ -538,7 +538,7 @@ ArcBox uses a GitOps configuration on the OSM bookstore application to split tra
 
 - Wait for the changes to propagate and observe the counters increment for bookstore and bookstore-v2 as well. 
 
-  We have updated the Service Mesh Interface (SMI) Traffic Split policy to direct 75 percent of the traffic sent to the root bookstore service and 25 percent to bookstore-v2 service by modifying the weight fields for bookstore-v2 backend. Also, observe the changes on the bookbuyer pod logs in the PowerShell window.
+  We have updated the Service Mesh Interface (SMI) Traffic Split policy to direct 75 percent of the traffic sent to the root bookstore service and 25 percent to the bookstore-v2 service by modifying the weight fields for the bookstore-v2 backend. Also, observe the changes on the bookbuyer pod logs in the PowerShell window.
 
   ![Screenshot showing Bookstore apps and shell GitOps and OSM 01](./capi_osm03.png)
 
@@ -590,10 +590,10 @@ Optionally, you can explore additional GitOps and RBAC scenarios in a manual fas
     - Log in to your Azure subscription using your previously created service principal credentials
     - Connect to _ArcBox-K3s_ cluster
     - Create the GitOps configurations to install the Flux extension as well deploying the NGINX ingress controller and the “Hello Arc” application
-    - Create certificate with _arcbox.k3sdevops.com_ dns name and import to Azure Key Vault
+    - Create a certificate with _arcbox.k3sdevops.com_ DNS name and import to Azure Key Vault
     - Deploy the Azure Key Vault k8s extension instance
     - Create Kubernetes _SecretProviderClass_ to fetch the secrets from Azure Key Vault
-    - Deploy an Kubernetes Ingress resource referencing the Secret created by the CSI driver
+    - Deploy a Kubernetes Ingress resource referencing the Secret created by the CSI driver
     - Create an icon for the Hello-Arc application on the desktop
   
   - Optionally, you can open the script with VSCode to review.
@@ -604,7 +604,7 @@ Optionally, you can explore additional GitOps and RBAC scenarios in a manual fas
   
     ![Screenshot showing Script execution](./k3s_gitops04.png)
 
-  - You can verify that Azure Key Vault Secrets Provider and the Flux (GitOps) extensions are now installed under the extension tab section of the _ArcBox-K3s_ cluster resource in Azure portal.
+  - You can verify that Azure Key Vault Secrets Provider and the Flux (GitOps) extensions are now installed under the extension tab section of the _ArcBox-K3s_ cluster resource in the Azure portal.
 
     ![Screenshot showing K3s cluster extensions](./k3s_gitops05.png)
 
