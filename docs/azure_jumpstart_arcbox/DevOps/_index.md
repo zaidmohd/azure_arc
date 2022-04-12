@@ -108,7 +108,7 @@ ArcBox uses an advanced automation flow to deploy and configure all necessary re
   - Creates certificate with DNS name _arcbox.devops.com_ and imports to Azure Key Vault.
   - Deploys Azure Key Vault Secrets Provider extension on the _ArcBox-CAPI-Data_ cluster.
   - Configures Ingress for Hello-Arc and Bookstore application with a self-signed TLS certificate from the Azure Key Vault.  
-  - Deploy an Azure Monitor workbook that provides example reports and metrics for monitoring and visualizing ArcBox various components.
+  - Deploy an Azure Monitor workbook that provides example reports and metrics for monitoring and visualizing ArcBox's various components.
 
 ## Prerequisites
 
