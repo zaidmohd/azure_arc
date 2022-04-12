@@ -362,13 +362,16 @@ Once your deployment is complete you can open Azure portal and see the ArcBox re
 
 ### Connecting to the ArcBox Client VM
 
-There are three ways to connect to _ArcBox-Client_.
-  - [RDP](https://github.com/microsoft/azure_arc/blob/arcbox_devops/docs/azure_jumpstart_arcbox/DevOps/_index.md#connecting-directly-with-rdp) - available after configuring access to port 3389 on the ArcBox-NSG, or by enabling [Just-in-time access (JIT)](https://github.com/microsoft/azure_arc/blob/arcbox_devops/docs/azure_jumpstart_arcbox/DevOps/_index.md#connect-using-just-in-time-accessjit)
-  - [Azure Bastion](https://github.com/microsoft/azure_arc/blob/arcbox_devops/docs/azure_jumpstart_arcbox/DevOps/_index.md#connect-using-azure-bastion)
+Various options are available to connect to _ArcBox-Client_ depending on the parameters you supplied during deployment.
+
+- [RDP](https://github.com/microsoft/azure_arc/blob/arcbox_devops/docs/azure_jumpstart_arcbox/DevOps/_index.md#connecting-directly-with-rdp) - available after configuring access to port 3389 on the ArcBox-NSG, or by enabling [Just-in-time access (JIT)](https://github.com/microsoft/azure_arc/blob/arcbox_devops/docs/azure_jumpstart_arcbox/DevOps/_index.md#connect-using-just-in-time-accessjit).
+- [Azure Bastion](https://github.com/microsoft/azure_arc/blob/arcbox_devops/docs/azure_jumpstart_arcbox/DevOps/_index.md#connect-using-azure-bastion) - available if ```true``` was the value of your deployBastion parameter during deployment.
 
 #### Connecting directly with RDP
 
-- By design, ArcBox does not open port 3389 on the network security group. Therefore, you must create an NSG rule to allow inbound 3389. Open the ArcBox-NSG resource in Azure portal and click "Add" to add a new rule.
+By design, ArcBox does not open port 3389 on the network security group. Therefore, you must create an NSG rule to allow inbound 3389.
+
+- Open the ArcBox-NSG resource in Azure portal and click "Add" to add a new rule.
 
   ![Screenshot showing ArcBox-Client NSG with blocked RDP](./RdpNsg_blocked.png)
 
