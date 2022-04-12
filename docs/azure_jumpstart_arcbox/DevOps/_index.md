@@ -354,14 +354,16 @@ ArcBox uses an advanced automation flow to deploy and configure all necessary re
 
 ## Start post-deployment automation
 
-After deployment, you should see the ArcBox resources inside your resource group.
+Once your deployment is complete you can open Azure portal and see the ArcBox resources inside your resource group. You can use the _ArcBox-Client_ VM to explore various capabilities of ArcBox such as GitOps configurations and Key Vault integration. You will need to remotely access _ArcBox-Client_.
 
   ![Screenshot showing all deployed resources in the resource group](./deployedResources.png)
 
+   > **NOTE: RDP (3389) and SSH (22) ports are not open by default in ArcBox deployments. You will need to create an NSG rule to allow network access to port 3389, or use Azure Bastion or Just-in-time access to connect to the VM.**
+
 ### Connecting to the ArcBox Client VM
 
-After the template has finished deploying, the next step is to connect to the Client VM. There are three ways to connect to _ArcBox-Client_. Click on the 
-  - [Direct RDP](https://github.com/microsoft/azure_arc/blob/arcbox_devops/docs/azure_jumpstart_arcbox/DevOps/_index.md#connecting-directly-with-rdp)
+There are three ways to connect to _ArcBox-Client_. 
+  - [Direct RDP](https://github.com/microsoft/azure_arc/blob/arcbox_devops/docs/azure_jumpstart_arcbox/DevOps/_index.md#connecting-directly-with-rdp) - Available to everyone*
   - [Azure Bastion](https://github.com/microsoft/azure_arc/blob/arcbox_devops/docs/azure_jumpstart_arcbox/DevOps/_index.md#connect-using-azure-bastion)
   - [Just-in-time access (JIT)](https://github.com/microsoft/azure_arc/blob/arcbox_devops/docs/azure_jumpstart_arcbox/DevOps/_index.md#connect-using-just-in-time-accessjit)
 
