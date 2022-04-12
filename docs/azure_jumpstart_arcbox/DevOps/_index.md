@@ -388,7 +388,7 @@ By design, ArcBox does not open port 3389 on the network security group. Therefo
 
   ![Screenshot showing connecting to the VM using Bastion](./bastion_connect.png)
 
-- Once you log into the client VM, multiple automated scripts will open and start running. These scripts usually take 10-20 minutes to finish and once completed the script windows will close. At this point, the deployment is complete.
+- Once you log into the Client VM, multiple automated scripts will open and start running. These scripts usually take 10-20 minutes to finish and once completed the script windows will close. At this point, the deployment is complete.
 
 #### Connect using just-in-time access (JIT)
 
