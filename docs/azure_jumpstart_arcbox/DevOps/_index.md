@@ -101,7 +101,7 @@ ArcBox uses an advanced automation flow to deploy and configure all necessary re
 - User deploys the primary ARM template (_azuredeploy.json_), Bicep file (_main.bicep_), or Terraform plan (_main.tf_). These objects contain several nested objects that will run simultaneously.
   - Client virtual machine ARM template/plan - deploys the Client Windows VM. This is a Windows Server VM that comes preconfigured with kubeconfig files to work with the two Kubernetes clusters, as well multiple tools such as VSCode to make working with ArcBox simple and easy.
   - Storage account template/plan - used for staging files in automation scripts.
-  - Management artifacts template/plan - deploys Azure Log Analytics workspace, it's required Solutions, and Azure Policy artifacts.
+  - Management artifacts template/plan - deploys Azure Log Analytics workspace, its required Solutions, and Azure Policy artifacts.
 - User remotes into Client Windows VM, which automatically kicks off multiple scripts that:
   - Deploys OSM Extension on the _ArcBox-CAPI-Data_ cluster, create application namespaces and add namespaces to OSM control plane.
   - Applies five GitOps configurations on the _ArcBox-CAPI-Data_ cluster to deploy nginx-ingress controller, Hello Arc web application, Bookstore application and Bookstore RBAC/OSM configurations.
