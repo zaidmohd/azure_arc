@@ -604,7 +604,7 @@ Optionally, you can explore additional GitOps and RBAC scenarios in a manual fas
   
     ![Screenshot showing Script execution](./k3s_gitops04.png)
 
-  - You can verify that Azure Key Vault Secrets Provider and the Flux (GitOps) extensions are now installed under the extension tab section of the _ArcBox-K3s_ cluster resource in Azure portal.
+  - You can verify that Azure Key Vault Secrets Provider and the Flux (GitOps) extensions are now installed under the extension tab section of the _ArcBox-K3s_ cluster resource in the Azure portal.
 
     ![Screenshot showing K3s cluster extensions](./k3s_gitops05.png)
 
