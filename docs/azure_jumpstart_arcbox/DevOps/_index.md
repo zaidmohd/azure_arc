@@ -414,7 +414,7 @@ If you already have Microsoft Defender for Servers enabled on your subscription 
 
 ## Using ArcBox
 
-After deployment is complete, its time to start exploring ArcBox. Most interactions with ArcBox will take place either from Azure itself (Azure portal, CLI or similar) or from inside the _ArcBox-Client_ virtual machine. When remoted into the VM, here are some things to try:
+After deployment is complete, it's time to start exploring ArcBox. Most interactions with ArcBox will take place either from Azure itself (Azure portal, CLI, or similar) or from inside the _ArcBox-Client_ virtual machine. When remoted into the VM, here are some things to try:
 
 ### Key Vault integration
 
