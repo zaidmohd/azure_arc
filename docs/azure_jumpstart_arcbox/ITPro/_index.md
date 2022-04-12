@@ -12,7 +12,7 @@ ArcBox for IT Pros is a special "flavor" of ArcBox that is intended for users wh
 
 ### Use cases
 
-- Sandbox environment for getting hands-on with Azure Arc technologies
+- Sandbox environment for getting hands-on with Azure Arc technologies and [Azure Arc-enabled servers landing zone accelerator](https://aka.ms/ArcSrvLZSandbox)
 - Accelerator for Proof-of-concepts or pilots
 - Training tool for Azure Arc skills development
 - Demo environment for customer presentations or events
@@ -43,8 +43,8 @@ ArcBox provides multiple paths for deploying and configuring ArcBox resources. D
 
 - Azure portal
 - ARM template via Azure CLI
-- Bicep
-- Terraform
+- Azure Bicep
+- HashiCorp Terraform
 
 ![Deployment flow diagram for ARM-based deployments](./deploymentflow.png)
 
@@ -106,7 +106,7 @@ ArcBox uses an advanced automation flow to deploy and configure all necessary re
 - Create Azure service principal (SP). To deploy ArcBox, an Azure service principal assigned with multiple role-based access controls (RBAC) roles is required:
 
   - "Contributor" - Required for provisioning Azure resources
-  - **(optional)** "User Access Administrator" - Required for automatically onboarding the Azure Arc-enabled SQL Server resource
+  - **(Optional)** "User Access Administrator" - Required for automatically onboarding the Azure Arc-enabled SQL Server resource
 
     > **NOTE: In the event a Service Principal with Owner cannot be created, the SQL Server can be onboarded to Azure Arc post deployment by following the [Azure Arc-enabled SQL Server onboarding](#azure-arc-enabled-sql-server-onboarding) steps below.**
 
@@ -208,7 +208,7 @@ ArcBox must be deployed to one of the following regions. **Deploying ArcBox outs
 
   ![Screenshot showing az deployment group create](./azdeploy.png)
 
-## Deployment Option 3: Bicep deployment via Azure CLI
+## Deployment Option 3: Azure Bicep deployment via Azure CLI
 
 - Clone the Azure Arc Jumpstart repository
 
@@ -243,7 +243,7 @@ ArcBox must be deployed to one of the following regions. **Deploying ArcBox outs
   az deployment group create -g "<resource-group-name>" -f "main.bicep" -p "main.parameters.json"
   ```
 
-## Deployment Option 4: Terraform Deployment
+## Deployment Option 4: HashiCorp Terraform Deployment
 
 - Clone the Azure Arc Jumpstart repository
 
@@ -413,6 +413,7 @@ The following tools are including on the _ArcBox-Client_ VM.
 - 7zip
 - Terraform
 - Git
+- ZoomIt
 
 ### Next steps
   
