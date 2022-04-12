@@ -420,7 +420,7 @@ After deployment is complete, it's time to start exploring ArcBox. Most interact
 
  ArcBox uses Azure Key Vault to store the TLS certificate used by the sample Hello-Arc and OSM applications. Here are some things to try to explore this integration with Key Vault further:
 
-- Open the extension tab section of the _ArcBox-CAPI-Data_ cluster resource in Azure portal. You can now see that Azure Key Vault Secrets Provider, Flux (GitOps) and Open Service Mesh extensions are installed.
+- Open the extension tab section of the _ArcBox-CAPI-Data_ cluster resource in the Azure portal. You can now see that Azure Key Vault Secrets Provider, Flux (GitOps), and Open Service Mesh extensions are installed.
 
   ![Screenshot showing Azure Arc extensions ](./capi_keyvault01.png)
 
