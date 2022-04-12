@@ -753,11 +753,11 @@ In the case of a failed deployment, pointing to a failure in either the _ubuntuR
   - _ubuntuCAPIDeployment_ - _ArcBox-CAPI-MGMT_ virtual machine.
   - _ubuntuRancherDeployment_ - _ArcBox-K3s_ virtual machine.
 
-    Since you are logging in using the provided SSH public key, all you need is the _arcdemo_ username.
+    ![Screenshot showing ArcBox-CAPI-MGMT virtual machine public IP](./arcbox_capi_mgmt_vm_ip.png)
 
-      ![Screenshot showing ArcBox-CAPI-MGMT virtual machine public IP](./arcbox_capi_mgmt_vm_ip.png)
+    ![Screenshot showing ArcBox-K3s virtual machine public IP](./arcbox_k3s_vm_ip.png)
 
-      ![Screenshot showing ArcBox-K3s virtual machine public IP](./arcbox_k3s_vm_ip.png)
+    > **NOTE: Port 22 is not open by default in ArcBox deployments. You will need to create an NSG rule to allow network access to port 22, or use Azure Bastion or JIT to connect to the VM.**
 
 - As described in the message of the day (motd), depending on which virtual machine you logged into, the installation log can be found in the *jumpstart_logs* folder. This installation logs can help determine the root cause for the failed deployment.
   - _ArcBox-CAPI-MGMT_ log path: *jumpstart_logs/installCAPI.log*
