@@ -407,7 +407,11 @@ If you already have Microsoft Defender for Servers enabled on your subscription 
 
 - Once you log into _ArcBox-Client_, multiple automated scripts will open and start running. These scripts usually take 10-20 minutes to finish and once completed the script windows will close. At this point, the deployment is complete.
 
-    ![Screenshot showing ArcBox-Client](./automation.png)
+  ![Screenshot showing ArcBox-Client](./automation.png)
+
+- Deployment is complete! Let's begin exploring the features of Azure Arc-enabled Kubernetes with ArcBox for DevOps!
+
+  ![Screenshot showing complete deployment](./arcbox_complete.png)
 
 ## Using ArcBox
 
