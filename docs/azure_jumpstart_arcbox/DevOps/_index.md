@@ -593,7 +593,7 @@ Optionally, you can explore additional GitOps and RBAC scenarios in a manual fas
     - Create a certificate with _arcbox.k3sdevops.com_ DNS name and import to Azure Key Vault
     - Deploy the Azure Key Vault k8s extension instance
     - Create Kubernetes _SecretProviderClass_ to fetch the secrets from Azure Key Vault
-    - Deploy an Kubernetes Ingress resource referencing the Secret created by the CSI driver
+    - Deploy a Kubernetes Ingress resource referencing the Secret created by the CSI driver
     - Create an icon for the Hello-Arc application on the desktop
   
   - Optionally, you can open the script with VSCode to review.
