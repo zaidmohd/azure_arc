@@ -310,6 +310,8 @@ ArcBox uses an advanced automation flow to deploy and configure all necessary re
 
 ## Start post-deployment automation
 
+Once your deployment is complete, you can open the Azure portal and see the ArcBox resources inside your resource group. You will be using the _ArcBox-Client_ Azure virtual machine to explore various capabilities of ArcBox. You will need to remotely access _ArcBox-Client_.
+
 - After deployment, you should see the ArcBox resources inside your resource group.
 
   ![Screenshot showing az deployment group create](./deployedresources.png)
