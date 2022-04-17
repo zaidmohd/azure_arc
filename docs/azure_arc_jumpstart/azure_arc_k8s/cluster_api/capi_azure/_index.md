@@ -6,8 +6,6 @@ weight: 1
 description: >
 ---
 
-> **ADVISORY: An known issue affecting Azure CLI Kubernetes extensions is causing problems with automation in Jumpstart Kubernetes scenarios, data and app services scenarios, and ArcBox where the Azure CLI Kubernetes extensions are used. This issue will result in incomplete or failed deployments. Thank you for your patience as the teams work to address the issue.**
-
 ## Deploy Kubernetes cluster and connect it to Azure Arc using Cluster API Azure provider
 
 The following README will guide you on to deploy an Kubernetes cluster in Azure virtual machines and connected it as an Azure Arc cluster resource by using the [Kubernetes Cluster API (CAPI) project](https://cluster-api.sigs.k8s.io/introduction.html) and it's [Cluster API Azure provider (CAPZ)](https://cloudblogs.microsoft.com/opensource/2020/12/15/introducing-cluster-api-provider-azure-capz-kubernetes-cluster-management/).
@@ -42,13 +40,16 @@ In this guide, a [Rancher K3s](https://rancher.com/docs/k3s/latest/en/), single 
 
     ```shell
     az login
-    az ad sp create-for-rbac -n "<Unique SP Name>" --role "Contributor"
+    subscriptionId=$(az account show --query id --output tsv)
+    az ad sp create-for-rbac -n "<Unique SP Name>" --role "Contributor" --scopes /subscriptions/$subscriptionId
     ```
 
     For example:
 
     ```shell
-    az ad sp create-for-rbac -n "AzureArcK8s" --role "Contributor"
+    az login
+    subscriptionId=$(az account show --query id --output tsv)
+    az ad sp create-for-rbac -n "JumpstartArcK8s" --role "Contributor" --scopes /subscriptions/$subscriptionId
     ```
 
     Output should look like this:
@@ -56,16 +57,15 @@ In this guide, a [Rancher K3s](https://rancher.com/docs/k3s/latest/en/), single 
     ```json
     {
     "appId": "XXXXXXXXXXXXXXXXXXXXXXXXXXXX",
-    "displayName": "AzureArcK8s",
-    "name": "http://AzureArcK8s",
+    "displayName": "JumpstartArcK8s",
     "password": "XXXXXXXXXXXXXXXXXXXXXXXXXXXX",
     "tenant": "XXXXXXXXXXXXXXXXXXXXXXXXXXXX"
     }
     ```
 
-    > **Note: It is optional, but highly recommended, to scope the SP to a specific [Azure subscription](https://docs.microsoft.com/en-us/cli/azure/ad/sp?view=azure-cli-latest).**
+    > **NOTE: If you create multiple subsequent role assignments on the same service principal, your client secret (password) will be destroyed and recreated each time. Therefore, make sure you grab the correct password**.
 
-    > **Note: The Jumpstart scenarios are designed with as much ease of use in-mind and adhering to security-related best practices whenever possible. It is optional but highly recommended to scope the service principal to a specific [Azure subscription and resource group](https://docs.microsoft.com/en-us/cli/azure/ad/sp?view=azure-cli-latest) as well considering using a [less privileged service principal account](https://docs.microsoft.com/en-us/azure/role-based-access-control/best-practices)**
+    > **NOTE: The Jumpstart scenarios are designed with as much ease of use in-mind and adhering to security-related best practices whenever possible. It is optional but highly recommended to scope the service principal to a specific [Azure subscription and resource group](https://docs.microsoft.com/cli/azure/ad/sp?view=azure-cli-latest) as well considering using a [less privileged service principal account](https://docs.microsoft.com/azure/role-based-access-control/best-practices)**
 
 ## Automation Flow
 

@@ -6,8 +6,6 @@ weight: 1
 description: >
 ---
 
-> **ADVISORY: An known issue affecting Azure CLI Kubernetes extensions is causing problems with automation in Jumpstart Kubernetes scenarios, data and app services scenarios, and ArcBox where the Azure CLI Kubernetes extensions are used. This issue will result in incomplete or failed deployments. Thank you for your patience as the teams work to address the issue.**
-
 ## Deploy a Platform9 Managed Kubernetes cluster and connect it to Azure Arc
 
  > **Disclaimer: This scenario was contributed by the Platform9 team as part of the "Jumpstart Friends" program**
@@ -51,30 +49,34 @@ The following README will guide on how to deploy a Kubernetes cluster with [Plat
 
   To be able to complete the scenario and its related automation, Azure service principal assigned with the “Contributor” role is required. To create it, login to your Azure account run the below command (this can also be done in [Azure Cloud Shell](https://shell.azure.com/)).
 
-  ```shell
-  az login
-  az ad sp create-for-rbac -n "<Unique SP Name>" --role contributor
-  ```
+    ```shell
+    az login
+    subscriptionId=$(az account show --query id --output tsv)
+    az ad sp create-for-rbac -n "<Unique SP Name>" --role "Contributor" --scopes /subscriptions/$subscriptionId
+    ```
 
-  For example:
+    For example:
 
-  ```shell
-  az ad sp create-for-rbac -n "http://AzureArcK8s" --role contributor
-  ```
+    ```shell
+    az login
+    subscriptionId=$(az account show --query id --output tsv)
+    az ad sp create-for-rbac -n "JumpstartArcK8s" --role "Contributor" --scopes /subscriptions/$subscriptionId
+    ```
 
-  Output should look like this:
+    Output should look like this:
 
-  ```json
-  {
-  "appId": "XXXXXXXXXXXXXXXXXXXXXXXXXXXX",
-  "displayName": "AzureArcK8s",
-  "name": "http://AzureArcK8s",
-  "password": "XXXXXXXXXXXXXXXXXXXXXXXXXXXX",
-  "tenant": "XXXXXXXXXXXXXXXXXXXXXXXXXXXX"
-  }
-  ```
+    ```json
+    {
+    "appId": "XXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+    "displayName": "JumpstartArcK8s",
+    "password": "XXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+    "tenant": "XXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+    }
+    ```
 
-  > **Note: The Jumpstart scenarios are designed with as much ease of use in-mind and adhering to security-related best practices whenever possible. It is optional but highly recommended to scope the service principal to a specific [Azure subscription and resource group](https://docs.microsoft.com/en-us/cli/azure/ad/sp?view=azure-cli-latest) as well considering using a [less privileged service principal account](https://docs.microsoft.com/en-us/azure/role-based-access-control/best-practices)**
+    > **NOTE: If you create multiple subsequent role assignments on the same service principal, your client secret (password) will be destroyed and recreated each time. Therefore, make sure you grab the correct password**.
+
+    > **NOTE: The Jumpstart scenarios are designed with as much ease of use in-mind and adhering to security-related best practices whenever possible. It is optional but highly recommended to scope the service principal to a specific [Azure subscription and resource group](https://docs.microsoft.com/cli/azure/ad/sp?view=azure-cli-latest) as well considering using a [less privileged service principal account](https://docs.microsoft.com/azure/role-based-access-control/best-practices)**
 
 ## Deployment
 
