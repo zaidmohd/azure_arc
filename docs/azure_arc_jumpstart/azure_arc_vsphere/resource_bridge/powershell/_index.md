@@ -8,7 +8,7 @@ description: >
 
 ## Connect VMware vCenter Server to Azure Arc using PowerShell
 
-The following README will guide you on how to use the provided PowerShell script to deploy the [Azure Arc resource bridge](https://docs.microsoft.com/en-us/azure/azure-arc/resource-bridge/overview) in your vCenter to connect it to Azure Arc.
+The following README will guide you on how to use the provided PowerShell script to deploy the [Azure Arc resource bridge](https://docs.microsoft.com/en-us/azure/azure-arc/resource-bridge/overview) in your vSphere environment to connect your vCenter Server to Azure Arc.
 
 > **NOTE:  This guide will not provide instructions on how to deploy and set up your VMware environment, it must be already provisioned.**
 
@@ -32,17 +32,17 @@ The following README will guide you on how to use the provided PowerShell script
     For example:
 
     ```powershell
-    $sp = New-AzADServicePrincipal -DisplayName "AzureStackHCI-VM-Jumpstart" -Role 'Contributor'
+    $sp = New-AzADServicePrincipal -DisplayName "AzureArcvSphere" -Role 'Contributor'
     ```
 
     This command will create a variable with a secure string as shown below:
 
     ```shell
     Secret                : System.Security.SecureString
-    ServicePrincipalNames : {XXXXXXXXXXXXXXXXXXXXXXXXXXXX, http://AzureStackHCI-VM-Jumpstart}
+    ServicePrincipalNames : {XXXXXXXXXXXXXXXXXXXXXXXXXXXX, http://AzureArcvSphere}
     ApplicationId         : XXXXXXXXXXXXXXXXXXXXXXXXXXXX
     ObjectType            : ServicePrincipal
-    DisplayName           : AzureStackHCI-VM-Jumpstart
+    DisplayName           : AzureArcvSphere
     Id                    : XXXXXXXXXXXXXXXXXXXXXXXXXXXX
     Type                  :
     ```
