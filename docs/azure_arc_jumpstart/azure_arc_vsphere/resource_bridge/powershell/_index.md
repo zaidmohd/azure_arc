@@ -75,19 +75,31 @@ For you to get familiar with the automation and deployment flow, below is an exp
 ## Connect VMware vCenter Server to Azure Arc
 
 - Change the environment variables according to your environment:
-  - location: the Azure Region you want to deploy to
-  - SubscriptionId: your subscription ID
-  - ResourceGroupName: name of the Azure Resource Group you will create your resources in
-  - applianceName: a name for the Bridge appliance
-  - customLocationName: a name for the Azure Arc custom location
-  - vCenterName: your vCenter name
-  - vcenterfqdn: your vCenter fully qualified name
-  - vcenterusername: username to authenticate to vCenter
-  - vcenterpassword: password to authenticate to vCenter
-  - appID: your service principal App ID
-  - password: your service principal password
-  - tenantId: your Azure AD tenant ID
-
+  - _'location'_ - the Azure Region you want to deploy to
+  - _'SubscriptionId'_ - your subscription ID
+  - _'ResourceGroupName'_ - name of the Azure Resource Group you will create your resources in
+  - _'applianceName'_ - a name for the Bridge appliance
+  - _'customLocationName'_ - a name for the Azure Arc custom location
+  - _'vCenterName'_ - your vCenter name
+  - _'vcenterfqdn'_ - your vCenter fully qualified name
+  - _'vcenterusername'_ - username to authenticate to vCenter
+  - _'vcenterpassword'_ - password to authenticate to vCenter
+  - _'appID'_ - your service principal App ID
+  - _'password'_ - your service principal password
+  - _'tenantId'_ - your Azure AD tenant ID
+  - _'vmtemplate'_ - the Arc appliance template name
+  - _'datacenter'_ - the vSphere data center where the appliance will be deployed
+  - _'datastore'_ - the vSphere data store name where the appliance will be deployed
+  - _'folder'_ - the vSphere folder where the template and appliance will be deployed
+  - _'dnsserver'_ - DNS server to be used for the appliance
+  - _'gateway'_ - Gateway address to be used for the appliance
+  - _'ipaddressprefix'_ - Network address in CIDR notation to be used by the appliance
+  - _'k8snodeippoolstart'_ - IP range start for the IPs to be used by the appliance
+  - _'k8snodeippoolend'_ - IP range end for the IPs to be used by the appliance
+  - _'segment'_ - Name of the virtual network or segment to which the appliance VM must be connected
+  - _'resourcepool'_ - the name of the resource pool to be used by the appliance
+  - _'controlPlaneEndpoint'_ - IP address of the Kubernetes cluster control plane
+  
   ![Screenshot environment variables](./01.png)
 
 - Once you have provided all of the required environment variables. Open an administrative PowerShell window and run the script with the command:
