@@ -122,8 +122,6 @@ For you to get familiar with the automation and deployment flow, below is an exp
 
 - Once the script has finished its run, you should see a message as the one shown below:
 
-  ![Success message](./07.png)
-
   ![Success message](./08.png)
 
 - Tasks in vCenter should show a "Completed" status and a new VM should be part of your inventory
