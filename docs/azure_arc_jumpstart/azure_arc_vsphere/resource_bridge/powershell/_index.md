@@ -145,4 +145,19 @@ For you to get familiar with the automation and deployment flow, below is an exp
 
 ## Clean up environment
 
-Complete the following steps to clean up your environment.
+Complete the following steps to clean up your environment:
+
+- If you want to delete the entire Azure resources, simply delete the deployment resource group from the Azure portal.
+     
+    ![Screenshot showing Azure resource group deletion](./14.png)
+    
+- From the vSphere client, power Off the appliance and remove from disk.
+
+    ![Screenshot showing powering off the appliance from vSphere client](./15.png)
+
+    ![Screenshot showing deleting the appliance from vSphere client](./16.png)
+    
+- From the vSphere client, remove the appliance template from disk.
+
+    ![Screenshot showing deleting the appliance template from vSphere client](./17.png)
+
