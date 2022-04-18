@@ -155,38 +155,38 @@ ArcBox uses an advanced automation flow to deploy and configure all necessary re
   - "Contributor" - Required for provisioning Azure resources
   - "Security admin" - Required for installing Microsoft Defender for Cloud Azure Arc-enabled Kubernetes extension and dismiss alerts
   - "Security reader" - Required for being able to view Azure Arc-enabled Kubernetes Cloud Defender extension findings
-  - **(Optional)** "User Access Administrator" - Required for automatically onboarding the Azure Arc-enabled SQL Server resource
 
     To create it login to your Azure account run the below commands (this can also be done in [Azure Cloud Shell](https://shell.azure.com/).
 
     ```shell
     az login
-    az ad sp create-for-rbac -n "<Unique SP Name>" --role "Contributor"
-    az ad sp create-for-rbac -n "<Unique SP Name>" --role "Security admin"
-    az ad sp create-for-rbac -n "<Unique SP Name>" --role "Security reader"
-    az ad sp create-for-rbac -n "<Unique SP Name>" --role "User Access Administrator"
+    subscriptionId=$(az account show --query id --output tsv)
+    az ad sp create-for-rbac -n "<Unique SP Name>" --role "Contributor" --scopes /subscriptions/$subscriptionId
+    az ad sp create-for-rbac -n "<Unique SP Name>" --role "Security admin" --scopes /subscriptions/$subscriptionId
+    az ad sp create-for-rbac -n "<Unique SP Name>" --role "Security reader" --scopes /subscriptions/$subscriptionId
     ```
 
     For example:
 
     ```shell
-    az ad sp create-for-rbac -n "JumpstartArcBox" --role "Contributor"
-    az ad sp create-for-rbac -n "JumpstartArcBox" --role "Security admin"
-    az ad sp create-for-rbac -n "JumpstartArcBox" --role "Security reader"
-    az ad sp create-for-rbac -n "JumpstartArcBox" --role "User Access Administrator"
+    subscriptionId=$(az account show --query id --output tsv)
+    az ad sp create-for-rbac -n "JumpstartArcBox" --role "Contributor" --scopes /subscriptions/$subscriptionId
+    az ad sp create-for-rbac -n "JumpstartArcBox" --role "Security admin" --scopes /subscriptions/$subscriptionId
+    az ad sp create-for-rbac -n "JumpstartArcBox" --role "Security reader" --scopes /subscriptions/$subscriptionId
     ```
 
-    Output should look similar to this:
+    Output should look similar to this.
 
     ```json
     {
     "appId": "XXXXXXXXXXXXXXXXXXXXXXXXXXXX",
-    "displayName": "AzureArcBox",
-    "name": "http://AzureArcBox",
+    "displayName": "JumpstartArcBox",
     "password": "XXXXXXXXXXXXXXXXXXXXXXXXXXXX",
     "tenant": "XXXXXXXXXXXXXXXXXXXXXXXXXXXX"
     }
     ```
+
+    > **NOTE: If you create multiple subsequent role assignments on the same service principal, your client secret (password) will be destroyed and recreated each time. Therefore, make sure you grab the correct password**.
 
     > **NOTE: The Jumpstart scenarios are designed with as much ease of use in-mind and adhering to security-related best practices whenever possible. It is optional but highly recommended to scope the service principal to a specific [Azure subscription and resource group](https://docs.microsoft.com/cli/azure/ad/sp?view=azure-cli-latest) as well considering using a [less privileged service principal account](https://docs.microsoft.com/azure/role-based-access-control/best-practices)**
 
@@ -286,17 +286,19 @@ ArcBox uses an advanced automation flow to deploy and configure all necessary re
 
 - Download and install the latest version of Terraform [here](https://www.terraform.io/downloads.html)
 
-  > **NOTE: Terraform 1.x or higher is supported for this deployment. Tested with Terraform v1.011.**
+  > **NOTE: Terraform 1.x or higher is supported for this deployment. Tested with Terraform v1.0.9+.**
 
 - Create a `terraform.tfvars` file in the root of the terraform folder and supply some values for your environment.
 
   ```HCL
-  azure_location    = "westus2"
-  spn_client_id     = "1414133c-9786-53a4-b231-f87c143ebdb1"
-  spn_client_secret = "fakeSecretValue123458125712ahjeacjh"
-  spn_tenant_id     = "33572583-d294-5b56-c4e6-dcf9a297ec17"
-  client_admin_ssh  = "C:/Temp/rsa.pub"
-  deployment_flavor = "DevOps"
+  azure_location      = "westus2"
+  resource_group_name = "ArcBoxDevOps"
+  spn_client_id       = "1414133c-9786-53a4-b231-f87c143ebdb1"
+  spn_client_secret   = "fakeSecretValue123458125712ahjeacjh"
+  spn_tenant_id       = "33572583-d294-5b56-c4e6-dcf9a297ec17"
+  client_admin_ssh    = "C:/Temp/rsa.pub"
+  deployment_flavor   = "DevOps"
+  github_username     = "GitHubUser"
   ```
 
 - Variable Reference:
@@ -310,7 +312,7 @@ ArcBox uses an advanced automation flow to deploy and configure all necessary re
   - **_`client_admin_username`_** - Admin username for Windows & Linux VMs
   - **_`client_admin_password`_** - Admin password for Windows VMs. Password must have 3 of the following: 1 lower case character, 1 upper case character, 1 number, and 1 special character. The value must be between 12 and 123 characters long.
   - **_`workspace_name`_** - Unique name for the ArcBox Log Analytics workspace
-  - **_`githubUser`_** - Specify the name of your GitHub account where you cloned the Sample Apps repo
+  - **_`github_username`_** - Specify the name of your GitHub account where you cloned the Sample Apps repo
 
   > **NOTE: Any variables in bold are required. If any optional parameters are not provided, defaults will be used.**
 
@@ -397,6 +399,8 @@ If you already have [Microsoft Defender for Cloud](https://docs.microsoft.com/en
 
   ![Screenshot showing complete deployment](./arcbox_complete.png)
 
+  ![Screenshot showing ArcBox resources in Azure portal](./rg_arc.png)
+
 ## Using ArcBox
 
 After deployment is complete, it's time to start exploring ArcBox. Most interactions with ArcBox will take place either from Azure itself (Azure portal, CLI, or similar) or from inside the _ArcBox-Client_ virtual machine. When remoted into the VM, here are some things to try:
@@ -405,19 +409,49 @@ After deployment is complete, it's time to start exploring ArcBox. Most interact
 
  ArcBox uses Azure Key Vault to store the TLS certificate used by the sample Hello-Arc and OSM applications. Here are some things to try to explore this integration with Key Vault further:
 
+- Configure Azure Key Vault to allow your access to certificates.
+
+  - Navigate to the deployed Key Vault in the Azure portal and open the "Access Policies" blade
+
+    ![Screenshot showing Azure Arc extensions ](./capi_keyvault01.png)
+
+  - Click "Add access policy" and in the dropdown for "Certificate Permissions" check Get and List.
+
+    ![Screenshot showing Azure Arc extensions ](./capi_keyvault02.png)
+
+  - Next to "Select principal" Click "None selected" and search for your user name and select it. Click "Add".
+
+    ![Screenshot showing Azure Arc extensions ](./capi_keyvault03.png)
+
+  - Click "Save" to commit the changes.
+
+    ![Screenshot showing Azure Arc extensions ](./capi_keyvault04.png)
+
 - Open the extension tab section of the _ArcBox-CAPI-Data_ cluster resource in the Azure portal. You can now see that Azure Key Vault Secrets Provider, Flux (GitOps), and Open Service Mesh extensions are installed.
 
-  ![Screenshot showing Azure Arc extensions ](./capi_keyvault01.png)
+  ![Screenshot showing Azure Arc extensions ](./capi_keyvault05.png)
 
 - Click on the _DevOps Hello-Arc_ icon on the desktop to open Hello-Arc application and validate the Ingress certificate _arcbox.devops.com_ used from the Key Vault.
 
-  ![Screenshot showing Hello-Arc desktop Icon](./capi_keyvault02.png)
+  ![Screenshot showing Hello-Arc desktop Icon](./capi_keyvault06.png)
 
-  ![Screenshot showing Hello-Arc App](./capi_keyvault03.png)
+  ![Screenshot showing Hello-Arc App](./capi_keyvault07.png)
 
-- Validate the certificate details.
+- Validate that Key Vault certificate is being used by comparing the certificate thumbprint reported in the browser with your certificate thumbprint in Key Vault. Click on the lock icon and then select "Connection is secure".
 
-  ![Screenshot showing Hello-Arc certificate](./capi_keyvault04.png)
+  ![Screenshot showing Hello-Arc certificate](./capi_keyvault08.png)
+
+- Click on the certificate icon.
+
+  ![Screenshot showing Hello-Arc certificate](./capi_keyvault09.png)
+
+- Open the "Details" tab to view the thumprint of the certificate.
+
+  ![Screenshot showing Hello-Arc certificate](./capi_keyvault10.png)
+
+- Browse to the certificate "ingress-cert" in Key Vault to view and compare the thumbprint.
+
+  ![Screenshot showing Hello-Arc certificate](./capi_keyvault11.png)
 
 ### GitOps configurations
 
@@ -548,10 +582,11 @@ ArcBox uses a GitOps configuration on the OSM bookstore application to split tra
 After you have finished the deployment of ArcBox, you can verify that Microsoft Defender for Cloud is working properly and alerting on security threats by running the below command to simulate an alert on the _ArcBox-CAPI-Data_ workload cluster:
 
   ```bash
-  kubectl get pods --namespace=asc-alerttest-662jfi039n --kubeconfig arcbox-capi-data.kubeconfig
+  kubectx arcbox-capi
+  kubectl get pods --namespace=asc-alerttest-662jfi039n
   ```
 
-Within ~30 minutes, Microsoft Defender for Cloud will detect this event and trigger a security alert that you will see in the Azure Portal under Microsoft Defender for Cloud's security alerts and also on the security tab of your Azure Arc-enabled Kubernetes cluster.
+Within about 30 minutes, Microsoft Defender for Cloud will detect this event and trigger a security alert that you will see in the Azure Portal under Microsoft Defender for Cloud's security alerts and also on the security tab of your Azure Arc-enabled Kubernetes cluster.
 
 ![Screenshot security alert in Microsoft Defender for Cloud](./defender_alert01.png)
 
@@ -584,27 +619,29 @@ Optionally, you can explore additional GitOps and RBAC scenarios in a manual fas
   - Optionally, you can open the script with VSCode to review.
   
     ![Screenshot showing Script VSCode](./k3s_gitops03.png)
+
+    ![Screenshot showing Script VSCode](./k3s_gitops04.png)
   
   - Right click _K3sGitOps.ps1_ script and select Run with PowerShell to execute the script.
   
-    ![Screenshot showing Script execution](./k3s_gitops04.png)
+    ![Screenshot showing Script execution](./k3s_gitops05.png)
 
   - You can verify that Azure Key Vault Secrets Provider and the Flux (GitOps) extensions are now installed under the extension tab section of the _ArcBox-K3s_ cluster resource in the Azure portal.
 
-    ![Screenshot showing K3s cluster extensions](./k3s_gitops05.png)
+    ![Screenshot showing K3s cluster extensions](./k3s_gitops06.png)
 
   - You can verify below GitOps configurations applied on the _ArcBox-K3s_ cluster.
   
     - config-nginx to deploy NGINX-ingress controller
     - config-helloarc to deploy the "Hello Arc" web application
   
-    ![Screenshot showing Azure Arc GitOps configurations](./k3s_gitops06.png)
+    ![Screenshot showing Azure Arc GitOps configurations](./k3s_gitops07.png)
 
   - Click on the _K3s Hello-Arc_ icon on the desktop to open Hello-Arc application and validate the Ingress certificate _arcbox.k3sdevops.com_ used from Key Vault.
   
-    ![Screenshot showing Hello-Arc App Icon](./k3s_gitops07.png)
+    ![Screenshot showing Hello-Arc App Icon](./k3s_gitops08.png)
 
-    ![Screenshot showing Hello-Arc App](./k3s_gitops08.png)
+    ![Screenshot showing Hello-Arc App](./k3s_gitops09.png)
   
   - To show the GitOps flow for the Hello-Arc application open two side-by-side windows.
 
@@ -616,17 +653,17 @@ Optionally, you can explore additional GitOps and RBAC scenarios in a manual fas
         kubectl get pods -n hello-arc -w
         ```
 
-      Result should look like that:
+      The result should look like this:
   
-      ![Screenshot showing Hello-Arc app and shell](./k3s_gitops09.png)
+      ![Screenshot showing Hello-Arc app and shell](./k3s_gitops10.png)
   
     - In your fork of the “Azure Arc Jumpstart Apps” GitHub repository, open the _`hello_arc.yaml`_ file (_`/hello-arc/yaml/hello_arc.yaml`_). Change the replica to 2 and text under the “MESSAGE” section and commit the change.
 
-      ![Screenshot showing hello-arc repo](./k3s_gitops10.png)
+      ![Screenshot showing hello-arc repo](./k3s_gitops11.png)
 
-    - Upon committing the changes, notice how the Kubernetes pods rolling upgrade will begin. Once the pods are up & running, refresh the browser, the new “Hello Arc” application version window will show the new message, showing the rolling upgrade is completed and the GitOps flow is successful.
+    - Upon committing the changes, notice how the Kubernetes pods rolling upgrade will begin. Once the pods are up and running, refresh the browser, the new “Hello Arc” application version window will show the new message, showing the rolling upgrade is completed and the GitOps flow is successful.
 
-      ![Screenshot showing Hello-Arc app and shell GitOps](./k3s_gitops11.png)
+      ![Screenshot showing Hello-Arc app and shell GitOps](./k3s_gitops12.png)
 
 - Deploy Kubernetes RBAC configuration on the Hello-Arc application to limit access to deployed Kubernetes resources.
 
