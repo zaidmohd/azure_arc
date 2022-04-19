@@ -754,6 +754,7 @@ The following tools are including on the _ArcBox-Client_ VM.
 - Terraform
 - Git
 - ZoomIt
+- Windows Terminal
 
 ### Next steps
   
