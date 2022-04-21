@@ -29,7 +29,7 @@ Rather you are working on a new scenario or updating an existing one, a contribu
 
     For new scenarios, please also create a new issue using the ["Feature request" template](https://github.com/microsoft/azure_arc/issues/new?assignees=&labels=&template=feature_request.md&title=). If needed, multiple examples can be found under the [Jumpstart project GitHub repository](https://github.com/microsoft/azure_arc/projects/1).
 
-    ![Screenshot of "Feature request" template](./feature_request.png.png)
+    ![Screenshot of "Feature request" template](./feature_request.png)
 
 - Existing scenario
 
