@@ -74,6 +74,24 @@ By the end of this guide, you will have an ARO cluster deployed with an Azure Ar
 
     > **NOTE: The Jumpstart scenarios are designed with as much ease of use in-mind and adhering to security-related best practices whenever possible. It is optional but highly recommended to scope the service principal to a specific [Azure subscription and resource group](https://docs.microsoft.com/cli/azure/ad/sp?view=azure-cli-latest) as well considering using a [less privileged service principal account](https://docs.microsoft.com/azure/role-based-access-control/best-practices)**
 
+- Check your subscription quota for the DSv3 family.
+
+    > **NOTE: Azure Red Hat OpenShift requires a [minimum of 40 cores](/azure/openshift/tutorial-create-cluster#before-you-begin) to create and run an OpenShift cluster.**
+
+  ```shell
+  LOCATION=eastus
+  az vm list-usage -l $LOCATION --query "[?contains(name.value, 'standardDSv3Family')]" -o table
+  ```
+
+  ![Screenshot of checking DSV3 family cores usage](./01.png)
+
+- Get the Azure Red Hat OpenShift resource provider Id which needs to be assigned with the “Contributor” role.
+
+  ```shell
+  az ad sp list --filter "displayname eq 'Azure Red Hat OpenShift RP'" --query "[?appDisplayName=='Azure Red Hat OpenShift RP'].{name: appDisplayName, objectId: objectId}"
+  ```
+
+  ![Screenshot of Azure resource provider for Aro](./02.png)
 ## Automation Flow
 
 For you to get familiar with the automation and deployment flow, below is an explanation.
