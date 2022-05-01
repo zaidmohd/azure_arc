@@ -136,7 +136,7 @@ As mentioned, this deployment will leverage ARM templates. You will deploy a sin
 
     > **NOTE: Since Azure Arc-enabled app services is [currently in preview](https://docs.microsoft.com/azure/app-service/overview-arc-integration#public-preview-limitations), deployment regions availability is limited to East US and West Europe.**
 
-- Once Azure resources has been provisioned, you will be able to see it in Azure portal. At this point, the resource group should have **8 various Azure resources** deployed.
+- Once Azure resources has been provisioned, you will be able to see it in Azure portal.
 
     ![Screenshot showing the ARM template deployment completed](./01.png)
 
