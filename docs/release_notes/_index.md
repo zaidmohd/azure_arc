@@ -51,7 +51,7 @@ weight: 3
 - [Updated Scenario: Deploy an App Service app using custom container on AKS using an ARM Template](https://azurearcjumpstart.io/azure_arc_jumpstart/azure_arc_app_svc/aks/aks_app_service_arm_template/)
 - [Updated Scenario: Deploy Azure Function application on AKS using an ARM Template](https://azurearcjumpstart.io/azure_arc_jumpstart/azure_arc_app_svc/aks/aks_azure_function_arm_template/)
 - [Updated Scenario: Deploy an App Service app using custom container on Cluster API using an ARM Template](https://azurearcjumpstart.io/azure_arc_jumpstart/azure_arc_app_svc/cluster_api/capi_azure/apps_service_arm_template/)
-- [Updated Scenario: Deploy an App Service app using custom container on Cluster API using an ARM Template](https://azurearcjumpstart.io/azure_arc_jumpstart/azure_arc_app_svc/cluster_api/capi_azure/azure_function_arm_template/)
+- [Updated Scenario: Deploy Azure Function application on Cluster API using an ARM Template](https://azurearcjumpstart.io/azure_arc_jumpstart/azure_arc_app_svc/cluster_api/capi_azure/azure_function_arm_template/)
 
 ### Jumpstart ArcBox
 
