@@ -66,7 +66,19 @@ The following README will guide you on how to use the provided PowerShell script
   
     ![Screenshot of Azure resource provider for vSphere](./01.png)
 
-- As mentioned, this guide starts at the point where you already have an up and running VMware environment managed by vCenter. The automation will be run from a PowerShell window on a computer (can be your local computer) that has network connectivity to vCenter.
+### vCenter Prerequisites
+
+- A vCenter Server with version 6.7.
+
+- A virtual network that can provide internet access, directly or through a proxy. It must also be possible for VMs on this network to communicate with the vCenter server on TCP port (usually 443).
+
+- At least one free IP address on the above network that isn't in the DHCP range. At least three free IP addresses if there's no DHCP server on the network.
+
+- A resource pool or a cluster with a minimum capacity of 16 GB of RAM and four vCPUs.
+
+- A datastore with a minimum of 100 GB of free disk space available through the resource pool or cluster.
+
+As mentioned, this guide starts at the point where you already have an up and running VMware environment managed by vCenter. The automation will be run from a PowerShell window on a computer (can be your local computer) that has network connectivity to vCenter.
 
     > **NOTE: the script will automatically uninstall any pre-existing Azure CLI versions in the workstation and will deploy the latest 64 bit version, as it is a requirement to deploy the Resource Bridge**
 
