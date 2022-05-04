@@ -130,8 +130,6 @@ For you to get familiar with the automation and deployment flow, below is an exp
   ![Screenshot showing vCenter task](./07.png)
   
   ![Screenshot showing vCenter task](./08.png)
-
-  ![Screenshot showing script output](./09.png)
   
   ![Screenshot showing script output](./10.png)
   
