@@ -10,6 +10,8 @@ description: >
 
 The following Jumpstart scenario will guide you on how to enable [SSH access to Azure Arc-enabled servers](https://docs.microsoft.com/en-us/azure/azure-arc/servers/ssh-arc-overview), this feature allows you to connect over SSH to your Arc-enabled servers both Linux and Windows without requiring a public IP address or additional open ports.
 
+> **NOTE: SSH for Arc-enabled servers is currently in PREVIEW**
+
 > **NOTE: This guide assumes you already deployed VMs or servers that are running on-premises or other clouds and you have connected them to Azure Arc but if you haven't, this repository offers you a way to do so in an automated fashion:**
 
 - **[GCP Ubuntu instance](https://azurearcjumpstart.io/azure_arc_jumpstart/azure_arc_servers/gcp/gcp_terraform_ubuntu/)**
@@ -22,8 +24,6 @@ The following Jumpstart scenario will guide you on how to enable [SSH access to 
 - **[VMware vSphere Windows Server VM](https://azurearcjumpstart.io/azure_arc_jumpstart/azure_arc_servers/vmware/vmware_terraform_winsrv/)**
 - **[Vagrant Ubuntu box](https://azurearcjumpstart.io/azure_arc_jumpstart/azure_arc_servers/vagrant/local_vagrant_ubuntu/)**
 - **[Vagrant Windows box](https://azurearcjumpstart.io/azure_arc_jumpstart/azure_arc_servers/vagrant/local_vagrant_windows/)**
-
-> **NOTE: Ensure the Arc-enabled server has a hybrid agent version of "1.13.21320.014" or higher and that it has the "sshd" service enabled.**
 
 ## Prerequisites
 
@@ -92,9 +92,10 @@ For you to get familiar with the automation and deployment flow, below is an exp
 
     - Add the required CLI extensions
     - Create the default connectivity endpoint
-    - Enable connections on the hybrid agent
 
-3. User tests SSH connection.
+3. User connects to the Arc-enabled server and enables connections on the hybrid agent.
+
+4. User tests SSH connection.
 
 ## Deployment
 
@@ -103,9 +104,8 @@ For you to get familiar with the automation and deployment flow, below is an exp
   - _`subscription`_: your Azure subscription ID.
   - _`resourcegroup`_: Resource Group where your Azure Arc-enabled server is registered to.
   - _`arc_server`_: Name of your Azure Arc-enabled server as it is shown in the Azure Portal.
-  - _`port`_: SSH port to use, default is 22.
 
-    ![Parameters](./02.png)
+    ![Parameters](./01.png)
 
 - From the deployment folder run the below command:
 
@@ -113,14 +113,40 @@ For you to get familiar with the automation and deployment flow, below is an exp
     . ./enable_ssh.sh
   ```
 
-  > **NOTE: The extra dot is due to the script having an *export* function and needs to have the vars exported in the same shell session as the other commands.**
+  > **NOTE: The extra dot is due to the script having an _export_ function and needs to have the vars exported in the same shell session as the other commands.**
 
-    ![Script's output](./03.png)
+    ![Script's output](./02.png)
+
+- Now it is necessary to connect to the Azure Arc-enabled server and allow connections on the Connected Machine agent, to do that connect to the server and open an administrative session and run the command:
+
+  ```shell
+    azcmagent config set incomingconnections.ports 22
+  ```
+
+    ![Set Agents incomming connections](./03.png)
 
 ## SSH connection test
 
-- Once the script has finished its run, you should be able to SSH to the Azure Arc-enabled server by running: 
+- Once the script has finished its run, you should be able to SSH to the Azure Arc-enabled server by running:
 
   ```shell
-    . ./enable_ssh.sh
+    az ssh arc --resource-group <resource_group> --name <arc_enabled_server> --local-user <username>
+  ```
+
+    ![Test SSH connection](./04.png)
+
+  > **NOTE: if your Arc-enabled server uses other authentication methods make sure to review the [az ssh arc documentation](https://docs.microsoft.com/en-us/cli/azure/ssh?view=azure-cli-latest#az-ssh-arc)**
+
+## Cleanup
+
+To disable SSH access to an Azure Arc-enabled server, run the the command:
+
+  ```shell
+  az rest --method delete --uri https://management.azure.com/subscriptions/<subscription>/resourceGroups/<resourcegroup>/providers/Microsoft.HybridCompute/machines/<arc enabled server name>/providers/Microsoft.HybridConnectivity/endpoints/default?api-version=2021-10-06-preview
+  ```
+
+On the Azure Arc enabled-server's operating system, remove the configured port by running the command below on the VM:
+
+  ```shell
+  azcmagent config set incomingconnections.ports ""
   ```
