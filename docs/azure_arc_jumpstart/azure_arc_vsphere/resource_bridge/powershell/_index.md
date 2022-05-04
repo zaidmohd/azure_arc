@@ -58,6 +58,14 @@ The following README will guide you on how to use the provided PowerShell script
 
     > **NOTE: It is optional but highly recommended to scope the SP to a specific [Azure subscription and resource group](https://docs.microsoft.com/en-us/powershell/module/az.resources/new-azadserviceprincipal?view=azps-5.4.0)**
 
+- Get the ConnectedVMwarevSphere resource provider Id.
+
+  ```shell
+  az ad sp show --id 'ac9dc5fe-b644-4832-9d03-d9f1ab70c5f7' --query '{name:displayName,objectId:objectId}'
+  ```
+  
+    ![Screenshot of Azure resource provider for vSphere](./01.png)
+
 - As mentioned, this guide starts at the point where you already have an up and running VMware environment managed by vCenter. The automation will be run from a PowerShell window on a computer (can be your local computer) that has network connectivity to vCenter.
 
     > **NOTE: the script will automatically uninstall any pre-existing Azure CLI versions in the workstation and will deploy the latest 64 bit version, as it is a requirement to deploy the Resource Bridge**
@@ -99,8 +107,9 @@ For you to get familiar with the automation and deployment flow, below is an exp
   - _'segment'_ - Name of the virtual network or segment to which the appliance VM must be connected
   - _'resourcepool'_ - the name of the resource pool to be used by the appliance
   - _'controlPlaneEndpoint'_ - IP address of the Kubernetes cluster control plane
+  - _'vSphereRP'_ - ConnectedVMwarevSphere resource provider Id 
   
-  ![Screenshot environment variables](./01.png)
+  ![Screenshot environment variables](./02.png)
 
 - Once you have provided all of the required environment variables. Open an administrative PowerShell window and run the script with the command:
 
