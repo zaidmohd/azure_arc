@@ -8,7 +8,7 @@ description: >
 
 ## Use Azure Private Link to securely connect networks to Azure Arc
 
-The following README will guide you on how to use [Azure Private Link](https://docs.microsoft.com/azure/private-link/private-link-overview) to securely connect from an Azure Arc-enabled server to Azure using a VPN. [This feature](https://docs.microsoft.com/azure/azure-arc/servers/private-link-security) allows you to connect privately to Azure Arc without opening up public network access but rather using private endpoints over a VPN or ExpressRoute connection, ensuring that all traffic is being sent to Azure privately.
+The following Jumpstart scenario will guide you on how to use [Azure Private Link](https://docs.microsoft.com/azure/private-link/private-link-overview) to securely connect from an Azure Arc-enabled server to Azure using a VPN. [This feature](https://docs.microsoft.com/azure/azure-arc/servers/private-link-security) allows you to connect privately to Azure Arc without opening up public network access but rather using private endpoints over a VPN or ExpressRoute connection, ensuring that all traffic is being sent to Azure privately.
 
 In this guide, you will emulate a hybrid environment connected to Azure over a VPN with hybrid resources that will be Azure Arc-enabled, and Azure Private Link Scope will be used to connect over a private connection. To complete this process you deploy a single ARM template that will:
 
@@ -32,7 +32,7 @@ In this guide, you will emulate a hybrid environment connected to Azure over a V
     git clone https://github.com/microsoft/azure_arc.git
     ```
 
-- [Install or update Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest). Azure CLI should be running version 2.25.0** or later. Use ```az --version``` to check your current installed version.
+- [Install or update Azure CLI](https://docs.microsoft.com/cli/azure/install-azure-cli?view=azure-cli-latest). Azure CLI should be running version 2.25.0** or later. Use ```az --version``` to check your current installed version.
 
 - Azure Arc-enabled servers depends on the following Azure resource providers in your subscription in order to use this service. Registration is an asynchronous process, and registration may take approximately 10 minutes.
 
