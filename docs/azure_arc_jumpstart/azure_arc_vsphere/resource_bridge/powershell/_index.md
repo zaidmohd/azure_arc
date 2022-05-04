@@ -117,40 +117,55 @@ For you to get familiar with the automation and deployment flow, below is an exp
   .\vCenter_onboarding.ps1
   ```
 
-  ![Script's output](./02.png)
+  ![Screenshot showing script output](./03.png)
 
-  ![Script's output](./03.png)
+  ![Screenshot showing script output](./04.png)
 
-  ![Script's output](./04.png)
+  ![Screenshot showing script output](./05.png)
 
-  ![Script's output](./05.png)
+  ![Screenshot showing script output](./06.png)
 
 - While the script is running, from vCenter you should be able to see a running task:
 
-  ![vCenter task](./06.png)
-
-- Once the script has finished its run, you should see a message as the one shown below:
-
-  ![Success message](./08.png)
+  ![Screenshot showing vCenter task](./07.png)
   
-  ![Success message](./07.png)
+  ![Screenshot showing vCenter task](./08.png)
+
+  ![Screenshot showing script output](./09.png)
   
-
-- Tasks in vCenter should show a "Completed" status and a new VM should be part of your inventory
-
-  ![Completed tasks](./09.png)
-
-  ![Added VM](./10.png)
+  ![Screenshot showing script output](./10.png)
+  
+   ![Screenshot showing script output](./11.png)
+   
+   ![Screenshot showing script output](./12.png)
+    
+   ![Screenshot showing script output](./13.png)
+     
+   ![Screenshot showing script output](./14.png)
+   
+   ![Screenshot showing script output](./15.png)
+   
+   ![Screenshot showing script output](./16.png)
+   
+   ![Screenshot showing script output](./17.png)
 
 - From the Azure Portal, in the resource group you should see three new resources, including a VMware vCenter:
 
-  ![Resources in Portal](./11.png)
+  ![Resources in Portal](./18.png)
 
-  ![VMware vCenter](./12.png)
+  ![Connected VMware vCenter](./19.png)
 
-- You should also be able to get a list of VMs that are managed by the vCenter:
+- You should also be able to get a list of VMs, resource pools, templates, networks and data stores that are managed by the vCenter:
 
-  ![VM list](./13.png)
+  ![VM list](./20.png)
+  
+  ![Resource pools list](./21.png)
+  
+  ![Templates list](./22.png)
+  
+  ![Networks list](./23.png)
+  
+  ![Data stores list](./24.png)
 
 ## Clean up environment
 
@@ -158,15 +173,15 @@ Complete the following steps to clean up your environment:
 
 - If you want to delete the entire Azure resources, simply delete the deployment resource group from the Azure portal.
      
-    ![Screenshot showing Azure resource group deletion](./14.png)
+    ![Screenshot showing Azure resource group deletion](./25.png)
     
 - From the vSphere client, power Off the appliance and remove from disk.
 
-    ![Screenshot showing powering off the appliance from vSphere client](./15.png)
+    ![Screenshot showing powering off the appliance from vSphere client](./26.png)
 
-    ![Screenshot showing deleting the appliance from vSphere client](./16.png)
+    ![Screenshot showing deleting the appliance from vSphere client](./27.png)
     
 - From the vSphere client, remove the appliance template from disk.
 
-    ![Screenshot showing deleting the appliance template from vSphere client](./17.png)
+    ![Screenshot showing deleting the appliance template from vSphere client](./28.png)
 
