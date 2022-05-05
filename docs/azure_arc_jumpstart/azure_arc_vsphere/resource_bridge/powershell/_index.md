@@ -149,37 +149,37 @@ For you to get familiar with the automation and deployment flow, below is an exp
   
   ![Screenshot showing script output](./10.png)
   
-   ![Screenshot showing script output](./11.png)
+  ![Screenshot showing script output](./11.png)
    
-   ![Screenshot showing script output](./12.png)
+  ![Screenshot showing script output](./12.png)
     
-   ![Screenshot showing script output](./13.png)
+  ![Screenshot showing script output](./13.png)
      
-   ![Screenshot showing script output](./14.png)
+  ![Screenshot showing script output](./14.png)
    
-   ![Screenshot showing script output](./15.png)
+  ![Screenshot showing script output](./15.png)
    
-   ![Screenshot showing script output](./16.png)
+  ![Screenshot showing script output](./16.png)
    
-   ![Screenshot showing script output](./17.png)
+  ![Screenshot showing script output](./17.png)
 
 - From the Azure portal, in the resource group, you should see three new resources, including the VMware vCenter.
 
-  ![Resources in Portal](./18.png)
+  ![Screenshot showing the Azure Arc resources in the Azure Portal](./18.png)
 
-  ![Connected VMware vCenter](./19.png)
+  ![Screenshot showing the connected VMware vCenter](./19.png)
 
 - You should also be able to get a list of VMs, resource pools, templates, networks and data stores that are managed by the vCenter.
 
-  ![VM list](./20.png)
+  ![Screenshot showing the Azure Arc virtual machines list](./20.png)
   
-  ![Resource pools list](./21.png)
+  ![Screenshot showing the Resource pools list](./21.png)
   
-  ![Templates list](./22.png)
+  ![Screenshot showing the Templates list](./22.png)
   
-  ![Networks list](./23.png)
+  ![Screenshot showing the Networks list](./23.png)
   
-  ![Data stores list](./24.png)
+  ![Screenshot showing the Data stores list](./24.png)
 
 ## Clean up environment
 
