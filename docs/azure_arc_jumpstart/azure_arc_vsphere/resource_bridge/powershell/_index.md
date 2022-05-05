@@ -92,7 +92,7 @@ For you to get familiar with the automation and deployment flow, below is an exp
 
 - User is editing the onboarding PowerShell script to match the environment (1-time edit).
 
-- User will run the script from the local workstation.
+- User will run the script from their local workstation or alternatively, a workstation with the required vCenter access.
 
 - User will verify the correct onboarding.
 
