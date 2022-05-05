@@ -90,7 +90,7 @@ For you to get familiar with the automation and deployment flow, below is an exp
 
 - User will run the script from the local workstation.
 
-- User will verify the correct onboarding.
+- User will verify the correct onboarding of the Azure Arc resource bridge onto the VMware vSphere environment.
 
 ## Connect VMware vCenter Server to Azure Arc
 
