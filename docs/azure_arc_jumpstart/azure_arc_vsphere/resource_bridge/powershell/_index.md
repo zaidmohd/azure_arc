@@ -68,7 +68,7 @@ The following README will guide you on how to use the provided PowerShell script
 
 ### vCenter Prerequisites
 
-- A vCenter Server with version 6.7.
+- VMware vSphere vCenter Server v6.7.
 
 - A virtual network that can provide internet access, directly or through a proxy. It must also be possible for VMs on this network to communicate with the vCenter server on TCP port (usually 443).
 
