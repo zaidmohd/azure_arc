@@ -169,7 +169,7 @@ For you to get familiar with the automation and deployment flow, below is an exp
 
   ![Connected VMware vCenter](./19.png)
 
-- You should also be able to get a list of VMs, resource pools, templates, networks and data stores that are managed by the vCenter:
+- You should also be able to get a list of VMs, resource pools, templates, networks and data stores that are managed by the vCenter.
 
   ![VM list](./20.png)
   
