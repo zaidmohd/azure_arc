@@ -163,7 +163,7 @@ For you to get familiar with the automation and deployment flow, below is an exp
    
    ![Screenshot showing script output](./17.png)
 
-- From the Azure Portal, in the resource group you should see three new resources, including a VMware vCenter:
+- From the Azure portal, in the resource group, you should see three new resources, including the VMware vCenter.
 
   ![Resources in Portal](./18.png)
 
