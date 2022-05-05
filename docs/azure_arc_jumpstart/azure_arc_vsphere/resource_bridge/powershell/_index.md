@@ -127,7 +127,7 @@ For you to get familiar with the automation and deployment flow, below is an exp
   
   ![Screenshot environment variables](./02.png)
 
-- Once you have provided all of the required environment variables. Open an administrative PowerShell window and run the script with the command:
+- Once you have provided all of the required environment variables, open a PowerShell window (as an Administrator) and run the script with the command:
 
   ```powershell
   .\vCenter_onboarding.ps1
