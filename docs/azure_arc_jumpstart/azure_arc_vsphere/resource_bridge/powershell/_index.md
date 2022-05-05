@@ -10,7 +10,7 @@ description: >
 
 The following README will guide you on how to use the provided PowerShell script to deploy the [Azure Arc resource bridge](https://docs.microsoft.com/azure/azure-arc/resource-bridge/overview) in your vSphere environment to connect your vCenter Server to Azure Arc.
 
-> **NOTE:  This guide will not provide instructions on how to deploy and set up your VMware environment, it must be already provisioned.**
+> **NOTE:  This Jumpstart scenario assumes you already have a working VMware vSphere environment and is not covering VMware-specific best practices and design recommendations.**
 
 ## Prerequisites
 
