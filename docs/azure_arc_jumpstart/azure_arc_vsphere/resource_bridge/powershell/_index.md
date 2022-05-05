@@ -74,7 +74,7 @@ The following README will guide you on how to use the provided PowerShell script
 
 - At least one free IP address on the above network that isn't in the DHCP range. At least three free IP addresses if there's no DHCP server on the network.
 
-- A resource pool or a cluster with a minimum capacity of 16 GB of RAM and four vCPUs.
+- A vSphere resource pool or a cluster with a minimum capacity of 16 GB of RAM and four vCPUs.
 
 - A datastore with a minimum of 100 GB of free disk space available through the resource pool or cluster.
 
