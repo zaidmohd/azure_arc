@@ -78,6 +78,10 @@ The following README will guide you on how to use the provided PowerShell script
 
 - A vSphere datastore with a minimum of 100 GB of free disk space.
 
+- A vSphere account [assigned](https://docs.vmware.com/en/VMware-vSphere/6.7/com.vmware.vsphere.security.doc/GUID-18071E9A-EED1-4968-8D51-E0B4F526FDA3.html) with the following [permissions](https://docs.microsoft.com/azure/azure-arc/vmware-vsphere/quick-start-connect-vcenter-to-arc-using-script#vsphere-account):
+    - Read all inventory.
+    - Deploy and update VMs to all the resource pools (or clusters), networks, and VM templates that you want to use with Azure Arc.
+
 As mentioned, this guide starts at the point where you already have an up and running VMware vSphere environment managed by vCenter. The automation will be run from a PowerShell window on a computer (which can be your local computer) that has network connectivity to vCenter.
 
     > **NOTE: the script will automatically uninstall any pre-existing Azure CLI versions in the workstation and will deploy the latest 64-bit version, as it is a requirement to deploy the Azure Arc resource bridge**
@@ -90,7 +94,7 @@ For you to get familiar with the automation and deployment flow, below is an exp
 
 - User will run the script from the local workstation.
 
-- User will verify the correct onboarding of the Azure Arc resource bridge onto the VMware vSphere environment.
+- User will verify the correct onboarding.
 
 ## Connect VMware vCenter Server to Azure Arc
 
