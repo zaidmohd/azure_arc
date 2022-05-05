@@ -76,7 +76,7 @@ The following README will guide you on how to use the provided PowerShell script
 
 - A vSphere resource pool or a cluster with a minimum capacity of 16 GB of RAM and four vCPUs.
 
-- A datastore with a minimum of 100 GB of free disk space available through the resource pool or cluster.
+- A vSphere datastore with a minimum of 100 GB of free disk space.
 
 As mentioned, this guide starts at the point where you already have an up and running VMware vSphere environment managed by vCenter. The automation will be run from a PowerShell window on a computer (which can be your local computer) that has network connectivity to vCenter.
 
