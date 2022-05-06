@@ -106,11 +106,12 @@ The following Jumpstart scenario will guide you on how to use the provided [Azur
 For you to get familiar with the automation and deployment flow, below is an explanation.
 
 - User is editing the environment variables in the Shell script file (1-time edit) which then be used throughout the deployment.
-- User is running the shell script. The script will:
+- User is uploading the script to Azure Cloud Shell and running the shell script. The script will:
   - Connect to Azure using SPN credentials.
-  - Get AKS credentials
-  - Install Azure Arc CLI extensions
-  - Connecting the cluster to Azure Arc
+  - Get AKS credentials.
+  - Install Azure Arc CLI extensions.
+  - Connecting the cluster to Azure Arc.
+- User is verifying the Arc-enabled Kubernetes cluster.
 
 ## Connecting to Azure Arc
 
