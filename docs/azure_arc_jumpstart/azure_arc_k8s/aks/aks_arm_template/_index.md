@@ -73,7 +73,7 @@ The following Jumpstart scenario will guide you on how to use the provided [Azur
 
   ![Screenshot of Azure ARM template](./01.png)
 
-  To deploy the ARM template, navigate to the [deployment folder](https://github.com/microsoft/azure_arc/tree/main/azure_arc_k8s_jumpstart/aks/arm_template) and run the below command:
+- To deploy the ARM template, navigate to the [deployment folder](https://github.com/microsoft/azure_arc/tree/main/azure_arc_k8s_jumpstart/aks/arm_template) and run the below command:
 
   ```shell
   az group create --name <Name of the Azure resource group> --location <Azure Region>
@@ -101,13 +101,24 @@ The following Jumpstart scenario will guide you on how to use the provided [Azur
 
   ![Screenshot of Azure Portal showing AKS resource](./03.png)
 
+## Automation Flow
+
+For you to get familiar with the automation and deployment flow, below is an explanation.
+
+- User is editing the environment variables in the Shell script file (1-time edit) which then be used throughout the deployment.
+- User is running the shell script. The script will:
+  - Connect to Azure using SPN credentials.
+  - Get AKS credentials
+  - Install Azure Arc CLI extensions
+  - Connecting the cluster to Azure Arc
+
 ## Connecting to Azure Arc
 
 - Now that you have a running AKS cluster, edit the environment variables section in the included [az_connect_aks](https://github.com/microsoft/azure_arc/blob/main/azure_arc_k8s_jumpstart/aks/arm_template/scripts/az_connect_aks.sh) shell script.
 
   ![Screenshot of az_connect_aks shell script](./04.png)
 
-For Example:
+  For example:
 
   ![Screenshot of az_connect_aks shell script](./05.png)
 
@@ -122,7 +133,6 @@ For Example:
   ![Screenshot showing upload of file to Cloud Shell](./07.png)
 
   ![Screenshot showing upload of file to Cloud Shell](./08.png)
-
 
 - Once the script run has finished, the AKS cluster will be projected as a new Azure Arc cluster resource.
 
