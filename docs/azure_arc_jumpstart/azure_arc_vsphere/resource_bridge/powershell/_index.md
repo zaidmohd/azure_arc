@@ -134,6 +134,8 @@ For you to get familiar with the automation and deployment flow, below is an exp
   ```
 
   ![Screenshot showing script output](./03.png)
+  
+  > **NOTE: Azure Arc-enabled VMware vSphere is in Preview and as a result, versions captured in the scenario's various screenshots are subject to change.
 
   ![Screenshot showing script output](./04.png)
 
