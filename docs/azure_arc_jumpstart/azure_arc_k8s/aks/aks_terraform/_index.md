@@ -134,9 +134,9 @@ For you to get familiar with the automation and deployment flow, below is an exp
 
     ![Screenshot showing Cloud Shell upload functionality](./09.png)
 
-    ![Screenshot showing Cloud Shell upload functionality](./10.png)
-
 - Once the script run has finished, the AKS cluster will be projected as a new Azure Arc-enabled Kubernetes resource.
+
+    ![Screenshot showing Cloud Shell upload functionality](./10.png)
 
     ![Screenshot showing Azure portal with Azure Arc-enabled resource](./11.png)
 
