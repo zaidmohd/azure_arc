@@ -97,9 +97,9 @@ The following Jumpstart scenario will guide you on how to use the provided [Azur
 
 - Once the ARM template deployment is completed, a new AKS cluster in a new Azure resource group is created.
 
-  ![Screenshot of Azure Portal showing AKS resource](./02.png)
+  ![Screenshot of Azure portal showing AKS resource](./02.png)
 
-  ![Screenshot of Azure Portal showing AKS resource](./03.png)
+  ![Screenshot of Azure portal showing AKS resource](./03.png)
 
 ## Automation Flow
 
