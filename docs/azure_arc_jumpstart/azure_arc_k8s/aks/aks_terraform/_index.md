@@ -86,7 +86,7 @@ In case the AKS service is not available in your region, you can change the AKS 
     Set-Item -Path env:TF_VAR_client_id
     ```
 
-- Navigate to the [terraform folder](https://github.com/microsoft/azure_arc/tree/main/azure_arc_k8s_jumpstart/aks/terraform)and run the *`terraform init`* command which will download the Terraform AzureRM provider.
+- Navigate to the [terraform folder](https://github.com/microsoft/azure_arc/tree/main/azure_arc_k8s_jumpstart/aks/terraform) and run the *`terraform init`* command which will download the Terraform AzureRM provider.
 
     ![Screenshot showing terraform init being run](./01.png)
 
