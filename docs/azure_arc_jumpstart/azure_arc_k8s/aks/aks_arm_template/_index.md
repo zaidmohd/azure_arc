@@ -137,7 +137,7 @@ For you to get familiar with the automation and deployment flow, below is an exp
 
 - Once the script run has finished, the AKS cluster will be projected as a new Azure Arc cluster resource.
 
-  ![Screenshot showing Azure Portal with Azure Arc-enabled Kubernetes resource](./09.png)
+  ![Screenshot showing Azure portal with Azure Arc-enabled Kubernetes resource](./09.png)
 
   ![Screenshot showing Azure Portal with Azure Arc-enabled Kubernetes resource](./10.png)
 
