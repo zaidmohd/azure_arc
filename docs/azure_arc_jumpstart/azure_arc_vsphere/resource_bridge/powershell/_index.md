@@ -102,31 +102,31 @@ For you to get familiar with the automation and deployment flow, below is an exp
 ## Connect VMware vCenter Server to Azure Arc
 
 - Change the environment variables according to your environment:
-  - _'location'_ - the Azure region you want to deploy to
-  - _'subscriptionId'_ - your subscription ID
-  - _'resourceGroupName'_ - the name of the Azure resource group you will create your resources in
-  - _'applianceName'_ - a name for the Azure Arc resource bridge appliance
-  - _'customLocationName'_ - a name for the Azure Arc custom location
-  - _'vcenterName'_ - your vCenter name
-  - _'vcenterFqdn'_ - your vCenter fully qualified name
-  - _'vcenterUsername'_ - username to authenticate to vCenter
-  - _'vcenterPassword'_ - password to authenticate to vCenter
-  - _'spnClientId'_ - your service principal App ID
-  - _'spnClientSecret'_ - your service principal password
-  - _'spnTenantId'_ - your Azure AD tenant ID
-  - _'vmTemplate'_ - the Arc appliance template name
-  - _'datacenter'_ - the vSphere datacenter where the appliance will be deployed
-  - _'datastore'_ - the vSphere datastore name where the appliance will be deployed
-  - _'folder'_ - the vSphere folder where the template and appliance will be deployed
-  - _'dnsServer'_ - DNS server to be used for the appliance
-  - _'gateway'_ - Gateway address to be used for the appliance
-  - _'ipAddressPrefix'_ - Network address in CIDR notation to be used by the appliance
-  - _'k8sNodeIpPoolStart'_ - IP range start for the IPs to be used by the appliance
-  - _'k8sNodeIpPoolEnd'_ - IP range end for the IPs to be used by the appliance
-  - _'segment'_ - Name of the virtual network or segment to which the appliance VM must be connected
-  - _'resourcePool'_ - the name of the vSphere resource pool to be used by the appliance
-  - _'controlPlaneEndpoint'_ - IP address of the Kubernetes cluster control plane
-  - _'vSphereRP'_ - _ConnectedVMwarevSphere_ resource provider Id 
+  - _`location`_ - the Azure region you want to deploy to
+  - _`subscriptionId`_ - your subscription ID
+  - _`resourceGroupName`_ - the name of the Azure resource group you will create your resources in
+  - _`applianceName`_ - a name for the Azure Arc resource bridge appliance
+  - _`customLocationName`_ - a name for the Azure Arc custom location
+  - _`vcenterName`_ - your vCenter name
+  - _`vcenterFqdn`_ - your vCenter fully qualified name
+  - _`vcenterUsername`_ - username to authenticate to vCenter
+  - _`vcenterPassword`_ - password to authenticate to vCenter
+  - _`spnClientId`_ - your service principal App ID
+  - _`spnClientSecret`_ - your service principal password
+  - _`spnTenantId`_ - your Azure AD tenant ID
+  - _`vmTemplate`_ - the Arc appliance template name
+  - _`datacenter`_ - the vSphere datacenter where the appliance will be deployed
+  - _`datastore`_ - the vSphere datastore name where the appliance will be deployed
+  - _`folder`_ - the vSphere folder where the template and appliance will be deployed
+  - _`dnsServer`_ - DNS server to be used for the appliance
+  - _`gateway`_ - Gateway address to be used for the appliance
+  - _`ipAddressPrefix`_ - Network address in CIDR notation to be used by the appliance
+  - _`k8sNodeIpPoolStart`_ - IP range start for the IPs to be used by the appliance
+  - _`k8sNodeIpPoolEnd`_ - IP range end for the IPs to be used by the appliance
+  - _`segment`_ - Name of the virtual network or segment to which the appliance VM must be connected
+  - _`resourcePool`_ - the name of the vSphere resource pool to be used by the appliance
+  - _`controlPlaneEndpoint`_ - IP address of the Kubernetes cluster control plane
+  - _`vSphereRP`_ - _ConnectedVMwarevSphere_ resource provider Id 
   
   ![Screenshot environment variables](./02.png)
 
