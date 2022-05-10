@@ -97,8 +97,6 @@ For you to get familiar with the automation and deployment flow, below is an exp
 
 4. User tests SSH connection.
 
-    ![Diagram](./01.png)
-
 ## Deployment
 
 - To run the automation, navigate to the [deployment folder](https://github.com/microsoft/azure_arc/tree/main/azure_arc_servers_jumpstart/ssh) and edit the environment section of the [shell script](https://github.com/microsoft/azure_arc/tree/main/azure_arc_servers_jumpstart/ssh/enable_ssh.sh)
@@ -107,7 +105,7 @@ For you to get familiar with the automation and deployment flow, below is an exp
   - _`resourcegroup`_: Resource Group where your Azure Arc-enabled server is registered to.
   - _`arc_server`_: Name of your Azure Arc-enabled server as it is shown in the Azure Portal.
 
-    ![Parameters](./02.png)
+    ![Parameters](./01.png)
 
 - From the deployment folder run the below command:
 
@@ -117,7 +115,7 @@ For you to get familiar with the automation and deployment flow, below is an exp
 
   > **NOTE: The extra dot is due to the script having an _export_ function and needs to have the vars exported in the same shell session as the other commands.**
 
-    ![Script's output](./03.png)
+    ![Script's output](./02.png)
 
 - Now it is necessary to connect to the Azure Arc-enabled server and allow connections on the Connected Machine agent, to do that connect to the server and open an administrative session and run the command:
 
@@ -125,7 +123,7 @@ For you to get familiar with the automation and deployment flow, below is an exp
     azcmagent config set incomingconnections.ports 22
   ```
 
-    ![Set Agents incomming connections](./04.png)
+    ![Set Agents incomming connections](./03.png)
 
 ## SSH connection test
 
@@ -135,7 +133,7 @@ For you to get familiar with the automation and deployment flow, below is an exp
     az ssh arc --resource-group <resource_group> --name <arc_enabled_server> --local-user <username>
   ```
 
-    ![Test SSH connection](./05.png)
+    ![Test SSH connection](./04.png)
 
   > **NOTE: if your Arc-enabled server uses other authentication methods make sure to review the [az ssh arc documentation](https://docs.microsoft.com/en-us/cli/azure/ssh?view=azure-cli-latest#az-ssh-arc)**
 
