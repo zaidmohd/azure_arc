@@ -206,10 +206,10 @@ ArcBox uses an advanced automation flow to deploy and configure all necessary re
   - _`spnTenantId`_ - Your Azure tenant id
   - _`windowsAdminUsername`_ - Client Windows VM Administrator name
   - _`windowsAdminPassword`_ - Client Windows VM Password. Password must have 3 of the following: 1 lower case character, 1 upper case character, 1 number, and 1 special character. The value must be between 12 and 123 characters long.
-  - _`myIpAddress`_ - Your local IP address. This is used to allow remote RDP connections to the Client Windows VM.
   - _`logAnalyticsWorkspaceName`_ - Unique name for the ArcBox Log Analytics workspace
   - _`flavor`_ - Use the value "ITPro" to specify that you want to deploy ArcBox for IT Pros
-
+  - _`deployBastion`_ - Set to true if you want to use Azure Bastion to connect to _ArcBox-Client_
+  
   ![Screenshot showing example parameters](./parameters.png)
 
 - Now you will deploy the ARM template. Navigate to the local cloned [deployment folder](https://github.com/microsoft/azure_arc/tree/main/azure_jumpstart_arcbox/ARM) and run the below command:
@@ -247,9 +247,9 @@ ArcBox uses an advanced automation flow to deploy and configure all necessary re
   - _`spnTenantId`_ - Your Azure tenant id
   - _`windowsAdminUsername`_ - Client Windows VM Administrator name
   - _`windowsAdminPassword`_ - Client Windows VM Password. Password must have 3 of the following: 1 lower case character, 1 upper case character, 1 number, and 1 special character. The value must be between 12 and 123 characters long.
-  - _`myIpAddress`_ - Your local IP address. This is used to allow remote RDP connections to the Client Windows VM.
   - _`logAnalyticsWorkspaceName`_ - Unique name for the ArcBox Log Analytics workspace
   - _`flavor`_ - Use the value "ITPro" to specify that you want to deploy ArcBox for IT Pros
+  - _`deployBastion`_ - Set to true if you want to use Azure Bastion to connect to _ArcBox-Client_
 
   ![Screenshot showing example parameters](./parameters_bicep.png)
 

@@ -278,6 +278,7 @@ ArcBox uses an advanced automation flow to deploy and configure all necessary re
   - _`windowsAdminPassword`_ - Client Windows VM Password. Password must have 3 of the following: 1 lower case character, 1 upper case character, 1 number, and 1 special character. The value must be between 12 and 123 characters long.
   - _`logAnalyticsWorkspaceName`_ - Unique name for the ArcBox Log Analytics workspace
   - _`flavor`_ - Use the value "DevOps" to specify that you want to deploy the Devops flavor of ArcBox
+  - _`deployBastion`_ - Set to true if you want to use Azure Bastion to connect to _ArcBox-Client_
   - _`githubUser`_ - Specify the name of your GitHub account where you cloned the Sample Apps repo
 
   ![Screenshot showing example parameters](./parameters_bugbash.png)
