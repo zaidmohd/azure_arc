@@ -95,6 +95,32 @@ ArcBox uses an advanced automation flow to deploy and configure all necessary re
 
   ![Screenshot showing az vm list-usage](./azvmlistusage.png)
 
+- Some Azure subscriptions may also have SKU restrictions that prevent deployment of specific Azure VM sizes. You can check for SKU restrictions used by ArcBox by using the below command:
+
+  ```shell
+  az vm list-skus --location <your location> --size Standard_D2s --all --output table
+  az vm list-skus --location <your location> --size Standard_D4s --all --output table
+  ```
+
+  In the screenshots below, the first screenshot shows a subscription with no SKU restrictions in West US 2. The second shows a subscription with SKU restrictions on D4s_v4 in the East US 2 region. In this case, ArcBox will not be able to deploy due to the restriction.
+
+  ![Screenshot showing az vm list-skus with no restrictions](./list_skus_unrestricted.png)
+
+  ![Screenshot showing az vm list-skus with restrictions](./list_skus.png)
+  
+- Some Azure subscriptions may also have SKU restrictions that prevent deployment of specific Azure VM sizes. You can check for SKU restrictions used by ArcBox by using the below command:
+
+  ```shell
+  az vm list-skus --location <your location> --size Standard_D2s --all --output table
+  az vm list-skus --location <your location> --size Standard_D4s --all --output table
+  ```
+
+  In the screenshots below, the first screenshot shows a subscription with no SKU restrictions in West US 2. The second shows a subscription with SKU restrictions on D4s_v4 in the East US 2 region. In this case, ArcBox will not be able to deploy due to the restriction.
+
+  ![Screenshot showing az vm list-skus with no restrictions](./list_skus_unrestricted.png)
+
+  ![Screenshot showing az vm list-skus with restrictions](./list_skus.png)
+
 - Register necessary Azure resource providers by running the following commands.
 
   ```shell
