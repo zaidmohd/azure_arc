@@ -107,7 +107,7 @@ ArcBox uses an advanced automation flow to deploy and configure all necessary re
   ![Screenshot showing az vm list-skus with no restrictions](./list_skus_unrestricted.png)
 
   ![Screenshot showing az vm list-skus with restrictions](./list_skus.png)
-  
+
 - Some Azure subscriptions may also have SKU restrictions that prevent deployment of specific Azure VM sizes. You can check for SKU restrictions used by ArcBox by using the below command:
 
   ```shell
@@ -129,7 +129,7 @@ ArcBox uses an advanced automation flow to deploy and configure all necessary re
   az provider register --namespace Microsoft.AzureArcData --wait
   ```
 
-- Create Azure service principal (SP). To deploy ArcBox, an Azure service principal assigned with multiple role-based access control (RBAC) roles is required:
+- Create an Azure service principal (SP). To deploy ArcBox, an Azure service principal assigned with multiple role-based access control (RBAC) roles is required:
 
   - "Contributor" - Required for provisioning Azure resources
   - **(Optional)** "User Access Administrator" - Required for automatically onboarding the Azure Arc-enabled SQL Server resource
@@ -180,18 +180,6 @@ ArcBox uses an advanced automation flow to deploy and configure all necessary re
   ```shell
   ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
   ```
-
-## ArcBox Azure Region Compatibility
-
-ArcBox must be deployed to one of the following regions. **Deploying ArcBox outside of these regions may result in unexpected results or deployment errors.**
-
-- East US
-- East US 2
-- West US 2
-- North Europe
-- France Central
-- UK South
-- Southeast Asia
 
 ## Deployment Option 1: Azure portal
 
