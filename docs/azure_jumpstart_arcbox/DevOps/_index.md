@@ -281,7 +281,7 @@ ArcBox uses an advanced automation flow to deploy and configure all necessary re
   - _`deployBastion`_ - Set to true if you want to use Azure Bastion to connect to _ArcBox-Client_
   - _`githubUser`_ - Specify the name of your GitHub account where you cloned the Sample Apps repo
 
-  ![Screenshot showing example parameters](./parameters_bugbash.png)
+  ![Screenshot showing example parameters](./parameters.png)
 
 - Now you will deploy the Bicep file. Navigate to the local cloned [deployment folder](https://github.com/microsoft/azure_arc/tree/arcbox_devops/azure_jumpstart_arcbox/bicep) and run the below command:
 
