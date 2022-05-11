@@ -235,7 +235,7 @@ ArcBox uses an advanced automation flow to deploy and configure all necessary re
   - _`spnTenantId`_ - Your Azure tenant id
   - _`windowsAdminUsername`_ - Client Windows VM Administrator name
   - _`windowsAdminPassword`_ - Client Windows VM Password. Password must have 3 of the following: 1 lower case character, 1 upper case character, 1 number, and 1 special character. The value must be between 12 and 123 characters long.
-  - _`logAnalyticsWorkspaceName`_ - Unique name for the ArcBox Log Analytics workspace
+  - _`logAnalyticsWorkspaceName`_ - Name for the ArcBox Log Analytics workspace
   - _`flavor`_ - Use the value "DevOps" to specify that you want to deploy the DevOps flavor of ArcBox
   - _`githubUser`_ - Specify the name of your GitHub account where you cloned the Sample Apps repo
 
@@ -276,7 +276,7 @@ ArcBox uses an advanced automation flow to deploy and configure all necessary re
   - _`spnTenantId`_ - Your Azure tenant id
   - _`windowsAdminUsername`_ - Client Windows VM Administrator name
   - _`windowsAdminPassword`_ - Client Windows VM Password. Password must have 3 of the following: 1 lower case character, 1 upper case character, 1 number, and 1 special character. The value must be between 12 and 123 characters long.
-  - _`logAnalyticsWorkspaceName`_ - Unique name for the ArcBox Log Analytics workspace
+  - _`logAnalyticsWorkspaceName`_ - Name for the ArcBox Log Analytics workspace
   - _`flavor`_ - Use the value "DevOps" to specify that you want to deploy the Devops flavor of ArcBox
   - _`deployBastion`_ - Set to true if you want to use Azure Bastion to connect to _ArcBox-Client_
   - _`githubUser`_ - Specify the name of your GitHub account where you cloned the Sample Apps repo
@@ -313,6 +313,7 @@ ArcBox uses an advanced automation flow to deploy and configure all necessary re
   spn_tenant_id       = "33572583-d294-5b56-c4e6-dcf9a297ec17"
   client_admin_ssh    = "C:/Temp/rsa.pub"
   deployment_flavor   = "DevOps"
+  deploy_bastion      = false
   github_username     = "GitHubUser"
   ```
 
@@ -324,10 +325,11 @@ ArcBox uses an advanced automation flow to deploy and configure all necessary re
   - **_`spn_tenant_id`_** - Your Azure tenant id
   - **_`client_admin_ssh`_** - SSH public key path, used for Linux VMs
   - **_`deployment_flavor`_** - Use the value "DevOps" to specify that you want to deploy the DevOps flavor of ArcBox
-  - **_`client_admin_username`_** - Admin username for Windows & Linux VMs
-  - **_`client_admin_password`_** - Admin password for Windows VMs. Password must have 3 of the following: 1 lower case character, 1 upper case character, 1 number, and 1 special character. The value must be between 12 and 123 characters long.
+  - _`deployBastion`_ - Set to true if you want to use Azure Bastion to connect to _ArcBox-Client_
+  - _`client_admin_username`_ - Admin username for Windows & Linux VMs
+  - _`client_admin_password`_ - Admin password for Windows VMs. Password must have 3 of the following: 1 lower case character, 1 upper case character, 1 number, and 1 special character. The value must be between 12 and 123 characters long.
   - **_`workspace_name`_** - Unique name for the ArcBox Log Analytics workspace
-  - **_`github_username`_** - Specify the name of your GitHub account where you cloned the Sample Apps repo
+  - _`github_username`_ - Specify the name of your GitHub account where you cloned the Sample Apps repo
 
   > **NOTE: Any variables in bold are required. If any optional parameters are not provided, defaults will be used.**
 
