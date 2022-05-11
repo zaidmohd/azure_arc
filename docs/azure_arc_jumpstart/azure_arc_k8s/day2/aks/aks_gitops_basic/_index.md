@@ -235,4 +235,4 @@ With Namespace-level GitOps config, the goal is to have Kubernetes resources dep
 
 - Upon committing the changes, notice how the Kubernetes Pod rolling upgrade will start. Once the Pod is up & running, the new "Hello Arc" application version window will show the new message, showing the rolling upgrade is completed and the GitOps flow is successful.
 
-    ![New side-by-side view of terminal, "Hello Arc" GitHub repo and the application open in a web browser](./24.png)
+    ![New side-by-side view of terminal, "Hello Arc" GitHub repo and the application open in a web browser](./22.png)
