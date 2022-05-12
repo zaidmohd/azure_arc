@@ -117,7 +117,7 @@ For you to get familiar with the automation and deployment flow, below is an exp
 
     ![Script's output](./02.png)
 
-- Now it is necessary to connect to the Azure Arc-enabled server and allow connections on the Connected Machine agent, to do that connect to the server and open an administrative session and run the command:
+- It is required to connect to the Azure Arc-enabled server for allowing connectivity to the Connected Machine agent. To do that, connect to the server and open an administrative session and run the below command.
 
   ```shell
     azcmagent config set incomingconnections.ports 22
