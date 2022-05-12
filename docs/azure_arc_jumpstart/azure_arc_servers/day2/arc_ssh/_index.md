@@ -1,7 +1,7 @@
 ---
 type: docs
-title: "SSH Access"
-linkTitle: "SSH Access"
+title: "Server SSH Access"
+linkTitle: "Server SSH Access"
 weight: 13
 description: >
 ---
