@@ -102,8 +102,8 @@ For you to get familiar with the automation and deployment flow, below is an exp
 - To run the automation, navigate to the [deployment folder](https://github.com/microsoft/azure_arc/tree/main/azure_arc_servers_jumpstart/ssh) and edit the environment section of the [shell script](https://github.com/microsoft/azure_arc/tree/main/azure_arc_servers_jumpstart/ssh/enable_ssh.sh)
 
   - _`subscription`_: your Azure subscription ID.
-  - _`resourcegroup`_: Resource Group where your Azure Arc-enabled server is registered to.
-  - _`arc_server`_: Name of your Azure Arc-enabled server as it is shown in the Azure Portal.
+  - _`resourceGroup`_: Resource Group where your Azure Arc-enabled server is registered to.
+  - _`arcServer`_: Name of your Azure Arc-enabled server as it is shown in the Azure Portal.
 
     ![Parameters](./01.png)
 
