@@ -127,7 +127,7 @@ For you to get familiar with the automation and deployment flow, below is an exp
 
 ## SSH connection test
 
-- Once the script has finished its run, you should be able to SSH to the Azure Arc-enabled server by running:
+- Once the script has finished its run, you should be able to connect via SSH to the Azure Arc-enabled server by running the below command.
 
   ```shell
     az ssh arc --resource-group <resource_group> --name <arc_enabled_server> --local-user <username>
