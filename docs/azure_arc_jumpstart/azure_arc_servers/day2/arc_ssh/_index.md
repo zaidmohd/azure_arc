@@ -139,7 +139,7 @@ For you to get familiar with the automation and deployment flow, below is an exp
 
 ## Cleanup
 
-To disable SSH access to an Azure Arc-enabled server, run the the command:
+To disable SSH access to an Azure Arc-enabled server, run the below command.
 
   ```shell
   az rest --method delete --uri https://management.azure.com/subscriptions/<subscription>/resourceGroups/<resourcegroup>/providers/Microsoft.HybridCompute/machines/<arc enabled server name>/providers/Microsoft.HybridConnectivity/endpoints/default?api-version=2021-10-06-preview
