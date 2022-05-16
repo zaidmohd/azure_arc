@@ -63,7 +63,7 @@ In this guide, you will hook the AKS cluster to Azure Monitor by deploying the [
 
 ## Azure Monitor for Containers Integration
 
-* In order to keep your local environment clean and untouched, we will use [Azure Cloud Shell](https://docs.microsoft.com/azure/cloud-shell/overview) (located in the top-right corner in the Azure portal) to run the *aks_monitor_onboarding* script against the AKS connected cluster. For your convenient, both shell and PowerShell scripts are [provided](https://github.com/microsoft/azure_arc/tree/main/azure_arc_k8s_jumpstart/aks/azure_monitor).
+* In order to keep your local environment clean and untouched, we will use [Azure Cloud Shell](https://docs.microsoft.com/azure/cloud-shell/overview) (located in the top-right corner of the Azure portal) to run the *aks_monitor_onboarding* script against the AKS connected cluster. For your convenient, both shell and PowerShell scripts are [provided](https://github.com/microsoft/azure_arc/tree/main/azure_arc_k8s_jumpstart/aks/azure_monitor).
 
 * Before integrating the cluster with Azure Monitor for Containers, click on the "Insights (preview)" blade for the connected Arc cluster to show how the cluster is not currently being monitored.
 
@@ -73,7 +73,7 @@ In this guide, you will hook the AKS cluster to Azure Monitor by deploying the [
 
 * Edit the environment variables in either of the scripts to match your environment parameters, upload it to the Cloud Shell environment and run it using the ```. ./aks_monitor_onboarding.sh``` (Bash) or ```./aks_monitor_onboarding.ps1``` (PowerShell) command.
 
-    > **NOTE: The extra dot is due to the shell script has an *export* function and needs to have the vars exported in the same shell session as the rest of the commands.**
+    > **NOTE: The extra dot is due to the shell script having an _export_ function and needs to have the vars exported in the same shell session as the rest of the commands.**
 
     ![Open Azure Cloud Shell](./03.png)
 

@@ -5,6 +5,7 @@ weight: 3
 ---
 
 ## Jumpstart ArcBox for DevOps
+
 ArcBox for DevOps is a special "flavor" of ArcBox that is intended for users who want to experience Azure Arc-enabled Kubernetes capabilities in a sandbox environment.
 
 ![ArcBox architecture diagram](./arch_devops.png)
@@ -112,7 +113,7 @@ ArcBox uses an advanced automation flow to deploy and configure all necessary re
 
 ## Prerequisites
 
-- [Install or update Azure CLI to version 2.35.0 and above](https://docs.microsoft.com/cli/azure/install-azure-cli?view=azure-cli-latest). Use the below command to check your current installed version.
+- [Install or update Azure CLI to version 2.36.0 and above](https://docs.microsoft.com/cli/azure/install-azure-cli?view=azure-cli-latest). Use the below command to check your current installed version.
 
   ```shell
   az --version
@@ -122,7 +123,7 @@ ArcBox uses an advanced automation flow to deploy and configure all necessary re
 
 - Ensure that you have selected the correct subscription you want to deploy ArcBox to by using the ```az account list --query "[?isDefault]"``` command. If you need to adjust the active subscription used by Az CLI, follow [this guidance](https://docs.microsoft.com/cli/azure/manage-azure-subscriptions-azure-cli#change-the-active-subscription).
 
-- ArcBox must be deployed to one of the following regions. **Deploying ArcBox outside of these regions may result in unexpected results or deployment errors.**
+- ArcBox must be deployed to one of the following regions. **Deploying ArcBox outside of these regions may result in unexpected behavior or deployment errors.**
 
   - East US
   - East US 2
@@ -132,7 +133,7 @@ ArcBox uses an advanced automation flow to deploy and configure all necessary re
   - UK South
   - Southeast Asia
 
-- **ArcBox DevOps requires 52 DSv4-series vCPUs** when deploying with default parameters such as VM series/size. Ensure you have sufficient vCPU quota available in your Azure subscription and the region where you plan to deploy ArcBox. You can use the below Az CLI command to check your vCPU utilization.
+- **ArcBox DevOps requires 22 DSv4-series vCPUs** when deploying with default parameters such as VM series/size. Ensure you have sufficient vCPU quota available in your Azure subscription and the region where you plan to deploy ArcBox. You can use the below Az CLI command to check your vCPU utilization.
 
   ```shell
   az vm list-usage --location <your location> --output table
@@ -143,6 +144,7 @@ ArcBox uses an advanced automation flow to deploy and configure all necessary re
 - Some Azure subscriptions may also have SKU restrictions that prevent deployment of specific Azure VM sizes. You can check for SKU restrictions used by ArcBox by using the below command:
 
   ```shell
+  az vm list-skus --location <your location> --size Standard_D2s --all --output table
   az vm list-skus --location <your location> --size Standard_D4s --all --output table
   ```
 
@@ -162,7 +164,7 @@ ArcBox uses an advanced automation flow to deploy and configure all necessary re
 
   ![Screenshot showing forking sample apps repo](./apps_fork03.png)
 
-- Create Azure service principal (SP). To deploy ArcBox, an Azure service principal assigned with multiple role-based access control (RBAC) roles is required:
+- Create an Azure service principal (SP). To deploy ArcBox, an Azure service principal assigned with multiple role-based access control (RBAC) roles is required:
 
   - "Contributor" - Required for provisioning Azure resources
   - "Security admin" - Required for installing Microsoft Defender for Cloud Azure Arc-enabled Kubernetes extension and dismiss alerts
@@ -233,7 +235,7 @@ ArcBox uses an advanced automation flow to deploy and configure all necessary re
   - _`spnTenantId`_ - Your Azure tenant id
   - _`windowsAdminUsername`_ - Client Windows VM Administrator name
   - _`windowsAdminPassword`_ - Client Windows VM Password. Password must have 3 of the following: 1 lower case character, 1 upper case character, 1 number, and 1 special character. The value must be between 12 and 123 characters long.
-  - _`logAnalyticsWorkspaceName`_ - Unique name for the ArcBox Log Analytics workspace
+  - _`logAnalyticsWorkspaceName`_ - Name for the ArcBox Log Analytics workspace
   - _`flavor`_ - Use the value "DevOps" to specify that you want to deploy the DevOps flavor of ArcBox
   - _`githubUser`_ - Specify the name of your GitHub account where you cloned the Sample Apps repo
 
@@ -274,11 +276,12 @@ ArcBox uses an advanced automation flow to deploy and configure all necessary re
   - _`spnTenantId`_ - Your Azure tenant id
   - _`windowsAdminUsername`_ - Client Windows VM Administrator name
   - _`windowsAdminPassword`_ - Client Windows VM Password. Password must have 3 of the following: 1 lower case character, 1 upper case character, 1 number, and 1 special character. The value must be between 12 and 123 characters long.
-  - _`logAnalyticsWorkspaceName`_ - Unique name for the ArcBox Log Analytics workspace
+  - _`logAnalyticsWorkspaceName`_ - Name for the ArcBox Log Analytics workspace
   - _`flavor`_ - Use the value "DevOps" to specify that you want to deploy the Devops flavor of ArcBox
+  - _`deployBastion`_ - Set to true if you want to use Azure Bastion to connect to _ArcBox-Client_
   - _`githubUser`_ - Specify the name of your GitHub account where you cloned the Sample Apps repo
 
-  ![Screenshot showing example parameters](./parameters_bugbash.png)
+  ![Screenshot showing example parameters](./parameters.png)
 
 - Now you will deploy the Bicep file. Navigate to the local cloned [deployment folder](https://github.com/microsoft/azure_arc/tree/arcbox_devops/azure_jumpstart_arcbox/bicep) and run the below command:
 
@@ -310,6 +313,7 @@ ArcBox uses an advanced automation flow to deploy and configure all necessary re
   spn_tenant_id       = "33572583-d294-5b56-c4e6-dcf9a297ec17"
   client_admin_ssh    = "C:/Temp/rsa.pub"
   deployment_flavor   = "DevOps"
+  deploy_bastion      = false
   github_username     = "GitHubUser"
   ```
 
@@ -321,10 +325,11 @@ ArcBox uses an advanced automation flow to deploy and configure all necessary re
   - **_`spn_tenant_id`_** - Your Azure tenant id
   - **_`client_admin_ssh`_** - SSH public key path, used for Linux VMs
   - **_`deployment_flavor`_** - Use the value "DevOps" to specify that you want to deploy the DevOps flavor of ArcBox
-  - **_`client_admin_username`_** - Admin username for Windows & Linux VMs
-  - **_`client_admin_password`_** - Admin password for Windows VMs. Password must have 3 of the following: 1 lower case character, 1 upper case character, 1 number, and 1 special character. The value must be between 12 and 123 characters long.
+  - _`deployBastion`_ - Set to true if you want to use Azure Bastion to connect to _ArcBox-Client_
+  - _`client_admin_username`_ - Admin username for Windows & Linux VMs
+  - _`client_admin_password`_ - Admin password for Windows VMs. Password must have 3 of the following: 1 lower case character, 1 upper case character, 1 number, and 1 special character. The value must be between 12 and 123 characters long.
   - **_`workspace_name`_** - Unique name for the ArcBox Log Analytics workspace
-  - **_`github_username`_** - Specify the name of your GitHub account where you cloned the Sample Apps repo
+  - _`github_username`_ - Specify the name of your GitHub account where you cloned the Sample Apps repo
 
   > **NOTE: Any variables in bold are required. If any optional parameters are not provided, defaults will be used.**
 
@@ -388,6 +393,8 @@ By design, ArcBox does not open port 3389 on the network security group. Therefo
   ![Screenshot showing connecting to the VM using Bastion](./bastion_connect.png)
 
 - Once you log into the Client VM, multiple automated scripts will open and start running. These scripts usually take 10-20 minutes to finish and once completed the script windows will close. At this point, the deployment is complete.
+
+  > **NOTE: When using Azure Bastion, the desktop background image is not visible. Therefore some screenshots in this guide may not exactly match your experience if you are connecting to _ArcBox-Client_ with Azure Bastion.**
 
 #### Connect using just-in-time access (JIT)
 
