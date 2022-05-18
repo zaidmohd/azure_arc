@@ -13,7 +13,7 @@ weight: 3
 
 ### Release highlights
 
-- [Announcing ArcBox for DevOps](https://aka.ms/DevOpsBlog??)
+- [Announcing ArcBox for DevOps](https://aka.ms/ArcBoxDevOpsBlog)
 - New and updated Azure Arc-enabled Kubernetes scenarios
 - Azure Bastion support for Azure Arc-enabled data services and app services scenarios
 - New SSH access scenario for Azure Arc-enabled servers
