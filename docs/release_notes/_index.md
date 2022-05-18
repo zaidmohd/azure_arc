@@ -9,6 +9,17 @@ weight: 3
 
 **Release notes will be released around the first week of each month and will cover the previous month.**
 
+## May 2022
+
+### Release highlights
+
+- [Announcing ArcBox for DevOps](https://aka.ms/DevOpsBlog??)
+- New and updated Azure Arc-enabled Kubernetes scenarios
+- Azure Bastion support for Azure Arc-enabled data services and app services scenarios
+- New SSH access scenario for Azure Arc-enabled servers
+- Improvements to Open Service Mesh scenarios
+- Multiple optimizations, enhancements and bug fixes
+
 ## April 2022
 
 ### Release highlights and general Jumpstart enhancements
