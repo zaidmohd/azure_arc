@@ -25,14 +25,14 @@ ArcBox comes in multiple "flavors", or configurations, which can be selected to 
 
     ![ArcBox architecture diagram](./arch_full.png)
 
-- [ArcBox for IT Pros](https://azurearcjumpstart.io/azure_jumpstart_arcbox/ITPro)
-    ArcBox for IT Pros focuses specifically on Azure Arc-enabled servers and Azure Arc-enabled SQL Server functionality. This flavor omits anything related to Azure Arc-enabled Kubernetes or Azure Arc-enabled data services.
-
-    ![ArcBox for IT Pros architecture diagram](./arch_itpro.png)
-
 - [ArcBox for DevOps](https://azurearcjumpstart.io/azure_jumpstart_arcbox/DevOps)
     ArcBox for DevOps focuses specifically on Azure Arc-enabled Kubernetes advanced functionality. This flavor omits anything related to Azure Arc-enabled servers or Azure Arc-enabled data services.
 
     ![ArcBox for DevOps architecture diagram](./arch_devops.png)
+
+- [ArcBox for IT Pros](https://azurearcjumpstart.io/azure_jumpstart_arcbox/ITPro)
+    ArcBox for IT Pros focuses specifically on Azure Arc-enabled servers and Azure Arc-enabled SQL Server functionality. This flavor omits anything related to Azure Arc-enabled Kubernetes or Azure Arc-enabled data services.
+
+    ![ArcBox for IT Pros architecture diagram](./arch_itpro.png)
 
 To get started with one of the flavors of ArcBox, click the relevant links above to view the detailed README for each flavor.

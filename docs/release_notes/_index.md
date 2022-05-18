@@ -18,6 +18,7 @@ weight: 3
 - Azure Bastion support for Azure Arc-enabled data services and app services scenarios
 - New SSH access scenario for Azure Arc-enabled servers
 - Improvements to Open Service Mesh scenarios
+- Updated VHDX files with latest OS updates and packages
 - Multiple optimizations, enhancements and bug fixes
 
 ## April 2022
