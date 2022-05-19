@@ -93,10 +93,15 @@ ArcBox uses an advanced automation flow to deploy and configure all necessary re
 
   - East US
   - East US 2
+  - Central US
   - West US 2
   - North Europe
+  - West Europe
   - France Central
   - UK South
+  - Australia East
+  - Japan East
+  - Korea Central
   - Southeast Asia
 
 - **ArcBox Full requires 52 DSv4-series vCPUs** when deploying with default parameters such as VM series/size. Ensure you have sufficient vCPU quota available in your Azure subscription and the region where you plan to deploy ArcBox. You can use the below Az CLI command to check your vCPU utilization.
