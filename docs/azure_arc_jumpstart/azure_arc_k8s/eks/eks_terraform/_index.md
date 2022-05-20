@@ -8,7 +8,7 @@ description: >
 
 ## Deploy EKS cluster and connect it to Azure Arc using Terraform
 
-The following README will guide you on how to use the provided [Terraform](https://www.terraform.io/) plan to deploy an Amazon Web Services (AWS) [Kubernetes Engine cluster](https://aws.amazon.com/eks/) and connected it as an Azure Arc cluster resource.
+The following Jumpstart scenario will guide you on how to use the provided [Terraform](https://www.terraform.io/) plan to deploy an Amazon Web Services (AWS) [Kubernetes Engine cluster](https://aws.amazon.com/eks/) and connected it as an Azure Arc cluster resource.
 
 ## Prerequisites
 
@@ -22,7 +22,7 @@ The following README will guide you on how to use the provided [Terraform](https
 
 * [Install AWS IAM Authenticator](https://docs.aws.amazon.com/eks/latest/userguide/install-aws-iam-authenticator.html)
 
-* [Install or update Azure CLI to version 2.25.0 and above](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest). Use the below command to check your current installed version.
+* [Install or update Azure CLI to version 2.25.0 and above](https://docs.microsoft.com/cli/azure/install-azure-cli?view=azure-cli-latest). Use the below command to check your current installed version.
 
   ```shell
   az --version
@@ -49,7 +49,7 @@ The following README will guide you on how to use the provided [Terraform](https
     az account set --subscription "d4617bb1-551c-4450-88a7-f3e4d17cbe46"
     ```
 
-* [Enable subscription with](https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/resource-providers-and-types#register-resource-provider) the two resource providers for Azure Arc-enabled Kubernetes. Registration is an asynchronous process, and registration may take approximately 10 minutes.
+* [Enable subscription with](https://docs.microsoft.com/azure/azure-resource-manager/management/resource-providers-and-types#register-resource-provider) the two resource providers for Azure Arc-enabled Kubernetes. Registration is an asynchronous process, and registration may take approximately 10 minutes.
 
   ```shell
   az provider register --namespace Microsoft.Kubernetes
@@ -199,7 +199,7 @@ Now that you have a running EKS cluster, lets connect the EKS cluster to Azure A
    az group create --name "Arc-EKS-Demo" --location "eastus"
    ```
 
-   > **NOTE:  Before deploying, make sure to check the Azure Arc-enabled Kubernetes region availability [page](https://azure.microsoft.com/en-us/global-infrastructure/services/?products=azure-arc).**
+   > **NOTE:  Before deploying, make sure to check the Azure Arc-enabled Kubernetes region availability [page](https://azure.microsoft.com/global-infrastructure/services/?products=azure-arc).**
 
 * Deploy Arc binaries using Azure CLI:
 
