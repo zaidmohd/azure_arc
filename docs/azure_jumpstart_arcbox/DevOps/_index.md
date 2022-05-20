@@ -563,6 +563,10 @@ ArcBox deploys Kubernetes RBAC configuration on the bookstore application for li
 
 ArcBox uses a GitOps configuration on the OSM bookstore application to split traffic to the bookstore APIs using weighted load balancing. Follow these steps to explore this capability further:
 
+  ![Diagram of OSM bookstore app architecture](./osm_bookstore_architecture.png)
+
+  ![Diagram of OSM bookstore app traffic split](./smi_traffic_split.png)
+
 - Review the [OSM Traffic Split Policy](https://github.com/microsoft/azure-arc-jumpstart-apps/blob/main/bookstore/osm-sample/traffic-split.yaml) applied to the _ArcBox-CAPI-Data_ cluster  
 
 - To show OSM traffic split, open below windows.
