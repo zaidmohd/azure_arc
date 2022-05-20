@@ -212,7 +212,7 @@ For our scenario, notice we have two Helm charts in the "Azure Arc Jumpstart App
 
     3. A new Kubernetes pod with the new version of the application will be deployed on the cluster. Once the new pods are successfully deployed, the old one will be terminated (rolling upgrade).
 
-- To show the above flow, open 2 (ideally 3) side-by-side browser windows:
+- To show the above flow, open 2 (ideally 3) side-by-side windows:
 
   - Azure Cloud Shell running the command
   
