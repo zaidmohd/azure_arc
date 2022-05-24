@@ -443,7 +443,7 @@ After deployment is complete, its time to start exploring ArcBox. Most interacti
 
 ### ArcBox Azure Monitor workbook
 
-Open the [ArcBox Azure Monitor workbook](https://azurearcjumpstart.io/azure_jumpstart_arcbox/workbook/flavors/Full) and explore the visualizations and reports of hybrid cloud resources. A [dedicated README](https://azurearcjumpstart.io/azure_jumpstart_arcbox/workbook/flavors/Full) is available with more detail on usage of the workbook.
+Open the [ArcBox Azure Monitor workbook documentation](https://azurearcjumpstart.io/azure_jumpstart_arcbox/workbook/flavors/Full) and explore the visualizations and reports of hybrid cloud resources.
 
   ![Screenshot showing Azure Monitor workbook usage](./workbook.png)
 

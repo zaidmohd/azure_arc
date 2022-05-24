@@ -798,7 +798,7 @@ Optionally, you can explore additional GitOps and RBAC scenarios in a manual fas
 
 ### ArcBox Azure Monitor workbook
 
-Open the [ArcBox Azure Monitor workbook](https://azurearcjumpstart.io/azure_jumpstart_arcbox/workbook/flavors/DevOps) and explore the visualizations and reports of hybrid cloud resources. A [dedicated README](https://azurearcjumpstart.io/azure_jumpstart_arcbox/workbook/flavors/DevOps) is available with more detail on usage of the workbook.
+Open the [ArcBox Azure Monitor workbook documentation](https://azurearcjumpstart.io/azure_jumpstart_arcbox/workbook/flavors/DevOps) and explore the visualizations and reports of hybrid cloud resources.
 
   ![Screenshot showing Azure Monitor workbook usage](./workbook.png)
 
