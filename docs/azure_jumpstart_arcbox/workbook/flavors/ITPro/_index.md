@@ -14,17 +14,17 @@ As part of ArcBox for IT Pros, an Azure Monitor workbook is deployed to provide 
 
 ## Access the ArcBox for IT Pros workbook
 
-The Jumpstart ArcBox workbook is automatically deployed for you as part of ArcBox's advanced automation. To access the Jumpstart ArcBox workbook use the Azure Portal to follow the next steps.
+The Jumpstart ArcBox workbook is automatically deployed for you as part of ArcBox's advanced automation. To access the Jumpstart ArcBox workbook use the Azure portal to follow the next steps.
 
 - From the ArcBox resource group, select the Azure Workbook, then click "Open Workbook"
 
-![Workbook Gallery](./azure_workbook.png)
+   ![Workbook Gallery](./azure_workbook.png)
 
-![Workbook Gallery](./open_workbook.png)
+   ![Workbook Gallery](./open_workbook.png)
 
 - The Jumpstart ArcBox for IT Pros Workbook will be displayed.
 
-![Arcbox for IT Pros workbook overview](./workbook_overview.png)
+   ![Arcbox for IT Pros workbook overview](./workbook_overview.png)
 
 ## ArcBox for IT Pros Workbook capabilities
 
