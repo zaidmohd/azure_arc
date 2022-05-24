@@ -51,7 +51,7 @@ We will be using Resource Graph Explorer during this exercise to query and view 
 
 * In the query window, enter the following query and then click "Run Query":
 
-    ```kusto
+    ```console
     Resources
     | where type =~ 'Microsoft.HybridCompute/machines'
     ```
