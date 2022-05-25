@@ -86,7 +86,7 @@ Here you can see all the Azure Arc-enabled server metadata that you can query us
 
 For example, by leveraging that metadata, you could run the following query to get the number of Azure Arc-enabled servers hosted in _Amazon Web Services (AWS)_ or in _Google Cloud Platform (GCP)_:
 
-```kusto
+```console
 Resources
 | where type =~ 'Microsoft.HybridCompute/machines'
 | extend cloudProvider = tostring(properties.detectedProperties.cloudprovider)
