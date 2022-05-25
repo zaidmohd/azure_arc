@@ -65,7 +65,7 @@ We will use Resource Graph Explorer to query our hybrid server inventory.
 
 - In the query window, run the following query that will show you all Azure Arc-enabled servers in your subscription. Enter the query and then click **Run Query**:
 
-  ```console
+  ```shell
   Resources
   | where type =~ 'Microsoft.HybridCompute/machines'
   ```
@@ -86,7 +86,7 @@ We will use Resource Graph Explorer to query our hybrid server inventory.
 
 - For example, by leveraging that metadata, you could run the following query to get the number of Azure Arc-enabled servers hosted in _Amazon Web Services (AWS)_ or in _Google Cloud Platform (GCP)_:
 
-  ```console
+  ```shell
   Resources
   | where type =~ 'Microsoft.HybridCompute/machines'
   | extend cloudProvider = tostring(properties.detectedProperties.cloudprovider)
@@ -102,7 +102,7 @@ We will use Resource Graph Explorer to query our hybrid server inventory.
 
 - Let's now build a query that uses the tag we assigned before to some of our Azure Arc-enabled servers. Use the following query that includes a check for resources that have a value for the **Scenario** tag:
 
-  ```console
+  ```shell
   Resources
   | where type =~ 'Microsoft.HybridCompute/machines' and isnotempty(tags['Scenario'])
   | extend Scenario = tags['Scenario']
@@ -113,7 +113,7 @@ We will use Resource Graph Explorer to query our hybrid server inventory.
 
 - We can also use Resource Graph Explorer to list extensions installed on our Azure Arc-enabled servers:
 
-  ```console
+  ```shell
   Resources
   | where type == 'microsoft.hybridcompute/machines'
   | project id, JoinID = toupper(id), ComputerName = tostring(properties.osProfile.computerName), OSName = tostring(properties.osName)
@@ -130,7 +130,7 @@ We will use Resource Graph Explorer to query our hybrid server inventory.
 
 - As mentioned before, Azure Arc provides additional properties on the Azure Arc-enabled server resource that we can query with Resource Graph Explorer. In the following example, we list some of these key properties, like the Azure Arc Agent version installed on your Azure Arc-enabled servers:
 
-  ```console
+  ```shell
   Resources
   | where type =~ 'Microsoft.HybridCompute/machines'
   | extend arcAgentVersion = tostring(properties.['agentVersion']), osName = tostring(properties.['osName']), osVersion = tostring(properties.['osVersion']), osSku = tostring(properties.['osSku']),
