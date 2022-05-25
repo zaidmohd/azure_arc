@@ -35,110 +35,110 @@ In this scenario, we will use [Resource Graph Explorer](https://docs.microsoft.c
 
 In this first step, we will assign Azure resource tags to some of your Azure Arc-enabled servers. This gives you the ability to easily organize and manage server inventory.
 
-Enter **Servers - Azure Arc** in the top search bar in the Azure portal and select it.
+- Enter **Servers - Azure Arc** in the top search bar in the Azure portal and select it.
 
-![Screenshot showing All Services Azure Arc-enabled servers in the portal](./1.png)
+  ![Screenshot showing All Services Azure Arc-enabled servers in the portal](./1.png)
 
-Click on any of your Azure Arc-enabled servers:
+- Click on any of your Azure Arc-enabled servers:
 
-![Screenshot showing all Azure Arc-enabled servers](./2.png)
+  ![Screenshot showing all Azure Arc-enabled servers](./2.png)
 
-Click on **Tags**. Add a new tag with **Name="Scenario"** and **Value="jumpstart_azure_arc_servers_inventory"**. Click **Apply** when ready.
+- Click on **Tags**. Add a new tag with **Name="Scenario"** and **Value="jumpstart_azure_arc_servers_inventory"**. Click **Apply** when ready.
 
-![Screenshot showing how to apply a tag to an Azure Arc-enabled server](./3.png)
+  ![Screenshot showing how to apply a tag to an Azure Arc-enabled server](./3.png)
 
-Repeat the same process in other Azure Arc-enabled servers. This new tag will be used later when working with Resource Graph Explorer queries.
+- Repeat the same process in other Azure Arc-enabled servers. This new tag will be used later when working with Resource Graph Explorer queries.
 
 ## Using Resource Graph Explorer to Review Server Inventory
 
 We will use Resource Graph Explorer to query our hybrid server inventory.
 
-Enter **Resource Graph Explorer** in the top search bar in the Azure portal and select it.
+- Enter **Resource Graph Explorer** in the top search bar in the Azure portal and select it.
 
-![Screenshot showing Resource Graph Explorer in Azure Portal](./4.png)
+  ![Screenshot showing Resource Graph Explorer in Azure Portal](./4.png)
 
-![Screenshot showing Resource Graph Explorer main page](./5.png)
+  ![Screenshot showing Resource Graph Explorer main page](./5.png)
 
-Scope Azure Resource Graph Explorer to the Directory, Management Group or Subscription where you have your Azure Arc-enabled servers. In this case, we will work at Directory level. Click **Apply** when finished.
+- Scope Azure Resource Graph Explorer to the Directory, Management Group or Subscription where you have your Azure Arc-enabled servers. In this case, we will work at Directory level. Click **Apply** when finished.
 
-![Screenshot showing Resource Graph Explorer scope](./6.png)
+  ![Screenshot showing Resource Graph Explorer scope](./6.png)
 
-In the query window, run the following query that will show you all Azure Arc-enabled servers in your subscription. Enter the query and then click **Run Query**:
+- In the query window, run the following query that will show you all Azure Arc-enabled servers in your subscription. Enter the query and then click **Run Query**:
 
-```kusto
-Resources
-| where type =~ 'Microsoft.HybridCompute/machines'
-```
+  ```console
+  Resources
+  | where type =~ 'Microsoft.HybridCompute/machines'
+  ```
 
-![Screenshot showing Resource Graph Explorer first query](./7.png)
+  ![Screenshot showing Resource Graph Explorer first query](./7.png)
 
-You should see your Azure Arc-enabled servers in the results pane. Toggle the **Formatted Results** switch for a cleaner table:
+- You should see your Azure Arc-enabled servers in the results pane. Toggle the **Formatted Results** switch for a cleaner table:
 
-![Screenshot showing Resource Graph Explorer query results for Azure Arc-enabled servers](./8.png)
+  ![Screenshot showing Resource Graph Explorer query results for Azure Arc-enabled servers](./8.png)
 
-Still on the results pane, go to the right and click on the **See details** link of any of the results:
+- Still on the results pane, go to the right and click on the **See details** link of any of the results:
 
-![Screenshot showing Resource Graph Explorer query results See details link](./9.png)
+  ![Screenshot showing Resource Graph Explorer query results See details link](./9.png)
 
-Here you can see all the Azure Arc-enabled server metadata that you can query using Resource Graph explorer:
+- Here you can see all the Azure Arc-enabled server metadata that you can query using Resource Graph explorer:
 
-![Screenshot showing Resource Graph Explorer Azure Arc-enabled servers metadata](./10.png)
+  ![Screenshot showing Resource Graph Explorer Azure Arc-enabled servers metadata](./10.png)
 
-For example, by leveraging that metadata, you could run the following query to get the number of Azure Arc-enabled servers hosted in _Amazon Web Services (AWS)_ or in _Google Cloud Platform (GCP)_:
+- For example, by leveraging that metadata, you could run the following query to get the number of Azure Arc-enabled servers hosted in _Amazon Web Services (AWS)_ or in _Google Cloud Platform (GCP)_:
 
-```console
-Resources
-| where type =~ 'Microsoft.HybridCompute/machines'
-| extend cloudProvider = tostring(properties.detectedProperties.cloudprovider)
-| where  cloudProvider in ("AWS", "GCP")
-| summarize serversCount = count() by cloudProvider
-```
+  ```console
+  Resources
+  | where type =~ 'Microsoft.HybridCompute/machines'
+  | extend cloudProvider = tostring(properties.detectedProperties.cloudprovider)
+  | where  cloudProvider in ("AWS", "GCP")
+  | summarize serversCount = count() by cloudProvider
+  ```
 
-![Screenshot showing Resource Graph Explorer cloud providers query](./11.png)
+  ![Screenshot showing Resource Graph Explorer cloud providers query](./11.png)
 
-Moreover, you could render those results using the available **Charts**:
+- Moreover, you could render those results using the available **Charts**:
 
-![Screenshot showing Resource Graph Explorer cloud providers query chart](./12.png)
+  ![Screenshot showing Resource Graph Explorer cloud providers query chart](./12.png)
 
-Let's now build a query that uses the tag we assigned before to some of our Azure Arc-enabled servers. Use the following query that includes a check for resources that have a value for the **Scenario** tag:
+- Let's now build a query that uses the tag we assigned before to some of our Azure Arc-enabled servers. Use the following query that includes a check for resources that have a value for the **Scenario** tag:
 
-```kusto
-Resources
-| where type =~ 'Microsoft.HybridCompute/machines' and isnotempty(tags['Scenario'])
-| extend Scenario = tags['Scenario']
-| project name, tags
-```
+  ```console
+  Resources
+  | where type =~ 'Microsoft.HybridCompute/machines' and isnotempty(tags['Scenario'])
+  | extend Scenario = tags['Scenario']
+  | project name, tags
+  ```
 
-![Screenshot showing Resource Graph Explorer query results for tags](./13.png)
+  ![Screenshot showing Resource Graph Explorer query results for tags](./13.png)
 
-We can also use Resource Graph Explorer to list extensions installed on our Azure Arc-enabled servers:
+- We can also use Resource Graph Explorer to list extensions installed on our Azure Arc-enabled servers:
 
-```kusto
-Resources
-| where type == 'microsoft.hybridcompute/machines'
-| project id, JoinID = toupper(id), ComputerName = tostring(properties.osProfile.computerName), OSName = tostring(properties.osName)
-| join kind=leftouter(
-    Resources
-    | where type == 'microsoft.hybridcompute/machines/extensions'
-    | project MachineId = toupper(substring(id, 0, indexof(id, '/extensions'))), ExtensionName = name
-) on $left.JoinID == $right.MachineId
-| summarize Extensions = make_list(ExtensionName) by id, ComputerName, OSName
-| order by tolower(OSName) desc
-```
+  ```console
+  Resources
+  | where type == 'microsoft.hybridcompute/machines'
+  | project id, JoinID = toupper(id), ComputerName = tostring(properties.osProfile.computerName), OSName = tostring(properties.osName)
+  | join kind=leftouter(
+      Resources
+      | where type == 'microsoft.hybridcompute/machines/extensions'
+      | project MachineId = toupper(substring(id, 0, indexof(id, '/extensions'))), ExtensionName = name
+  ) on $left.JoinID == $right.MachineId
+  | summarize Extensions = make_list(ExtensionName) by id, ComputerName, OSName
+  | order by tolower(OSName) desc
+  ```
 
-![Screenshot showing Resource Graph Explorer query results for extensions](./14.png)
+  ![Screenshot showing Resource Graph Explorer query results for extensions](./14.png)
 
-As mentioned before, Azure Arc provides additional properties on the Azure Arc-enabled server resource that we can query with Resource Graph Explorer. In the following example, we list some of these key properties, like the Azure Arc Agent version installed on your Azure Arc-enabled servers:
+- As mentioned before, Azure Arc provides additional properties on the Azure Arc-enabled server resource that we can query with Resource Graph Explorer. In the following example, we list some of these key properties, like the Azure Arc Agent version installed on your Azure Arc-enabled servers:
 
-```kusto
-Resources
-| where type =~ 'Microsoft.HybridCompute/machines'
-| extend arcAgentVersion = tostring(properties.['agentVersion']), osName = tostring(properties.['osName']), osVersion = tostring(properties.['osVersion']), osSku = tostring(properties.['osSku']),
-lastStatusChange = tostring(properties.['lastStatusChange'])
-| project name, arcAgentVersion, osName, osVersion, osSku, lastStatusChange
-```
+  ```console
+  Resources
+  | where type =~ 'Microsoft.HybridCompute/machines'
+  | extend arcAgentVersion = tostring(properties.['agentVersion']), osName = tostring(properties.['osName']), osVersion = tostring(properties.['osVersion']), osSku = tostring(properties.['osSku']),
+  lastStatusChange = tostring(properties.['lastStatusChange'])
+  | project name, arcAgentVersion, osName, osVersion, osSku, lastStatusChange
+  ```
 
-![Screenshot showing Resource Graph Explorer query results for additional properties](./15.png)
+  ![Screenshot showing Resource Graph Explorer query results for additional properties](./15.png)
 
 ## Clean up environment
 
