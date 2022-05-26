@@ -6,7 +6,7 @@ weight: 12
 description: >
 ---
 
-## Azure Arc-enabled server's connectivity behind a proxy perver
+## Azure Arc-enabled servers connectivity behind a proxy server
 
 The following Jumpstart scenario will guide you on how to configure your [Azure Arc-enabled server if the machine uses a proxy server](https://docs.microsoft.com/azure/cloud-adoption-framework/scenarios/hybrid/arc-enabled-servers/eslz-arc-servers-connectivity) to communicate over the internet.
 
