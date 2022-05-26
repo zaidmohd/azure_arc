@@ -288,7 +288,7 @@ Azure Arc-enabled SQL Managed Instance is deployed on Kubernetes as a containeri
 
   ![Screenshot showing SqlQueryStress connected](./45.png)
 
-- You will find the _AdventureWorks2019_ database already deployed into the primary instance (js-sql-pr) and automatically replicated to the secondary instance (js-sql-dr) as part of the distributed availability group.
+- You will find the _AdventureWorks2019_ database already deployed into the primary instance (_js-sql-pr_) and automatically replicated to the secondary instance (_js-sql-dr_) as part of the distributed availability group.
 
   ![Screenshot showing adventureworks database opened on the primary instance](./46.png)
 
