@@ -339,6 +339,7 @@ Azure Arc-enabled SQL Managed Instance is deployed on Kubernetes as a containeri
 - To validate that the data you updated earlier has been replicated to the secondary instance, select the _"HumanResources.Employee"_ table, click on "Edit Top 200 Rows".
 
     ![Screenshot showing Edit Top 200 Rows](./54.png)
+    
 ## Cleanup
 
 - If you want to delete the entire environment, simply delete the deployment resource group from the Azure portal.
