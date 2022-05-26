@@ -67,7 +67,7 @@ As mentioned, this deployment will leverage ARM templates. You will deploy a sin
 
 - Before deploying the ARM template, login to Azure using AZ CLI with the ```az login``` command.
 
-- The deployment will use an ARM template parameters file to customize your environment. Before initiating the deployment, edit the [*azuredeploy.parameters.json*](https://github.com/microsoft/azure_arc/blob/main/azure_arc_servers_jumpstart/proxy/azuredeploy.parameters.json) file located in your local cloned repository folder. Example parameters files is located [here](https://github.com/microsoft/azure_arc/blob/main/azure_arc_servers_jumpstart/proxy/azuredeploy.example.parameters.json).
+- The deployment will use an ARM template parameters file to customize your environment. Before initiating the deployment, edit the [_azuredeploy.parameters.json_](https://github.com/microsoft/azure_arc/blob/main/azure_arc_servers_jumpstart/proxy/azuredeploy.parameters.json) file located in your local cloned repository folder. Example parameters files are located [here](https://github.com/microsoft/azure_arc/blob/main/azure_arc_servers_jumpstart/proxy/azuredeploy.example.parameters.json).
 
 - To deploy the ARM template, navigate to the local cloned [deployment folder](https://github.com/microsoft/azure_arc/tree/main/azure_arc_servers_jumpstart/proxy) and run the below command, start deploying resources:
 
