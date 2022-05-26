@@ -10,7 +10,7 @@ description: >
 
 The scenario will show you how to onboard Azure Arc-enabled servers to [Azure Monitor](https://docs.microsoft.com/azure/azure-monitor/overview), so you can monitor your Linux and Windows servers running on-premises or at other cloud providers.
 
-In this guide, you will create the following Azure resources that support this Azure Monitor scenario:
+in this scenario, you will create the following Azure resources that support this Azure Monitor scenario:
 
 - Log Analytics workspace.
 
@@ -55,7 +55,7 @@ In this guide, you will create the following Azure resources that support this A
     git clone https://github.com/microsoft/azure_arc.git
     ```
 
-- As mentioned, this guide starts at the point where you already deployed and connected VMs or bare-metal servers to Azure Arc. **The resource group of these Azure Arc-enabled servers must be the same as the one that will be used for this scenario deployment.** This is required since the Azure Policies that deploy the Log Analytics agent and the Dependency agent are assigned at this resource group level. For this guide, we will use the following instances that have been already connected to Azure Arc and are visible as a resources in Azure:
+- As mentioned, this scenario starts at the point where you already deployed and connected VMs or bare-metal servers to Azure Arc. **The resource group of these Azure Arc-enabled servers must be the same as the one that will be used for this scenario deployment.** This is required since the Azure Policies that deploy the Log Analytics agent and the Dependency agent are assigned at this resource group level. In this scenario, we will use the following instances that have been already connected to Azure Arc and are visible as a resources in Azure:
 
     ![Screenshot showing AWS cloud console with EC2 instance](./01.png)
 

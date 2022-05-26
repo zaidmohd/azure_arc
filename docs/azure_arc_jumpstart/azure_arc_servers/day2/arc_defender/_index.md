@@ -12,7 +12,7 @@ The following Jumpstart scenario will guide you on how to onboard an Azure Arc-e
 
 Microsoft Defender for Cloud is Microsoft's integrated cloud workload protection platform, it provides advance thread protection for Azure and hybrid resources. To access Microsoft Defender for Cloud you need to enable the plan on Microsoft Defender for Cloud.
 
-In this guide, you will enable and configure Microsoft Defender for Cloud on your Azure subscription, which will provide you with advanced threat protection (ATP) and detection capabilities for your hybrid resources. To complete this process you will:
+in this scenario, you will enable and configure Microsoft Defender for Cloud on your Azure subscription, which will provide you with advanced threat protection (ATP) and detection capabilities for your hybrid resources. To complete this process you will:
 
 * Setup a Log Analytics Workspace where logs and events will be aggregated for analysis.
 
@@ -45,7 +45,7 @@ In this guide, you will enable and configure Microsoft Defender for Cloud on you
     git clone https://github.com/microsoft/azure_arc.git
     ```
 
-* As mentioned, this guide starts at the point where you already deployed and connected VMs or bare-metal servers to Azure Arc. For this scenario, as can be seen in the screenshots below, we will be using a Google Cloud Platform (GCP) instance that has been already connected to Azure Arc and is visible as a resource in Azure.
+* As mentioned, this scenario starts at the point where you already deployed and connected VMs or bare-metal servers to Azure Arc. For this scenario, as can be seen in the screenshots below, we will be using a Google Cloud Platform (GCP) instance that has been already connected to Azure Arc and is visible as a resource in Azure.
 
     ![Screenshot of Azure Portal showing Azure Arc-enabled server](./01.png)
 
@@ -107,7 +107,7 @@ In this guide, you will enable and configure Microsoft Defender for Cloud on you
     --target-workspace '/subscriptions/<Your subscription ID>/resourceGroups/<Name of the Azure resource group>/providers/Microsoft.OperationalInsights/workspaces/<Name of the Log Analytics Workspace>'
   ```
 
-* Microsoft Defender for Cloud is enabled on all your Azure subscriptions by default and will provide continuous security assessment and actionable security recommendations. In this guide, you will use Microsoft Defender for Cloud for Virtual Machines that extends these capabilities providing unified security management and threat protection across your hybrid cloud workloads. To enable Microsoft Defender for Cloud for VMs run the command below:
+* Microsoft Defender for Cloud is enabled on all your Azure subscriptions by default and will provide continuous security assessment and actionable security recommendations. In this scenario, you will use Microsoft Defender for Cloud for Virtual Machines that extends these capabilities providing unified security management and threat protection across your hybrid cloud workloads. To enable Microsoft Defender for Cloud for VMs run the command below:
 
     ```shell
     az security pricing create -n VirtualMachines --tier 'standard'

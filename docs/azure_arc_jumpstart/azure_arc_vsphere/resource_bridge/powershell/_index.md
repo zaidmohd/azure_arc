@@ -57,7 +57,7 @@ The following README will guide you on how to use the provided PowerShell script
     $UnsecureSecret = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto($BSTR)
     ```
 
-    Copy and save the Service Principal ApplicationId and Secret as you will need it for later on in the automation.
+    Copy and save the Service Principal ApplicationId and Secret as you will need it for later in the automation.
 
     > **NOTE: It is optional but highly recommended to scope the SP to a specific [Azure subscription and resource group](https://docs.microsoft.com/powershell/module/az.resources/new-azadserviceprincipal?view=azps-5.4.0)**
 
@@ -85,7 +85,7 @@ The following README will guide you on how to use the provided PowerShell script
     - Read all inventory.
     - Deploy and update VMs to all the resource pools (or clusters), networks, and VM templates that you want to use with Azure Arc.
 
-As mentioned, this guide starts at the point where you already have an up and running VMware vSphere environment managed by vCenter. The automation will be run from a PowerShell window on a computer (which can be your local computer) that has network connectivity to vCenter.
+As mentioned, this scenario starts at the point where you already have an up and running VMware vSphere environment managed by vCenter. The automation will be run from a PowerShell window on a computer (which can be your local computer) that has network connectivity to vCenter.
 
     > **NOTE: the script will automatically uninstall any pre-existing Azure CLI versions in the workstation and will deploy the latest 64-bit version, as it is a requirement to deploy the Azure Arc resource bridge**
 
