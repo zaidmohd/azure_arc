@@ -95,7 +95,7 @@ As mentioned, this deployment will leverage ARM templates. You will deploy a sin
     --parameters azuredeploy.example.parameters.json
     ```
 
-- Verify the resources are created on the Azure Portal on the resource group:
+- Verify the resources are created on the Azure portal on the resource group:
 
     ![Resources created on resource group](./01.png)
 
