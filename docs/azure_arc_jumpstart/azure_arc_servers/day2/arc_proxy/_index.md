@@ -10,7 +10,7 @@ description: >
 
 The following Jumpstart scenario will guide you on how to configure your [Azure Arc-enabled server if the machine uses a proxy server](https://docs.microsoft.com/en-us/azure/cloud-adoption-framework/scenarios/hybrid/arc-enabled-servers/eslz-arc-servers-connectivity) to communicate over the internet.
 
-In this guide, you will emulate a full proxy-client configuration. The scenario will deploy both the proxy server and a client that will be Arc-enabled automatically with the agent configured to use the proxy. The automation for the proxy server deployment makes sure that the Azure Arc network service tags and IP addresses range are not blocked. To complete this process you deploy a single ARM template that will:
+In this scenario, you will emulate a full proxy-client configuration. The scenario will deploy both the proxy server and a client that will be Arc-enabled automatically with the agent configured to use the proxy. The automation for the proxy server deployment makes sure that the Azure Arc network service tags and IP addresses range are not blocked. To complete this process you deploy a single ARM template that will:
 
 - Deploy two Azure Linux VMs:
   - Proxy Server.
