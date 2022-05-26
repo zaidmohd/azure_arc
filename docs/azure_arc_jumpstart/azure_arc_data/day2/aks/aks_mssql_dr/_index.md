@@ -8,7 +8,7 @@ description: >
 
 ## Configure disaster recovery in Azure SQL Managed Instance on AKS using an ARM Template
 
-The following Jumpstart scenario will guide you on how to deply a "Ready to Go" environment so you can configure [disaster recovery](https://docs.microsoft.com/azure/azure-arc/data/managed-instance-disaster-recovery) using [Azure Arc-enabled data services](https://docs.microsoft.com/azure/azure-arc/data/overview) and [SQL Managed Instance](https://docs.microsoft.com/azure/azure-arc/data/managed-instance-overview) deployed on [Azure Kubernetes Service (AKS)](https://docs.microsoft.com/azure/aks/dr/intro-kubernetes) cluster using [Azure ARM Template](https://docs.microsoft.com/azure/azure-resource-manager/templates/overview).
+The following Jumpstart scenario will guide you on how to deply a "Ready to Go" environment so you can configure [disaster recovery](https://docs.microsoft.com/azure/azure-arc/data/managed-instance-disaster-recovery) using [Azure Arc-enabled data services](https://docs.microsoft.com/azure/azure-arc/data/overview) and [SQL Managed Instance](https://docs.microsoft.com/azure/azure-arc/data/managed-instance-overview) deployed on [Azure Kubernetes Service (AKS)](https://docs.microsoft.com/azure/aks/dr/intro-kubernetes) cluster using an [Azure ARM Template](https://docs.microsoft.com/azure/azure-resource-manager/templates/overview).
 
 By the end of this guide, you will have two AKS clusters deployed in two separate Virtual Networks with two Azure Arc SQL Managed Instances deployed on both clusters, disaster recovery configured between the two sites, and a Microsoft Windows Server 2022 (Datacenter) Azure client VM, installed & pre-configured with all the required tools needed to work with Azure Arc-enabled data services:
 
@@ -248,76 +248,99 @@ In order to view these cluster extensions, click on the Azure Arc-enabled Kubern
 
 ![Screenshot showing the Azure Arc-enabled Kubernetes installed extensions](./37.png)
 
-## Disaster recovery with SQL Distributed Always-On availability groups
+## Disaster recovery with SQL Distributed availability groups
 
-Azure Arc-enabled SQL Managed Instance is deployed on Kubernetes as a containerized application and uses kubernetes constructs such as stateful sets and persistent storage to provide built-in health monitoring, failure detection, and failover mechanisms to maintain service health. For increased reliability, you can also configure Azure Arc-enabled SQL Managed Instance to deploy with extra replicas in a high availability configuration.
-
-For showcasing and testing SQL Managed Instance with [Always On availability groups](https://docs.microsoft.com/azure/azure-arc/data/managed-instance-high-availability#deploy-with-always-on-availability-groups), a dedicated [Jumpstart scenario](https://azurearcjumpstart.io/azure_arc_jumpstart/azure_arc_data/day2/aks/dr/aks_mssql_ha/) is available to help you simulate failures and get hands-on experience with this deployment model.
+Azure Arc-enabled SQL Managed Instance is deployed on Kubernetes as a containerized application and uses kubernetes constructs such as stateful sets and persistent storage to provide built-in health monitoring, failure detection, and failover mechanisms to maintain service health. For increased reliability, you can also configure disaster recovery between multiple Azure Arc-enabled SQL Managed Instances to be able to failover to another instance on another Kubernetes cluster. Disaster recovery is supported for both General Purpose and Business Critical tiers.
 
 ## Operations
 
-### Azure Arc-enabled SQL Managed Instance stress simulation
+### Azure Arc-enabled SQL Managed Instance distributed availability group validation
 
-Included in this scenario, is a dedicated SQL stress simulation tool named _SqlQueryStress_ automatically installed for you on the Client VM. _SqlQueryStress_ will allow you to generate load on the Azure Arc-enabled SQL Managed Instance that can be done used to showcase how the SQL database and services are performing as well to highlight operational practices described in the next section.
+- To be able to failover to a different cluster, a distributed availability group is created by the automation flow that spans the primary and secondary cluster. This can be validated by running the following commands:
 
-- To start with, open the _SqlQueryStress_ desktop shortcut and connect to the SQL Managed Instance **primary** endpoint IP address. This can be found in the _SQLMI Endpoints_ text file desktop shortcut that was also created for you alongside the username and password you used to deploy the environment.
+  ```shell
+  az sql instance-failover-group-arc show --name primarycr --use-k8s  --k8s-namespace arc
+  ```
 
-  ![Screenshot showing opened SqlQueryStress](./35.png)
+  ![Screenshot showing disaster recovery configuration](./38.png)
 
-  ![Screenshot showing SQLMI Endpoints text file](./36.png)
+- As part of the automation, the script will also create a new text file and a desktop shortcut named Endpoints that includes both the primary and the secondary SQL endpoints for both SQL instances.
+  
+  ![Screenshot showing disaster recovery configuration](./39.png)
 
-> **NOTE: Secondary SQL Managed Instance endpoint will be available only when using the [HA deployment model ("Business Critical")](https://azurearcjumpstart.io/azure_arc_jumpstart/azure_arc_data/day2/cluster_api/capi_azure/capi_mssql_ha/).**
+- Open Microsoft SQL Server Management Studio (SSMS) which is installed automatically for you as part of the bootstrap Jumpstart scenario and use the primary endpoint IP address for the primary cluster and login to the primary DB instance using the username and password provided in the text file mentioned above.
 
-- To connect, use "SQL Server Authentication" and select the deployed sample _AdventureWorks_ database (you can use the "Test" button to check the connection).
+  ![Screenshot showing opening SQL Server Management Studio from the start menu](./40.png)
 
-  ![Screenshot showing SqlQueryStress connected](./37.png)
+- Use the username and password you entered when provisioned the environment and select “SQL Server Authentication”. Alternatively, you can retrieve the username and password using the _`$env:AZDATA_USERNAME`_ and _`$env:AZDATA_PASSWORD`_ commands.
 
-- To generate some load, we will be running a simple stored procedure. Copy the below procedure and change the number of iterations you want it to run as well as the number of threads to generate even more load on the database. In addition, change the delay between queries to 1ms for allowing the stored procedure to run for a while.
+  ![Screenshot showing logging into the SQL Server Management Studio](./41.png)
 
-    ```sql
-    exec [dbo].[uspGetEmployeeManagers] @BusinessEntityID = 8
+- Connect to the secondary instance as well using the primary endpoint IP address for the secondary cluster in the in the text file mentioned above.
+
+  ![Screenshot showing the SQL Server Management Studio after login](./42.png)
+
+  ![Screenshot showing the SQL Server Management Studio after login](./43.png)
+
+  ![Screenshot showing SqlQueryStress connected](./44.png)
+
+- Expand the _Always On High Availability_ node on both instances to verify that the distributed availability group is created.
+
+  ![Screenshot showing SqlQueryStress connected](./45.png)
+
+- You will find the _AdventureWorks2019_ database already deployed into the primary instance (js-sql-pr) and automatically replicated to the secondary instance (js-sql-dr) as part of the distributed availability group.
+
+  ![Screenshot showing adventureworks database opened on the primary instance](./46.png)
+
+  > **NOTE: You will not be able to browse the _AdventureWorks2019_ database from the secondary instance since this instance is configured as a disaster recovery instace**.
+
+  ![Screenshot showing adventureworks database opened on the secondary instance](./47.png)
+
+### Simulating failure on the primary site
+
+- First, to test that the DB replication is working, a simple table modification is needed. For this example, on the primary replica, run the following query to update the title of one of the rows to be _Jumpstart Administrator_
+
+   ```shell
+    USE [AdventureWorks2019]
+    GO
+    UPDATE [HumanResources].[Employee]
+    SET [JobTitle] = 'Jumpstart Administrator'
+    WHERE NationalIDNumber = 245797967
+    GO
     ```
 
-- As you can see from the example below, the configuration settings are 100,000 iterations, five threads per iteration, and a 1ms delay between queries. These configurations should allow you to have the stress test running for a while.
+    ![Screenshot showing updating a record in the database](./48.png)
 
-  ![Screenshot showing SqlQueryStress settings](./38.png)
+    ![Screenshot showing the updated record in the database](./49.png)
 
-  ![Screenshot showing SqlQueryStress running](./39.png)
+- To simulate a disaster situation, navigate to the AKS cluster in the Azure portal and stop the primary cluster.
 
-### Azure Arc-enabled SQL Managed Instance monitoring using Grafana
+    ![Screenshot showing stopping the primary AKS cluster](./50.png)
 
-When deploying Azure Arc-enabled data services, a [Grafana](https://grafana.com/) instance is also automatically deployed on the same Kubernetes cluster and include built-in dashboards for both Kubernetes infrastructure as well SQL Managed Instance monitoring (PostgreSQL dashboards are included as well but we will not be covering these in this section).
+- Try to refresh the connection to the primary instance and you can see that its no longer available.
 
-- Now that you have the _SqlQueryStress_ stored procedure running and generating load, we can look how this is shown in the the built-in Grafana dashboard. As part of the automation, a new URL desktop shortcut simply named "Grafana" was created.
+    ![Screenshot showing unavailable primary instance](./51.png)
 
-  ![Screenshot showing Grafana desktop shortcut](./40.png)
+### Initiating a forced failover to the secondary site.
 
-- [Optional] The IP address for this instance represents the Kubernetes _LoadBalancer_ external IP that was provision as part of Azure Arc-enabled data services. Use the _`kubectl get svc -n arc`_ command to view the _metricsui_ external service IP address.
+- On the client VM, run the following commands on the secondary instance to promote to primary with a forced failover incurring potential data loss.
 
-  ![Screenshot showing metricsui Kubernetes service](./41.png)
+   ```shell
+    kubectx secondary
+    az sql instance-failover-group-arc update --k8s-namespace arc --name secondarycr --use-k8s --role force-primary-allow-data-loss
+   ```
 
-- To log in, use the same username and password that is in the _SQLMI Endpoints_ text file desktop shortcut.
+    ![Screenshot showing stopping the primary AKS cluster](./52.png)
 
-  ![Screenshot showing Grafana username and password](./42.png)
+- Browse to the secondary instance on the Microsoft SQL Server Management Studio (SSMS) and you can see that the secondary (js-sql-dr) instance is now promoted to primary.
 
-- Navigate to the built-in "SQL Managed Instance Metrics" dashboard.
+    ![Screenshot showing browsing to the secondary instance](./53.png)
 
-  ![Screenshot showing Grafana dashboards](./43.png)
+- To validate that the data you updated earlier has been replicated to the secondary instance, select the _"HumanResources.Employee"_ table, click on "Edit Top 200 Rows".
 
-  ![Screenshot showing Grafana "SQL Managed Instance Metrics" dashboard](./44.png)
-
-- Change the dashboard time range to "Last 5 minutes" and re-run the stress test using _`SqlQueryStress`_ (in case it was already finished).
-
-  ![Screenshot showing "Last 5 minutes" time range](./45.png)
-
-- You can now see how the SQL graphs are starting to show increased activity and load on the database instance.
-
-  ![Screenshot showing increased load activity](./46.png)
-
-  ![Screenshot showing increased load activity](./47.png)
-
+    ![Screenshot showing Edit Top 200 Rows](./54.png)
 ## Cleanup
 
 - If you want to delete the entire environment, simply delete the deployment resource group from the Azure portal.
 
-    ![Screenshot showing Azure resource group deletion](./48.png)
+    ![Screenshot showing Azure resource group deletion](./55.png)
