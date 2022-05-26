@@ -55,9 +55,9 @@ In this scenario, you will emulate a full proxy-client configuration. The scenar
 
 For you to get familiar with the automation and deployment flow, below is an explanation.
 
-1. User is editing the ARM template parameters file (1-time edit). These parameters values are being used throughout the deployment.
+1. User is editing the ARM template parameters file (1-time edit). These parameter values are being used throughout the deployment.
 
-2. User deploys the ARM template at resource group level.
+2. User deploys the ARM template at the resource group level.
 
 3. User logs in to the Client's VM using SSH or Azure Bastion to trigger the Azure Arc onboarding script.
 
