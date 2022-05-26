@@ -10,7 +10,7 @@ description: >
 
 The following Jumpstart scenario will guide you on how to deply a "Ready to Go" environment so you can configure [disaster recovery](https://docs.microsoft.com/azure/azure-arc/data/managed-instance-disaster-recovery) using [Azure Arc-enabled data services](https://docs.microsoft.com/azure/azure-arc/data/overview) and [SQL Managed Instance](https://docs.microsoft.com/azure/azure-arc/data/managed-instance-overview) deployed on [Azure Kubernetes Service (AKS)](https://docs.microsoft.com/azure/aks/dr/intro-kubernetes) cluster using an [Azure ARM Template](https://docs.microsoft.com/azure/azure-resource-manager/templates/overview).
 
-By the end of this guide, you will have two AKS clusters deployed in two separate Virtual Networks with two Azure Arc-enabled SQL Managed Instances deployed on both clusters, disaster recovery configured between the two sites, and a Microsoft Windows Server 2022 (Datacenter) Azure client VM, installed & pre-configured with all the required tools needed to work with Azure Arc-enabled data services:
+By the end of this guide, you will have two Azure Kubernetes Service (AKS) clusters deployed in two separate Azure virtual networks with two Azure Arc-enabled SQL Managed Instances deployed on both clusters, disaster recovery architecture configured between the two sites, and a Microsoft Windows Server 2022 (Datacenter) Azure client VM, installed & pre-configured with all the required tools needed to work with Azure Arc-enabled data services:
 
 ![Screenshot showing the deployed architecture](./diagram.png)
 
