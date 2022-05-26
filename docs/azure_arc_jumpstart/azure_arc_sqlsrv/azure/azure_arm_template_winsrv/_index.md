@@ -40,14 +40,14 @@ By the end of the guide, you will have an Azure VM installed with Windows Server
     ```shell
     az login
     az account set --subscription "<Subscription ID>"
-    az ad sp create-for-rbac -n "<Unique SP Name>" --role contributor
+    az ad sp create-for-rbac -n "<Unique SP Name>" --role contributor --scopes /subscriptions/<Subscription ID>
     ```
 
     For example:
 
     ```shell
     az account set --subscription "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxx"
-    az ad sp create-for-rbac -n "http://AzureArcServers" --role contributor
+    az ad sp create-for-rbac -n "http://AzureArcServers" --role contributor --scopes /subscriptions "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxx"
     ```
 
     Output should look like this:
@@ -208,7 +208,7 @@ Now that you have both the server and SQL projected as Azure Arc resources, the 
 
     ![Screenshot showing Environment Health blade of Azure Arc-enabled SQL server](./view_assessment_enabled.png)
 
-    ![Screenshot showing Environment Health blade of Azure Arc-enabled SQL server](./24.jpg)
+    ![Screenshot showing Environment Health blade of Azure Arc-enabled SQL server](./sql_assessment_results.png)
 
 ## Cleanup
 
