@@ -190,23 +190,23 @@ Now that you have both the server and SQL projected as Azure Arc resources, the 
 
 * On the SQL Azure Arc resource, click on "Environment Health" followed by clicking the "Download configuration script".
 
-    Since the *LogonScript* run in the deployment step took care of deploying and installing the required binaries, you can safely ignore and delete the downloaded *AddSqlAssessment.ps1* file.
+    Since the *installArcAgentSQL* run in the deployment step took care of deploying and installing the required binaries, you can safely ignore and delete the downloaded *AddSqlAssessment.ps1* file.
 
     Clicking the "Download configuration script" will simply send a REST API call to the Azure portal which will make "Step3" available and will result with a grayed-out "View SQL Assessment Results" button.
 
-    ![Screenshot showing Environment Health blade of Azure Arc-enabled SQL server](./19.jpg)
+    ![Screenshot showing Environment Health blade of Azure Arc-enabled SQL server](./arc_sql_resource_portal.png)
 
-    ![Screenshot showing Environment Health blade of Azure Arc-enabled SQL server](./20.jpg)
+    ![Screenshot showing Environment Health blade of Azure Arc-enabled SQL server](./environment_health_button.png)
 
-    ![Screenshot showing Environment Health blade of Azure Arc-enabled SQL server](./21.jpg)
+    ![Screenshot showing Environment Health blade of Azure Arc-enabled SQL server](./download_script_button.png)
 
-    ![Screenshot showing Environment Health blade of Azure Arc-enabled SQL server](./22.jpg)
+    ![Screenshot showing Environment Health blade of Azure Arc-enabled SQL server](./view_assessment_disabled.png)
 
-    It might take a bit of time, but after ~45-60min you will notice how the "View SQL Assessment Results" button is available for you to click on. At this point, the SQL assessment data and logs are getting injected to Azure Log Analytics.
+    It might take a bit of time, but after ~45-60min you will notice how the "View SQL Assessment Results" becomes available for you to click on. At this point, the SQL assessment data and logs are getting injected to Azure Log Analytics.
 
     Initially, the amount of data will be limited as it take a while for the assessment to complete a full cycle but after few hours you should be able to see much more data coming in.  
 
-    ![Screenshot showing Environment Health blade of Azure Arc-enabled SQL server](./23.jpg)
+    ![Screenshot showing Environment Health blade of Azure Arc-enabled SQL server](./view_assessment_enabled.png)
 
     ![Screenshot showing Environment Health blade of Azure Arc-enabled SQL server](./24.jpg)
 
@@ -214,4 +214,4 @@ Now that you have both the server and SQL projected as Azure Arc resources, the 
 
 To delete the entire deployment, simply delete the resource group from the Azure portal.
 
-![Screenshot showing Azure Portal delete resource group function](./25.jpg)
+![Screenshot showing Azure Portal delete resource group function](./delete_resource_group.png)
