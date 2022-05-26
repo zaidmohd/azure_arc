@@ -332,7 +332,7 @@ Azure Arc-enabled SQL Managed Instance is deployed on Kubernetes as a containeri
 
     ![Screenshot showing stopping the primary AKS cluster](./52.png)
 
-- Browse to the secondary instance on the Microsoft SQL Server Management Studio (SSMS) and you can see that the secondary (js-sql-dr) instance is now promoted to primary.
+- Browse to the secondary instance on the Microsoft SQL Server Management Studio (SSMS) and you can see that the secondary (_js-sql-dr_) instance is now promoted to primary.
 
     ![Screenshot showing browsing to the secondary instance](./53.png)
 
