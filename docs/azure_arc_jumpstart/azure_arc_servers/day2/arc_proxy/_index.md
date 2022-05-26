@@ -117,7 +117,7 @@ As mentioned, this deployment will leverage ARM templates. You will deploy a sin
 
 ## Azure Arc-enabled server Proxy connectivity
 
-To make sure that your Azure Arc-enabled server is using Private Link for its connection. Use your Azure Bastion session to run the command below:
+To make sure that your Azure Arc-enabled server is using the proxy for its connection. Connect to the server and run the command below:
 
   ```powershell
     sudo azcmagent.exe show
