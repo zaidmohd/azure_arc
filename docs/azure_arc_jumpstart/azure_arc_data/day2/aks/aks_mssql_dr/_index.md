@@ -256,7 +256,7 @@ Azure Arc-enabled SQL Managed Instance is deployed on Kubernetes as a containeri
 
 ### Azure Arc-enabled SQL Managed Instance distributed availability group validation
 
-- To be able to failover to a different cluster, a distributed availability group is created by the automation flow that spans the primary and secondary cluster. This can be validated by running the following commands:
+- To be able to failover to a different cluster, a distributed availability group is created by the automation flow that spans the primary and secondary clusters. This can be validated by running the following commands:
 
   ```shell
   az sql instance-failover-group-arc show --name primarycr --use-k8s  --k8s-namespace arc
