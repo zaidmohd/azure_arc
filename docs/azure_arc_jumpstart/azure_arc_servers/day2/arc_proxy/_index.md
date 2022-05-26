@@ -67,7 +67,26 @@ As mentioned, this deployment will leverage ARM templates. You will deploy a sin
 
 - Before deploying the ARM template, login to Azure using AZ CLI with the ```az login``` command.
 
-- The deployment will use an ARM template parameters file to customize your environment. Before initiating the deployment, edit the [_azuredeploy.parameters.json_](https://github.com/microsoft/azure_arc/blob/main/azure_arc_servers_jumpstart/proxy/azuredeploy.parameters.json) file located in your local cloned repository folder. Example parameters files are located [here](https://github.com/microsoft/azure_arc/blob/main/azure_arc_servers_jumpstart/proxy/azuredeploy.example.parameters.json).
+- The deployment will use an ARM template parameters file to customize your environment. Before initiating the deployment, edit the [_azuredeploy.parameters.json_](https://github.com/microsoft/azure_arc/blob/main/azure_arc_servers_jumpstart/proxy/azuredeploy.parameters.json) file located in your local cloned repository folder. Example parameters files are located [here](https://github.com/microsoft/azure_arc/blob/main/azure_arc_servers_jumpstart/proxy/azuredeploy.example.parameters.json). Fill out the parameters according to your environment:
+
+  - _`vmSize`_: client and proxy server Azure VM size.
+  - _`vmName`_: client Azure VM name.
+  - _`ProxyvmName`_: Proxy server Azure VM name.
+  - _`adminUsername`_: Azure VMs admin username.
+  - _`adminPassword`_: A password for Client and Server.
+  - _`dnsLabelPrefix`_: DNS label for the Public IP address of the client.
+  - _`proxydnsLabelPrefix`_: DNS label for the Public IP address of the server.
+  - _`ProxysubnetName`_: Proxy subnet name.
+  - _`subnetName`_: Client subnet name.
+  - _`proxyNSG`_: Proxy NSG name.
+  - _`vmNSG`_: Client NSG name.
+  - _`subscriptionID`_: your Subscription ID.
+  - _`servicePrincipalClient`_: Service Principal AppId.
+  - _`servicePrincipalClientSecret`_: Service Principal password.
+  - _`tenantID`_: your tenant ID.
+  - _`resourceGroup`_: your resource group.
+  - _`deployBastion`_: boolean, true or false if you want to deploy bastion to connect to the VMs.
+  - _`bastionHostName`_: Azure Bastion Host name.
 
 - To deploy the ARM template, navigate to the local cloned [deployment folder](https://github.com/microsoft/azure_arc/tree/main/azure_arc_servers_jumpstart/proxy) and run the below command.
 
