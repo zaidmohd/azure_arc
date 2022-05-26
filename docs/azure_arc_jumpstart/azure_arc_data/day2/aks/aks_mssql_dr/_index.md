@@ -6,7 +6,7 @@ weight: 2
 description: >
 ---
 
-## Configure disaster recovery in Azure SQL Managed Instance on AKS using an ARM Template
+## Configure disaster recovery in Azure Arc-enabled SQL Managed Instance on AKS using an ARM Template
 
 The following Jumpstart scenario will guide you on how to deply a "Ready to Go" environment so you can configure [disaster recovery](https://docs.microsoft.com/azure/azure-arc/data/managed-instance-disaster-recovery) using [Azure Arc-enabled data services](https://docs.microsoft.com/azure/azure-arc/data/overview) and [SQL Managed Instance](https://docs.microsoft.com/azure/azure-arc/data/managed-instance-overview) deployed on [Azure Kubernetes Service (AKS)](https://docs.microsoft.com/azure/aks/dr/intro-kubernetes) cluster using an [Azure ARM Template](https://docs.microsoft.com/azure/azure-resource-manager/templates/overview).
 
