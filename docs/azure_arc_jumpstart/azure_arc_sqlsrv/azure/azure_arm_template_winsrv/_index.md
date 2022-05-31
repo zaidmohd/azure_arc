@@ -89,7 +89,7 @@ The automation for this scenario includes 3 PowerShell scripts executed in the f
 
     1. Install and configure SQL Server on the VM
     2. Restore AdventureWorksLT2019 Database
-    3. Allow Azure VM to be onboard to Azure Arc
+    3. Allow Azure VM to be onboarded to Azure Arc
     4. Execute the *installArcAgentSQL* script
 
 3. [*installArcAgentSQL.ps1*](https://github.com/microsoft/azure_arc/blob/main/azure_arc_sqlsrv_jumpstart/azure/arm_template/scripts/installArcAgentSQL.ps1) - This is the main script and will be executed by the *LogonScript* script at VM runtime. This script has the following functionalities:
