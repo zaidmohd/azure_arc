@@ -190,7 +190,7 @@ Now that you have both the server and SQL projected as Azure Arc resources, the 
 
 * On the SQL Azure Arc resource click on "Environment Health", then click "Download configuration script".
 
-    Since the *installArcAgentSQL* run in the deployment step took care of deploying and installing the required binaries, you can safely ignore and delete the downloaded *AddSqlAssessment.ps1* file.
+    Since the *installArcAgentSQL* run in the deployment step took care of deploying and installing the required binaries you can safely ignore and delete the downloaded *AddSqlAssessment.ps1* file.
 
     Clicking the "Download configuration script" will simply send a REST API call to the Azure portal which will make "Step3" available and will result with a grayed-out "View SQL Assessment Results" button.
 
