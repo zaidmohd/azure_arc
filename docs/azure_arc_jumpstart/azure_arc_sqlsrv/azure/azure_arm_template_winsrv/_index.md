@@ -158,7 +158,7 @@ As mentioned, this deployment will use an ARM Template. You will deploy a single
 
 ## Windows Login & Post Deployment
 
-* Now that the Windows Server VM has been deployed, it is time to login to it. Using it's public IP, RDP to the VM.
+* Once the Windows Server VM has been deployed, it is time to login to it. Use RDP to access the VM using the VM's public IP
 
     ![Screenshot showing Overview tab of Azure VM](./sql_vm_portal.png)
 
