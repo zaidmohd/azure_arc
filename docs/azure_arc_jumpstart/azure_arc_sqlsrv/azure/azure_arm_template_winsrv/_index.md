@@ -95,7 +95,7 @@ The automation for this scenario includes 3 PowerShell scripts executed in the f
 3. [*installArcAgentSQL.ps1*](https://github.com/microsoft/azure_arc/blob/main/azure_arc_sqlsrv_jumpstart/azure/arm_template/scripts/installArcAgentSQL.ps1) - This is the main script and will be executed by the *LogonScript* script at VM runtime. This script has the following functionalities:
 
     1. Project SQL Server as an Azure Arc-enabled SQL server resource
-    2. Install Log Analytics agent using extension on Azure Arc server
+    2. Install Log Analytics agent using an extension on Azure Arc-enabled server
     3. Create SQL Assessment and inject data to Azure Log Analytics workspace
 
 To get familiar with the automation and deployment flow read the following explanation.
