@@ -110,7 +110,7 @@ To get familiar with the automation and deployment flow read the following expla
 
 ## Deployment
 
-As mentioned, this deployment will use an ARM Template. You will deploy a single template, responsible for creating all the Azure resources in a single resource group as well onboarding the created VM to Azure Arc.
+As mentioned, this deployment will use an ARM Template. You will deploy a single template that creates all the Azure resources in a single resource group as well as onboarding the created VM to Azure Arc.
 
 * Before deploying the ARM template, login to Azure using AZ CLI with the ```az login``` command.
 
