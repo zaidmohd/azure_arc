@@ -188,7 +188,7 @@ As mentioned, this deployment will use an ARM Template. You will deploy a single
 
 Now that you have both the server and SQL projected as Azure Arc resources, the last step is complete the initiation of the SQL Assessment run.
 
-* On the SQL Azure Arc resource, click on "Environment Health" followed by clicking the "Download configuration script".
+* On the SQL Azure Arc resource click on "Environment Health", then click "Download configuration script".
 
     Since the *installArcAgentSQL* run in the deployment step took care of deploying and installing the required binaries, you can safely ignore and delete the downloaded *AddSqlAssessment.ps1* file.
 
