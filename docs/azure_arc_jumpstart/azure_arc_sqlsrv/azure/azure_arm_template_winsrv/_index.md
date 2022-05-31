@@ -116,7 +116,7 @@ As mentioned, this deployment will use an ARM Template. You will deploy a single
 
 * The deployment uses the ARM template parameters file. Before initiating the deployment, edit the [*azuredeploy.parameters.json*](https://github.com/microsoft/azure_arc/blob/main/azure_arc_sqlsrv_jumpstart/azure/arm_template/azuredeploy.parameters.json) file located in your local cloned repository folder. An example parameters file is located [here](https://github.com/microsoft/azure_arc/blob/main/azure_arc_sqlsrv_jumpstart/azure/arm_template/azuredeploy.parameters.example.json).
 
-* Create a Resource Group which will house the target for the ARM Template deployment using the following command:
+* Create a Resource Group which will contain the target for the ARM Template deployment using the following command:
 
     ```shell
     az group create --name <Name of the Azure resource group> --location <Azure Region> --tags "Project=jumpstart_azure_arc_sql"
