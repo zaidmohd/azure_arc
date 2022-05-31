@@ -138,7 +138,7 @@ As mentioned, this deployment will use an ARM Template. You will deploy a single
     --parameters <The *azuredeploy.parameters.json* parameters file location>
     ```
 
-    > **Note: Make sure that you are using the same Azure resource group name as the one you created in the previous step**
+    > **Note: Make sure that you are using the same Azure resource group name as the one you created in the previous step.**
 
     For example:
 
