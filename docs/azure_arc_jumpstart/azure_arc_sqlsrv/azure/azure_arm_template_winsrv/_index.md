@@ -186,7 +186,7 @@ As mentioned, this deployment will use an ARM Template. You will deploy a single
 
 ## Azure SQL Assessment
 
-Now that you have both the server and SQL projected as Azure Arc resources, the last step is complete the initiation of the SQL Assessment run.
+Now that you have both the server and SQL projected as Azure Arc resources the last step is to complete the initiation of the SQL Assessment run.
 
 * On the SQL Azure Arc resource click on "Environment Health", then click "Download configuration script".
 
