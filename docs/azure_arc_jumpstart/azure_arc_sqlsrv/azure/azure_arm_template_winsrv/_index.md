@@ -166,7 +166,7 @@ As mentioned, this deployment will use an ARM Template. You will deploy a single
 
     Let the script to run its course and **do not close** the PowerShell session, this will be done for you once completed.
 
-    > **Note: The script run time is ~30min long**
+    > **Note: The script run time is approximately 30min long**
 
     ![Screenshot showing PowerShell script executing in VM](./post_deploy_script.png)
 
