@@ -162,7 +162,7 @@ As mentioned, this deployment will use an ARM Template. You will deploy a single
 
     ![Screenshot showing Overview tab of Azure VM](./sql_vm_portal.png)
 
-* At first login, as mentioned in the "Automation Flow" section, a logon script will get executed. This script was created as part of the automated deployment process.
+* At first login a logon script will get executed. This script was created as part of the automated deployment process.
 
     Let the script to run its course and **do not close** the PowerShell session, this will be done for you once completed.
 
