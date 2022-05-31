@@ -98,7 +98,7 @@ The automation for this scenario includes 3 PowerShell scripts executed in the f
     2. Install Log Analytics agent using extension on Azure Arc server
     3. Create SQL Assessment and inject data to Azure Log Analytics workspace
 
-For you to get familiar with the automation and deployment flow, below is an explanation.
+To get familiar with the automation and deployment flow read the following explanation.
 
 1. User is editing the ARM template parameters file (1-time edit). These parameters values are being used throughout the deployment.
 
