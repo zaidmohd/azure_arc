@@ -178,7 +178,7 @@ As mentioned, this deployment will use an ARM Template. You will deploy a single
 
     ![Screenshot showing Azure Arc-enabled SQL resources](./post_deployment_portal_arc_sql.png)
 
-* Open Microsoft SQL Server Management Studio (a Windows shortcut will be created for you) and validate the *AdventureWorksLT2019* sample database is deployed as well.
+* Open Microsoft SQL Server Management Studio (a Windows shortcut will be created for you) and validate the *AdventureWorksLT2019* sample database is deployed.
 
     ![Screenshot showing SQL Management Studio](./sql_server_management_login.png)
 
