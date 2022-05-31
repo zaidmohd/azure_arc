@@ -102,7 +102,7 @@ To get familiar with the automation and deployment flow read the following expla
 
 1. User edits the ARM template parameters file (1-time edit). These parameters values are used throughout the deployment.
 
-2. The ARM template incl. an Azure VM Custom Script Extension which will deploy the the [*Bootstrap.ps1*](https://github.com/microsoft/azure_arc/blob/main/azure_arc_sqlsrv_jumpstart/azure/arm_template/scripts/Bootstrap.ps1) PowerShell Script. The script will:
+2. The ARM template includes an Azure VM Custom Script Extension which will deploy the [*Bootstrap.ps1*](https://github.com/microsoft/azure_arc/blob/main/azure_arc_sqlsrv_jumpstart/azure/arm_template/scripts/Bootstrap.ps1) PowerShell Script. The script will:
 
     1. Download the *LogonScript.ps1* and *installArcAgentSQL* PowerShell scripts
 
