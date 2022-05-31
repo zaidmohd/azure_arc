@@ -150,7 +150,7 @@ As mentioned, this deployment will use an ARM Template. You will deploy a single
     --parameters azuredeploy.parameters.json
     ```
 
-* Once Azure resources has been provisioned, you will be able to see it in Azure portal.
+* Once Azure resources have been provisioned you will be able to see them in Azure portal.
 
     ![Screenshot showing ARM deployment](./deployment_complete_cli.png)
 
