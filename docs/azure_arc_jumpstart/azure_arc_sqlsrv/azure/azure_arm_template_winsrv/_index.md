@@ -212,6 +212,6 @@ Now that you have both the server and SQL projected as Azure Arc resources, the 
 
 ## Cleanup
 
-To delete the entire deployment, simply delete the resource group from the Azure portal.
+To delete the entire deployment simply delete the resource group from the Azure portal.
 
 ![Screenshot showing Azure Portal delete resource group function](./delete_resource_group.png)
