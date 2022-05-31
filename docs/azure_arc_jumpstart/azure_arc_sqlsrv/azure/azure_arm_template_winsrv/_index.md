@@ -19,35 +19,40 @@ By the end of the guide, you will have an Azure VM installed with Windows Server
 
 ## Prerequisites
 
-* Clone the Azure Arc Jumpstart repository
+- Clone the Azure Arc Jumpstart repository
 
     ```shell
     git clone https://github.com/microsoft/azure_arc.git
     ```
 
-* [Install or update Azure CLI to version 2.25.0 and above](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest). Use the below command to check your current installed version.
+- [Install or update Azure CLI to version 2.25.0 and above](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest). Use the below command to check your current installed version.
 
     ```shell
     az --version
     ```
 
-* In case you don't already have one, you can [Create a free Azure account](https://azure.microsoft.com/en-us/free/).
+- In case you don't already have one, you can [Create a free Azure account](https://azure.microsoft.com/en-us/free/).
 
-* Create Azure service principal (SP)
+- Login to AZ CLI using the ```az login``` command.
+
+- Ensure that you have selected the correct subscription you want to deploy ArcBox to by using the ```az account list --query "[?isDefault]"``` command. If you need to adjust the active subscription used by Az CLI, follow [this guidance](https://docs.microsoft.com/cli/azure/manage-azure-subscriptions-azure-cli#change-the-active-subscription).
+
+- Create Azure service principal (SP)
 
     To be able to complete the scenario and its related automation, Azure service principal assigned with the “Contributor” role is required. To create it, login to your Azure account run the below command (this can also be done in [Azure Cloud Shell](https://shell.azure.com/)).
 
     ```shell
     az login
-    az account set --subscription "<Subscription ID>"
-    az ad sp create-for-rbac -n "<Unique SP Name>" --role contributor --scopes /subscriptions/<Subscription ID>
+    subscriptionId=$(az account show --query id --output tsv)
+    az ad sp create-for-rbac -n "<Unique SP Name>" --role "Contributor" --scopes /subscriptions/$subscriptionId
     ```
 
     For example:
 
     ```shell
-    az account set --subscription "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxx"
-    az ad sp create-for-rbac -n "http://AzureArcServers" --role contributor --scopes /subscriptions "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxx"
+    az login
+    subscriptionId=$(az account show --query id --output tsv)
+    az ad sp create-for-rbac -n "AzureArcServers" --role "Contributor" --scopes /subscriptions/$subscriptionId
     ```
 
     Output should look like this:
@@ -64,7 +69,7 @@ By the end of the guide, you will have an Azure VM installed with Windows Server
 
     > **Note It is optional, but highly recommended, to scope the SP to a specific [Azure subscription and resource group](https://docs.microsoft.com/en-us/cli/azure/ad/sp?view=azure-cli-latest).**
 
-* Enable subscription for the *Microsoft.AzureArcData* resource provider for Azure Arc-enabled SQL Server. Registration is an asynchronous process, and registration may take approximately 10 minutes.
+- Enable subscription for the *Microsoft.AzureArcData* resource provider for Azure Arc-enabled SQL Server. Registration is an asynchronous process, and registration may take approximately 10 minutes.
 
   ```shell
   az provider register --namespace Microsoft.AzureArcData
@@ -112,11 +117,11 @@ To get familiar with the automation and deployment flow read the following expla
 
 As mentioned, this deployment will use an ARM Template. You will deploy a single template that creates all the Azure resources in a single resource group as well as onboarding the created VM to Azure Arc.
 
-* Before deploying the ARM template, login to Azure using AZ CLI with the ```az login``` command.
+- Before deploying the ARM template, login to Azure using AZ CLI with the ```az login``` command.
 
-* The deployment uses the ARM template parameters file. Before initiating the deployment, edit the [*azuredeploy.parameters.json*](https://github.com/microsoft/azure_arc/blob/main/azure_arc_sqlsrv_jumpstart/azure/arm_template/azuredeploy.parameters.json) file located in your local cloned repository folder. An example parameters file is located [here](https://github.com/microsoft/azure_arc/blob/main/azure_arc_sqlsrv_jumpstart/azure/arm_template/azuredeploy.parameters.example.json).
+- The deployment uses the ARM template parameters file. Before initiating the deployment, edit the [*azuredeploy.parameters.json*](https://github.com/microsoft/azure_arc/blob/main/azure_arc_sqlsrv_jumpstart/azure/arm_template/azuredeploy.parameters.json) file located in your local cloned repository folder. An example parameters file is located [here](https://github.com/microsoft/azure_arc/blob/main/azure_arc_sqlsrv_jumpstart/azure/arm_template/azuredeploy.parameters.example.json).
 
-* Create a Resource Group which will contain the target for the ARM Template deployment using the following command:
+- Create a Resource Group which will contain the target for the ARM Template deployment using the following command:
 
     ```shell
     az group create --name <Name of the Azure resource group> --location <Azure Region> --tags "Project=jumpstart_azure_arc_sql"
@@ -128,7 +133,7 @@ As mentioned, this deployment will use an ARM Template. You will deploy a single
     az group create --name Arc-SQL-Demo --location "East US" --tags "Project=jumpstart_azure_arc_sql"
     ```
 
-* To deploy the ARM template, navigate to the local cloned [deployment folder](https://github.com/microsoft/azure_arc/tree/main/azure_arc_sqlsrv_jumpstart/azure/arm_template) and run the following command:
+- To deploy the ARM template, navigate to the local cloned [deployment folder](https://github.com/microsoft/azure_arc/tree/main/azure_arc_sqlsrv_jumpstart/azure/arm_template) and run the following command:
 
     ```shell
     az deployment group create \
@@ -150,7 +155,7 @@ As mentioned, this deployment will use an ARM Template. You will deploy a single
     --parameters azuredeploy.parameters.json
     ```
 
-* Once Azure resources have been provisioned you will be able to see them in Azure portal.
+- Once Azure resources have been provisioned you will be able to see them in Azure portal.
 
     ![Screenshot showing ARM deployment](./deployment_complete_cli.png)
 
@@ -158,11 +163,11 @@ As mentioned, this deployment will use an ARM Template. You will deploy a single
 
 ## Windows Login & Post Deployment
 
-* Once the Windows Server VM has been deployed, it is time to login to it. Use RDP to access the VM using the VM's public IP
+- Once the Windows Server VM has been deployed, it is time to login to it. Use RDP to access the VM using the VM's public IP
 
     ![Screenshot showing Overview tab of Azure VM](./sql_vm_portal.png)
 
-* At first login a logon script will get executed. This script was created as part of the automated deployment process.
+- At first login a logon script will get executed. This script was created as part of the automated deployment process.
 
     Let the script to run its course and **do not close** the PowerShell session, this will be done for you once completed.
 
@@ -170,7 +175,7 @@ As mentioned, this deployment will use an ARM Template. You will deploy a single
 
     ![Screenshot showing PowerShell script executing in VM](./post_deploy_script.png)
 
-* After a successful run you can see in the Azure portal that there is now a new Azure Arc-enabled server (with the Microsoft Monitoring agent installed via an extension), Azure Arc-enabled SQL resources and Azure Log Analytics added to the resource group.
+- After a successful run you can see in the Azure portal that there is now a new Azure Arc-enabled server (with the Microsoft Monitoring agent installed via an extension), Azure Arc-enabled SQL resources and Azure Log Analytics added to the resource group.
 
     ![Screenshot showing Azure Arc-enabled SQL resources](./post_deployment_portal_vm.png)
 
@@ -178,7 +183,7 @@ As mentioned, this deployment will use an ARM Template. You will deploy a single
 
     ![Screenshot showing Azure Arc-enabled SQL resources](./post_deployment_portal_arc_sql.png)
 
-* Open Microsoft SQL Server Management Studio (a Windows shortcut will be created for you) and validate the *AdventureWorksLT2019* sample database is deployed.
+- Open Microsoft SQL Server Management Studio (a Windows shortcut will be created for you) and validate the *AdventureWorksLT2019* sample database is deployed.
 
     ![Screenshot showing SQL Management Studio](./sql_server_management_login.png)
 
@@ -188,7 +193,7 @@ As mentioned, this deployment will use an ARM Template. You will deploy a single
 
 Now that you have both the server and SQL projected as Azure Arc resources the last step is to complete the initiation of the SQL Assessment run.
 
-* On the SQL Azure Arc resource click on "Environment Health", then click "Download configuration script".
+- On the SQL Azure Arc resource click on "Environment Health", then click "Download configuration script".
 
     Since the *installArcAgentSQL* run in the deployment step took care of deploying and installing the required binaries you can safely ignore and delete the downloaded *AddSqlAssessment.ps1* file.
 
