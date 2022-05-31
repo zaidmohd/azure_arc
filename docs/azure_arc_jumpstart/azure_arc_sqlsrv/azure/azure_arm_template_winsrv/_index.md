@@ -170,7 +170,7 @@ As mentioned, this deployment will use an ARM Template. You will deploy a single
 
     ![Screenshot showing PowerShell script executing in VM](./post_deploy_script.png)
 
-* Upon successful run, in the Azure portal, notice you now have a new Azure Arc-enabled server (with the Microsoft Monitoring agent installed via an extension) and Azure Arc-enabled SQL resources as well as Azure Log Analytics added to the resource group.
+* After a successful run you can see in the Azure portal that there is now a new Azure Arc-enabled server (with the Microsoft Monitoring agent installed via an extension), Azure Arc-enabled SQL resources and Azure Log Analytics added to the resource group.
 
     ![Screenshot showing Azure Arc-enabled SQL resources](./post_deployment_portal_vm.png)
 
