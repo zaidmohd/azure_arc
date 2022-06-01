@@ -33,9 +33,9 @@ in this scenario you will use Bash commands and REST API calls to:
 - Tagging
 
     Add a tag to your Azure Arc-enabled server.
-    
-    - Tag: **scenario**
-    - Value: **Managed Identity**
+
+  - Tag: **scenario**
+  - Value: **Managed Identity**
 
     The tag will be seen later in the guide when accessing the Hybrid Instance Metadata Service.
 
