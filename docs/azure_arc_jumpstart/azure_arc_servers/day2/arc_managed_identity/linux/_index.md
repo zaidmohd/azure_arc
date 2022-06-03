@@ -162,13 +162,13 @@ The Hybrid Instance Metadata Service (HIMDS) is the hybrid counterpart to the [I
 Below are the endpoints for comparison:
 
 - Instance Metadata Service (IMDS)
-    - Availability: Azure virtual machines, Azure containers (AKS/ACI)
-    - IMDS_ENDPOINT:  `http://169.254.169.254`
-    - IDENTITY_ENDPOINT: `http://169.254.169.254/metadata/identity/oauth2/token`
+  - Availability: Azure virtual machines, Azure containers (AKS/ACI)
+  - IMDS_ENDPOINT:  `http://169.254.169.254`
+  - IDENTITY_ENDPOINT: `http://169.254.169.254/metadata/identity/oauth2/token`
 - Hybrid Instance Metadata Service (IMDS)
-    - Availability: Azure Arc-enabled servers
-    - IMDS_ENDPOINT:  `http://localhost:40342`
-    - IDENTITY_ENDPOINT: `http://localhost:40342/metadata/identity/oauth2/token`
+  - Availability: Azure Arc-enabled servers
+  - IMDS_ENDPOINT:  `http://localhost:40342`
+  - IDENTITY_ENDPOINT: `http://localhost:40342/metadata/identity/oauth2/token`
 
 The HIMDS endpoint provides information about the onboarded server (e.g. subscription, resource group, tags, etc.) as well as an endpoint to acquire the Managed Identity's authentication tokens.
 
