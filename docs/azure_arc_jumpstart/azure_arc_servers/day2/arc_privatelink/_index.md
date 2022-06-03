@@ -38,10 +38,12 @@ in this scenario, you will emulate a hybrid environment connected to Azure over 
 
   - Microsoft.HybridCompute
   - Microsoft.GuestConfiguration
+  - Microsoft.HybridConnectivity
 
       ```shell
       az provider register --namespace 'Microsoft.HybridCompute'
       az provider register --namespace 'Microsoft.GuestConfiguration'
+      az provider register --namespace 'Microsoft.HybridConnectivity'
       ```
 
       You can monitor the registration process with the following commands:
@@ -49,6 +51,7 @@ in this scenario, you will emulate a hybrid environment connected to Azure over 
       ```shell
       az provider show --namespace 'Microsoft.HybridCompute'
       az provider show --namespace 'Microsoft.GuestConfiguration'
+      az provider show --namespace 'Microsoft.HybridConnectivity'
       ```
 
 ## Automation Flow
