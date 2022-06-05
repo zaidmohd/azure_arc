@@ -98,6 +98,14 @@ As mentioned, this deployment will leverage an ARM template. You will deploy a s
 
 - Once Azure resources has been provisioned, you will be able to see it in Azure portal and in your vCenter.
 
+    ![Screenshot showing ARM template output](./01.jpg)
+    
+    ![Screenshot showing vCenter console](./02.jpg)
+    
+    ![Screenshot showing the VM created in the Azure portal](./03.jpg)
+    
+    ![Screenshot showing the VM properties in the Azure portal](./04.jpg)
+
 ## Clean up 
 
 Complete the following steps to clean up your environment:
