@@ -110,7 +110,13 @@ As mentioned, this deployment will leverage an ARM template. You will deploy a s
 
 Complete the following steps to clean up your environment:
 
+- To delete the just the Windows VM. Navigate to the VM in the Azure portal and click "Delete". This will initiate the deletion in your connected vCenter.
+
+    ![Screenshot showing the VM deletion in the Azure portal](./05.jpg)
+    
+    ![Screenshot showing the VM deletion in the vCenter console](./06.jpg)
+
 - If you want to delete the entire Azure resources, simply delete the deployment resource group from the Azure portal.
 
+    ![Screenshot showing the resource group deletion in the Azure portal](./07.jpg)
 
-- To delete the just the Windows VM.
