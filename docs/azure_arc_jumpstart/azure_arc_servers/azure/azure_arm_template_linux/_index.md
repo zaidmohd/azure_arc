@@ -18,21 +18,21 @@ However, **for demo purposes only**, the below guide will allow you to use and o
 
 ## Prerequisites
 
-* Clone the Azure Arc Jumpstart repository
+- Clone the Azure Arc Jumpstart repository
 
     ```shell
     git clone https://github.com/microsoft/azure_arc.git
     ```
 
-* [Install or update Azure CLI to version 2.36.0 and above](https://docs.microsoft.com/cli/azure/install-azure-cli?view=azure-cli-latest). Use the below command to check your current installed version.
+- [Install or update Azure CLI to version 2.36.0 and above](https://docs.microsoft.com/cli/azure/install-azure-cli?view=azure-cli-latest). Use the below command to check your current installed version.
 
   ```shell
   az --version
   ```
 
-* In case you don't already have one, you can [Create a free Azure account](https://azure.microsoft.com/free/).
+- In case you don't already have one, you can [Create a free Azure account](https://azure.microsoft.com/free/).
 
-* Create Azure service principal (SP).
+- Create Azure service principal (SP).
 
     To be able to complete the scenario and its related automation, Azure service principal assigned with the “Contributor” role is required. To create it, login to your Azure account run the below command (this can also be done in [Azure Cloud Shell](https://shell.azure.com/)).
 
@@ -65,14 +65,16 @@ However, **for demo purposes only**, the below guide will allow you to use and o
 
     > **NOTE: The Jumpstart scenarios are designed with as much ease of use in-mind and adhering to security-related best practices whenever possible. It is optional but highly recommended to scope the service principal to a specific [Azure subscription and resource group](https://docs.microsoft.com/cli/azure/ad/sp?view=azure-cli-latest) as well considering using a [less privileged service principal account](https://docs.microsoft.com/azure/role-based-access-control/best-practices)**
 
-* Azure Arc-enabled servers depends on the following Azure resource providers in your subscription in order to use this service. Registration is an asynchronous process, and registration may take approximately 10 minutes.
+- Azure Arc-enabled servers depends on the following Azure resource providers in your subscription in order to use this service. Registration is an asynchronous process, and registration may take approximately 10 minutes.
 
-  * Microsoft.HybridCompute
-  * Microsoft.GuestConfiguration
+  - Microsoft.HybridCompute
+  - Microsoft.GuestConfiguration
+  - Microsoft.HybridConnectivity
 
       ```shell
       az provider register --namespace 'Microsoft.HybridCompute'
       az provider register --namespace 'Microsoft.GuestConfiguration'
+      az provider register --namespace 'Microsoft.HybridConnectivity'
       ```
 
       You can monitor the registration process with the following commands:
@@ -80,6 +82,7 @@ However, **for demo purposes only**, the below guide will allow you to use and o
       ```shell
       az provider show --namespace 'Microsoft.HybridCompute'
       az provider show --namespace 'Microsoft.GuestConfiguration'
+      az provider show --namespace 'Microsoft.HybridConnectivity'
       ```
 
 ## Automation Flow
@@ -96,27 +99,27 @@ For you to get familiar with the automation and deployment flow, below is an exp
 
     2. Generate a ~/.bash_profile file that will be initialized at user's first login to configure the environment. This script will:
 
-        * Stop and disable the "Linux Azure Guest Agent" service.
+        - Stop and disable the "Linux Azure Guest Agent" service.
 
-        * Create a new OS Firewall rule to block Azure IMDS outbound traffic to the *169.254.169.254* remote address.
+        - Create a new OS Firewall rule to block Azure IMDS outbound traffic to the *169.254.169.254- remote address.
 
-        * Install the Azure Arc connected machine agent.
+        - Install the Azure Arc connected machine agent.
 
-        * Remove the ~/.bash_profile file so it will not run after first login.
+        - Remove the ~/.bash_profile file so it will not run after first login.
 
 4. User SSH to Linux VM which will start the *~/.bash_profile* script execution and will onboard the VM to Azure Arc
 
-    > **NOTE: The [*install_arc_agent.sh*](https://github.com/microsoft/azure_arc/blob/main/azure_arc_servers_jumpstart/azure/linux/arm_template/scripts/install_arc_agent.sh) shell script will enable the OS firewall and set up new rules for incoming and outgoing connections. By default all incoming and outgoing traffic will be allowed, except blocking Azure IMDS outbound traffic to the *169.254.169.254* remote address.**
+    > **NOTE: The [*install_arc_agent.sh*](https://github.com/microsoft/azure_arc/blob/main/azure_arc_servers_jumpstart/azure/linux/arm_template/scripts/install_arc_agent.sh) shell script will enable the OS firewall and set up new rules for incoming and outgoing connections. By default all incoming and outgoing traffic will be allowed, except blocking Azure IMDS outbound traffic to the *169.254.169.254- remote address.**
 
 ## Deployment
 
 As mentioned, this deployment will leverage ARM templates. You will deploy a single template, responsible for creating all the Azure resources in a single resource group as well onboarding the created VM to Azure Arc.
 
-* Before deploying the ARM template, login to Azure using AZ CLI with the ```az login``` command.
+- Before deploying the ARM template, login to Azure using AZ CLI with the ```az login``` command.
 
-* The deployment is using the ARM template parameters file. Before initiating the deployment, edit the [*azuredeploy.parameters.json*](https://github.com/microsoft/azure_arc/blob/main/azure_arc_servers_jumpstart/azure/linux/arm_template/azuredeploy.parameters.json) file located in your local cloned repository folder. An example parameters file is located [here](https://github.com/microsoft/azure_arc/blob/main/azure_arc_servers_jumpstart/azure/linux/arm_template/azuredeploy.parameters.example.json).
+- The deployment is using the ARM template parameters file. Before initiating the deployment, edit the [*azuredeploy.parameters.json*](https://github.com/microsoft/azure_arc/blob/main/azure_arc_servers_jumpstart/azure/linux/arm_template/azuredeploy.parameters.json) file located in your local cloned repository folder. An example parameters file is located [here](https://github.com/microsoft/azure_arc/blob/main/azure_arc_servers_jumpstart/azure/linux/arm_template/azuredeploy.parameters.example.json).
 
-* To deploy the ARM template, navigate to the local cloned [deployment folder](https://github.com/microsoft/azure_arc/tree/main/azure_arc_servers_jumpstart/azure/linux/arm_template) and run the below command:
+- To deploy the ARM template, navigate to the local cloned [deployment folder](https://github.com/microsoft/azure_arc/tree/main/azure_arc_servers_jumpstart/azure/linux/arm_template) and run the below command:
 
     ```shell
     az group create --name <Name of the Azure resource group> --location <Azure region> --tags "Project=jumpstart_azure_arc_servers"
@@ -140,7 +143,7 @@ As mentioned, this deployment will leverage ARM templates. You will deploy a sin
     --parameters azuredeploy.parameters.json
     ```
 
-* Once Azure resources has been provisioned, you will be able to see it in Azure portal.
+- Once Azure resources has been provisioned, you will be able to see it in Azure portal.
 
     ![Screenshot output of ARM template](./01.png)
 
@@ -148,17 +151,17 @@ As mentioned, this deployment will leverage ARM templates. You will deploy a sin
 
 ## Linux Login & Post Deployment
 
-* Now that the Linux Server VM is created, it is time to log in to it. If you have not chosen to deploy Azure Bastion in the ARM template, SSH to the VM using its public IP.
+- Now that the Linux Server VM is created, it is time to log in to it. If you have not chosen to deploy Azure Bastion in the ARM template, SSH to the VM using its public IP.
 
     ![Screenshot Azure VM public IP address](./03.png)
 
-* If you have chosen to deploy Azure Bastion in the ARM template, use it to connect to the VM.
+- If you have chosen to deploy Azure Bastion in the ARM template, use it to connect to the VM.
 
     ![Screenshot Azure VM Bastion connectivity](./04.png)
 
-* At first login, as mentioned in the "Automation Flow" section, a logon script will get executed. This script was created as part of the automated deployment process.
+- At first login, as mentioned in the "Automation Flow" section, a logon script will get executed. This script was created as part of the automated deployment process.
 
-* Let the script to run its course and **do not close** the SSH session, this will be done for you once completed.
+- Let the script to run its course and **do not close** the SSH session, this will be done for you once completed.
 
     ![Screenshot script output](./05.png)
 
@@ -166,7 +169,7 @@ As mentioned, this deployment will leverage ARM templates. You will deploy a sin
 
     ![Screenshot script output](./07.png)
 
-* Upon successful run, a new Azure Arc-enabled server will be added to the resource group.
+- Upon successful run, a new Azure Arc-enabled server will be added to the resource group.
 
     ![Screenshot Azure Arc resource on the Azure portal](./08.png)
 

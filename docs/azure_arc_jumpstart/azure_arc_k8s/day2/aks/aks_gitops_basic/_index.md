@@ -1,12 +1,12 @@
 ---
 type: docs
-title: "Deploy GitOps configurations and perform basic GitOps flow on AKS as an Azure Arc Connected Cluster"
-linkTitle: "Deploy GitOps configurations and perform basic GitOps flow on AKS as an Azure Arc Connected Cluster"
+title: "Deploy GitOps configurations and perform basic GitOps flow on AKS as an Azure Arc Connected Cluster (Flux v2)"
+linkTitle: "Deploy GitOps configurations and perform basic GitOps flow on AKS as an Azure Arc Connected Cluster (Flux v2)"
 weight: 1
 description: >
 ---
 
-## Deploy GitOps configurations and perform basic GitOps flow on AKS as an Azure Arc Connected Cluster
+## Deploy GitOps configurations and perform basic GitOps flow on AKS as an Azure Arc Connected Cluster (Flux v2)
 
 The following Jumpstart scenario will guide you on how to create GitOps configuration on an Azure Kubernetes Service (AKS) cluster which is projected as an Azure Arc connected cluster resource.
 
@@ -34,7 +34,7 @@ GitOps on Azure Arc-enabled Kubernetes uses [Flux](https://fluxcd.io/docs/), a p
 
     ![Existing Azure Arc-enabled Kubernetes cluster](./02.png)
 
-- [Install or update Azure CLI to version 2.25.0 and above](https://docs.microsoft.com/cli/azure/install-azure-cli?view=azure-cli-latest). Use the below command to check your current installed version.
+- [Install or update Azure CLI to version 2.36.0 and above](https://docs.microsoft.com/cli/azure/install-azure-cli?view=azure-cli-latest). Use the below command to check your current installed version.
 
   ```shell
   az --version

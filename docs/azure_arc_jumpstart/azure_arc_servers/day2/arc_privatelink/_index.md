@@ -38,10 +38,12 @@ in this scenario, you will emulate a hybrid environment connected to Azure over 
 
   - Microsoft.HybridCompute
   - Microsoft.GuestConfiguration
+  - Microsoft.HybridConnectivity
 
       ```shell
       az provider register --namespace 'Microsoft.HybridCompute'
       az provider register --namespace 'Microsoft.GuestConfiguration'
+      az provider register --namespace 'Microsoft.HybridConnectivity'
       ```
 
       You can monitor the registration process with the following commands:
@@ -49,6 +51,7 @@ in this scenario, you will emulate a hybrid environment connected to Azure over 
       ```shell
       az provider show --namespace 'Microsoft.HybridCompute'
       az provider show --namespace 'Microsoft.GuestConfiguration'
+      az provider show --namespace 'Microsoft.HybridConnectivity'
       ```
 
 ## Automation Flow
@@ -144,10 +147,10 @@ As mentioned, this deployment will leverage ARM templates. You will deploy a sin
 To make sure that your Azure Arc-enabled server is using Private Link for its connection. Use your Azure Bastion session to run the command below:
 
   ```powershell
-    azcmagent.exe show
+    azcmagent check --location <your Azure Region> --use-private-link --verbose
   ```
 
-It should list your Private Link Scope ID.
+It should show private reachable connections for the agent's endpoints.
 
   ![Connected Machine agent using PL](./09.png)
 
