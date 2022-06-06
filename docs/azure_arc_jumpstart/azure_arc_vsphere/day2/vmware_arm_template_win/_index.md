@@ -84,6 +84,8 @@ As mentioned, this deployment will leverage an ARM template. You will deploy a s
   - _`nicType`_ - the network type to associate to the VM
   - _`templateName`_ - your Windows VM template name
   - _`clusterName`_ - the vSphere cluster to host the VM
+  - _`adminUserName`_ - the admin user name for the created Windows VM
+  - _`adminUserPassword`_ - the admin user password for the created Windows VM
   
 - To deploy the ARM template, navigate to the local cloned [deployment folder](https://github.com/microsoft/azure_arc/blob/main/azure_arc_vsphere_jumpstart/vmware_arm_template_win/) and run the below command.
 
@@ -106,17 +108,21 @@ As mentioned, this deployment will leverage an ARM template. You will deploy a s
     
     ![Screenshot showing the VM properties in the Azure portal](./04.jpg)
 
+- The VM is also onboarded to Azure Arc.
+
+    ![Screenshot showing the VM guest configuration enabled](./05.jpg)
+
 ## Clean up 
 
 Complete the following steps to clean up your environment:
 
 - To delete the just the Windows VM. Navigate to the VM in the Azure portal and click "Delete". This will initiate the deletion in your connected vCenter.
 
-    ![Screenshot showing the VM deletion in the Azure portal](./05.jpg)
+    ![Screenshot showing the VM deletion in the Azure portal](./06.jpg)
     
-    ![Screenshot showing the VM deletion in the vCenter console](./06.jpg)
+    ![Screenshot showing the VM deletion in the vCenter console](./07.jpg)
 
 - If you want to delete the entire Azure resources, simply delete the deployment resource group from the Azure portal.
 
-    ![Screenshot showing the resource group deletion in the Azure portal](./07.jpg)
+    ![Screenshot showing the resource group deletion in the Azure portal](./08.jpg)
 
