@@ -84,7 +84,7 @@ As mentioned, this deployment will leverage an ARM template. You will deploy a s
   - _`nicType`_ - the network type to associate to the VM
   - _`templateName`_ - your Windows VM template name
   - _`clusterName`_ - the vSphere cluster to host the VM
-  - _`adminUserName`_ - the admin user name for the created Windows VM
+  - _`adminUserName`_ - the admin username for the created Windows VM
   - _`adminUserPassword`_ - the admin user password for the created Windows VM
   
 - To deploy the ARM template, navigate to the local cloned [deployment folder](https://github.com/microsoft/azure_arc/blob/main/azure_arc_vsphere_jumpstart/vmware_arm_template_win/) and run the below command.
