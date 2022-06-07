@@ -78,7 +78,7 @@ As mentioned, this deployment will leverage an ARM template. You will deploy a s
 - The deployment will use an ARM template parameters file to customize your environment. Before initiating the deployment, edit the [_azuredeploy.parameters.json_](https://github.com/microsoft/azure_arc/blob/main/azure_arc_vsphere_jumpstart/vmware_arm_template_win/azuredeploy.parameters.json) file located in your local cloned repository folder. Example parameters files are located [here](https://github.com/microsoft/azure_arc/blob/main/azure_arc_vsphere_jumpstart/vmware_arm_template_win/azuredeploy.example.parameters.json). Fill out the parameters according to your environment:
 
   - _`virtualMachineName`_ - the name of the Windows virtual machine that will be created
-  - _`extendedLocationName`_ - the name of your custom location
+  - _`extendedLocationName`_ - the name of your Azure Arc custom location
   - _`vCenterName`_ - the name of your vCenter
   - _`networkName`_ - the network you will use to deploy your VM
   - _`nicType`_ - the network type to associate to the VM
