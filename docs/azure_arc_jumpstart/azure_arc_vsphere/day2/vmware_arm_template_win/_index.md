@@ -80,7 +80,7 @@ As mentioned, this deployment will leverage an ARM template. You will deploy a s
   - _`virtualMachineName`_ - the name of the Windows virtual machine that will be created
   - _`extendedLocationName`_ - the name of your Azure Arc custom location
   - _`vCenterName`_ - the name of your vCenter
-  - _`networkName`_ - the network you will use to deploy your VM
+  - _`networkName`_ - the vSphere network (port group) you will use to deploy your VM
   - _`nicType`_ - the network type to associate to the VM
   - _`templateName`_ - your Windows VM template name
   - _`clusterName`_ - the vSphere cluster to host the VM
