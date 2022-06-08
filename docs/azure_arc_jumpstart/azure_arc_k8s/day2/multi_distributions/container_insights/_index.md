@@ -97,9 +97,9 @@ To create a new extension instance, we will use the _k8s-extension create_ comma
 
     ![Screenshot showing Azure Portal with Azure Arc-enabled Kubernetes resource extensions](./01.png)
 
-- Edit the environment variables in [the script](https://raw.githubusercontent.com/microsoft/azure_arc/main/azure_arc_k8s_jumpstart/container_insights/azure_monitor_alerts.sh) to match your environment parameters followed by running the ```. ./azure_monitor_alerts.sh``` command.
+- Navigate to the folder that has the kind cluster definition
 
-    ![Screenshot parameter examples](./02.png)
+- Edit the environment variables in [the script](https://raw.githubusercontent.com/microsoft/azure_arc/main/azure_arc_k8s_jumpstart/container_insights/azure_monitor_alerts.sh) to match your environment parameters.
 
   - _`subscriptionId`_ - Your Azure subscription ID
   - _`appId`_ - Your Azure service principal name
@@ -112,6 +112,14 @@ To create a new extension instance, we will use the _k8s-extension create_ comma
   - _`k8sExtensionName`_ - Azure Monitor extension name, should be azuremonitor-containers
   - _`actionGroupName`_ - Action Group for the Alerts
   - _`email`_ - Email for the Action Group
+
+    ![Screenshot parameter examples](./02.png)
+
+- After editing the variables, to run the script, navigate to the [script folder](https://github.com/microsoft/azure_arc/tree/main/azure_arc_k8s_jumpstart/container_insights) and run the command
+
+  ```shell  
+  . ./azure_monitor_alerts.
+  ```
 
     > **NOTE: The extra dot is due to the shell script having an _export_ function and needs to have the vars exported in the same shell session as the rest of the commands.**
 
