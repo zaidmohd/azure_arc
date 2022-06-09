@@ -93,7 +93,7 @@ The Azure Policy will be set to “Audit” mode to check the configuration of e
 - Deploy a demo application and Calico Network policy in your Azure Arc-enabled Kubernetes cluster.
 
   ```shell
-  cd azure_arc_k8s_jumpstart/calico_gitops/
+  cd azure_arc/azure_arc_k8s_jumpstart/calico_policy
   ```
 
   ```shell
