@@ -226,10 +226,6 @@ In order to view these cluster extensions, click on the Azure Arc-enabled Kubern
 
 ![Screenshot showing the Azure Arc-enabled Kubernetes installed extensions](./28.png)
 
-## Disaster recovery with SQL distributed availability groups
-
-Azure Arc-enabled SQL Managed Instance is deployed on Kubernetes as a containerized application and uses Kubernetes constructs such as stateful sets and persistent storage to provide built-in health monitoring, failure detection, and failover mechanisms to maintain service health. For increased reliability, you can also configure disaster recovery between multiple Azure Arc-enabled SQL Managed Instances to be able to failover to another instance on another Kubernetes cluster. Disaster recovery is supported for both General Purpose and Business Critical tiers.
-
 ## Operations
 
 ### Creating backup of the _AdventureWorks_ database from the source SQL Instance to prepare for migration
@@ -260,7 +256,7 @@ Azure Arc-enabled SQL Managed Instance is deployed on Kubernetes as a containeri
 
   ![Screenshot showing the two SQL instances connected](./36.png)
 
-- Expand the source SQL instance and navigate to the _AdventureWorks_ database and execute the following query.
+- Expand the source SQL instance and navigate to the _AdventureWorks_ database and execute the following query, use the same username and password as the previous step.
 
   ```Sql
     BACKUP DATABASE AdventureWorksLT2019
