@@ -100,7 +100,7 @@ To create a new extension instance, we will use the _k8s-extension create_ comma
 
     ![Screenshot showing Azure Portal with Azure Arc-enabled Kubernetes resource extensions](./01.png)
 
-- Edit the environment variables in [the script](https://raw.githubusercontent.com/microsoft/azure_arc/main/azure_arc_k8s_jumpstart/container_insights/azure_monitor_alerts.sh) to match your environment parameters.
+- Edit the environment variables in [the script](https://github.com/lanicolas/azure_arc/tree/pablo_policy/azure_arc_k8s_jumpstart/azure_policy/azure_policy.sh) to match your environment parameters.
 
   - _`subscriptionId`_ - Your Azure subscription ID
   - _`appId`_ - Your Azure service principal name
