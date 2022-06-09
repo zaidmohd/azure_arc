@@ -1,18 +1,16 @@
 ---
 type: docs
-title: "SQL Managed Instance disaster recovery"
-linkTitle: "SQL Managed Instance disaster recovery"
+title: "Migrate to Azure Arc-enabled SQL Managed Instance"
+linkTitle: "Migrate to Azure Arc-enabled SQL Managed Instance"
 weight: 2
 description: >
 ---
 
-## Configure disaster recovery in Azure Arc-enabled SQL Managed Instance on AKS using an ARM Template
+## Migrate to Azure Arc-enabled SQL Managed Instance on AKS using an ARM Template
 
-The following Jumpstart scenario will guide you on how to deply a "Ready to Go" environment so you can configure [disaster recovery](https://docs.microsoft.com/azure/azure-arc/data/managed-instance-disaster-recovery) using [Azure Arc-enabled data services](https://docs.microsoft.com/azure/azure-arc/data/overview) and [SQL Managed Instance](https://docs.microsoft.com/azure/azure-arc/data/managed-instance-overview) deployed on [Azure Kubernetes Service (AKS)](https://docs.microsoft.com/azure/aks/dr/intro-kubernetes) cluster using an [Azure ARM Template](https://docs.microsoft.com/azure/azure-resource-manager/templates/overview).
+The following Jumpstart scenario will guide you on how to deply a "Ready to Go" environment so you can [migrate a database](https://docs.microsoft.com/azure/azure-arc/data/migrate-to-managed-instance) using [Azure Arc-enabled data services](https://docs.microsoft.com/azure/azure-arc/data/overview) and [SQL Managed Instance](https://docs.microsoft.com/azure/azure-arc/data/managed-instance-overview) deployed on [Azure Kubernetes Service (AKS)](https://docs.microsoft.com/azure/aks/dr/intro-kubernetes) cluster using an [Azure ARM Template](https://docs.microsoft.com/azure/azure-resource-manager/templates/overview).
 
-By the end of this guide, you will have two Azure Kubernetes Service (AKS) clusters deployed in two separate Azure virtual networks with two Azure Arc-enabled SQL Managed Instances deployed on both clusters, disaster recovery architecture configured between the two sites, and a Microsoft Windows Server 2022 (Datacenter) Azure client VM, installed & pre-configured with all the required tools needed to work with Azure Arc-enabled data services:
-
-![Screenshot showing the deployed architecture](./diagram.png)
+By the end of this scenario, you will have an AKS cluster deployed with an Azure Arc Data Controller, SQL Managed Instance, and a Microsoft Windows Server 2022 (Datacenter) Azure client VM, installed & pre-configured with all the required tools needed to work with Azure Arc-enabled data services. The Azure client VM will host a nested VM with SQL Server installed and configured where you will the _AdventureWorks_ sample database from:
 
 ## Prerequisites
 
@@ -80,22 +78,22 @@ For you to get familiar with the automation and deployment flow, below is an exp
 
 - User is editing the ARM template parameters file (1-time edit). These parameters values are being used throughout the deployment.
 
-- Main [_azuredeploy_ ARM template](https://github.com/microsoft/azure_arc/blob/main/azure_arc_data_jumpstart/aks/DR/ARM/azuredeploy.json) will initiate the deployment of the linked ARM templates:
+- Main [_azuredeploy_ ARM template](https://github.com/microsoft/azure_arc/blob/main/azure_arc_data_jumpstart/aks/Migration/ARM/azuredeploy.json) will initiate the deployment of the linked ARM templates:
 
-  - [_VNET_](https://github.com/microsoft/azure_arc/blob/main/azure_arc_data_jumpstart/aks/DR/ARM/VNET.json) - Deploys three Virtual Networks, two for each site where the clusters will be located and a third Virtual Network to be used by the Client virtual machine.
-  - [_aks_](https://github.com/microsoft/azure_arc/blob/main/azure_arc_data_jumpstart/aks/DR/ARM/aks.json) - Deploys the two AKS clusters in both sites (primary and secondary) where all the Azure Arc data services will be deployed.
-  - [_clientVm_](https://github.com/microsoft/azure_arc/blob/main/azure_arc_data_jumpstart/aks/DR/ARM/clientVm.json) - Deploys the client Windows VM. This is where all user interactions with the environment are made from.
-  - [_logAnalytics_](https://github.com/microsoft/azure_arc/blob/main/azure_arc_data_jumpstart/aks/DR/ARM/logAnalytics.json) - Deploys Azure Log Analytics workspace to support Azure Arc-enabled data services logs uploads.
+  - [_VNET_](https://github.com/microsoft/azure_arc/blob/main/azure_arc_data_jumpstart/aks/Migration/ARM/VNET.json) - Deploys a Virtual Network with a single subnet to be used by the Client virtual machine.
+  - [_aks_](https://github.com/microsoft/azure_arc/blob/main/azure_arc_data_jumpstart/aks/Migration/ARM/aks.json) - Deploys the AKS cluster where all the Azure Arc data services will be deployed.
+  - [_clientVm_](https://github.com/microsoft/azure_arc/blob/main/azure_arc_data_jumpstart/aks/Migration/ARM/clientVm.json) - Deploys the client Windows VM. This is where all user interactions with the environment are made from.
+  - [_logAnalytics_](https://github.com/microsoft/azure_arc/blob/main/azure_arc_data_jumpstart/aks/Migration/ARM/logAnalytics.json) - Deploys Azure Log Analytics workspace to support Azure Arc-enabled data services logs uploads.
 
-  - User remotes into client Windows VM, which automatically kicks off the [_DataServicesLogonScript_](https://github.com/microsoft/azure_arc/blob/main/azure_arc_data_jumpstart/aks/DR/ARM/artifacts/DataServicesLogonScript.ps1) PowerShell script that deploy and configure Azure Arc-enabled data services on the AKS clusters including the data controllers and SQL Managed Instances, in addition to configuring disaster recovery between the two clusters.
+  - User remotes into client Windows VM, which automatically kicks off the [_DataServicesLogonScript_](https://github.com/microsoft/azure_arc/blob/main/azure_arc_data_jumpstart/aks/Migration/ARM/artifacts/DataServicesLogonScript.ps1) PowerShell script that deploy and configure Azure Arc-enabled data services on the AKS cluster including the data controller and SQL Managed Instance and the nested SQL VM.
 
-  - In addition to deploying the data controllers and SQL Managed Instances, the sample [_AdventureWorks_](https://docs.microsoft.com/sql/samples/adventureworks-install-configure?view=sql-server-ver15&tabs=ssms) database will restored automatically for you as well on the primary cluster.
+  - In addition to deploying the data controller and SQL Managed Instance, the sample [_AdventureWorks_](https://docs.microsoft.com/sql/samples/adventureworks-install-configure?view=sql-server-ver15&tabs=ssms) database will restored automatically for you as well on the nested SQL VM.
 
 ## Deployment
 
 As mentioned, this deployment will leverage ARM templates. You will deploy a single template that will initiate the entire automation for this scenario.
 
-- The deployment is using the ARM template parameters file. Before initiating the deployment, edit the [_azuredeploy.parameters.json_](https://github.com/microsoft/azure_arc/blob/main/azure_arc_data_jumpstart/aks/DR/ARM/azuredeploy.parameters.json) file located in your local cloned repository folder. An example parameters file is located [here](https://github.com/microsoft/azure_arc/blob/main/azure_arc_data_jumpstart/aks/DR/ARM/artifacts/azuredeploy.parameters.example.json).
+- The deployment is using the ARM template parameters file. Before initiating the deployment, edit the [_azuredeploy.parameters.json_](https://github.com/microsoft/azure_arc/blob/main/azure_arc_data_jumpstart/aks/Migration/ARM/azuredeploy.parameters.json) file located in your local cloned repository folder. An example parameters file is located [here](https://github.com/microsoft/azure_arc/blob/main/azure_arc_data_jumpstart/aks/Migration/ARM/artifacts/azuredeploy.parameters.example.json).
 
   - _`sshRSAPublicKey`_ - Your SSH public key
   - _`spnClientId`_ - Your Azure service principal id
@@ -110,16 +108,14 @@ As mentioned, this deployment will leverage ARM templates. You will deploy a sin
   - _`deployBastion`_ - Choice (true | false) to deploy Azure Bastion or not to connect to the client VM.
   - _`bastionHostName`_ - Azure Bastion host name.
 
-    > **NOTE: This scenario goes through the capability to failover one Azure Arc-enabled SQL Managed Instance to another instance on a different cluster. If you would like to learn about high availability within the same cluster, you can check our Jumpstart [SQL Managed Instance Availability Groups Failover](https://azurearcjumpstart.io/azure_arc_jumpstart/azure_arc_data/day2/aks/aks_mssql_ha/) scenario.
-
-- To deploy the ARM template, navigate to the local cloned [deployment folder](https://github.com/microsoft/azure_arc/blob/main/azure_arc_data_jumpstart/aks/DR/ARM) and run the below command:
+- To deploy the ARM template, navigate to the local cloned [deployment folder](https://github.com/microsoft/azure_arc/blob/main/azure_arc_data_jumpstart/aks/Migration/ARM) and run the below command:
 
     ```shell
     az group create --name <Name of the Azure resource group> --location <Azure Region>
     az deployment group create \
     --resource-group <Name of the Azure resource group> \
     --name <The name of this deployment> \
-    --template-uri https://raw.githubusercontent.com/microsoft/azure_arc/main/azure_arc_data_jumpstart/aks/DR/ARM/azuredeploy.json \
+    --template-uri https://raw.githubusercontent.com/microsoft/azure_arc/main/azure_arc_data_jumpstart/aks/Migration/ARM/azuredeploy.json \
     --parameters <The *azuredeploy.parameters.json* parameters file location>
     ```
 
@@ -132,13 +128,13 @@ As mentioned, this deployment will leverage ARM templates. You will deploy a sin
     az deployment group create \
     --resource-group Arc-Data-Demo \
     --name arcdata \
-    --template-uri https://raw.githubusercontent.com/microsoft/azure_arc/main/azure_arc_data_jumpstart/aks/DR/ARM/azuredeploy.json \
+    --template-uri https://raw.githubusercontent.com/microsoft/azure_arc/main/azure_arc_data_jumpstart/aks/Migration/ARM/azuredeploy.json \
     --parameters azuredeploy.parameters.json
     ```
 
     > **NOTE: The deployment time for this scenario can take ~15-20min**
 
-- Once Azure resources have been provisioned, you will be able to see them in the Azure portal. At this point, the resource group should have **11 various Azure resources** deployed (If you chose to deploy Azure Bastion, you will have **12 Azure resources**).
+- Once Azure resources have been provisioned, you will be able to see them in the Azure portal. At this point, the resource group should have **8 various Azure resources** deployed (If you chose to deploy Azure Bastion, you will have **9 Azure resources**).
 
     ![Screenshot showing ARM template deployment completed](./01.png)
 
@@ -154,7 +150,7 @@ As mentioned, this deployment will leverage ARM templates. You will deploy a sin
 
     ![Screenshot showing connecting using Azure Bastion](./04.png)
 
-- At first login, as mentioned in the "Automation Flow" section above, the [_DataServicesLogonScript_](https://github.com/microsoft/azure_arc/blob/main/azure_arc_data_jumpstart/aks/DR/ARM/artifacts/DataServicesLogonScript.ps1) PowerShell logon script will start it's run.
+- At first login, as mentioned in the "Automation Flow" section above, the [_DataServicesLogonScript_](https://github.com/microsoft/azure_arc/blob/main/azure_arc_data_jumpstart/aks/Migration/ARM/artifacts/DataServicesLogonScript.ps1) PowerShell logon script will start it's run.
 
 - Let the script to run its course and **do not close** the PowerShell session, this will be done for you once completed. Once the script will finish it's run, the logon script PowerShell session will be closed, the Windows wallpaper will change and both the Azure Arc Data Controller and SQL Managed Instance will be deployed on the cluster and be ready to use.
 
@@ -192,27 +188,9 @@ As mentioned, this deployment will leverage ARM templates. You will deploy a sin
 
   ![Screenshot showing the PowerShell logon script run](./21.png)
 
-  ![Screenshot showing the PowerShell logon script run](./22.png)
+  ![Screenshot showing the post-run desktop](./22.png)
 
-  ![Screenshot showing the PowerShell logon script run](./23.png)
-
-  ![Screenshot showing the PowerShell logon script run](./24.png)
-
-  ![Screenshot showing the PowerShell logon script run](./25.png)
-
-  ![Screenshot showing the PowerShell logon script run](./26.png)
-
-  ![Screenshot showing the PowerShell logon script run](./27.png)
-
-  ![Screenshot showing the PowerShell logon script run](./28.png)
-
-  ![Screenshot showing the PowerShell logon script run](./29.png)
-
-  ![Screenshot showing the PowerShell logon script run](./30.png)
-
-  ![Screenshot showing the post-run desktop](./31.png)
-
-- Since this scenario is deploying the Azure Arc Data Controller and SQL Managed Instance, you will also notice additional newly deployed Azure resources in the resources group (at this point you should have **19 various Azure resources deployed**. The important ones to notice are:
+- Since this scenario is deploying the Azure Arc Data Controller and SQL Managed Instance, you will also notice additional newly deployed Azure resources in the resources group (at this point you should have **12 various Azure resources deployed**. The important ones to notice are:
 
   - _Azure Arc-enabled Kubernetes cluster_ - Azure Arc-enabled data services deployed in directly connected are using this type of resource in order to deploy the data services [cluster extension](https://docs.microsoft.com/azure/azure-arc/kubernetes/conceptual-extensions) as well as for using Azure Arc [Custom locations](https://docs.microsoft.com/azure/azure-arc/kubernetes/conceptual-custom-locations).
 
@@ -222,17 +200,17 @@ As mentioned, this deployment will leverage ARM templates. You will deploy a sin
 
   - _Azure Arc-enabled SQL Managed Instance_ - The SQL Managed Instances that are now deployed on the Kubernetes clusters.
 
-    ![Screenshot showing additional Azure resources in the resource group](./32.png)
+    ![Screenshot showing additional Azure resources in the resource group](./23.png)
 
 - As part of the automation, Azure Data Studio is installed along with the _Azure Data CLI_, _Azure CLI_, _Azure Arc_ and the _PostgreSQL_ extensions. Using the Desktop shortcut created for you, open Azure Data Studio and click the Extensions settings to see the installed extensions.
 
-  ![Screenshot showing Azure Data Studio shortcut](./33.png)
+  ![Screenshot showing Azure Data Studio shortcut](./24.png)
 
-  ![Screenshot showing Azure Data Studio extensions](./34.png)
+  ![Screenshot showing Azure Data Studio extensions](./25.png)
 
-- Additionally, the SQL Managed Instances connections will be configured automatically for you. As mentioned, the sample _AdventureWorks_ database was restored as part of the automation on the primary instance.
+- Additionally, the SQL Managed Instances connection and the SQL instance on the nested VM will be configured automatically for you. As mentioned, the sample _AdventureWorks_ database was restored as part of the automation on the source SQL instance on the client VM.
 
-  ![Screenshot showing Azure Data Studio SQL MI connection](./35.png)
+  ![Screenshot showing Azure Data Studio SQL MI connection](./26.png)
 
 ## Cluster extensions
 
@@ -244,9 +222,9 @@ In this scenario, two Azure Arc-enabled Kubernetes cluster extensions were insta
 
 In order to view these cluster extensions, click on the Azure Arc-enabled Kubernetes resource Extensions settings.
 
-![Screenshot showing the Azure Arc-enabled Kubernetes cluster extensions settings](./36.png)
+![Screenshot showing the Azure Arc-enabled Kubernetes cluster extensions settings](./27.png)
 
-![Screenshot showing the Azure Arc-enabled Kubernetes installed extensions](./37.png)
+![Screenshot showing the Azure Arc-enabled Kubernetes installed extensions](./28.png)
 
 ## Disaster recovery with SQL distributed availability groups
 
@@ -254,94 +232,74 @@ Azure Arc-enabled SQL Managed Instance is deployed on Kubernetes as a containeri
 
 ## Operations
 
-### Azure Arc-enabled SQL Managed Instance distributed availability group validation
+### Creating backup of the _AdventureWorks_ database from the source SQL Instance to prepare for migration
 
-- To be able to failover to a different cluster, a distributed availability group is created by the automation flow that spans the primary and secondary clusters. This can be validated by running the following commands:
+- As part of the automation, the script will also create a new text file and a desktop shortcut named Endpoints that includes the SQL endpoint for the Azure Azure Arc-enabled SQL Managed Instance.
 
-  ```shell
-  az sql instance-failover-group-arc show --name primarycr --use-k8s  --k8s-namespace arc
-  ```
+  ![Screenshot showing the Azure Arc-enabled SQL Managed Instance endpoint URLs text file](./29.png)
 
-  ![Screenshot showing disaster recovery configuration](./38.png)
+- To connect to the source SQL instance on the nested VM, you can find the connection details in the Azure Data Studio.
 
-- As part of the automation, the script will also create a new text file and a desktop shortcut named Endpoints that includes both the primary and the secondary SQL endpoints for both SQL instances.
-  
-  ![Screenshot showing the Azure Arc-enabled SQL Managed Instances endpoint URLs text file](./39.png)
+  ![Screenshot showing the source SQL instance connection details](./30.png)
 
-- Open Microsoft SQL Server Management Studio (SSMS) which is installed automatically for you as part of the bootstrap Jumpstart scenario and use the primary endpoint IP address for the primary cluster and login to the primary DB instance using the username and password provided in the text file mentioned above.
+  ![Screenshot showing the source SQL instance connection details](./31.png)
 
-  ![Screenshot showing opening SQL Server Management Studio from the start menu](./40.png)
+- Open Microsoft SQL Server Management Studio (SSMS) which is installed automatically for you as part of the bootstrap Jumpstart scenario and use the primary endpoint IP address for the Azure Arc-enabled SQL Managed Instance and login to the primary DB instance using the username and password provided in the text file mentioned above.
+
+  ![Screenshot showing opening SQL Server Management Studio from the start menu](./32.png)
 
 - Use the username and password you entered when provisioned the environment and select “SQL Server Authentication”. Alternatively, you can retrieve the username and password using the _`$env:AZDATA_USERNAME`_ and _`$env:AZDATA_PASSWORD`_ commands.
 
-  ![Screenshot showing logging into the SQL Server Management Studio](./41.png)
+  ![Screenshot showing logging into the SQL Server Management Studio](./33.png)
 
-- Connect to the secondary instance as well using the primary endpoint IP address for the secondary cluster in the in the text file mentioned above.
+- Connect to the source SQL instance as well using the connection details you got from the Azure Data Studio.
 
-  ![Screenshot showing the SQL Server Management Studio after login](./42.png)
+  ![Screenshot showing the SQL Server Management Studio after login](./34.png)
 
-  ![Screenshot showing the SQL Server Management Studio after login](./43.png)
+  ![Screenshot showing logging into the SQL Server Management Studio](./35.png)
 
-  ![Screenshot showing the two Azure Arc-enabled SQL Managed Instances connected in the SQL Management Studio](./44.png)
+  ![Screenshot showing the two SQL instances connected](./36.png)
 
-- Expand the _Always On High Availability_ node on both instances to verify that the distributed availability group is created.
+- Expand the source SQL instance and navigate to the _AdventureWorks_ database and execute the following query.
 
-  ![Screenshot showing the local and distributed Availabilty groups on both instances ](./45.png)
-
-- You will find the _AdventureWorks2019_ database already deployed into the primary instance (_js-sql-pr_) and automatically replicated to the secondary instance (_js-sql-dr_) as part of the distributed availability group.
-
-  ![Screenshot showing adventureworks database opened on the primary instance](./46.png)
-
-  > **NOTE: You will not be able to browse the _AdventureWorks2019_ database from the secondary instance since this instance is configured as a disaster recovery instace**.
-
-  ![Screenshot showing adventureworks database opened on the secondary instance](./47.png)
-
-### Simulating failure on the primary site
-
-- First, to test that the DB replication is working, a simple table modification is needed. For this example, on the primary replica, run the following query to update the title of one of the rows to be _Jumpstart Administrator_
-
-   ```Sql
-    USE [AdventureWorks2019]
+  ```Sql
+    BACKUP DATABASE AdventureWorksLT2019
+    TO DISK = 'C:\temp\AdventureWorksLT2019.bak'
+    WITH FORMAT, MEDIANAME = 'AdventureWorksLT2019' ;
     GO
-    UPDATE [HumanResources].[Employee]
-    SET [JobTitle] = 'Jumpstart Administrator'
-    WHERE NationalIDNumber = 245797967
-    GO
-    ```
+  ```
 
-    ![Screenshot showing updating a record in the database](./48.png)
+  ![Screenshot showing starting a new query](./37.png)
 
-    ![Screenshot showing the updated record in the database](./49.png)
+  ![Screenshot showing the success message after backing up the AdventureWorks database](./38.png)
 
-- To simulate a disaster situation, navigate to the AKS cluster in the Azure portal and stop the primary cluster.
+### Migrate the _AdventureWorks_ database from the source SQL instance to the Azure Arc-enabled SQL Managed Instance
 
-    ![Screenshot showing stopping the primary AKS cluster](./50.png)
+- To migrate the backup we created, open a new PowerShell ISE session and use the following PowerShell snippet to:
+  - Copy the created backup to the client VM from the nested SQL VM
+  - Copy the backup to the Azure Arc-enabled SQL Managed Instance pod
+  - Initiate the backup restore process
 
-- Wait for two minutes for the cluster to shutdown and try to refresh the connection to the primary instance and you can see that its no longer available.
+ ```PowerShell
+ Set-Location -Path c:\temp
+$nestedWindowsUsername = "Administrator"
+$nestedWindowsPassword = "ArcDemo123!!"
+$secWindowsPassword = ConvertTo-SecureString $nestedWindowsPassword -AsPlainText -Force
+$winCreds = New-Object System.Management.Automation.PSCredential ($nestedWindowsUsername, $secWindowsPassword)
+$session = New-PSSession -VMName Arcbox-SQL -Credential $winCreds
+Copy-Item -FromSession $session -Path C:\temp\AdventureWorksLT2019.bak -Destination C:\Temp\AdventureWorksLT2019.bak
+kubectl cp ./AdventureWorksLT2019.bak jumpstart-sql-0:var/opt/mssql/data/AdventureWorksLT2019.bak -n arc -c arc-sqlmi
+kubectl exec jumpstart-sql-0 -n arc -c arc-sqlmi -- /opt/mssql-tools/bin/sqlcmd -S localhost -U $Env:AZDATA_USERNAME -P $Env:AZDATA_PASSWORD -Q "RESTORE DATABASE AdventureWorksLT2019 FROM  DISK = N'/var/opt/mssql/data/AdventureWorksLT2019.bak' WITH MOVE 'AdventureWorksLT2012_Data' TO '/var/opt/mssql/data/AdventureWorksLT2012.mdf', MOVE 'AdventureWorksLT2012_Log' TO '/var/opt/mssql/data/AdventureWorksLT2012_log.ldf'"
+ ```
 
-    ![Screenshot showing unavailable primary instance](./51.png)
+  ![Screenshot showing PowerShell script to restore the backup](./39.png)
 
-### Initiating a forced failover to the secondary site.
+- Navigate to the Azure Arc-enabled SQL Managed Instance in the Microsoft SQL Server Management Studio (SSMS) and you can see that the _AdventureWorks_ database has been restored successfully.
 
-- On the client VM, run the following commands on the secondary instance to promote to primary with a forced failover incurring potential data loss.
+  ![Screenshot showing the restored database](./40.png)
 
-   ```shell
-    kubectx secondary
-    az sql instance-failover-group-arc update --k8s-namespace arc --name secondarycr --use-k8s --role force-primary-allow-data-loss
-   ```
-
-    ![Screenshot showing stopping the primary AKS cluster](./52.png)
-
-- Browse to the secondary instance on the Microsoft SQL Server Management Studio (SSMS) and you can see that the secondary (_js-sql-dr_) instance is now promoted to primary.
-
-    ![Screenshot showing browsing to the secondary instance](./53.png)
-
-- To validate that the data you updated earlier has been replicated to the secondary instance, select the _"HumanResources.Employee"_ table, click on "Edit Top 200 Rows".
-
-    ![Screenshot showing Edit Top 200 Rows](./54.png)
-    
 ## Cleanup
 
 - If you want to delete the entire environment, simply delete the deployment resource group from the Azure portal.
 
-    ![Screenshot showing Azure resource group deletion](./55.png)
+    ![Screenshot showing Azure resource group deletion](./41.png)
