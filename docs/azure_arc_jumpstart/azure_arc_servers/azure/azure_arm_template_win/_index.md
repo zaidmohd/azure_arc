@@ -114,9 +114,9 @@ For you to get familiar with the automation and deployment flow, below is an exp
 
 - Click the <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmicrosoft%2Fazure_arc%2Fmain%2Fazure_arc_servers_jumpstart%2Fazure%2Fwindows%2Farm_template%2Fazuredeploy.json" target="_blank"><img src="https://aka.ms/deploytoazurebutton"/></a> button and enter values for the the ARM template parameters.
 
-  ![Screenshot showing Azure portal deployment of ArcBox](./01.png)
+  ![Screenshot showing Azure portal deployment of ArcBox](./01.jpg)
 
-  ![Screenshot showing Azure portal deployment of ArcBox](./02.png)
+  ![Screenshot showing Azure portal deployment of ArcBox](./02.jpg)
 
 ## Deployment Option 2: ARM template with Azure CLI
 
