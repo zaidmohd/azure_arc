@@ -18,12 +18,6 @@ However, **for demo purposes only**, the below guide will allow you to use and o
 
 ## Prerequisites
 
-- Clone the Azure Arc Jumpstart repository
-
-    ```shell
-    git clone https://github.com/microsoft/azure_arc.git
-    ```
-
 - [Install or update Azure CLI to version 2.36.0 and above](https://docs.microsoft.com/cli/azure/install-azure-cli?view=azure-cli-latest). Use the below command to check your current installed version.
 
   ```shell
@@ -85,11 +79,16 @@ However, **for demo purposes only**, the below guide will allow you to use and o
       az provider show --namespace 'Microsoft.HybridConnectivity'
       ```
 
-## Automation Flow
+## Deployment Options and Automation Flow
+
+This Jumpstart scenario provides multiple paths for deploying and configuring resources. Deployment options include:
+
+- Azure portal
+- ARM template via Azure CLI
 
 For you to get familiar with the automation and deployment flow, below is an explanation.
 
-1. User is editing the ARM template parameters file (1-time edit). These parameters values are being used throughout the deployment.
+1. User is providing the ARM template parameters values, either via the portal or editing the parameters file (1st-time edit). These parameters values are being used throughout the deployment.
 
 2. The ARM template includes an Azure VM custom script extension which will deploy the the [*install_arc_agent.sh*](https://github.com/microsoft/azure_arc/blob/main/azure_arc_servers_jumpstart/azure/linux/arm_template/scripts/install_arc_agent.sh) Shell script.
 
@@ -111,9 +110,23 @@ For you to get familiar with the automation and deployment flow, below is an exp
 
     > **NOTE: The [*install_arc_agent.sh*](https://github.com/microsoft/azure_arc/blob/main/azure_arc_servers_jumpstart/azure/linux/arm_template/scripts/install_arc_agent.sh) shell script will enable the OS firewall and set up new rules for incoming and outgoing connections. By default all incoming and outgoing traffic will be allowed, except blocking Azure IMDS outbound traffic to the *169.254.169.254- remote address.**
 
-## Deployment
+## Deployment Option 1: Azure portal
+
+- Click the <a href="https%3A%2F%2Fraw.githubusercontent.com%2Fmicrosoft%2Fazure_arc%2Fmain%2Fazure_arc_servers_jumpstart%2Fazure%2Flinux%2Farm_template%2Fazuredeploy.json" target="_blank"><img src="https://aka.ms/deploytoazurebutton"/></a> button and enter values for the the ARM template parameters.
+
+  ![Screenshot showing Azure portal deployment of ArcBox](./01.png)
+
+  ![Screenshot showing Azure portal deployment of ArcBox](./02.png)
+
+## Deployment Option 2: ARM template with Azure CLI
 
 As mentioned, this deployment will leverage ARM templates. You will deploy a single template, responsible for creating all the Azure resources in a single resource group as well onboarding the created VM to Azure Arc.
+
+- Clone the Azure Arc Jumpstart repository
+
+    ```shell
+    git clone https://github.com/microsoft/azure_arc.git
+    ```
 
 - Before deploying the ARM template, login to Azure using AZ CLI with the ```az login``` command.
 
@@ -145,38 +158,38 @@ As mentioned, this deployment will leverage ARM templates. You will deploy a sin
 
 - Once Azure resources has been provisioned, you will be able to see it in Azure portal.
 
-    ![Screenshot output of ARM template](./01.png)
+    ![Screenshot output of ARM template](./03.png)
 
-    ![Screenshot resources in resource group](./02.png)
+    ![Screenshot resources in resource group](./04.png)
 
 ## Linux Login & Post Deployment
 
 - Now that the Linux Server VM is created, it is time to log in to it. If you have not chosen to deploy Azure Bastion in the ARM template, SSH to the VM using its public IP.
 
-    ![Screenshot Azure VM public IP address](./03.png)
+    ![Screenshot Azure VM public IP address](./05.png)
 
 - If you have chosen to deploy Azure Bastion in the ARM template, use it to connect to the VM.
 
-    ![Screenshot Azure VM Bastion connectivity](./04.png)
+    ![Screenshot Azure VM Bastion connectivity](./06.png)
 
 - At first login, as mentioned in the "Automation Flow" section, a logon script will get executed. This script was created as part of the automated deployment process.
 
 - Let the script to run its course and **do not close** the SSH session, this will be done for you once completed.
 
-    ![Screenshot script output](./05.png)
-
-    ![Screenshot script output](./06.png)
-
     ![Screenshot script output](./07.png)
+
+    ![Screenshot script output](./08.png)
+
+    ![Screenshot script output](./09.png)
 
 - Upon successful run, a new Azure Arc-enabled server will be added to the resource group.
 
-    ![Screenshot Azure Arc resource on the Azure portal](./08.png)
+    ![Screenshot Azure Arc resource on the Azure portal](./10.png)
 
-    ![Screenshot details of Azure Arc-enabled server on Azure portal](./09.png)
+    ![Screenshot details of Azure Arc-enabled server on Azure portal](./11.png)
 
 ## Cleanup
 
 To delete the entire deployment, simply delete the resource group from the Azure portal.
 
-![Screenshot how to delete resource group](./10.png)
+![Screenshot how to delete resource group](./12.png)
