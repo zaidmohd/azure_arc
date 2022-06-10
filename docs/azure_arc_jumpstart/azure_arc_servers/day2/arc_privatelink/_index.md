@@ -81,7 +81,7 @@ For you to get familiar with the automation and deployment flow, below is an exp
 
 ## Deployment Option 1: Azure portal
 
-- Click the <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmicrosoft%2Fazure_arc%2Fmain%2Fazure_arc_servers_jumpstart%2Fprivatelink%2Fazuredeploy.parameters.json" target="_blank"><img src="https://aka.ms/deploytoazurebutton"/></a> button and enter values for the the ARM template parameters.
+- Click the <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmicrosoft%2Fazure_arc%2Fmain%2Fazure_arc_servers_jumpstart%2Fprivatelink%2Fazuredeploy.json" target="_blank"><img src="https://aka.ms/deploytoazurebutton"/></a> button and enter values for the the ARM template parameters.
 
   ![Screenshot showing Azure portal deployment](./02.png)
 
@@ -115,7 +115,7 @@ As mentioned, this deployment will leverage ARM templates. You will deploy a sin
     ```shell
     az deployment sub create \
     --location eastus \
-    --template-uri https://raw.githubusercontent.com/microsoft/azure_arc/main/azure_arc_servers_jumpstart/azure/privatelink/azuredeploy.json \
+    --template-uri https://raw.githubusercontent.com/microsoft/azure_arc/main/azure_arc_servers_jumpstart/privatelink/azuredeploy.json \
     --parameters azuredeploy.example.parameters.json
     ```
 
