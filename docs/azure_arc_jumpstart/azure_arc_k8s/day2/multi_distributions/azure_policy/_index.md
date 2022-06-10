@@ -8,9 +8,9 @@ description: >
 
 ## Integrate Azure Policy with an Azure Arc-enabled K8s cluster using extensions
 
-The following Jumpstart scenario will guide you on how to enable [Azure Policy](https://docs.microsoft.com/en-us/azure/governance/policy/concepts/policy-for-kubernetes?toc=%2Fazure%2Fazure-arc%2Fkubernetes%2Ftoc.json) for an Azure Arc-enabled Kubernetes cluster.
+The following Jumpstart scenario will guide you on how to enable [Azure Policy](https://docs.microsoft.com/azure/governance/policy/concepts/policy-for-kubernetes?toc=%2Fazure%2Fazure-arc%2Fkubernetes%2Ftoc.json) for an Azure Arc-enabled Kubernetes cluster.
 
-In this scenario, you will hook the Azure Arc-enabled Kubernetes cluster to Azure Policy by deploying the [Azure Policy cluster extension](https://docs.microsoft.com/en-us/azure/governance/policy/concepts/policy-for-kubernetes?toc=%2Fazure%2Fazure-arc%2Fkubernetes%2Ftoc.json#install-azure-policy-extension-for-azure-arc-enabled-kubernetes) on your Kubernetes cluster in order to start using some of the Kubernetes Azure Policies.
+In this scenario, you will hook the Azure Arc-enabled Kubernetes cluster to Azure Policy by deploying the [Azure Policy cluster extension](https://docs.microsoft.com/azure/governance/policy/concepts/policy-for-kubernetes?toc=%2Fazure%2Fazure-arc%2Fkubernetes%2Ftoc.json#install-azure-policy-extension-for-azure-arc-enabled-kubernetes) on your Kubernetes cluster in order to start using some of the Kubernetes Azure Policies.
 
   > **NOTE: This guide assumes you already deployed a Kubernetes cluster and connected it to Azure Arc. If you haven't, this repository offers you a way to do so in an automated fashion**
 
@@ -100,7 +100,7 @@ To create a new extension instance, we will use the _k8s-extension create_ comma
 
     ![Screenshot showing Azure Portal with Azure Arc-enabled Kubernetes resource extensions](./01.png)
 
-- Edit the environment variables in [the script](https://github.com/lanicolas/azure_arc/tree/pablo_policy/azure_arc_k8s_jumpstart/azure_policy/azure_policy.sh) to match your environment parameters.
+- Edit the environment variables in [the script](https://raw.githubusercontent.com/microsoft/azure_arc/main/azure_arc_k8s_jumpstart/multi_distributions/azure_policy/azure_policy.sh) to match your environment parameters.
 
   - _`subscriptionId`_ - Your Azure subscription ID
   - _`appId`_ - Your Azure service principal name
@@ -112,7 +112,7 @@ To create a new extension instance, we will use the _k8s-extension create_ comma
 
     ![Screenshot parameter examples](./02.png)
 
-- After editing the variables, to run the script, navigate to the [script folder](https://github.com/microsoft/azure_arc/tree/main/azure_arc_k8s_jumpstart/azure_policy) and run the command
+- After editing the variables, to run the script, navigate to the [script folder](https://github.com/microsoft/azure_arc/tree/main/azure_arc_k8s_jumpstart/multi_distributions/azure_policy) and run the command
 
   ```shell  
   . ./azure_policy.sh
