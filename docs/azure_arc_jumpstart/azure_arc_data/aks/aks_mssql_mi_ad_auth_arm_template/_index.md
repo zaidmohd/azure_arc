@@ -6,11 +6,11 @@ weight: 2
 description: >
 ---
 
-## Deploy Azure SQL Managed Instance with AD authentication support in directly connected mode on AKS using an ARM Template
+## Deploy Azure SQL Managed Instance with AD authentication support using Customer-managed keytab in directly connected mode on AKS using an ARM Template
 
 The following Jumpstart scenario will guide you on how to deploy a "Ready to Go" environment so you can start using [Azure Arc-enabled data services](https://docs.microsoft.com/azure/azure-arc/data/overview) and [SQL Managed Instance](https://docs.microsoft.com/azure/azure-arc/data/managed-instance-overview) with [Active Directory Authentication](https://docs.microsoft.com/en-us/azure/azure-arc/data/active-directory-introduction) support to access control SQL Managed Instance. This scenario is deployed on [Azure Kubernetes Service (AKS)](https://docs.microsoft.com/azure/aks/intro-kubernetes) cluster using [Azure ARM Template](https://docs.microsoft.com/azure/azure-resource-manager/templates/overview). This scenarios uses [Customer-managed keytab (CMK)](https://docs.microsoft.com/en-us/azure/azure-arc/data/deploy-customer-managed-keytab-active-directory-connector) to support [Active Directory authentication in Arc-enabled SQL Managed Instance](https://docs.microsoft.com/en-us/azure/azure-arc/data/deploy-active-directory-sql-managed-instance?tabs=customer-managed-keytab-mode).
 
-By the end of this guide, you will have an AKS cluster deployed with an Azure Arc Data Controller, SQL Managed Instance, Microsoft Windows Server 2022 (Datacenter) Azure VM with Active Directory Domain Services and DNS server installed, and a Microsoft Windows Server 2022 (Datacenter) Azure client VM, installed & pre-configured with all the required tools needed to work with Azure Arc-enabled data services:
+By the end of this scenario, you will have an AKS cluster deployed with an Azure Arc Data Controller, SQL Managed Instance, Microsoft Windows Server 2022 (Datacenter) Azure VM with Active Directory Domain Services and DNS server installed, and a Microsoft Windows Server 2022 (Datacenter) Azure client VM, installed & pre-configured with all the required tools needed to work with Azure Arc-enabled data services:
 
 ![Screenshot showing the deployed architecture](./deployment-architecture.png)
 
@@ -22,7 +22,7 @@ By the end of this guide, you will have an AKS cluster deployed with an Azure Ar
     git clone https://github.com/microsoft/azure_arc.git
     ```
 
-- [Install or update Azure CLI to version 2.25.0 and above](https://docs.microsoft.com/cli/azure/install-azure-cli?view=azure-cli-latest). Use the below command to check your current installed version.
+- [Install or update Azure CLI to version 2.36.0 and above](https://docs.microsoft.com/cli/azure/install-azure-cli?view=azure-cli-latest). Use the below command to check your current installed version.
 
   ```shell
   az --version
@@ -84,11 +84,11 @@ For you to get familiar with the automation and deployment flow, below is an exp
 
   - [_VNET_](https://github.com/microsoft/azure_arc/blob/main/azure_arc_data_jumpstart/aks/ARM/VNET.json) - Deploys a Virtual Network with two subnets, one to be used by the Client virtual machine and Active Directory Domain Services VM, and the other to be used by AKS cluster. Assigns DNS servers in the VNet when Active Directory authentication support is enabled in SQL Managed Instance.
   - [_aks_](https://github.com/microsoft/azure_arc/blob/main/azure_arc_data_jumpstart/aks/ARM/aks.json) - Deploys the AKS cluster where all the Azure Arc data services will be deployed.
-  - [_addsVm_](https://github.com/microsoft/azure_arc/blob/main/azure_arc_data_jumpstart/aks/ARM/addsVm.json) - Deploys the Active Directory Domain Services Windows VM. This is where all user accounts are created to access SQL Managed Instance using Active Directory  authentication, service account to assign Service Principal and generate keytab file, and DNS entries for domain controller and SQL Managed Instance name resolution for connectivity.
+  - [_addsVm_](https://github.com/microsoft/azure_arc/blob/main/azure_arc_data_jumpstart/aks/ARM/addsVm.json) - Deploys the Active Directory Domain Services Windows VM. This is where all user accounts are created to access SQL Managed Instance using Active Directory  authentication, service account to assign service principal and generate keytab file, and DNS entries for domain controller and SQL Managed Instance name resolution for connectivity.
   - [_clientVm_](https://github.com/microsoft/azure_arc/blob/main/azure_arc_data_jumpstart/aks/ARM/clientVm.json) - Deploys the client Windows VM. This is where all user interactions with the environment are made from.
   - [_logAnalytics_](https://github.com/microsoft/azure_arc/blob/main/azure_arc_data_jumpstart/aks/ARM/logAnalytics.json) - Deploys Azure Log Analytics workspace to support Azure Arc-enabled data services logs uploads.
 
-  - User remotes into Active Directory domain joined client Windows VM using Active Directory account, which automatically kicks off the [_DataServicesLogonScript_](https://github.com/microsoft/azure_arc/blob/main/azure_arc_data_jumpstart/aks/ARM/artifacts/DataServicesLogonScript.ps1) PowerShell script that deploy and configure Azure Arc-enabled data services on the AKS cluster including the reverse DNS setup, PTR record for domain controller, data controller, SQLMI organization unit (OU), domain user account and keytab file, Active Directory Connector(ADC), and SQL Managed Instance.
+  - User remotes into the Active Directory domain joined client Windows VM using Active Directory account, which automatically kicks off the [_DataServicesLogonScript_](https://github.com/microsoft/azure_arc/blob/main/azure_arc_data_jumpstart/aks/ARM/artifacts/DataServicesLogonScript.ps1) PowerShell script that deploy and configure Azure Arc-enabled data services on the AKS cluster including the reverse DNS setup, PTR record for domain controller, data controller, SQLMI organization unit (OU), domain user account and keytab file, Active Directory Connector(ADC), and SQL Managed Instance.
 
   - In addition to deploying the data controller and SQL Managed Instance, the sample [_AdventureWorks_](https://docs.microsoft.com/sql/samples/adventureworks-install-configure?view=sql-server-ver15&tabs=ssms) database is restored, windows account is created in SQL Managed Instance, and sysadmin role is automatically assigned for you as well to connect to database server using Windows Integrated authentication using SQL Server Management Studio(SSMS) or Azure Data Studio.
 
@@ -139,9 +139,9 @@ As mentioned, this deployment will leverage ARM templates. You will deploy a sin
     --parameters azuredeploy.parameters.json
     ```
 
-    > **NOTE: The deployment time for this scenario can take ~15-20min**
+    > **NOTE: The deployment time for this scenario can take ~20-25min**
 
-- Once Azure resources have been provisioned, you will be able to see them in the Azure portal. At this point, the resource group should have **13 various Azure resources** deployed (If you chose to deploy Azure Bastion, you will have **14 Azure resources**).
+- Once Azure resources have been provisioned, you will be able to see them in the Azure portal. At this point, the resource group should have **12 various Azure resources** deployed (If you chose to deploy Azure Bastion, you will have **13 Azure resources**).
 
     ![Screenshot showing ARM template deployment completed](./01.png)
 
@@ -153,11 +153,13 @@ As mentioned, this deployment will leverage ARM templates. You will deploy a sin
 
     ![Screenshot showing the Client VM public IP](./03.png)
 
-- If you have chosen to deploy Azure Bastion in the ARM template, use it to connect to the VM.
+- If you have chosen to deploy Azure Bastion in the ARM template, use it to connect to the VM. Please make sure to use User Principal Name of the domain user i.e. **arcdemo@jupstart.local** to login to Client VM through Bastion. Login will fail if using **jumpstart\arcdemo** format. 
 
     ![Screenshot showing connecting using Azure Bastion](./04.png)
 
-- At first login, use **jumpstart\arcdemo** Active Directory user account to login. This user account is the domain administrator and has full privileges to setup AD authentication in SQL Managed Instance. As mentioned in the "Automation Flow" section above, the [_DataServicesLogonScript_](https://github.com/microsoft/azure_arc/blob/main/azure_arc_data_jumpstart/aks/ARM/artifacts/DataServicesLogonScript.ps1) PowerShell logon script will start it's run.
+- At first login to Client VM using Remote Desktop Connection, use **jumpstart\arcdemo** Active Directory user account to login. This user account is the domain administrator and has full privileges to setup AD authentication in SQL Managed Instance. As mentioned in the "Automation Flow" section above, the [_DataServicesLogonScript_](https://github.com/microsoft/azure_arc/blob/main/azure_arc_data_jumpstart/aks/ARM/artifacts/DataServicesLogonScript.ps1) PowerShell logon script will start it's run.
+
+> **NOTE: Using just arcdemo to login Client VM will not start automation script at first login, as this scenario relies on domain credentials to support AD authentication to connect SQL Managed Instance.**
 
   ![Screenshot showing the PowerShell logon script run](./05.png)
 
@@ -187,7 +189,7 @@ As mentioned, this deployment will leverage ARM templates. You will deploy a sin
 
   ![Screenshot showing the PowerShell logon script run](./17.png)
 
-    ![Screenshot showing the post-run desktop](./18.png)
+  ![Screenshot showing the post-run desktop](./18.png)
 
 - Since this scenario is deploying the Azure Arc Data Controller and SQL Managed Instance, you will also notice additional newly deployed Azure resources in the resources group (at this point you should have **16 various Azure resources deployed**. The important ones to notice are:
 
