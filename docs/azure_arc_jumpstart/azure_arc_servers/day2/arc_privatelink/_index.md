@@ -26,12 +26,6 @@ in this scenario, you will emulate a hybrid environment connected to Azure over 
 
 ## Prerequisites
 
-- Clone the Azure Arc Jumpstart repository
-
-    ```shell
-    git clone https://github.com/microsoft/azure_arc.git
-    ```
-
 - [Install or update Azure CLI](https://docs.microsoft.com/cli/azure/install-azure-cli?view=azure-cli-latest). Azure CLI should be running version 2.36.0 or later. Use ```az --version``` to check your current installed version.
 
 - Azure Arc-enabled servers depends on the following Azure resource providers in your subscription in order to use this service. Registration is an asynchronous process, and registration may take approximately 10 minutes.
@@ -54,11 +48,16 @@ in this scenario, you will emulate a hybrid environment connected to Azure over 
       az provider show --namespace 'Microsoft.HybridConnectivity'
       ```
 
-## Automation Flow
+## Deployment Options and Automation Flow
+
+This Jumpstart scenario provides multiple paths for deploying and configuring resources. Deployment options include:
+
+- Azure portal
+- ARM template via Azure CLI
 
 For you to get familiar with the automation and deployment flow, below is an explanation.
 
-1. User is editing the ARM template parameters file (1-time edit). These parameters values are being used throughout the deployment.
+1. User is providing the ARM template parameters values, either via the portal or editing the parameters file (1st-time edit). These parameters values are being used throughout the deployment.
 
 2. User deploys the ARM template at subscription level. The ARM template will create two resources groups with:
 
@@ -80,9 +79,23 @@ For you to get familiar with the automation and deployment flow, below is an exp
 
 3. User logs in to the on-premises VM using Azure Bastion to trigger the Azure Arc onboarding script.
 
-## Deployment
+## Deployment Option 1: Azure portal
+
+- Click the <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmicrosoft%2Fazure_arc%2Fmain%2Fazure_arc_servers_jumpstart%2Fprivatelink%2Fazuredeploy.parameters.json" target="_blank"><img src="https://aka.ms/deploytoazurebutton"/></a> button and enter values for the the ARM template parameters.
+
+  ![Screenshot showing Azure portal deployment](./02.png)
+
+  ![Screenshot showing Azure portal deployment](./03.png)
+
+## Deployment Option 2: ARM template with Azure CLI
 
 As mentioned, this deployment will leverage ARM templates. You will deploy a single ARM template at subscription scope that will deploy resources to the Azure's resource group as well as the "On-premises" resources that will be onboarded to Azure Arc.
+
+- Clone the Azure Arc Jumpstart repository
+
+    ```shell
+    git clone https://github.com/microsoft/azure_arc.git
+    ```
 
 - Before deploying the ARM template, login to Azure using AZ CLI with the ```az login``` command.
 
@@ -110,9 +123,9 @@ As mentioned, this deployment will leverage ARM templates. You will deploy a sin
 
 - Verify the resources are created on the Azure Portal for both resource groups:
 
-    ![Resources created on Onpremises's resource group](./02.png)
+    ![Resources created on Onpremises's resource group](./04.png)
 
-    ![Resources created on Azure's resource group](./03.png)
+    ![Resources created on Azure's resource group](./05.png)
 
 ## Windows Login & Post Deployment
 
@@ -120,15 +133,15 @@ As mentioned, this deployment will leverage ARM templates. You will deploy a sin
 
   - On the "on-premises" resource group select the Windows VM:
 
-    ![Azure Bastion session 01](./04.png)
+    ![Azure Bastion session 01](./06.png)
 
   - Under "Connect" choose Bastion:
 
-    ![Azure Bastion session 02](./05.png)
+    ![Azure Bastion session 02](./07.png)
 
   - Provide the VM credentials and click on "Connect":
 
-    ![Azure Bastion session 03](./06.png)
+    ![Azure Bastion session 03](./08.png)
 
 - At first login, as mentioned in the "Automation Flow" section, a logon script will get executed. This script was created as part of the automated deployment process.
 
@@ -136,11 +149,11 @@ As mentioned, this deployment will leverage ARM templates. You will deploy a sin
 
     > **NOTE: The script run time is ~1-2min long.**
 
-    ![Screenshot script output](./07.png)
+    ![Screenshot script output](./09.png)
 
 - Upon successful run, a new Azure Arc-enabled server will be added to the resource group.
 
-  ![Screenshot Azure Arc-enabled server on resource group](./08.png)
+  ![Screenshot Azure Arc-enabled server on resource group](./10.png)
 
 ## Azure Arc-enabled server Private Link connectivity
 
@@ -152,12 +165,12 @@ To make sure that your Azure Arc-enabled server is using Private Link for its co
 
 It should show private reachable connections for the agent's endpoints.
 
-  ![Connected Machine agent using PL](./09.png)
+  ![Connected Machine agent using PL](./11.png)
 
 ## Delete the deployment
 
 The most straightforward way is to delete both resource groups:
 
-  ![Delete Resource Group On-premises](./10.png)
+  ![Delete Resource Group On-premises](./12.png)
   
-  ![Delete Resource Group Azure](./11.png)
+  ![Delete Resource Group Azure](./13.png)
