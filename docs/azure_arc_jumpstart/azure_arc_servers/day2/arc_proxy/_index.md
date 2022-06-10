@@ -26,12 +26,6 @@ In this scenario, you will emulate a full proxy-client configuration. The scenar
 
 ## Prerequisites
 
-- Clone the Azure Arc Jumpstart repository
-
-    ```shell
-    git clone https://github.com/microsoft/azure_arc.git
-    ```
-
 - [Install or update Azure CLI](https://docs.microsoft.com/cli/azure/install-azure-cli?view=azure-cli-latest). Azure CLI should be running version 2.36.0 or later. Use ```az --version``` to check your current installed version.
 
 - Azure Arc-enabled servers depends on the following Azure resource providers in your subscription in order to use this service. Registration is an asynchronous process, and registration may take approximately 10 minutes.
@@ -54,19 +48,38 @@ In this scenario, you will emulate a full proxy-client configuration. The scenar
       az provider show --namespace 'Microsoft.HybridConnectivity'
       ```
 
-## Automation Flow
+## Deployment Options and Automation Flow
+
+This Jumpstart scenario provides multiple paths for deploying and configuring resources. Deployment options include:
+
+- Azure portal
+- ARM template via Azure CLI
 
 For you to get familiar with the automation and deployment flow, below is an explanation.
 
-1. User is editing the ARM template parameters file (1-time edit). These parameter values are being used throughout the deployment.
+1. User is providing the ARM template parameters values, either via the portal or editing the parameters file (1st-time edit). These parameters values are being used throughout the deployment.
 
 2. User deploys the ARM template at the resource group level.
 
 3. User logs in to the Client's VM using SSH or Azure Bastion to trigger the Azure Arc onboarding script.
 
-## Deployment
+## Deployment Option 1: Azure portal
 
-As mentioned, this deployment will leverage ARM templates. You will deploy a single ARM template at resource group scope.
+- Click the <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmicrosoft%2Fazure_arc%2Fmain%2Fazure_arc_servers_jumpstart%2Fproxy%2Fazuredeploy.json" target="_blank"><img src="https://aka.ms/deploytoazurebutton"/></a> button and enter values for the the ARM template parameters.
+
+  ![Screenshot showing Azure portal deployment](./01.png)
+
+  ![Screenshot showing Azure portal deployment](./02.png)
+
+## Deployment Option 2: ARM template with Azure CLI
+
+As mentioned, this deployment will leverage ARM templates. You will deploy a single ARM template at subscription scope that will deploy resources to the Azure's resource group as well as the "On-premises" resources that will be onboarded to Azure Arc.
+
+- Clone the Azure Arc Jumpstart repository
+
+    ```shell
+    git clone https://github.com/microsoft/azure_arc.git
+    ```
 
 - Before deploying the ARM template, login to Azure using AZ CLI with the ```az login``` command.
 
@@ -119,7 +132,7 @@ As mentioned, this deployment will leverage ARM templates. You will deploy a sin
 
 - Verify the resources are created on the Azure portal on the resource group:
 
-    ![Resources created on resource group](./01.png)
+    ![Resources created on resource group](./03.png)
 
 ## Linux Login & Post Deployment
 
@@ -131,11 +144,11 @@ As mentioned, this deployment will leverage ARM templates. You will deploy a sin
 
     > **NOTE: The script run time is ~1-2min long.**
 
-    ![Screenshot script output](./02.png)
+    ![Screenshot script output](./04.png)
 
 - Upon successful run, a new Azure Arc-enabled server will be added to the resource group.
 
-  ![Screenshot Azure Arc-enabled server on resource group](./03.png)
+  ![Screenshot Azure Arc-enabled server on resource group](./05.png)
 
 ## Azure Arc-enabled server Proxy connectivity
 
@@ -145,10 +158,10 @@ To make sure that your Azure Arc-enabled server is using the proxy for its conne
     sudo azcmagent.exe show
   ```
 
-  ![Screenshot Azure Arc-enabled server on resource group](./04.png)
+  ![Screenshot Azure Arc-enabled server on resource group](./06.png)
 
 ## Delete the deployment
 
 The most straightforward way is to delete the resource groups:
 
-  ![Delete Resource Group](./05.png)
+  ![Delete Resource Group](./07.png)
