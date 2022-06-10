@@ -49,12 +49,6 @@ in this scenario, you will create the following Azure resources that support thi
 
 ## Prerequisites
 
-- Clone the Azure Arc Jumpstart repository
-
-    ```shell
-    git clone https://github.com/microsoft/azure_arc.git
-    ```
-
 - As mentioned, this scenario starts at the point where you already deployed and connected VMs or bare-metal servers to Azure Arc. **The resource group of these Azure Arc-enabled servers must be the same as the one that will be used for this scenario deployment.** This is required since the Azure Policies that deploy the Log Analytics agent and the Dependency agent are assigned at this resource group level. In this scenario, we will use the following instances that have been already connected to Azure Arc and are visible as a resources in Azure:
 
     ![Screenshot showing AWS cloud console with EC2 instance](./01.png)
@@ -63,7 +57,34 @@ in this scenario, you will create the following Azure resources that support thi
 
 - [Install or update Azure CLI](https://docs.microsoft.com/cli/azure/install-azure-cli?view=azure-cli-latest). Azure CLI should be running version 2.14 or later. Use ```az --version``` to check your current installed version.
 
-## Onboarding Azure Monitor
+## Deployment Options and Automation Flow
+
+This Jumpstart scenario provides multiple paths for deploying and configuring resources. Deployment options include:
+
+- Azure portal
+- ARM template via Azure CLI
+
+For you to get familiar with the automation and deployment flow, below is an explanation.
+
+- User is providing the ARM template parameters values, either via the portal or editing the parameters file (1st-time edit). These parameters values are being used throughout the deployment.
+
+- User will run the ARM template at resource group level.
+
+## Deployment Option 1: Azure portal
+
+- Click the <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmicrosoft%2Fazure_arc%2Fmain%2Fazure_arc_servers_jumpstart%2Fmonitoring%2Fmonitoring-template.json" target="_blank"><img src="https://aka.ms/deploytoazurebutton"/></a> button and enter values for the the ARM template parameters.
+
+  ![Screenshot showing Azure portal deployment](./03.png)
+
+  ![Screenshot showing Azure portal deployment](./04.png)
+
+## Deployment Option 2: ARM template with Azure CLI
+
+- Clone the Azure Arc Jumpstart repository
+
+    ```shell
+    git clone https://github.com/microsoft/azure_arc.git
+    ```
 
 - (Optional) If you already have a resource group with Azure Arc-enabled servers, please, proceed to the next step. Otherwise, create a new resource group for the scenario deployment and then, onboard your Azure Arc-enabled servers to that resource group. To create a new resource group, please, run the below command, replacing the values in brackets with your own:
 
