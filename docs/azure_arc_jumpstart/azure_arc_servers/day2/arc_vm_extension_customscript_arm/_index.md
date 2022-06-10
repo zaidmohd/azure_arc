@@ -92,8 +92,8 @@ For you to get familiar with the automation and deployment flow, below is an exp
 - For the Windows VM custom script extension. Click the <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmicrosoft%2Fazure_arc%2Fmain%2Fazure_arc_servers_jumpstart%2Fextensions%2Farm%2Fcustomscript-templatewindows.json" target="_blank"><img src="https://aka.ms/deploytoazurebutton"/></a> button and enter values for the the ARM template parameters.
 
   - _`Resource Group`_: Azure Resource Group where your Azure Arc-enabled server is registered
-  - _`Region`_: Azure region where your Azure Arc-enabled server is connected to
-  - _`Machine Name`_: name of your Azure Arc-enabled server
+  - _`Location`_: Azure region where your Azure Arc-enabled server is connected to
+  - _`VM Name`_: name of your Azure Arc-enabled server
   - _`File Uris`_: for Windows provide https://raw.githubusercontent.com/microsoft/azure_arc/main/azure_arc_servers_jumpstart/scripts/custom_script_windows.ps1
   
   - _`Command to excute:`_ provide `./custom_script_linux.sh`
@@ -105,8 +105,8 @@ For you to get familiar with the automation and deployment flow, below is an exp
 - For the Linux VM custom script extension. Click the <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmicrosoft%2Fazure_arc%2Fmain%2Fazure_arc_servers_jumpstart%2Fextensions%2Farm%2Fcustomscript-templatelinux.json" target="_blank"><img src="https://aka.ms/deploytoazurebutton"/></a> button and enter values for the the ARM template parameters:
 
   - _`Resource Group`_: Azure Resource Group where your Azure Arc-enabled server is registered
-  - _`Region`_: Azure region where your Azure Arc-enabled server is connected to
-  - _`Machine Name`_: name of your Azure Arc-enabled server
+  - _`Location`_: Azure region where your Azure Arc-enabled server is connected to
+  - _`VM Name`_: name of your Azure Arc-enabled server
   - _`File Uris`_: for Linux provide ["https://raw.githubusercontent.com/microsoft/azure_arc/main/azure_arc_servers_jumpstart/scripts/custom_script_linux.sh"]
 
   ![Screenshot showing Azure portal deployment](./05.png)
