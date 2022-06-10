@@ -73,7 +73,7 @@ For you to get familiar with the automation and deployment flow, below is an exp
 
 ## Deployment Option 2: ARM template with Azure CLI
 
-As mentioned, this deployment will leverage ARM templates. You will deploy a single ARM template at subscription scope that will deploy resources to the Azure's resource group as well as the "On-premises" resources that will be onboarded to Azure Arc.
+As mentioned, this deployment will leverage ARM templates.
 
 - Clone the Azure Arc Jumpstart repository
 
@@ -107,9 +107,8 @@ As mentioned, this deployment will leverage ARM templates. You will deploy a sin
 - To deploy the ARM template, navigate to the local cloned [deployment folder](https://github.com/microsoft/azure_arc/tree/main/azure_arc_servers_jumpstart/proxy) and run the below command.
 
     ```shell
-    az group create --name <Name of the Azure resource group> --location <Azure region> --tags "Project=jumpstart_azure_arc_servers"
+    az group create --name <Name of the Azure resource group> --tags "Project=jumpstart_azure_arc_servers"
     az deployment group create \
-    --location <Azure Region Location> \
     --resource-group <Resource Group Name> \
     --name <Deployment Name> \
     --template-file <The *azuredeploy.json* template file location> \
@@ -121,12 +120,11 @@ As mentioned, this deployment will leverage ARM templates. You will deploy a sin
     For example:
 
     ```shell
-    az group create --name Arc-Proxy-Demo --location <Azure region> --tags "Project=jumpstart_azure_arc_servers" 
+    az group create --name Arc-Proxy-Demo --tags "Project=jumpstart_azure_arc_servers" 
     az deployment group create \
-    --location eastus \
     --resource-group Arc-Proxy-Demo \
     --name proxy \
-    --template-uri https://raw.githubusercontent.com/microsoft/azure_arc/main/azure_arc_servers_jumpstart/azure/proxy/azuredeploy.json \
+    --template-uri https://raw.githubusercontent.com/microsoft/azure_arc/main/azure_arc_servers_jumpstart/proxy/azuredeploy.json \
     --parameters azuredeploy.example.parameters.json
     ```
 

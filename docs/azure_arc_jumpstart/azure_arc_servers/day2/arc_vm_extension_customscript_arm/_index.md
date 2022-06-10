@@ -27,12 +27,6 @@ You can use the Azure portal, Azure CLI, an ARM template, PowerShell or Linux Sh
 
 ## Prerequisites
 
-- Clone the Azure Arc Jumpstart repository
-
-    ```shell
-    git clone https://github.com/microsoft/azure_arc.git
-    ```
-
 - As mentioned, this scenario starts at the point where you already deployed and connected VMs or servers to Azure Arc. In the screenshots below you can see a GCP server has been connected with Azure Arc and is visible as a resource in Azure.
 
     ![Screenshot Azure Arc-enabled server on resource group](./01.png)
@@ -78,21 +72,58 @@ You can use the Azure portal, Azure CLI, an ARM template, PowerShell or Linux Sh
   - [*Linux*](https://github.com/microsoft/azure_arc/blob/main/azure_arc_servers_jumpstart/scripts/custom_script_linux.sh): The script will modify the message of the day (MOTD) on the operating system.
   - [*Windows*](https://github.com/microsoft/azure_arc/blob/main/azure_arc_servers_jumpstart/scripts/custom_script_windows.ps1): The script will install Windows Terminal, Microsoft Edge, 7zip and Visual Studio Code [Chocolaty](https://chocolatey.org/) packages on the VM.
 
-## Azure Arc-enabled servers Custom Script Extension Deployment
+## Deployment Options and Automation Flow
+
+This Jumpstart scenario provides multiple paths for deploying and configuring resources. Deployment options include:
+
+- Azure portal
+- ARM template via Azure CLI
+
+For you to get familiar with the automation and deployment flow, below is an explanation.
+
+1. User is providing the ARM template parameters values, either via the portal or editing the parameters file (1st-time edit). These parameters values are being used throughout the deployment.
+
+2. User deploys the ARM template at the resource group level.
+
+3. User logs in to the Azure Arc-enabled server to check the configurations made by the custom script extension.
+
+## Deployment Option 1: Azure portal
+
+- For the Windows VM custom script extension. Click the <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmicrosoft%2Fazure_arc%2Fmain%2Fazure_arc_servers_jumpstart%2Fextensions%2Farm%2Fcustomscript-templatewindows.json" target="_blank"><img src="https://aka.ms/deploytoazurebutton"/></a> button and enter values for the the ARM template parameters.
+
+  ![Screenshot showing Azure portal deployment](./03.png)
+
+  ![Screenshot showing Azure portal deployment](./04.png)
+
+- For the Linux VM custom script extension. Click the <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmicrosoft%2Fazure_arc%2Fmain%2Fazure_arc_servers_jumpstart%2Fextensions%2Farm%2Fcustomscript-templatelinux.json" target="_blank"><img src="https://aka.ms/deploytoazurebutton"/></a> button and enter values for the the ARM template parameters.
+
+  ![Screenshot showing Azure portal deployment](./05.png)
+
+  ![Screenshot showing Azure portal deployment](./06.png)
+
+## Deployment Option 2: ARM template with Azure CLI
+
+As mentioned, this deployment will leverage ARM templates.
+
+- Clone the Azure Arc Jumpstart repository
+
+    ```shell
+    git clone https://github.com/microsoft/azure_arc.git
+    ```
 
 - Edit the extensions parameters file for [*Windows*](https://github.com/microsoft/azure_arc/blob/main/azure_arc_servers_jumpstart/extensions/arm/customscript-templatewindows.parameters.json) or for [*Linux*](https://github.com/microsoft/azure_arc/blob/main/azure_arc_servers_jumpstart/extensions/arm/customscript-templatelinux.parameters.json)
 
-   ![Screenshot parameters file](./03.png)
+   ![Screenshot parameters file](./07.png)
 
 - To match your environment configuration, you will need to provide the following information:
 
   - The VM name as it is registered in Azure Arc.
 
-    ![Screenshot Azure Arc-enabled server machine name](./04.png)
+    ![Screenshot Azure Arc-enabled server machine name](./08.png)
 
   - The location of the resource group where you registered the Azure Arc-enabled server.
 
-    ![Screenshot Azure region](./05.png)
+    ![Screenshot Azure region](./09.png)
 
   - A public Uri for the script that you would like to run on the servers, in this case use the URL for the script in raw format.
     - For Windows: [Public Uri](https://raw.githubusercontent.com/microsoft/azure_arc/main/azure_arc_servers_jumpstart/scripts/custom_script_windows.ps1)
@@ -122,21 +153,21 @@ You can use the Azure portal, Azure CLI, an ARM template, PowerShell or Linux Sh
 
 - Once the template deployment has completed it's run, you should see an output as follows:
 
-    ![Screenshot ARM template output](./06.png)
+    ![Screenshot ARM template output](./10.png)
 
 - To verify a successful deployment on the Azure Arc-enabled server, in the Azure Portal, by clicking on "Extensions" settings. You should see the Custom Script extension installed.
 
-    ![Screenshot custom script extension](./07.png)
+    ![Screenshot custom script extension](./11.png)
 
 - Another way to verify successful custom script execution is by connecting to the VMs and verifying that the operating system has been configured.
 
   - For the Linux VM, use SSH to connect the VM and check out the message of the day which was customized by the script:
 
-    ![Screenshot message of the day changed](./08.png)
+    ![Screenshot message of the day changed](./12.png)
 
   - For the Windows VM, use RDP to connect the VM and verify that the additional software has been installed: Microsoft Edge, 7zip and Visual Studio Code.
 
-    ![Screenshot additional software installed](./09.png)
+    ![Screenshot additional software installed](./13.png)
 
 ## Clean up environment
 
