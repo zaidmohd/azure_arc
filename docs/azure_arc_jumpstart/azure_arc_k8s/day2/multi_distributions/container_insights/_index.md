@@ -99,7 +99,7 @@ To create a new extension instance, we will use the _k8s-extension create_ comma
 
 - Navigate to the folder that has the kind cluster definition
 
-- Edit the environment variables in [the script](https://raw.githubusercontent.com/microsoft/azure_arc/main/azure_arc_k8s_jumpstart/container_insights/azure_monitor_alerts.sh) to match your environment parameters.
+- Edit the environment variables in [the script](https://raw.githubusercontent.com/microsoft/azure_arc/main/azure_arc_k8s_jumpstart/multi_distributions/container_insights/azure_monitor_alerts.sh) to match your environment parameters.
 
   - _`subscriptionId`_ - Your Azure subscription ID
   - _`appId`_ - Your Azure service principal name
@@ -115,7 +115,7 @@ To create a new extension instance, we will use the _k8s-extension create_ comma
 
     ![Screenshot parameter examples](./02.png)
 
-- After editing the variables, to run the script, navigate to the [script folder](https://github.com/microsoft/azure_arc/tree/main/azure_arc_k8s_jumpstart/container_insights) and run the command
+- After editing the variables, to run the script, navigate to the [script folder](https://github.com/microsoft/azure_arc/tree/main/azure_arc_k8s_jumpstart/multi_distributions/container_insights) and run the command
 
   ```shell  
   . ./azure_monitor_alerts.
