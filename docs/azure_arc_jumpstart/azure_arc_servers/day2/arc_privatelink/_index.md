@@ -10,7 +10,7 @@ description: >
 
 The following Jumpstart scenario will guide you on how to use [Azure Private Link](https://docs.microsoft.com/azure/private-link/private-link-overview) to securely connect from an Azure Arc-enabled server to Azure using a VPN. [This feature](https://docs.microsoft.com/azure/azure-arc/servers/private-link-security) allows you to connect privately to Azure Arc without opening up public network access but rather using private endpoints over a VPN or ExpressRoute connection, ensuring that all traffic is being sent to Azure privately.
 
-In this guide, you will emulate a hybrid environment connected to Azure over a VPN with hybrid resources that will be Azure Arc-enabled, and Azure Private Link Scope will be used to connect over a private connection. To complete this process you deploy a single ARM template that will:
+in this scenario, you will emulate a hybrid environment connected to Azure over a VPN with hybrid resources that will be Azure Arc-enabled, and Azure Private Link Scope will be used to connect over a private connection. To complete this process you deploy a single ARM template that will:
 
 - Create two separate resource groups:
 
@@ -32,16 +32,18 @@ In this guide, you will emulate a hybrid environment connected to Azure over a V
     git clone https://github.com/microsoft/azure_arc.git
     ```
 
-- [Install or update Azure CLI](https://docs.microsoft.com/cli/azure/install-azure-cli?view=azure-cli-latest). Azure CLI should be running version 2.25.0** or later. Use ```az --version``` to check your current installed version.
+- [Install or update Azure CLI](https://docs.microsoft.com/cli/azure/install-azure-cli?view=azure-cli-latest). Azure CLI should be running version 2.36.0 or later. Use ```az --version``` to check your current installed version.
 
 - Azure Arc-enabled servers depends on the following Azure resource providers in your subscription in order to use this service. Registration is an asynchronous process, and registration may take approximately 10 minutes.
 
   - Microsoft.HybridCompute
   - Microsoft.GuestConfiguration
+  - Microsoft.HybridConnectivity
 
       ```shell
       az provider register --namespace 'Microsoft.HybridCompute'
       az provider register --namespace 'Microsoft.GuestConfiguration'
+      az provider register --namespace 'Microsoft.HybridConnectivity'
       ```
 
       You can monitor the registration process with the following commands:
@@ -49,6 +51,7 @@ In this guide, you will emulate a hybrid environment connected to Azure over a V
       ```shell
       az provider show --namespace 'Microsoft.HybridCompute'
       az provider show --namespace 'Microsoft.GuestConfiguration'
+      az provider show --namespace 'Microsoft.HybridConnectivity'
       ```
 
 ## Automation Flow
@@ -144,10 +147,10 @@ As mentioned, this deployment will leverage ARM templates. You will deploy a sin
 To make sure that your Azure Arc-enabled server is using Private Link for its connection. Use your Azure Bastion session to run the command below:
 
   ```powershell
-    azcmagent.exe show
+    azcmagent check --location <your Azure Region> --use-private-link --verbose
   ```
 
-It should list your Private Link Scope ID.
+It should show private reachable connections for the agent's endpoints.
 
   ![Connected Machine agent using PL](./09.png)
 

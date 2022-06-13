@@ -2,7 +2,7 @@
 type: docs
 title: "Server SSH Access"
 linkTitle: "Server SSH Access"
-weight: 13
+weight: 15
 description: >
 ---
 
@@ -33,7 +33,7 @@ The following Jumpstart scenario will guide you on how to enable [SSH access to 
     git clone https://github.com/microsoft/azure_arc.git
     ```
 
-- [Install or update Azure CLI to version 2.25.0 and above](https://docs.microsoft.com/cli/azure/install-azure-cli?view=azure-cli-latest). Use the below command to check your current installed version.
+- [Install or update Azure CLI to version 2.36.0 and above](https://docs.microsoft.com/cli/azure/install-azure-cli?view=azure-cli-latest). Use the below command to check your current installed version.
 
 - Create Azure service principal (SP)
 
@@ -70,15 +70,22 @@ The following Jumpstart scenario will guide you on how to enable [SSH access to 
 
 - Azure Arc-enabled servers SSH feature depends on the following Azure resource provider in your subscription in order to use this service. Registration is an asynchronous process, and registration may take approximately 10 minutes.
 
+  - Microsoft.HybridCompute
+  - Microsoft.GuestConfiguration
   - Microsoft.HybridConnectivity
-
+  
       ```shell
+      az provider register --namespace 'Microsoft.HybridCompute'
+      az provider register --namespace 'Microsoft.GuestConfiguration'
       az provider register --namespace 'Microsoft.HybridConnectivity'
+
       ```
 
       You can monitor the registration process with the following commands:
 
       ```shell
+      az provider show --namespace 'Microsoft.HybridCompute'
+      az provider show --namespace 'Microsoft.GuestConfiguration'
       az provider show --namespace 'Microsoft.HybridConnectivity'
       ```
 

@@ -20,13 +20,13 @@ The following Jumpstart scenario will guide you on how to enable [Azure Policy f
     git clone https://github.com/microsoft/azure_arc.git
     ```
 
-* [Install or update Azure CLI to version 2.25.0 and above](https://docs.microsoft.com/cli/azure/install-azure-cli?view=azure-cli-latest). Use the below command to check your current installed version.
+* [Install or update Azure CLI to version 2.36.0 and above](https://docs.microsoft.com/cli/azure/install-azure-cli?view=azure-cli-latest). Use the below command to check your current installed version.
 
   ```shell
   az --version
   ```
 
-* As mentioned, this guide starts at the point where you already have a connected GKE cluster to Azure Arc.
+* As mentioned, this scenario starts at the point where you already have a connected GKE cluster to Azure Arc.
 
     ![Existing GKE Azure Arc-enabled Kubernetes cluster](./01.png)
 

@@ -19,7 +19,7 @@ By the end of the guide, you will have an AWS EC2 instance installed with Window
     git clone https://github.com/microsoft/azure_arc.git
     ```
 
-* [Install or update Azure CLI to version 2.25.0 and above](https://docs.microsoft.com/cli/azure/install-azure-cli?view=azure-cli-latest). Use the below command to check your current installed version.
+* [Install or update Azure CLI to version 2.36.0 and above](https://docs.microsoft.com/cli/azure/install-azure-cli?view=azure-cli-latest). Use the below command to check your current installed version.
 
     ```shell
     az --version
@@ -78,7 +78,7 @@ By the end of the guide, you will have an AWS EC2 instance installed with Window
 
 ## Create a new AWS IAM Role & Key
 
-Create AWS User IAM Key. An access key grants programmatic access to your resources which we will be using later on in this guide.
+Create AWS User IAM Key. An access key grants programmatic access to your resources which we will be using later in this scenario.
 
 * Navigate to the [IAM Access page](https://console.aws.amazon.com/iam/home#/home).
 

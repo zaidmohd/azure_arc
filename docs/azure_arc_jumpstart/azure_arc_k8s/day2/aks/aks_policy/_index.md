@@ -22,13 +22,13 @@ The following Jumpstart scenario will guide you on how to enable [Azure Policy f
 
 * Fork the ["Hello Arc"](https://github.com/likamrat/hello_arc) demo application repository.
 
-* [Install or update Azure CLI to version 2.25.0 and above](https://docs.microsoft.com/cli/azure/install-azure-cli?view=azure-cli-latest). Use the below command to check your current installed version.
+* [Install or update Azure CLI to version 2.36.0 and above](https://docs.microsoft.com/cli/azure/install-azure-cli?view=azure-cli-latest). Use the below command to check your current installed version.
 
   ```shell
   az --version
   ```
 
-* As mentioned, this guide starts at the point where you already have a connected AKS cluster to Azure Arc.
+* As mentioned, this scenario starts at the point where you already have a connected AKS cluster to Azure Arc.
 
     ![Existing AKS Azure Arc connected cluster](./01.png)
 
