@@ -188,10 +188,14 @@ As mentioned, this deployment will leverage ARM templates. You will deploy a sin
   ![Screenshot showing the PowerShell logon script run](./16.png)
 
   ![Screenshot showing the PowerShell logon script run](./17.png)
+  
+  ![Screenshot showing the PowerShell logon script run](./18.png)
 
-  ![Screenshot showing the post-run desktop](./18.png)
+  ![Screenshot showing the PowerShell logon script run](./19.png)
 
-- Since this scenario is deploying the Azure Arc Data Controller and SQL Managed Instance, you will also notice additional newly deployed Azure resources in the resources group (at this point you should have **16 various Azure resources deployed**. The important ones to notice are:
+  ![Screenshot showing the post-run desktop](./20.png)
+
+- Since this scenario is deploying the Azure Arc Data Controller and SQL Managed Instance, you will also notice additional newly deployed Azure resources in the resources group (at this point you should have **15 various Azure resources deployed**. The important ones to notice are:
 
   - _Azure Arc-enabled Kubernetes cluster_ - Azure Arc-enabled data services deployed in directly connected are using this type of resource in order to deploy the data services [cluster extension](https://docs.microsoft.com/azure/azure-arc/kubernetes/conceptual-extensions) as well as for using Azure Arc [Custom locations](https://docs.microsoft.com/azure/azure-arc/kubernetes/conceptual-custom-locations).
 
@@ -201,26 +205,34 @@ As mentioned, this deployment will leverage ARM templates. You will deploy a sin
 
   > **NOTE: Azure resource will not be created for SQL Managed Instance with AD authentication created in the scenario using YAML. Azure resources are created only when using ARM template or deployed SQL Managed Instance using Azure Portal**.
 
-    ![Screenshot showing additional Azure resources in the resource group](./19.png)
+  ![Screenshot showing additional Azure resources in the resource group](./21.png)
+
+- As part of the automation, SQL Server Management Studio and Azure Data Studio is installed along with the _Azure Data CLI_, _Azure CLI_, _Azure Arc_ and the _PostgreSQL_ extensions. Open Azure Data Studio to connect to SQL Managed Instance using AD authentication.
+
+  > **NOTE: As part of the automation SQL Managed Instance and PostgreSQL database connections are pre-created with SQL endpoints in Azure Data Studio.**
+
+  ![Screenshot showing SQL Managed Instance endpoints and database server credentials](./22.png)
+
+  ![Screenshot showing SQL Managed Instance Integrate authentication](./23.png)
 
 - As part of the automation, SQL Managed Instance endpoints desktop shortcut is created to view connection information and login to the SQL Managed Instance using Windows authentication. Copy the endpoint information to login to the SQL server.
 
-  ![Screenshot showing SQL Managed Instance endpoints and database server credentials](./20.png)
+  ![Screenshot showing SQL Managed Instance endpoints and database server credentials](./24.png)
 
-- As part of the automation, SQL Server Management Studio and Azure Data Studio is installed along with the _Azure Data CLI_, _Azure CLI_, _Azure Arc_ and the _PostgreSQL_ extensions. Open SQL Server Management Studio to connect to SQL Managed Instance using Windows Authentication.
+- Open SQL Server Management Studio to connect to SQL Managed Instance using Windows Authentication.
 
-  ![Screenshot showing SQL Server Management Studio menu item](./21.png)
+  ![Screenshot showing SQL Server Management Studio desktop shortcut](./25.png)
 
 - Paste SQL Managed Instance endpoint information copied in the previous step, select Windows Authentication, leave currently selected user, and click Connect.
 
-  ![Screenshot showing SQL MI connection using using SQL Server Management Studio](./22.png)
+  ![Screenshot showing SQL MI connection using using Windows Authentication](./26.png)
 
 - Notice server connection information, restored default database AdventureWorks2019, and Windows user account created in SQL Server Managed Instance to support AD authentication.
 
-  ![Screenshot showing SQL MI connection using using SQL Server Management Studio](./23.png)
+  ![Screenshot showing SQL MI connection using using SQL Server Management Studio](./27.png)
 
 ## Cleanup
 
 - If you want to delete the entire environment, simply delete the deployment resource group from the Azure portal.
 
-    ![Screenshot showing Azure resource group deletion](./24.png)
+  ![Screenshot showing Azure resource group deletion](./28.png)
