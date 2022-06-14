@@ -31,12 +31,6 @@ Please review the [Azure Monitor supported OS documentation](https://docs.micros
 
 ## Prerequisites
 
-- Clone the Azure Arc Jumpstart repository
-
-    ```shell
-    git clone https://github.com/microsoft/azure_arc.git
-    ```
-
 - As mentioned, this scenario starts at the point where you already deployed and connected VMs or servers to Azure Arc. In the screenshots below you can see a GCP server has been connected with Azure Arc and is visible as a resource in Azure.
 
     ![Screenshot Azure Arc-enabled server on resource group](./01.png)
@@ -90,27 +84,64 @@ Please review the [Azure Monitor supported OS documentation](https://docs.micros
   --parameters <The *log_analytics-template.parameters.json* template file location>
   ```
 
-## Azure Arc-enabled servers Microsoft Monitoring Agent Extension Deployment
+## Deployment Options and Automation Flow
 
-- Edit the [*extensions parameters file*](https://github.com/microsoft/azure_arc/blob/main/azure_arc_servers_jumpstart/extensions/arm/mma-template.parameters.json)
+This Jumpstart scenario provides multiple paths for deploying and configuring resources. Deployment options include:
 
-    ![Screenshot ARM template parameters file](./04.png)
+- Azure portal
+- ARM template via Azure CLI
+
+For you to get familiar with the automation and deployment flow, below is an explanation.
+
+1. User is providing the ARM template parameters values, either via the portal or editing the parameters file (1st-time edit). These parameters values are being used throughout the deployment.
+
+2. User deploys the ARM template at the resource group level.
+
+3. User is verifying the successful extension deployment.
+
+## Deployment Option 1: Azure portal
+
+- For Windows VMs, click the <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmicrosoft%2Fazure_arc%2Fmain%2Fazure_arc_servers_jumpstart%2Fextensions%2Farm%2Fmma-template-windows.json" target="_blank"><img src="https://aka.ms/deploytoazurebutton"/></a> button and enter values for the the ARM template parameters.
+
+  ![Screenshot showing Azure portal deployment](./04.png)
+
+  ![Screenshot showing Azure portal deployment](./05.png)
+
+- For Linux VMs, click the <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmicrosoft%2Fazure_arc%2Fmain%2Fazure_arc_servers_jumpstart%2Fextensions%2Farm%2Fmma-template-linux.json" target="_blank"><img src="https://aka.ms/deploytoazurebutton"/></a> button and enter values for the the ARM template parameters:
+
+  ![Screenshot showing Azure portal deployment](./06.png)
+
+  ![Screenshot showing Azure portal deployment](./07.png)
 
 - To match your configuration you will need to provide:
 
   - The VM name as it is registered in Azure Arc.
 
-    ![Screenshot Azure Arc-enabled server computer name](./05.png)
+    ![Screenshot Azure Arc-enabled server computer name](./08.png)
 
   - The location of the resource group where you registered the Azure Arc-enabled server.
 
-    ![Screenshot Azure Arc-enabled server location](./06.png)
+    ![Screenshot Azure Arc-enabled server location](./09.png)
 
   - Information of the Log Analytics workspace you previously created: workspace ID and key. These parameters will be used to configure the MMA agent. You can get this information by going to your Log Analytics workspace and under "Settings" select "Agent management".
 
-    ![Screenshot Azure Arc-enabled server Agent management](./07.png)
+    ![Screenshot Azure Arc-enabled server Agent management](./10.png)
 
-    ![Screenshot workspace configuration](./08.png)
+    ![Screenshot workspace configuration](./11.png)
+
+## Deployment Option 2: ARM template with Azure CLI
+
+As mentioned, this deployment will leverage ARM templates.
+
+- Clone the Azure Arc Jumpstart repository
+
+    ```shell
+    git clone https://github.com/microsoft/azure_arc.git
+    ```
+
+- Edit the [*extensions parameters file*](https://github.com/microsoft/azure_arc/blob/main/azure_arc_servers_jumpstart/extensions/arm/mma-template.parameters.json) providing the values that match your configuration as described above.
+
+    ![Screenshot ARM template parameters file](./12.png)
 
 - Choose the ARM template that matches your operating system, for [*Windows*](https://github.com/microsoft/azure_arc/blob/main/azure_arc_servers_jumpstart/extensions/arm/mma-template-windows.json) and [*Linux*](https://github.com/microsoft/azure_arc/blob/main/azure_arc_servers_jumpstart/extensions/arm/mma-template-linux.json), deploy the template by running the following command:
 
@@ -122,13 +153,13 @@ Please review the [Azure Monitor supported OS documentation](https://docs.micros
 
 - Once the template has completed its run, you should see an output as follows:
 
-    ![Screenshot ARM template execution output](./09.png)
+    ![Screenshot ARM template execution output](./13.png)
 
 - You will have the Microsoft Monitoring agent deployed on your Windows or Linux system and reporting to the Log Analytics workspace that you have selected. You can verify by going back to the "Agents management" section of your workspace and choosing either Windows or Linux, you should see now an additional connected VM.
 
-    ![Screenshot Windows connected agents](./10.png)
+    ![Screenshot Windows connected agents](./14.png)
 
-    ![Screenshot Linux connected agents](./11.png)
+    ![Screenshot Linux connected agents](./15.png)
 
 ## Clean up environment
 
