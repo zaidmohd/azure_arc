@@ -88,7 +88,7 @@ This Jumpstart scenario provides multiple paths for deploying and configuring re
 
 For you to get familiar with the automation and deployment flow, below is an explanation.
 
-1. User is providing the ARM template parameters values, either via the portal or editing the parameters file (1st-time edit). These parameters values are being used throughout the deployment.
+1. User provides the ARM template parameter values, either via the portal or editing the parameters file. These parameter values are used throughout the deployment.
 
 2. The ARM template includes an Azure VM custom script extension which will deploy the the [*install_arc_agent.sh*](https://github.com/microsoft/azure_arc/blob/main/azure_arc_servers_jumpstart/azure/linux/arm_template/scripts/install_arc_agent.sh) Shell script.
 
