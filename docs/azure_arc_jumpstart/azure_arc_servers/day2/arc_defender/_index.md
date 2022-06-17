@@ -89,7 +89,7 @@ This Jumpstart scenario provides multiple paths for deploying and configuring re
 
 The steps below will help you get familiar with the automation and deployment flow.
 
-- User is providing the ARM template parameters values, either via the portal or editing the parameters file (1st-time edit). These parameters values are being used throughout the deployment.
+- User provides the ARM template parameter values, either via the portal or editing the parameters file. These parameters values are used throughout the deployment.
 
 - User will run the ARM template at resource group level.
 
