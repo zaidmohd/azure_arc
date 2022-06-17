@@ -132,35 +132,35 @@ The steps below will help you get familiar with the automation and deployment fl
 
     ![Screenshot showing Windows Performance Counters of Log Analytics workspace](./11.png)
 
-    ![Screenshot showing Linux Performance Counters of Log Analytics workspace](./11.png)
+    ![Screenshot showing Linux Performance Counters of Log Analytics workspace](./12.png)
 
-    ![Screenshot showing Syslog of Log Analytics workspace](./12.png)
+    ![Screenshot showing Syslog of Log Analytics workspace](./13.png)
 
 - Click on the **Solutions** blade of the **Log Analytics workspace**. Review that  **VMInsights** solution is enabled:
 
-    ![Screenshot showing VMInsights solution of Log Analytics workspace](./13.png)
+    ![Screenshot showing VMInsights solution of Log Analytics workspace](./14.png)
 
 - Go to **Monitor**, **Alerts** and click on **Action Groups**:
 
-    ![Screenshot showing steps to list action groups](./14.png)
+    ![Screenshot showing steps to list action groups](./15.png)
 
 - Filter by **Subscription** and **Resource Group**. Review that the following **action group** is created:
 
-    ![Screenshot showing action group created](./15.png)
+    ![Screenshot showing action group created](./16.png)
 
 - Click on the **action group name**, then on the **edit** button. Review that the **email account** is the one you provided in the **parameters file**:
 
-    ![Screenshot showing how to click on action group name](./16.png)
+    ![Screenshot showing how to click on action group name](./17.png)
 
-    ![Screenshot showing action group email action](./17.png)
+    ![Screenshot showing action group email action](./18.png)
 
 - Go to **Monitor**, **Alerts** and click on **Alert rules**:
 
-    ![Screenshot showing steps to list alerts](./18.png)
+    ![Screenshot showing steps to list alerts](./19.png)
 
 - Filter by **Subscription** and **Resource Group**. Review that the following **alerts** are enabled:
 
-    ![Screenshot showing created alerts](./19.png)
+    ![Screenshot showing created alerts](./20.png)
 
     > **NOTE: This is just a small example of Azure Monitor alerts, which are based on log queries and log analytics workspace metrics. You may need to adjust alerts thresholds to your environment expected behaviour.**
 
@@ -174,25 +174,25 @@ For **existing** Azure Arc-enabled servers connected within the scope of the pol
 
 - When the Azure Policies are assigned, it takes around 30 minutes for the assignment to be applied to the defined scope. After those 30 minutes, Azure Policy will start the evaluation cycle against the Azure Arc-enabled servers and recognize them as "Non-compliant" if they don't have the Log Analytics Agent or the Dependency Agent installed. To check this, go to the **resource group** where you deployed this scenario, and click on the **Policies** blade:
 
-    ![Screenshot showing Azure Policies blade at resource group](./20.png)
+    ![Screenshot showing Azure Policies blade at resource group](./21.png)
 
 - Click on the **Remediation** tab. Check if any of the policies that deploy the agents have resources to remediate. If so, click on the **Remediate** button:
 
     > **NOTE: The following steps must be followed for each policy with resources pending to be remediated. Please, start with the remediation of the Log Analytics agent policies followed by the remediation of the Dependency Agent policies.**
 
-    ![Screenshot showing how to start Azure policy remediation](./21.png)
+    ![Screenshot showing how to start Azure policy remediation](./22.png)
 
 - Review the following settings and click on the **Remediate** button:
 
-    ![Screenshot showing how to remediate an Azure Policy](./22.png)
+    ![Screenshot showing how to remediate an Azure Policy](./23.png)
 
 - Once you have assigned remediation task, the policy will be evaluated again and show that the Azure Arc-enabled server is compliant:
 
-   ![Screenshot showing Azure Policy compliant results](./23.png)
+   ![Screenshot showing Azure Policy compliant results](./24.png)
 
 - The agents will be installed as **extensions** in the Azure Arc-enabled server:
 
-   ![Screenshot showing agent extensions on Azure Arc-enabled server](./24.png)
+   ![Screenshot showing agent extensions on Azure Arc-enabled server](./25.png)
 
 ## Azure Dashboard, Workbooks and VMInsights
 
@@ -202,53 +202,53 @@ Once the data starts arriving into the Log Analytics workspace, we can leverage 
 
 - Click on the **Insights** blade of one of the **Azure Arc-enabled servers** connected to the Log Analytics workspace:
 
-   ![Screenshot showing Insights blade on Azure Arc-enabled server](./25.png)
+   ![Screenshot showing Insights blade on Azure Arc-enabled server](./26.png)
 
 - Click on the **Performance tab**, which includes a set of charts that target several key performance indicators (KPIs) to help you determine how well a machine is performing:
 
-   ![Screenshot showing Performance Insights on Azure Arc-enabled server](./26.png)
+   ![Screenshot showing Performance Insights on Azure Arc-enabled server](./27.png)
 
 - Click on the **Map tab**, which visualizes the VM dependencies by discovering running processes that have active network connections between servers; inbound and outbound connection latency; ports across any TCP-connected architecture over a specified time range. Feel free to use the built-in workbooks available in the upper right corner:
 
-   ![Screenshot showing Map Insights on Azure Arc-enabled server](./27.png)
+   ![Screenshot showing Map Insights on Azure Arc-enabled server](./28.png)
 
 ### Azure Dashboard and Workbooks
 
 - Locate the **Shared Dashboard** that was deployed in your resource group. Click on its **name** and then on the **Go to dashboard** link:
 
-   ![Screenshot showing shared dashboard in resource group](./28.png)
+   ![Screenshot showing shared dashboard in resource group](./29.png)
 
-   ![Screenshot showing Go to dashboard button](./29.png)
+   ![Screenshot showing Go to dashboard button](./30.png)
 
 - The goal of this dashboard is to provide a quick overview of the current status of the monitored Azure Arc-enabled servers. You can play with the dashboards controls **Auto refresh** and **UTC Time**. Note that this dashboard is made up of three tiles, each of them being a quick access button and a summary of the deployed Azure workbooks:
   - **OSPerformanceAndCapacity:** provides a quick performance overview of the Azure Arc-enabled servers. In addition, it contains several charts with more insights of some key OS performance counters.
   - **AlertsConsole:** console that shows the alerts that have been fired within a time range.
   - **WindowsEvents:** Windows Events central visualizer.
 
-   ![Screenshot showing Azure Dashboard summary](./30.png)
+   ![Screenshot showing Azure Dashboard summary](./31.png)
 
 - To get into one of the pinned workbooks, like for example the **OSPerformanceAndCapacity** workbook, just click on the **Top servers** tile:
 
-   ![Screenshot showing how to get into the OSPerformanceAndCapacity workbook](./31.png)
+   ![Screenshot showing how to get into the OSPerformanceAndCapacity workbook](./32.png)
 
 - This workbook, apart from the **Top servers** summary table available at the top of the **shared dashboard**, shows two charts for each of some of the key OS performance counters:
 
-   ![Screenshot showing performance charts of the OSPerformanceAndCapacity workbook](./32.png)
+   ![Screenshot showing performance charts of the OSPerformanceAndCapacity workbook](./33.png)
 
 - In addition, at the bottom of this workbook, there are **two additional charts**. One of them shows which are the **processes that use more CPU for Windows machines**. The second one shows the **network usage by process per each Azure Arc-enabled server**:
 
-   ![Screenshot showing cpuusage and networkusage by processes charts of the OSPerformanceAndCapacity workbook](./33.png)
+   ![Screenshot showing cpuusage and networkusage by processes charts of the OSPerformanceAndCapacity workbook](./34.png)
 
 - On the other hand, the **WindowsEvents workbook**, accessible from the **Shared Dashboard**, provides additional insights of the Windows Events collected. It shows the number of events by EventLog and Severity, along with its hourly distribution:
 
-   ![Screenshot showing top charts of the WindowsEvents workbook](./34.png)
+   ![Screenshot showing top charts of the WindowsEvents workbook](./35.png)
 
 - At the bottom of the **WindowsEvents workbook**, click on one of the computers and its severity to load the table below, where all details per event are provided:
 
-   ![Screenshot showing top charts of the WindowsEvents workbook](./35.png)
+   ![Screenshot showing top charts of the WindowsEvents workbook](./36.png)
 
 ## Clean up environment
 
 To delete the entire deployment, simply delete the resource group from the Azure portal.
 
-![Screenshot showing how to delete resource group](./36.png)
+![Screenshot showing how to delete resource group](./37.png)
