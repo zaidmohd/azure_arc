@@ -87,7 +87,7 @@ This Jumpstart scenario provides multiple paths for deploying and configuring re
 - Azure portal
 - ARM template via Azure CLI
 
-For you to get familiar with the automation and deployment flow, below is an explanation.
+The steps below will help you get familiar with the automation and deployment flow.
 
 - User is providing the ARM template parameters values, either via the portal or editing the parameters file (1st-time edit). These parameters values are being used throughout the deployment.
 
