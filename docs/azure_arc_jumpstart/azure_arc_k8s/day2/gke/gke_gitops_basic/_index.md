@@ -111,13 +111,13 @@ To create the GitOps Configuration, we will use the _k8s-configuration flux crea
 
 - Edit the environment variables in the [*az_k8sconfig_gke*](https://github.com/microsoft/azure_arc/blob/main/azure_arc_k8s_jumpstart/gke/gitops/basic/az_k8sconfig_gke.sh) shell script to match your parameters, upload it to the Cloud Shell environment and run it using the _`. ./az_k8sconfig_gke.sh`_ command.
 
+    > **NOTE: The extra dot is due to the script having an _export_ function and needs to have the vars exported in the same shell session as the rest of the commands.**
+
     ![Screenshot parameter](./04.png)
 
     For example:
 
     ![Screenshot parameter examples](./05.png)
-
-    > **NOTE: The extra dot is due to the script having an _export_ function and needs to have the vars exported in the same shell session as the rest of the commands.**
 
     ![Open Google Cloud Shell session and authenticate against the GKE cluster](./06.png)
 
