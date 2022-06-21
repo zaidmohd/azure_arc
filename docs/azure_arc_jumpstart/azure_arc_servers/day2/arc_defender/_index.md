@@ -39,12 +39,6 @@ in this scenario, you will enable and configure Microsoft Defender for Cloud on 
 
 ## Prerequisites
 
-- Clone the Azure Arc Jumpstart repository
-
-    ```shell
-    git clone https://github.com/microsoft/azure_arc.git
-    ```
-
 - As mentioned, this scenario starts at the point where you already deployed and connected VMs or bare-metal servers to Azure Arc. For this scenario, as can be seen in the screenshots below, we will be using a Google Cloud Platform (GCP) instance that has been already connected to Azure Arc and is visible as a resource in Azure.
 
     ![Screenshot of Azure Portal showing Azure Arc-enabled server](./01.png)
@@ -86,11 +80,38 @@ in this scenario, you will enable and configure Microsoft Defender for Cloud on 
 
     > **NOTE: The Jumpstart scenarios are designed with as much ease of use in-mind and adhering to security-related best practices whenever possible. It is optional but highly recommended to scope the service principal to a specific [Azure subscription and resource group](https://docs.microsoft.com/cli/azure/ad/sp?view=azure-cli-latest) as well considering using a [less privileged service principal account](https://docs.microsoft.com/azure/role-based-access-control/best-practices)**
 
-## Onboarding Microsoft Defender for Cloud
+## Deployment Options and Automation Flow
+
+This Jumpstart scenario provides multiple paths for deploying and configuring resources. Deployment options include:
+
+- Azure portal
+- ARM template via Azure CLI
+
+The steps below will help you get familiar with the automation and deployment flow.
+
+- User provides the ARM template parameter values, either via the portal or editing the parameters file. These parameters values are used throughout the deployment.
+
+- User will run the ARM template at resource group level.
+
+## Deployment Option 1: Azure portal
+
+- Click the <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmicrosoft%2Fazure_arc%2Fmain%2Fazure_arc_servers_jumpstart%2Fdefender%2Farm%2Flog_analytics-template.json" target="_blank"><img src="https://aka.ms/deploytoazurebutton"/></a> button and enter values for the the ARM template parameters.
+
+  ![Screenshot showing Azure portal deployment](./03.png)
+
+  ![Screenshot showing Azure portal deployment](./04.png)
+
+## Deployment Option 2: ARM template with Azure CLI
+
+- Clone the Azure Arc Jumpstart repository
+
+    ```shell
+    git clone https://github.com/microsoft/azure_arc.git
+    ```
 
 - Data collected by Microsoft Defender for Cloud is stored in a Log Analytics workspace. You can either use the default one created by Defender or a custom one created by you. If you want to create a dedicated workspace, you can automate the deployment by editing the ARM template [parameters file](https://github.com/microsoft/azure_arc/blob/main/azure_arc_servers_jumpstart/defender/arm/log_analytics-template.parameters.json), provide a name and location for your workspace:
 
-    ![Screenshot showing Azure ARM template](./03.png)
+    ![Screenshot showing Azure ARM template](./05.png)
 
 - To deploy the ARM template, navigate to the [deployment folder](https://github.com/microsoft/azure_arc/tree/main/azure_arc_servers_jumpstart/defender/arm) and run the below command:
 
@@ -131,26 +152,26 @@ Microsoft Defender for Cloud will collect data from your Arc-enabled servers to 
 
 - Once you have configured your workspace and deployed the MMA agent, using the [Azure Portal](https://portal.azure.com/) navigate to Microsoft Defender for Cloud. In the "Inventory" section under "VM and Servers", Defender will provide you with an overview of all the discovered security recommendations for your VMs and computers, including Azure VMs, Azure Classic VMs, servers and **Azure Arc Machines**.
 
-    ![Screenshot showing Microsoft Defender for Cloud Inventory](./04.png)
+    ![Screenshot showing Microsoft Defender for Cloud Inventory](./06.png)
 
 - Select your Azure Arc-enabled server, Microsoft Defender for Cloud will provide security recommendation. Each of them will include:
   - A short description of what is being recommended.
   - A secure score impact.
   - The remediation steps to carry out in order to implement the recommendation. For specific recommendations, you may also get a ***Quick Fix*** that enables you to quickly remediate a recommendation on multiple resources.
 
-    ![Screenshot showing Defender recommendation on Azure Arc-enabled server](./05.png)
+    ![Screenshot showing Defender recommendation on Azure Arc-enabled server](./07.png)
 
 - For this Azure Arc-enabled server the recommendation "A vulnerability assessment solution should be enabled on your virtual machine" provides a ***Quick Fix***. It is using an ARM template to deploy the an extention to enable a vulnerability assessment solution on the Azure Arc machine.
 
-    ![Screenshot showing Defender Quick Fix ARM template](./06.png)
+    ![Screenshot showing Defender Quick Fix ARM template](./08.png)
 
 - You can trigger the remediation and selecting: "Deploy the integrated vulnerability scanner powered by Qualys (included with Microsoft Defender for servers)" and clicking on "Proceed", select the Azure Arc-enabled server and click on "Fix 1 resource".
 
-    ![Screenshot showing triggering of remediation step of Defender](./07.png)
+    ![Screenshot showing triggering of remediation step of Defender](./08.png)
 
 - After you apply the recommendation it will be now marked as healthy.
 
-    ![Screenshot showing healthy Azure Arc-enabled server](./08.png)
+    ![Screenshot showing healthy Azure Arc-enabled server](./10.png)
 
 > **NOTE:It can take several minutes after remediation completes to see the resources in the 'healthy resources' tab**
 
