@@ -97,7 +97,7 @@ To create a new extension instance, we will use the _k8s-extension create_ comma
 
     ![Screenshot showing Azure Portal with Azure Arc-enabled Kubernetes resource extensions](./01.png)
 
-- Navigate to the folder that has the kind cluster definition
+- Navigate to the folder that has the deployment script.
 
 - Edit the environment variables in [the script](https://raw.githubusercontent.com/microsoft/azure_arc/main/azure_arc_k8s_jumpstart/multi_distributions/container_insights/azure_monitor_alerts.sh) to match your environment parameters.
 
