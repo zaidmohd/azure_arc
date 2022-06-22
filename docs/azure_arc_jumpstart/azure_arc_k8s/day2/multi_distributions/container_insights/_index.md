@@ -172,7 +172,7 @@ To create a new extension instance, we will use the _k8s-extension create_ comma
 - Create the above file and run the following command to create the pod:
 
   ```bash
-  kubectl apply -f pod-test.yaml
+  kubectl apply -f pod-test.yaml --kubeconfig <kubeconfig>
   ```
   
 - In few minutes an alert will be created, you will see it in the Azure Portal under Alerts tab of your Azure Arc-enabled cluster.
