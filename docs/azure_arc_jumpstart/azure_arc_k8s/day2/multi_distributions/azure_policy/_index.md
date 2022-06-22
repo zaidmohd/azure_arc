@@ -88,7 +88,7 @@ For you to get familiar with the automation and deployment flow, below is an exp
 
 - User is editing the environment variables on the Shell script file (1-time edit) which then will be used throughout the extension deployment.
 
-- User is running the shell script. The script will use the extension management feature of Azure Arc to deploy the Azure Policy extension on the Azure Arc-enabled Kubernetes cluster and assign an Azure Policy to your Azure Arc-enabled K8s cluster resource group.
+- User is running the shell script. The script will use the extension management feature of Azure Arc to deploy the Azure Policy extension on the Azure Arc-enabled Kubernetes cluster and assign an Azure Policy to your Azure Arc-enabled K8s cluster's resource group.
 
 - User is veryfing that the Azure Policy extension is deployed as well as the Azure Policy assignment was created.
 
