@@ -142,7 +142,7 @@ To create a new extension instance, we will use the _k8s-extension create_ comma
 
   ![Screenshot extension pods on cluster](./04.png)
 
-- Verify under the Alert rules tab on alerts section of the Azure Arc-enabled Kubernetes cluster that the alert rules are correctly installed.
+- Verify under the Alert rules tab on alerts section of the Azure Arc-enabled Kubernetes cluster that the alert rules are correctly created.
 
   ![Screenshot showing Azure Portal with Azure Arc-enabled Kubernetes resource alerts rules](./05.png)
 
