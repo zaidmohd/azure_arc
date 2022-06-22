@@ -84,7 +84,7 @@ Kubernetes extensions are add-ons for Kubernetes clusters. The extensions featur
 
 For you to get familiar with the automation and deployment flow, below is an explanation:
 
-- User has deployed a Kubernetes cluster and has it connected as Azure Arc-enabled Kubernetes cluster.
+- User has deployed a Kubernetes cluster and has it connected as an Azure Arc-enabled Kubernetes cluster.
 
 - User is editing the environment variables on the Shell script file (1-time edit) which then will be used throughout the extension deployment.
 
