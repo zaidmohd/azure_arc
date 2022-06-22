@@ -125,7 +125,7 @@ To create a new extension instance, we will use the _k8s-extension create_ comma
   - Login to your Azure subscription using the service principal credentials
   - Add or Update your local _connectedk8s_ and _k8s-extension_ Azure CLI extensions
   - Create the Azure Policy cluster extension instance
-  - Assign the Azure Policy (Kubernetes cluster containers CPU and memory resource limits should not exceed the specified limits (cpuLimit=200m memoryLimit=1Gi)) in the resource group of the Azure Arc-enabled K8s cluster
+  - Assign the Azure Policy _Kubernetes cluster containers CPU and memory resource limits should not exceed the specified limits_ (cpuLimit=200m memoryLimit=1Gi) to the resource group of the Azure Arc-enabled Kubernetes cluster
 
 - Verify under the extensions tab of the Azure Arc-enabled Kubernetes cluster that the Azure Policy cluster extension is correctly installed.
 
