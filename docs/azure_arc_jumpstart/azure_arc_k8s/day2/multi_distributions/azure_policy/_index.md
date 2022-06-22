@@ -187,7 +187,7 @@ To create a new extension instance, we will use the _k8s-extension create_ comma
 
   ![Screenshot Azure Policy test](./09.png)
 
-- This is the non-compliance pod:
+- This is the non-compliant pod:
 
   ![Screenshot Azure Policy test](./10.png)
 
