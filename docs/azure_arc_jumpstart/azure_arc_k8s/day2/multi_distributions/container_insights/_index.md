@@ -125,7 +125,7 @@ To create a new extension instance, we will use the _k8s-extension create_ comma
 
    The script will:
 
-  - Login to your Azure subscription using the SPN credentials
+  - Login to your Azure subscription using the service principal credentials
   - Add or Update your local _connectedk8s_ and _k8s-extension_ Azure CLI extensions
   - Create Azure Monitor cluster extension instance
   - Create an action group and all recommended alerts
