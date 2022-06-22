@@ -127,7 +127,7 @@ To create a new extension instance, we will use the _k8s-extension create_ comma
 
   - Login to your Azure subscription using the service principal credentials
   - Add or Update your local _connectedk8s_ and _k8s-extension_ Azure CLI extensions
-  - Create Azure Monitor cluster extension instance
+  - Create the Azure Monitor cluster extension instance
   - Create an action group and all recommended alerts
 
 - Verify under the extensions tab of the Azure Arc-enabled Kubernetes cluster that the Azure Monitor cluster extension is correctly installed.
