@@ -179,7 +179,7 @@ To create a new extension instance, we will use the _k8s-extension create_ comma
 
   ![Screenshot Azure Policy test](./07.png)
 
-- If there were pods that exceeded the limit before applying the Azure Policy, they will not be removed, but we can see which ones do not comply in the Azure Policy service in the Compliance tab (select the non-compliance event):
+- If there were pods that exceeded the limit before applying the Azure Policy, they will not be removed, but we can see which ones do not comply in the Azure Policy service in the Compliance tab, select the non-compliance event
 
   ![Screenshot Azure Policy test](./08.png)
 
