@@ -189,7 +189,7 @@ To create the GitOps Configuration, we will use the _k8s-configuration flux crea
 
 - The GitOps flow works as follow:
 
-    1. The Flux controllers holds the "desired state" of the "Hello Arc" application, this is the configuration we deployed against the Azure Arc connected cluster. The controllers "polls" the state of the ["Hello Arc"](https://github.com/microsoft/azure-arc-jumpstart-apps/tree/main/hello-arc/yaml) application repository.
+    1. The Flux controller holds the "desired state" of the "Hello Arc" application, this is the configuration we deployed against the Azure Arc connected cluster. The controllers "polls" the state of the ["Hello Arc"](https://github.com/microsoft/azure-arc-jumpstart-apps/tree/main/hello-arc/yaml) application repository.
 
     2. Changing the application, which is considered to be a new version of it, will trigger the Flux controllers to kick in the GitOps flow.
 
