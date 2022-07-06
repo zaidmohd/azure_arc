@@ -93,47 +93,47 @@ Create AWS User IAM Key. An access key grants programmatic access to your resour
 
 - Navigate to the [IAM Access page](https://console.aws.amazon.com/iam/home#/home).
 
-    ![Create AWS IAM Role & Key](./01.png)
+    ![Screenshot showing creating an AWS IAM Role & Key](./01.png)
 
 - Select the **Users** from the side menu.
 
-    ![Create AWS IAM Role & Key](./02.png)
+    ![Screenshot showing creating an AWS IAM Role & Key](./02.png)
 
 - Select the **User** you want to create the access key for.
 
-    ![Create AWS IAM Role & Key](./03.png)
+    ![Screenshot showing creating an AWS IAM Role & Key](./03.png)
 
 - Select **Security credentials** of the **User** selected.
 
-    ![Create AWS IAM Role & Key](./04.png)
+    ![Screenshot showing creating an AWS IAM Role & Key](./04.png)
 
 - Under **Access Keys** select **Create Access Keys**.
 
-    ![Create AWS IAM Role & Key](./05.png)
+    ![Screenshot showing creating an AWS IAM Role & Key](./05.png)
 
 - In the popup window it will show you the ***Access key ID*** and ***Secret access key***. Save both of these values to configure the **Terraform plan** variables later.
 
-    ![Create AWS IAM Role & Key](./06.png)
+    ![Screenshot showing creating an AWS IAM Role & Key](./06.png)
 
 - In order to open a RDP session to the Windows Client EC2 instance, an EC2 Key Pair is required. From the *Services* menu, click on *"EC2"*, enter the *Key Pairs* settings from the left sidebar (under the *Network & Security* section) and click on *"Create key pair"* (top-right corner) to create a new key pair.
 
-  ![Create EC2 Key Pair](./07.png)
+  ![Screenshot showing creating an EC2 Key Pair](./07.png)
 
-  ![Create EC2 Key Pair](./08.png)
+  ![Screenshot showing creating an EC2 Key Pair](./08.png)
 
-  ![Create EC2 Key Pair](./09.png)
+  ![Screenshot showing creating an EC2 Key Pair](./09.png)
 
 - Provide a meaningful name, for example *terraform*, and click on *"Create key pair"* which will then automatically download the created *pem* file.
 
-  ![Create EC2 Key Pair](./10.png)
+  ![Screenshot showing creating an EC2 Key Pair](./10.png)
 
-  ![Create EC2 Key Pair](./11.png)
+  ![Screenshot showing creating an EC2 Key Pair](./11.png)
 
-  ![Create EC2 Key Pair](./12.png)
+  ![Screenshot showing creating an EC2 Key Pair](./12.png)
 
 - Copy the downloaded *pem* file to where the terraform binaries are located (in your cloned repository directory).
 
-  ![Create EC2 Key Pair](./13.png)
+  ![Screenshot showing creating an EC2 Key Pair](./13.png)
 
   > **NOTE: EC2 Key Pairs are regional.**
 
@@ -143,7 +143,7 @@ For you to get familiar with the automation and deployment flow, below is an exp
 
 - User is editing the Terraform runtime environment variables in the _terraform.tfvars_ file (1-time edit). The variables are being used throughout the deployment.
 
-- [Main Terraform plan](https://github.com/microsoft/azure_arc/tree/main/azure_arc_data_jumpstart/eks/terraform/main.tf) will initiate the deployment of the other modules:
+- [Screenshot showing creating the main Terraform plan](https://github.com/microsoft/azure_arc/tree/main/azure_arc_data_jumpstart/eks/terraform/main.tf) will initiate the deployment of the other modules:
 
   - [_clientVM_](https://github.com/microsoft/azure_arc/tree/main/azure_arc_data_jumpstart/eks/terraform/modules/clientVM/main.tf) - Deploys the client Windows VM. This is where all user interactions with the environment are made from.
   - [_cluster_](https://github.com/microsoft/azure_arc/tree/main/azure_arc_data_jumpstart/eks/terraform/modules/cluster/main.tf) - Deploys the EKS cluster where all the Azure Arc data services will be deployed.
@@ -204,33 +204,33 @@ As mentioned, the Terraform plan will deploy an EKS cluster, the Azure Arc Data 
 
 - Example output from `terraform init`:
 
-  ![terraform init](./14.png)
+  ![Screenshot showing creating the terraform init command output](./14.png)
 
 - Example output from `terraform plan -out=infra.out`:
 
-  ![terraform plan](./15.png)
+  ![Screenshot showing creating the terraform plan command output](./15.png)
 
 - Once completed, the plan will output a decrypted password for your Windows Client instance that you will use to RDP into it. Before connecting to the Client instance, you can review the EKS cluster and the EC2 instances created. Notice how 4 instances were created; 3 EKS nodes and the Client instance.
 
-  ![terraform apply](./16.png)
+  ![Screenshot showing creating the terraform apply command output](./16.png)
 
-  ![New EKS cluster](./17.png)
+  ![Screenshot showing creating the new EKS cluster](./17.png)
 
-  ![New EKS cluster](./18.png)
+  ![Screenshot showing creating the new EKS cluster](./18.png)
 
-  ![New EC2 instances](./19.png)
+  ![Screenshot showing creating the new EC2 instances](./19.png)
 
-  ![New EC2 instances](./20.png)
+  ![Screenshot showing creating the new EC2 instances](./20.png)
 
-  ![New EC2 instances](./21.png)
+  ![Screenshot showing creating the new EC2 instances](./21.png)
 
 ## Windows Login & Post Deployment
 
 - Now that the first phase of the automation is completed, it is time to RDP to the client VM. Select the Windows instance, click *"Connect"* and download the Remote Desktop file.
 
-  ![RDP to the Client instance](./22.png)
+  ![Screenshot showing starting an RDP session to the Client instance](./22.png)
 
-  ![RDP to the Client instance](./23.png)
+  ![Screenshot showing starting an RDP session to the Client instance](./23.png)
 
 - Using the decrypted password generated from the plan output, RDP the Windows instance. In case you need to get the password later, use the ```terraform output``` command to re-present the plan output.
 
