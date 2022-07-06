@@ -12,8 +12,6 @@ The following Jumpstart scenario will guide you on how to deploy a "Ready to Go"
 
 By the end of this scenario, you will have an EKS cluster deployed with an Azure Arc Data Controller and a Microsoft Windows Server 2022 (Datacenter) AWS EC2 instance VM, installed & pre-configured with all the required tools needed to work with Azure Arc Data Services.
 
-> **NOTE: Currently, Azure Arc-enabled data services with PostgreSQL is in [public preview](https://docs.microsoft.com/azure/azure-arc/data/release-notes)**.
-
 ## Prerequisites
 
 - Clone the Azure Arc Jumpstart repository
@@ -172,7 +170,7 @@ As mentioned, the Terraform plan will deploy an EKS cluster, the Azure Arc Data 
     workspaceName          = "la-arc-001"
     deploySQLMI            = false
     SQLMIHA                = false
-    deployPostgreSQL       = true
+    deployPostgreSQL       = false
     customLocationObjectId = "649cb28f-bc13-492a-9470-c8bf01fa8eeb"
   ```
 
@@ -202,36 +200,37 @@ As mentioned, the Terraform plan will deploy an EKS cluster, the Azure Arc Data 
   terraform plan -out=infra.out
   terraform apply "infra.out"
   ```
+> **NOTE: The deployment time for this scenario can take ~20-35min**
 
 - Example output from `terraform init`:
 
-  ![terraform init](./15.png)
+  ![terraform init](./14.png)
 
 - Example output from `terraform plan -out=infra.out`:
 
-  ![terraform plan](./16.png)
+  ![terraform plan](./15.png)
 
 - Once completed, the plan will output a decrypted password for your Windows Client instance that you will use to RDP into it. Before connecting to the Client instance, you can review the EKS cluster and the EC2 instances created. Notice how 4 instances were created; 3 EKS nodes and the Client instance.
 
-  ![terraform apply](./17.png)
+  ![terraform apply](./16.png)
+
+  ![New EKS cluster](./17.png)
 
   ![New EKS cluster](./18.png)
 
-  ![New EKS cluster](./19.png)
+  ![New EC2 instances](./19.png)
 
   ![New EC2 instances](./20.png)
 
   ![New EC2 instances](./21.png)
 
-  ![New EC2 instances](./22.png)
-
 ## Windows Login & Post Deployment
 
 - Now that the first phase of the automation is completed, it is time to RDP to the client VM. Select the Windows instance, click *"Connect"* and download the Remote Desktop file.
 
-  ![RDP to the Client instance](./23.png)
+  ![RDP to the Client instance](./22.png)
 
-  ![RDP to the Client instance](./24.png)
+  ![RDP to the Client instance](./23.png)
 
 - Using the decrypted password generated from the plan output, RDP the Windows instance. In case you need to get the password later, use the ```terraform output``` command to re-present the plan output.
 
@@ -239,6 +238,8 @@ As mentioned, the Terraform plan will deploy an EKS cluster, the Azure Arc Data 
 
 - Let the script to run its course and **do not close** the PowerShell session, this will be done for you once completed. Once the script will finish it's run, the logon script PowerShell session will be closed, the Windows wallpaper will change and the Azure Arc Data Controller will be deployed on the cluster and be ready to use.
 
+
+    ![Screenshot showing the PowerShell logon script run](./24.png)
 
     ![Screenshot showing the PowerShell logon script run](./25.png)
 
@@ -254,9 +255,7 @@ As mentioned, the Terraform plan will deploy an EKS cluster, the Azure Arc Data 
 
     ![Screenshot showing the PowerShell logon script run](./31.png)
 
-    ![Screenshot showing the PowerShell logon script run](./32.png)
-
-    ![Screenshot showing the post-run desktop](./33.png)
+    ![Screenshot showing the post-run desktop](./32.png)
 
 - Since this scenario is deploying the Azure Arc Data Controller, you will also notice additional newly deployed Azure resources in the resources group (at this point you should have **4 various Azure resources deployed**.
 
@@ -266,13 +265,13 @@ As mentioned, the Terraform plan will deploy an EKS cluster, the Azure Arc Data 
 
   - _Azure Arc Data Controller_ - The data controller that is now deployed on the Kubernetes cluster.
 
-    ![Screenshot showing additional Azure resources in the resource group](./34.png)
+    ![Screenshot showing additional Azure resources in the resource group](./33.png)
 
 - As part of the automation, Azure Data Studio is installed along with the _Azure Data CLI_, _Azure CLI_, _Azure Arc_ and the _PostgreSQL_ extensions. Using the Desktop shortcut created for you, open Azure Data Studio and click the Extensions settings to see the installed extensions.
 
-  ![Screenshot showing Azure Data Studio shortcut](./35.png)
+  ![Screenshot showing Azure Data Studio shortcut](./34.png)
 
-  ![Screenshot showing Azure Data Studio extensions](./36.png)
+  ![Screenshot showing Azure Data Studio extensions](./35.png)
 
 ## Cluster extensions
 
@@ -284,14 +283,14 @@ In this scenario, two Azure Arc-enabled Kubernetes cluster extensions were insta
 
 In order to view these cluster extensions, click on the Azure Arc-enabled Kubernetes resource Extensions settings.
 
-  ![Screenshot showing the Azure Arc-enabled Kubernetes cluster extensions settings](./37.png)
+  ![Screenshot showing the Azure Arc-enabled Kubernetes cluster extensions settings](./36.png)
 
-  ![Screenshot showing the Azure Arc-enabled Kubernetes installed extensions](./38.png)
+  ![Screenshot showing the Azure Arc-enabled Kubernetes installed extensions](./37.png)
 ## Delete the deployment
 
 - If you want to delete the entire Azure environment, simply delete the deployment resource group from the Azure portal.
 
-    ![Screenshot showing Azure resource group deletion](./39.png)
+    ![Screenshot showing Azure resource group deletion](./38.png)
 
 - If you want to delete the entire environment, use the _`terraform destroy`_ to delete all of the AWS resources.
 
@@ -299,14 +298,14 @@ In order to view these cluster extensions, click on the Azure Arc-enabled Kubern
   terraform destroy --auto-approve
   ```
 
-  ![Screenshot showing the deletion of all AWS resources](./40.png)
+  ![Screenshot showing the deletion of all AWS resources](./39.png)
 
   > **NOTE: Because the following resources were created by EKS that creates internal AWS dependencies that Terraform has no knowledge of from our plan, we need to delete the resources from AWS console as `terraform destroy` is cleaning up - this allows us to avoid dependency conflicts and ongoing billing from orphaned resources such as EKS Volumes.**
 
 - While the `destroy` command is running, delete any new Load Balancers created as EKS Services (`EC2 > Load Balancing > Load Balancers`) that are deployed in AWS from the Console:
 
-  ![Screenshot showing the Deletion of Load Balancers](./41.png)
+  ![Screenshot showing the Deletion of Load Balancers](./40.png)
 
 - While the `destroy` command is running, delete any new Elastic Block Stores, created as EKS Persistent Volumes (`EC2 > Elastic Block Store > Volumes`) that are deployed in AWS from the Console:
 
-  ![Screenshot showing the Deletion of Elastic Block Stores](./42.png)
+  ![Screenshot showing the Deletion of Elastic Block Stores](./41.png)
