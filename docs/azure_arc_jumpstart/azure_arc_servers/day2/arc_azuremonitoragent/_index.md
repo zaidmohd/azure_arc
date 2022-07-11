@@ -1,0 +1,213 @@
+---
+type: docs
+title: "Azure Monitor Agent"
+linkTitle: "Azure Monitor Agent"
+weight: 16
+description: >
+---
+
+## Deploy Azure Monitor Agent (AMA) on Azure Arc Linux and Windows servers
+
+The following Jumpstart scenario will guide you on how to deploy the [Azure Monitor Agent (AMA)](https://docs.microsoft.com/azure/azure-monitor/agents/azure-monitor-agent-overview) as an extension on your Azure Arc-enabled servers.
+
+The Azure Monitor agent (AMA) collects monitoring data from the guest operating system of supported infrastructure and delivers it to Azure Monitor.
+
+Eventually, the Azure Monitor agent will replace the following legacy monitoring agents that are currently used by Azure Monitor.
+
+- [Log Analytics agent](https://docs.microsoft.com/azure/azure-monitor/agents/log-analytics-agent): Sends data to a Log Analytics workspace and supports VM insights and monitoring solutions.
+- [Telegraf agent](https://docs.microsoft.com/azure/azure-monitor/essentials/collect-custom-metrics-linux-telegraf): Sends data to Azure Monitor Metrics (Linux only).
+- [Diagnostics extension](https://docs.microsoft.com/azure/azure-monitor/agents/diagnostics-extension-overview): Sends data to Azure Monitor Metrics (Windows only), Azure Event Hubs, and Azure Storage.
+
+> **NOTE: This guide assumes you already deployed VMs or servers that are running on-premises or other clouds and you have connected them to Azure Arc. If you haven't, this repository offers you a way to do so in an automated fashion:**
+
+- **[GCP Ubuntu instance](https://azurearcjumpstart.io/azure_arc_jumpstart/azure_arc_servers/gcp/gcp_terraform_ubuntu/)**
+- **[GCP Windows instance](https://azurearcjumpstart.io/azure_arc_jumpstart/azure_arc_servers/gcp/gcp_terraform_windows/)**
+- **[AWS Ubuntu EC2 instance](https://azurearcjumpstart.io/azure_arc_jumpstart/azure_arc_servers/aws/aws_terraform_ubuntu/)**
+- **[AWS Amazon Linux 2 EC2 instance](https://azurearcjumpstart.io/azure_arc_jumpstart/azure_arc_servers/aws/aws_terraform_al2/)**
+- **[Azure Ubuntu VM](https://azurearcjumpstart.io/azure_arc_jumpstart/azure_arc_servers/azure/azure_arm_template_linux/)**
+- **[Azure Windows VM](https://azurearcjumpstart.io/azure_arc_jumpstart/azure_arc_servers/azure/azure_arm_template_win/)**
+- **[VMware vSphere Ubuntu VM](https://azurearcjumpstart.io/azure_arc_jumpstart/azure_arc_servers/vmware/vmware_terraform_ubuntu/)**
+- **[VMware vSphere Windows Server VM](https://azurearcjumpstart.io/azure_arc_jumpstart/azure_arc_servers/vmware/vmware_terraform_winsrv/)**
+- **[Vagrant Ubuntu box](https://azurearcjumpstart.io/azure_arc_jumpstart/azure_arc_servers/vagrant/local_vagrant_ubuntu/)**
+- **[Vagrant Windows box](https://azurearcjumpstart.io/azure_arc_jumpstart/azure_arc_servers/vagrant/local_vagrant_windows/)**
+
+Please review the [Azure Monitor supported OS documentation](https://docs.microsoft.com/azure/azure-monitor/agents/agents-overview#supported-operating-systems) and ensure that the VMs you will use for this exercise are supported. For Linux VMs, check both the Linux distribution and kernel to ensure you are using a supported configuration.
+
+## Prerequisites
+
+- As mentioned, this scenario starts at the point where you already deployed and connected VMs or servers to Azure Arc. In the screenshots below, you can see a Windows and a Linux server that have been connected with Azure Arc and are visible as a resource in Azure.
+
+    ![Screenshot Azure Arc-enabled servers on resource group](./01.png)
+
+    ![Screenshot Linux Azure Arc-enabled server connected status](./02.png)
+
+    ![Screenshot Windows Azure Arc-enabled server connected status](./20.png)
+
+- [Install or update Azure CLI](https://docs.microsoft.com/cli/azure/install-azure-cli?view=azure-cli-latest). Azure CLI should be running version 2.14 or later. Use ```az --version``` to check your current installed version.
+
+- **Minimum RBAC permissions**: *Azure Connected Machine Resource Administrator* on your Azure Arc-enabled servers. *Monitoring Contributor* and *Microsoft.Resources/deployments/** on the resource group where you will deploy this scenario.
+
+## Deployment Options and Automation Flow
+
+This Jumpstart scenario provides multiple paths for deploying and configuring resources. Deployment options include:
+
+- Azure portal
+- ARM template via Azure CLI
+
+The steps below will help you get familiar with the automation and deployment flow.
+
+1. User provides the ARM template parameter values, either via the portal or editing the parameters file. These parameter values are being used throughout the deployment.
+
+2. User deploys the ARM template at the resource group level.
+
+3. User is verifying the successful extension deployment.
+
+## Deployment Option 1: Azure portal
+
+- For Windows VMs, click the <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmicrosoft%2Fazure_arc%2Fmain%2Fazure_arc_servers_jumpstart%2Fazuremonitoragent%2Farm%2Fama-windows-template.json" target="_blank"><img src="https://aka.ms/deploytoazurebutton"/></a> button and enter values for the the ARM template parameters.
+
+  ![Screenshot showing Azure portal deployment](./04.png)
+
+  ![Screenshot showing Azure portal deployment](./05.png)
+
+- For Linux VMs, click the <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmicrosoft%2Fazure_arc%2Fmain%2Fazure_arc_servers_jumpstart%2Fazuremonitoragent%2Farm%2Fama-linux-template.json" target="_blank"><img src="https://aka.ms/deploytoazurebutton"/></a> button and enter values for the the ARM template parameters:
+
+  ![Screenshot showing Azure portal deployment](./06.png)
+
+  ![Screenshot showing Azure portal deployment](./07.png)
+
+- To match your configuration you will need to provide:
+
+  - The VM name as it is registered in Azure Arc.
+
+    ![Screenshot Azure Arc-enabled server computer name](./08.png)
+
+  - The location of the resource group where you registered the Azure Arc-enabled server.
+
+    ![Screenshot Azure Arc-enabled server location](./09.png)
+
+  - Information of the Log Analytics workspace you previously created: workspace ID and key. These parameters will be used to configure the MMA agent. You can get this information by going to your Log Analytics workspace and under "Settings" select "Agent management".
+
+    ![Screenshot Azure Arc-enabled server Agent management](./10.png)
+
+    ![Screenshot workspace configuration](./11.png)
+
+## Deployment Option 2: ARM template with Azure CLI
+
+As mentioned, this deployment will leverage ARM templates.
+
+- Clone the Azure Arc Jumpstart repository
+
+    ```shell
+    git clone https://github.com/microsoft/azure_arc.git
+    ```
+
+- Edit the [*parameters file*](https://github.com/microsoft/azure_arc/blob/main/azure_arc_servers_jumpstart/azuremonitoragent/ama-template.parameters.json) providing the values that match your configuration as described above.
+
+    ![Screenshot ARM template parameters file](./21.png)
+
+- Choose the ARM template that matches your operating system, for [*Windows*](https://github.com/microsoft/azure_arc/blob/main/azure_arc_servers_jumpstart/azuremonitoragent/ama-windows-template.json) and [*Linux*](https://github.com/microsoft/azure_arc/blob/main/azure_arc_servers_jumpstart/azuremonitoragent/ama-linux-template.json), deploy the template by running the following command:
+
+    ```shell
+    az deployment group create --resource-group <Name of the Azure resource group> \
+    --template-file <The ama-*-template.json template file location> \
+    --parameters <The ama-template.parameters.json template file location>
+    ```
+
+- Once the template has completed its run, you should see an output as follows:
+
+    ![Screenshot ARM template execution output](./22.png)
+
+- You will have the Azure Monitor Agent (AMA) deployed on your Windows or Linux system and reporting to the Log Analytics workspace that has been created. You can verify by going back to your Azure Arc-enabled server, **Extensions** section:
+
+    ![Screenshot AMA extension on Windows](./23.png)
+
+    ![Screenshot AMA extension on Linux](./25.png)
+
+- Moreover, a **Data Collection Rule (DCR)** is created to send logs from the Azure Arc-enabled servers to the new **Log Analytics workspace**.
+
+    ![Screenshot Data Collection Rules and Log Analytics workspace](./24.png)
+
+- If you click on any of the **Data Collection Rules (DCR)**, you will see the **Resources** attached to it and the collected **Data Sources**.
+
+  - For **Windows**, the following **Data Collection Rule (DCR)** is created. On the **Resources** blade, you will see your Windows Azure Arc-enabled server:
+
+    ![Screenshot Windows Data Collection Rules - Resources](./26.png)
+
+  - On the **Data Sources** blade, you will see two Data Sources, *Performance Counters* and *Windows event logs*:
+
+    ![Screenshot Windows Data Collection Rules - Perf Counters](./28.png)
+
+  - If you click on any of them, you will see the **Data source** that is collected and the **Destination**, which is the Log Analytics workspace created as part of this scenario:
+
+    ![Screenshot Windows Data Collection Rules - Perf Counters - Data Source](./29.png)
+
+    ![Screenshot Windows Data Collection Rules - Perf Counters - Destination](./30.png)
+
+    ![Screenshot Windows Data Collection Rules - Windows Event Logs](./38.png)
+
+    ![Screenshot Windows Data Collection Rules - Windows Event Logs - Data Source](./39.png)
+
+    ![Screenshot Windows Data Collection Rules - Windows Event Logs - Destination](./40.png)
+
+  - For **Linux**, this is the **Data Collection Rule (DCR)** created as part of this scenario. On the **Resources** blade, you will see your Linux Azure Arc-enabled server:
+
+    ![Screenshot Linux Data Collection Rules - Resources](./31.png)
+
+  - On the **Data Sources** blade, you will see two Data Sources, *Performance Counters* and *Linux syslog*:
+
+    ![Screenshot Linux Data Collection Rules - Perf Counters](./32.png)
+
+  - If you click on any of them, you will see the **Data source** that is collected and the **Destination**, which is the Log Analytics workspace created as part of this scenario:
+
+    ![Screenshot Linux Data Collection Rules - Perf Counters - Data Source](./33.png)
+
+    ![Screenshot Linux Data Collection Rules - Perf Counters - Destination](./34.png)
+
+    ![Screenshot Linux Data Collection Rules - Syslog - Destination](./35.png)
+
+    ![Screenshot Linux Data Collection Rules - Syslog - Data Source](./36.png)
+
+    ![Screenshot Linux Data Collection Rules - Syslog - Destination](./37.png)
+
+- Go back to your **resource group** and click on the **Log Analytics Workspace**:
+
+  ![Screenshot Log Analytics workspace](./41.png)
+
+- Click on **Logs**:
+
+  ![Screenshot Log Analytics workspace - Logs](./42.png)
+
+- **Run** the following **query**. It will show you the **data types collected** by the **Azure Monitor Agent (AMA)** on each machine by using the **Data Collection Rules (DCR)**:
+
+  ```shell
+  search * 
+  | distinct Computer, Type
+  | where Type != "Heartbeat" and Type != "Usage"
+  | sort by Computer asc
+  ```
+
+  ![Screenshot Log Analytics workspace - Query](./44.png)
+
+## Clean up environment
+
+Complete the following steps to clean up your environment.
+
+Remove the virtual machines from each environment by following the teardown instructions from each guide.
+
+- **[GCP Ubuntu instance](https://azurearcjumpstart.io/azure_arc_jumpstart/azure_arc_servers/gcp/gcp_terraform_ubuntu/)**
+- **[GCP Windows instance](https://azurearcjumpstart.io/azure_arc_jumpstart/azure_arc_servers/gcp/gcp_terraform_windows/)**
+- **[AWS Ubuntu EC2 instance](https://azurearcjumpstart.io/azure_arc_jumpstart/azure_arc_servers/aws/aws_terraform_ubuntu/)**
+- **[AWS Amazon Linux 2 EC2 instance](https://azurearcjumpstart.io/azure_arc_jumpstart/azure_arc_servers/aws/aws_terraform_al2/)**
+- **[Azure Ubuntu VM](https://azurearcjumpstart.io/azure_arc_jumpstart/azure_arc_servers/azure/azure_arm_template_linux/)**
+- **[Azure Windows VM](https://azurearcjumpstart.io/azure_arc_jumpstart/azure_arc_servers/azure/azure_arm_template_win/)**
+- **[VMware vSphere Ubuntu VM](https://azurearcjumpstart.io/azure_arc_jumpstart/azure_arc_servers/vmware/vmware_terraform_ubuntu/)**
+- **[VMware vSphere Windows Server VM](https://azurearcjumpstart.io/azure_arc_jumpstart/azure_arc_servers/vmware/vmware_terraform_winsrv/)**
+- **[Vagrant Ubuntu box](https://azurearcjumpstart.io/azure_arc_jumpstart/azure_arc_servers/vagrant/local_vagrant_ubuntu/)**
+- **[Vagrant Windows box](https://azurearcjumpstart.io/azure_arc_jumpstart/azure_arc_servers/vagrant/local_vagrant_windows/)**
+
+- Remove the Log Analytics workspace by executing the following command in AZ CLI. Provide the workspace name you used when creating the Log Analytics Workspace.
+
+    ```shell
+    az monitor log-analytics workspace delete --resource-group <Name of the Azure resource group> --workspace-name <Log Analytics Workspace Name> --yes
+    ```
