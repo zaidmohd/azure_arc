@@ -13,9 +13,9 @@ weight: 3
 
 ### Release highlights
 
-- New and refreshed Azure Arc-enabled Kubernetes scenarios
+- New and Updated Azure Arc-enabled Kubernetes scenarios
 - New Azure Arc-enabled data services scenarios
-- Refreshed Azure Arc-enabled servers scenarios
+- Updated Azure Arc-enabled servers scenarios
 - Updated Azure Arc-enabled SQL server scenario
 - [Bump Azure Arc Data Controller images to May 2022 release](https://github.com/microsoft/azure_arc/pull/1247)
 - Bug fixes
@@ -24,7 +24,7 @@ weight: 3
 
 - [Updated scenario: Monitoring, Alerting, and Visualization on Azure Arc-enabled servers](https://azurearcjumpstart.io/azure_arc_jumpstart/azure_arc_servers/day2/arc_monitoring/)
 - [Updated scenario: Added Azure Bastion support for Deploy an Azure Virtual Machine with Windows Server & Microsoft SQL Server and connect it to Azure Arc using Terraform](https://azurearcjumpstart.io/azure_arc_jumpstart/azure_arc_sqlsrv/azure/azure_arm_template_winsrv/)
-- [Refreshed scenario: Deploy a GCP Ubuntu instance and connect it to Azure Arc using a Terraform plan](https://azurearcjumpstart.io/azure_arc_jumpstart/azure_arc_servers/gcp/gcp_terraform_ubuntu/)
+- [Updated scenario: Deploy a GCP Ubuntu instance and connect it to Azure Arc using a Terraform plan](https://azurearcjumpstart.io/azure_arc_jumpstart/azure_arc_servers/gcp/gcp_terraform_ubuntu/)
 - [Deploy a GCP Windows instance and connect it to Azure Arc using a Terraform plan](https://azurearcjumpstart.io/azure_arc_jumpstart/azure_arc_servers/gcp/gcp_terraform_windows/)
 - Added "Deploy to Azure" button to all Azure-Arc enabled servers scenarios
 
@@ -36,9 +36,9 @@ weight: 3
 
 - [New scenario: Integrate Azure Monitor Container Insights and recommended alerts with an Azure Arc-enabled K8s cluster using extensions](https://azurearcjumpstart.io/azure_arc_jumpstart/azure_arc_k8s/day2/multi_distributions/container_insights/)
 - [New scenario: Integrate Azure Policy with an Azure Arc-enabled K8s cluster using extensions](https://azurearcjumpstart.io/azure_arc_jumpstart/azure_arc_k8s/day2/multi_distributions/azure_policy/)
-- [Refreshed scenario: Deploy GitOps configurations and perform basic GitOps flow on GKE as an Azure Arc Connected Cluster (Flux v2)](https://azurearcjumpstart.io/azure_arc_jumpstart/azure_arc_k8s/day2/gke/gke_gitops_basic/)
-- [Refreshed scenario: Deploy GitOps configurations and perform Helm-based GitOps flow on GKE as an Azure Arc Connected Cluster (Flux v2)](https://azurearcjumpstart.io/azure_arc_jumpstart/azure_arc_k8s/day2/gke/gke_gitops_helm/)
-- [Refreshed scenario: Deploy GKE cluster and connect it to Azure Arc using Terraform](https://azurearcjumpstart.io/azure_arc_jumpstart/azure_arc_k8s/gke/gke_terraform/)
+- [Updated scenario: Deploy GitOps configurations and perform basic GitOps flow on GKE as an Azure Arc Connected Cluster (Flux v2)](https://azurearcjumpstart.io/azure_arc_jumpstart/azure_arc_k8s/day2/gke/gke_gitops_basic/)
+- [Updated scenario: Deploy GitOps configurations and perform Helm-based GitOps flow on GKE as an Azure Arc Connected Cluster (Flux v2)](https://azurearcjumpstart.io/azure_arc_jumpstart/azure_arc_k8s/day2/gke/gke_gitops_helm/)
+- [Updated scenario: Deploy GKE cluster and connect it to Azure Arc using Terraform](https://azurearcjumpstart.io/azure_arc_jumpstart/azure_arc_k8s/gke/gke_terraform/)
 
 ### Azure Arc-enabled data services
 
@@ -94,11 +94,11 @@ weight: 3
 
 ### Azure Arc-enabled Kubernetes scenarios
 
-- [Updated Scenario: Refresh AKS Onboarding ARM Template Scenario #1152](https://github.com/microsoft/azure_arc/issues/1152)
-- [Updated Scenario: Refresh AKS Onboarding Scenario - Terraform #1160](https://github.com/microsoft/azure_arc/issues/1160)
-- [Updated Scenario: Refresh AKS Basic GitOps Scenario #1169](https://github.com/microsoft/azure_arc/issues/1169)
-- [Updated Scenario: Refresh AKS GitOps Helm Scenario #1177](https://github.com/microsoft/azure_arc/issues/1177)
-- [Updated Scenario: Refresh CAPI GitOps Helm Scenario #1186](https://github.com/microsoft/azure_arc/issues/1186)
+- [Updated Scenario: Updated AKS Onboarding ARM Template Scenario #1152](https://github.com/microsoft/azure_arc/issues/1152)
+- [Updated Scenario: Updated AKS Onboarding Scenario - Terraform #1160](https://github.com/microsoft/azure_arc/issues/1160)
+- [Updated Scenario: Updated AKS Basic GitOps Scenario #1169](https://github.com/microsoft/azure_arc/issues/1169)
+- [Updated Scenario: Updated AKS GitOps Helm Scenario #1177](https://github.com/microsoft/azure_arc/issues/1177)
+- [Updated Scenario: Updated CAPI GitOps Helm Scenario #1186](https://github.com/microsoft/azure_arc/issues/1186)
 
 ### Azure Arc-enabled data services
 
@@ -118,7 +118,7 @@ weight: 3
 
 ### Release highlights and general Jumpstart enhancements
 
-- [Refreshed Azure Arc Jumpstart Scenario Write-up Guidelines](https://azurearcjumpstart.io/scenario_guidelines/)
+- [Updated Azure Arc Jumpstart Scenario Write-up Guidelines](https://azurearcjumpstart.io/scenario_guidelines/)
 - New and updated Azure Arc-enabled servers scenarios
 - New and updated Azure Arc-enabled Kubernetes scenarios
 - New and updated Azure Arc-enabled data servers scenarios
