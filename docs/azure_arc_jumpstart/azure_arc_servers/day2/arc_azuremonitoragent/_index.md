@@ -18,7 +18,7 @@ Eventually, the Azure Monitor agent will replace the following legacy monitoring
 - [Telegraf agent](https://docs.microsoft.com/azure/azure-monitor/essentials/collect-custom-metrics-linux-telegraf): Sends data to Azure Monitor Metrics (Linux only).
 - [Diagnostics extension](https://docs.microsoft.com/azure/azure-monitor/agents/diagnostics-extension-overview): Sends data to Azure Monitor Metrics (Windows only), Azure Event Hubs, and Azure Storage.
 
-> **NOTE: This guide assumes you already deployed VMs or servers that are running on-premises or other clouds and you have connected them to Azure Arc. If you haven't, this repository offers you a way to do so in an automated fashion:**
+> **NOTE: This scenario assumes you already deployed VMs or servers that are running on-premises or other clouds and you have connected them to Azure Arc. If you haven't, this repository offers you a way to do so in an automated fashion:**
 
 - **[GCP Ubuntu instance](https://azurearcjumpstart.io/azure_arc_jumpstart/azure_arc_servers/gcp/gcp_terraform_ubuntu/)**
 - **[GCP Windows instance](https://azurearcjumpstart.io/azure_arc_jumpstart/azure_arc_servers/gcp/gcp_terraform_windows/)**
