@@ -12,12 +12,6 @@ The following Jumpstart scenario will guide you on how to deploy the [Azure Moni
 
 The Azure Monitor agent (AMA) collects monitoring data from the guest operating system of supported infrastructure and delivers it to Azure Monitor.
 
-Eventually, the Azure Monitor agent will replace the following legacy monitoring agents that are currently used by Azure Monitor.
-
-- [Log Analytics agent](https://docs.microsoft.com/azure/azure-monitor/agents/log-analytics-agent): Sends data to a Log Analytics workspace and supports VM insights and monitoring solutions.
-- [Telegraf agent](https://docs.microsoft.com/azure/azure-monitor/essentials/collect-custom-metrics-linux-telegraf): Sends data to Azure Monitor Metrics (Linux only).
-- [Diagnostics extension](https://docs.microsoft.com/azure/azure-monitor/agents/diagnostics-extension-overview): Sends data to Azure Monitor Metrics (Windows only), Azure Event Hubs, and Azure Storage.
-
 > **NOTE: This scenario assumes you already deployed VMs or servers that are running on-premises or other clouds and you have connected them to Azure Arc. If you haven't, this repository offers you a way to do so in an automated fashion:**
 
 - **[GCP Ubuntu instance](https://azurearcjumpstart.io/azure_arc_jumpstart/azure_arc_servers/gcp/gcp_terraform_ubuntu/)**
@@ -31,7 +25,7 @@ Eventually, the Azure Monitor agent will replace the following legacy monitoring
 - **[Vagrant Ubuntu box](https://azurearcjumpstart.io/azure_arc_jumpstart/azure_arc_servers/vagrant/local_vagrant_ubuntu/)**
 - **[Vagrant Windows box](https://azurearcjumpstart.io/azure_arc_jumpstart/azure_arc_servers/vagrant/local_vagrant_windows/)**
 
-Please review the [Azure Monitor supported OS documentation](https://docs.microsoft.com/azure/azure-monitor/agents/agents-overview#supported-operating-systems) and ensure that the VMs you will use for this exercise are supported. For Linux VMs, check both the Linux distribution and kernel to ensure you are using a supported configuration.
+Please review the [Azure Monitor Agent (AMA) supported OS documentation](https://docs.microsoft.com/azure/azure-monitor/agents/agents-overview#supported-operating-systems) and ensure that the VMs you will use for this exercise are supported. For Linux VMs, check both the Linux distribution and kernel to ensure you are using a supported configuration.
 
 ## Prerequisites
 
@@ -41,7 +35,7 @@ Please review the [Azure Monitor supported OS documentation](https://docs.micros
 
     ![Screenshot Linux Azure Arc-enabled server connected status](./02.png)
 
-    ![Screenshot Windows Azure Arc-enabled server connected status](./20.png)
+    ![Screenshot Windows Azure Arc-enabled server connected status](./03.png)
 
 - [Install or update Azure CLI](https://docs.microsoft.com/cli/azure/install-azure-cli?view=azure-cli-latest). Azure CLI should be running version 2.14 or later. Use ```az --version``` to check your current installed version.
 
@@ -80,7 +74,7 @@ The steps below will help you get familiar with the automation and deployment fl
 
   - The **subscription**, **resource group**, **Computer name** and **location** where you where you registered the Azure Arc-enabled server:
 
-    ![Screenshot Azure Arc-enabled server location](./09.png)
+    ![Screenshot Azure Arc-enabled server location](./08.png)
 
   - The **Log Analytics workspace name** that will be created.
 
@@ -96,7 +90,7 @@ As mentioned, this deployment will leverage ARM templates.
 
 - Edit the [*parameters file*](https://github.com/microsoft/azure_arc/blob/main/azure_arc_servers_jumpstart/azuremonitoragent/ama-template.parameters.json) providing the values that match your configuration as described above.
 
-    ![Screenshot ARM template parameters file](./21.png)
+    ![Screenshot ARM template parameters file](./09.png)
 
 - Choose the ARM template that matches your operating system, for [*Windows*](https://github.com/microsoft/azure_arc/blob/main/azure_arc_servers_jumpstart/azuremonitoragent/ama-windows-template.json) and [*Linux*](https://github.com/microsoft/azure_arc/blob/main/azure_arc_servers_jumpstart/azuremonitoragent/ama-linux-template.json), deploy the template by running the following command:
 
@@ -108,67 +102,67 @@ As mentioned, this deployment will leverage ARM templates.
 
 - Once the template has completed its run, you should see an output as follows:
 
-    ![Screenshot ARM template execution output](./22.png)
+    ![Screenshot ARM template execution output](./10.png)
 
 - You will have the Azure Monitor Agent (AMA) deployed on your Windows or Linux system and reporting to the Log Analytics workspace that has been created. You can verify by going back to your Azure Arc-enabled server, **Extensions** section:
 
-    ![Screenshot AMA extension on Windows](./23.png)
+    ![Screenshot AMA extension on Windows](./11.png)
 
-    ![Screenshot AMA extension on Linux](./25.png)
+    ![Screenshot AMA extension on Linux](./12.png)
 
 - Moreover, a **Data Collection Rule (DCR)** is created to send logs from the Azure Arc-enabled servers to the new **Log Analytics workspace**.
 
-    ![Screenshot Data Collection Rules and Log Analytics workspace](./24.png)
+    ![Screenshot Data Collection Rules and Log Analytics workspace](./13.png)
 
 - If you click on any of the **Data Collection Rules (DCR)**, you will see the **Resources** attached to it and the collected **Data Sources**.
 
   - For **Windows**, the following **Data Collection Rule (DCR)** is created. On the **Resources** blade, you will see your Windows Azure Arc-enabled server:
 
-    ![Screenshot Windows Data Collection Rules - Resources](./26.png)
+    ![Screenshot Windows Data Collection Rules - Resources](./14.png)
 
   - On the **Data Sources** blade, you will see two Data Sources, *Performance Counters* and *Windows event logs*:
 
-    ![Screenshot Windows Data Collection Rules - Perf Counters](./28.png)
+    ![Screenshot Windows Data Collection Rules - Perf Counters](./15.png)
 
   - If you click on any of them, you will see the **Data source** that is collected and the **Destination**, which is the Log Analytics workspace created as part of this scenario:
 
-    ![Screenshot Windows Data Collection Rules - Perf Counters - Data Source](./29.png)
+    ![Screenshot Windows Data Collection Rules - Perf Counters - Data Source](./16.png)
 
-    ![Screenshot Windows Data Collection Rules - Perf Counters - Destination](./30.png)
+    ![Screenshot Windows Data Collection Rules - Perf Counters - Destination](./17.png)
 
-    ![Screenshot Windows Data Collection Rules - Windows Event Logs](./38.png)
+    ![Screenshot Windows Data Collection Rules - Windows Event Logs](./18.png)
 
-    ![Screenshot Windows Data Collection Rules - Windows Event Logs - Data Source](./39.png)
+    ![Screenshot Windows Data Collection Rules - Windows Event Logs - Data Source](./19.png)
 
-    ![Screenshot Windows Data Collection Rules - Windows Event Logs - Destination](./40.png)
+    ![Screenshot Windows Data Collection Rules - Windows Event Logs - Destination](./20.png)
 
   - For **Linux**, this is the **Data Collection Rule (DCR)** created as part of this scenario. On the **Resources** blade, you will see your Linux Azure Arc-enabled server:
 
-    ![Screenshot Linux Data Collection Rules - Resources](./31.png)
+    ![Screenshot Linux Data Collection Rules - Resources](./21.png)
 
   - On the **Data Sources** blade, you will see two Data Sources, *Performance Counters* and *Linux syslog*:
 
-    ![Screenshot Linux Data Collection Rules - Perf Counters](./32.png)
+    ![Screenshot Linux Data Collection Rules - Perf Counters](./22.png)
 
   - If you click on any of them, you will see the **Data source** that is collected and the **Destination**, which is the Log Analytics workspace created as part of this scenario:
 
-    ![Screenshot Linux Data Collection Rules - Perf Counters - Data Source](./33.png)
+    ![Screenshot Linux Data Collection Rules - Perf Counters - Data Source](./23.png)
 
-    ![Screenshot Linux Data Collection Rules - Perf Counters - Destination](./34.png)
+    ![Screenshot Linux Data Collection Rules - Perf Counters - Destination](./24.png)
 
-    ![Screenshot Linux Data Collection Rules - Syslog - Destination](./35.png)
+    ![Screenshot Linux Data Collection Rules - Syslog - Destination](./25.png)
 
-    ![Screenshot Linux Data Collection Rules - Syslog - Data Source](./36.png)
+    ![Screenshot Linux Data Collection Rules - Syslog - Data Source](./26.png)
 
-    ![Screenshot Linux Data Collection Rules - Syslog - Destination](./37.png)
+    ![Screenshot Linux Data Collection Rules - Syslog - Destination](./27.png)
 
 - Go back to your **resource group** and click on the **Log Analytics Workspace**:
 
-  ![Screenshot Log Analytics workspace](./41.png)
+  ![Screenshot Log Analytics workspace](./28.png)
 
 - Click on **Logs**:
 
-  ![Screenshot Log Analytics workspace - Logs](./42.png)
+  ![Screenshot Log Analytics workspace - Logs](./29.png)
 
 - **Run** the following **query**. It will show you the **data types collected** by the **Azure Monitor Agent (AMA)** on each machine by using the **Data Collection Rules (DCR)**:
 
@@ -179,7 +173,7 @@ As mentioned, this deployment will leverage ARM templates.
   | sort by Computer asc
   ```
 
-  ![Screenshot Log Analytics workspace - Query](./44.png)
+  ![Screenshot Log Analytics workspace - Query](./30.png)
 
 ## Clean up environment
 
