@@ -54,7 +54,7 @@ The steps below will help you get familiar with the automation and deployment fl
 
 2. User deploys the ARM template at the resource group level.
 
-3. User is verifying the successful extension deployment.
+3. User is verifying the successful extension deployment and data collection rules creation.
 
 ## Deployment Option 1: Azure portal
 
