@@ -8,7 +8,7 @@ description: >
 
 ## Deploy the Azure Monitor Agent (AMA) on Azure Arc-enabled servers
 
-The following Jumpstart scenario will guide you on how to deploy the [Azure Monitor Agent (AMA)](https://docs.microsoft.com/azure/azure-monitor/agents/azure-monitor-agent-overview) as an extension on your Azure Arc-enabled servers.
+The following Jumpstart scenario will guide you on how to deploy the [Azure Monitor Agent (AMA)](https://docs.microsoft.com/azure/azure-monitor/agents/azure-monitor-agent-overview) as an extension on your Azure Arc-enabled servers, both Linux and Windows systems.
 
 The Azure Monitor agent (AMA) collects monitoring data from the guest operating system of supported infrastructure and delivers it to Azure Monitor.
 
