@@ -1,6 +1,6 @@
 ---
 type: docs
-title: "Azure Monitor Agent"
+title: "Azure Monitor Agent (AMA)"
 linkTitle: "Azure Monitor Agent"
 weight: 16
 description: >
