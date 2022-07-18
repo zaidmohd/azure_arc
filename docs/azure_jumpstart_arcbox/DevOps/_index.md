@@ -138,7 +138,7 @@ ArcBox uses an advanced automation flow to deploy and configure all necessary re
   - Korea Central
   - Southeast Asia
 
-- **ArcBox DevOps requires 22 DSv4-series vCPUs** when deploying with default parameters such as VM series/size. Ensure you have sufficient vCPU quota available in your Azure subscription and the region where you plan to deploy ArcBox. You can use the below Az CLI command to check your vCPU utilization.
+- **ArcBox DevOps requires 30 B-series vCPUs** when deploying with default parameters such as VM series/size. Ensure you have sufficient vCPU quota available in your Azure subscription and the region where you plan to deploy ArcBox. You can use the below Az CLI command to check your vCPU utilization.
 
   ```shell
   az vm list-usage --location <your location> --output table
@@ -894,3 +894,7 @@ In the case of a failed deployment, pointing to a failure in either the _ubuntuR
   ![Screenshot showing az login error](./az_login_error.png)
 
 If you are still having issues deploying ArcBox, please [submit an issue](https://github.com/microsoft/azure_arc/issues/new/choose) on GitHub and include a detailed description of your issue, the Azure region you are deploying to, the flavor of ArcBox you are trying to deploy. Inside the _C:\ArcBox\Logs_ folder you can also find instructions for uploading your logs to an Azure storage account for review by the Jumpstart team.
+
+### Known issues
+
+- Microsoft Defender is not enabled for _ArcBox-CAPI-Data_ connected cluster.

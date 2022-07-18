@@ -104,7 +104,7 @@ ArcBox uses an advanced automation flow to deploy and configure all necessary re
   - Korea Central
   - Southeast Asia
 
-- **ArcBox Full requires 52 DSv4-series vCPUs** when deploying with default parameters such as VM series/size. Ensure you have sufficient vCPU quota available in your Azure subscription and the region where you plan to deploy ArcBox. You can use the below Az CLI command to check your vCPU utilization.
+- **ArcBox Full requires 44 B-series and 16 DSv4-series vCPUs** when deploying with default parameters such as VM series/size. Ensure you have sufficient vCPU quota available in your Azure subscription and the region where you plan to deploy ArcBox. You can use the below Az CLI command to check your vCPU utilization.
 
   ```shell
   az vm list-usage --location <your location> --output table
@@ -561,4 +561,4 @@ If you are still having issues deploying ArcBox, please [submit an issue](https:
 
 ## Known issues
 
-- Azure Arc-enabled SQL Server assessment report not always visible in Azure portal
+- Azure Arc-enabled SQL Server assessment report not always visible in Azure portal.
