@@ -79,7 +79,7 @@ For you to get familiar with the automation and deployment flow, below is an exp
 
 - The script will also create and configure the state store (Azure Cache for Redis), and deploy the Node.js app with the sidecar.
 
-- User is verifying the cluster and ensuring the Dapr extension is deployed.
+- User is verifying the cluster and ensuring the Dapr Cluster extension is deployed.
 
 - User is verifying the service and confirming the order was persisted in the state store.
 
