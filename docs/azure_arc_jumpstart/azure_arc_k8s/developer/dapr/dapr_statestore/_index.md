@@ -83,7 +83,7 @@ For you to get familiar with the automation and deployment flow, below is an exp
 
 - User is verifying the service and confirming the order was persisted in the state store.
 
-- Additionally, the User will deploy the Python app with the Dapr sidecar and observe messages to confirm successful persistence.
+- Additionally, the user will deploy the Python app with the Dapr sidecar and observe messages to confirm successful persistence.
 
 ## Deployment
 
