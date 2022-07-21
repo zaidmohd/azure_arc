@@ -1,7 +1,7 @@
 ---
 type: docs
-title: "Deploy an application using the Dapr cluster extension for Azure Arc-enabled Kubernetes cluster"
-linkTitle: "Deploy an application using the Dapr cluster extension for Azure Arc-enabled Kubernetes cluster"
+title: "Deploy an application using the Dapr Cluster extension for Azure Arc-enabled Kubernetes cluster"
+linkTitle: "Deploy an application using the Dapr Cluster extension for Azure Arc-enabled Kubernetes cluster"
 weight: 1
 description: >
 ---
