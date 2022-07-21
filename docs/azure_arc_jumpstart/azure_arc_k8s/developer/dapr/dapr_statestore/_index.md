@@ -110,8 +110,8 @@ To create a new Cluster extension instance, we will use the _k8s-extension creat
   - Login to your Azure subscription using the SPN credentials
   - Add or Update your local _k8s-extension_ Azure CLI extension
   - Create Azure resource group, Redis store, and Kubernetes Secret for the Redis Key
-  - Create Dapr extension instance
-  - Configure the state store on Kubernetes and deploy the Node app
+  - Create Dapr extension Cluster instance
+  - Configure the state store on Kubernetes and deploy the Node.js app
 
 - Once the script will complete it’s run, you can see that Dapr extension is now enabled in the extension tab section of the Azure Arc-enabled Kubernetes cluster resource in Azure. The script usually take 10-20 minutes to complete.
 
