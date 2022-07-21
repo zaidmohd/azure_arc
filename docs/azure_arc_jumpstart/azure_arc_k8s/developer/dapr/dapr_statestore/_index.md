@@ -132,7 +132,7 @@ To create a new Cluster extension instance, we will use the _k8s-extension creat
 
     ![Screenshot state store ](./10.png)
 
-- Show the Node App and Service, and make note of the External IP of the service.
+- Show the Node.js app and Service, and make note of the External IP of the service.
 
     ```shell
     kubectl get pods,svc
