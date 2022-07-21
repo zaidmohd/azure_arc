@@ -196,7 +196,7 @@ The following is a basic "hello world" [Python app](https://github.com/dapr/quic
 
     ![Screenshot validate messages and API calls](./18.png)
 
-- Call the Node app's order endpoint to get the latest order and confirm successful persistence. You should see the latest JSON in the response.
+- Call the Node.js app's order endpoint to get the latest order and confirm successful persistence. You should see the latest JSON in the response.
 
     ```shell
     curl $EXTERNAL_IP/order
