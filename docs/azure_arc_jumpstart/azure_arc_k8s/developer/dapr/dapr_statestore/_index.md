@@ -140,7 +140,7 @@ To create a new Cluster extension instance, we will use the _k8s-extension creat
 
     ![Screenshot Node App pod and service](./11.png)
 
-    > **NOTE: The Dapr control plane will automatically inject the Dapr sidecar to the Pod, as the "dapr.io/enabled: true" annotation is added to the Node App deployment.**
+    > **NOTE: The Dapr control plane will automatically inject the Dapr sidecar to the Pod, as the "dapr.io/enabled: true" annotation is added to the Node.js app deployment.**
 
 - Verify the Node App service.
 
