@@ -169,7 +169,7 @@ To create a new Cluster extension instance, we will use the _k8s-extension creat
 
 ## Deploy the Python application with the Dapr sidecar
 
-This is a basic [Python app](https://github.com/dapr/quickstarts/tree/master/tutorials/hello-world) that posts JSON messages to localhost:3500, which is the default listening port for Dapr. You can invoke the Node.js application's neworder endpoint by posting to v1.0/invoke/nodeapp/method/neworder. The message contains some data with an orderId that increments once per second.
+The following is a basic "hello world" [Python app](https://github.com/dapr/quickstarts/tree/master/tutorials/hello-world) that posts JSON messages to localhost:3500, which is the default listening port for Dapr. You can invoke the Node.js application's _neworder_ endpoint by posting to _v1.0/invoke/nodeapp/method/neworder_. The message contains some data with an _orderId_ that increments once per second.
 
 - Deploy the Python App to your cluster.
 
