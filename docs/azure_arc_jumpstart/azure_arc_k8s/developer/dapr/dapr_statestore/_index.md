@@ -121,7 +121,7 @@ To create a new Cluster extension instance, we will use the _k8s-extension creat
 
 ## Dapr Components & Node.js application
 
-- Before validating the App, let’s verify and “zoom in” to the Kubernetes resources deployed by running a few kubectl commands.
+- Before validating the app, let’s verify and “zoom in” to the Kubernetes resources deployed by running a few _kubectl_ commands.
 
     ```shell
     kubectl get pods -n dapr-system
