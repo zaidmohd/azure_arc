@@ -119,7 +119,7 @@ To create a new Cluster extension instance, we will use the _k8s-extension creat
 
     ![Screenshot extension deployment extensions tab](./08.png)
 
-## Dapr Components & Node App
+## Dapr Components & Node.js application
 
 - Before validating the App, let’s verify and “zoom in” to the Kubernetes resources deployed by running a few kubectl commands.
 
