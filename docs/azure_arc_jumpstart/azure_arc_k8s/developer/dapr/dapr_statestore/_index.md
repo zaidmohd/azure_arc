@@ -8,7 +8,7 @@ description: >
 
 ## Deploy an application using the Dapr Cluster extension for Azure Arc-enabled Kubernetes cluster
 
-The following Jumpstart scenario will guide you on how to set up [Dapr](https://dapr.io/) for the Azure Arc-enabled Kubernetes cluster. In this scenario, you will enable the Dapr by deploying the Dapr extension on your Azure Arc-enabled Kubernetes cluster. You will also be deploying a Python application that generates messages and a Node application that consumes and persists them on Azure Cache for Redis.
+The following Jumpstart scenario will guide you on how to set up [Dapr](https://dapr.io/) for the Azure Arc-enabled Kubernetes cluster. In this scenario, you will enable Dapr by deploying the Dapr Cluster extension on your Azure Arc-enabled Kubernetes cluster alongside a Python application that generates messages and a Node.js application that consumes and persists them on [Azure Cache for Redis](https://docs.microsoft.com/azure/azure-cache-for-redis/cache-overview).
 
 Dapr is a portable, event-driven runtime that makes it easy for any developer to build resilient, stateless, and stateful applications that run on the cloud and edge and embraces the diversity of languages and developer frameworks. Leveraging the benefits of a sidecar architecture, Dapr helps you tackle the challenges that come with building microservices and keeps your code platform agnostic.
 
