@@ -113,7 +113,7 @@ To create a new Cluster extension instance, we will use the _k8s-extension creat
   - Create Dapr extension Cluster instance
   - Configure the state store on Kubernetes and deploy the Node.js app
 
-- Once the script will complete it’s run, you can see that Dapr extension is now enabled in the extension tab section of the Azure Arc-enabled Kubernetes cluster resource in Azure. The script usually take 10-20 minutes to complete.
+- Once the script will complete it’s run, you can see that the Dapr Cluster extension is now enabled in the extension tab section of the Azure Arc-enabled Kubernetes cluster resource in Azure. The script usually takes 10-20 minutes to complete.
 
     ![Screenshot script completion](./07.png)
 
