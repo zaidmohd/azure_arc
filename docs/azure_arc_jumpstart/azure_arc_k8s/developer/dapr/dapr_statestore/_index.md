@@ -87,7 +87,7 @@ For you to get familiar with the automation and deployment flow, below is an exp
 
 ## Deployment
 
-To create a new extension Instance, we will use the _k8s-extension create_ command while passing in values for the mandatory parameters. This scenario provides you with the automation to deploy the Dapr extension on your Azure Arc-enabled Kubernetes cluster.
+To create a new Cluster extension instance, we will use the _k8s-extension create_ command while passing in values for the mandatory parameters. This scenario provides you with the automation to deploy the Dapr Cluster extension on your Azure Arc-enabled Kubernetes cluster.
 
 > **NOTE: Before installing the Dapr extension, make sure that the _kubectl_ context is pointing to your Azure Arc-enabled Kubernetes cluster. To do that, you can refer to the [official Kubernetes documentation](https://kubernetes.io/docs/tasks/access-application-cluster/configure-access-multiple-clusters/) to find the options to change the kubecontext to different Kubernetes clusters.**
 
