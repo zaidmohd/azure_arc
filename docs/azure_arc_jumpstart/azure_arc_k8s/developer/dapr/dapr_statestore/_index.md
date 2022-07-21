@@ -8,9 +8,9 @@ description: >
 
 ## Deploy an application using the Dapr cluster extension for Azure Arc-enabled Kubernetes cluster
 
-The following Jumpstart scenario will guide you on how to setup [Dapr](https://dapr.io/) for Azure Arc-enabled Kubernetes cluster. Dapr is a portable, event-driven runtime that makes it easy for any developer to build resilient, stateless and stateful applications that run on the cloud and edge and embraces the diversity of languages and developer frameworks. Leveraging the benefits of a sidecar architecture, Dapr helps you tackle the challenges that come with building microservices and keeps your code platform agnostic.
+The following Jumpstart scenario will guide you on how to set up [Dapr](https://dapr.io/) for the Azure Arc-enabled Kubernetes cluster. In this scenario, you will enable the Dapr by deploying the Dapr extension on your Azure Arc-enabled Kubernetes cluster. You will also be deploying a Python application that generates messages and a Node application that consumes and persists them on Azure Cache for Redis.
 
-In this scenario, you will enable the Dapr by deploying the Dapr extension on your Azure Arc-enabled Kubernetes cluster. You will also be deploying a Python application that generates messages and a Node application that consumes and persists them on Azure Cache for Redis.
+Dapr is a portable, event-driven runtime that makes it easy for any developer to build resilient, stateless, and stateful applications that run on the cloud and edge and embraces the diversity of languages and developer frameworks. Leveraging the benefits of a sidecar architecture, Dapr helps you tackle the challenges that come with building microservices and keeps your code platform agnostic.
 
 > **NOTE: This guide assumes you already deployed a Kubernetes cluster and connected it to Azure Arc. If you haven't, this repository offers you a way to do so in an automated fashion for various [Kubernetes distributions](https://azurearcjumpstart.io/azure_arc_jumpstart/azure_arc_k8s/).**
 
@@ -79,7 +79,7 @@ For you to get familiar with the automation and deployment flow, below is an exp
 
 - The script will also create and configure the state store (Azure Cache for Redis), and deploy the Node.js app with the sidecar.
 
-- User is verifying the cluster and ensuring the dapr extension is deployed.
+- User is verifying the cluster and ensuring the Dapr extension is deployed.
 
 - User is verifying the service and confirming the order was persisted in the state store.
 
@@ -169,7 +169,7 @@ To create a new extension Instance, we will use the _k8s-extension create_ comma
 
 ## Deploy the Python app with the Dapr sidecar
 
-This is a basic Python app that posts JSON messages to localhost:3500, which is the default listening port for Dapr. You can invoke the Node.js application's neworder endpoint by posting to v1.0/invoke/nodeapp/method/neworder. The message contains some data with an orderId that increments once per second.
+This is a basic [Python app](https://github.com/dapr/quickstarts/tree/master/tutorials/hello-world) that posts JSON messages to localhost:3500, which is the default listening port for Dapr. You can invoke the Node.js application's neworder endpoint by posting to v1.0/invoke/nodeapp/method/neworder. The message contains some data with an orderId that increments once per second.
 
 - Deploy the Python App to your cluster.
 
@@ -182,7 +182,7 @@ This is a basic Python app that posts JSON messages to localhost:3500, which is 
 
     > **NOTE: The Dapr control plane will automatically inject the Dapr sidecar to the Pod, as the "dapr.io/enabled: true" annotation is added to the Node App deployment.**
 
-- Now that the Node.js and Python applications are deployed, show messages and API call come through.
+- Now that the Node.js and Python applications are deployed, review messages and API call come through.
 
     ```shell
     kubectl logs --selector=app=node -c node --tail=-1
