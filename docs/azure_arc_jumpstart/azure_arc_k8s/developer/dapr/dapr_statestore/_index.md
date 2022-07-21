@@ -75,7 +75,7 @@ For you to get familiar with the automation and deployment flow, below is an exp
 
 - User is editing the environment variables in the below Shell script file (1-time edit) which then be used throughout the configuration.
 
-- User is running the shell script. The script will use the extension management feature of Azure Arc to deploy the Dapr extension.
+- User is running the shell script. The script will use the extension management feature of Azure Arc to deploy the Dapr Cluster extension.
 
 - The script will also create and configure the state store (Azure Cache for Redis), and deploy the Node.js app with the sidecar.
 
