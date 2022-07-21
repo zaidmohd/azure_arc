@@ -109,7 +109,7 @@ To create a new Cluster extension instance, we will use the _k8s-extension creat
 
   - Login to your Azure subscription using the SPN credentials
   - Add or Update your local _k8s-extension_ Azure CLI extension
-  - Create Resource Group, Redis store and Kubernetes Secret for the Redis Key
+  - Create Azure resource group, Redis store, and Kubernetes Secret for the Redis Key
   - Create Dapr extension instance
   - Configure the state store on Kubernetes and deploy the Node app
 
