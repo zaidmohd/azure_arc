@@ -373,7 +373,7 @@ If you already have [Microsoft Defender for Cloud](https://docs.microsoft.com/az
 
 #### The Logon scripts
 
-- Once you log into the _ArcBox-Client_ VM, multiple automated scripts will open and start running. These scripts usually take 10-20 minutes to finish, and once completed, the script windows will close automaticly. At this point, the deployment is complete.
+- Once you log into the _ArcBox-Client_ VM, multiple automated scripts will open and start running. These scripts usually take 10-20 minutes to finish, and once completed, the script windows will close automatically. At this point, the deployment is complete.
 
   ![Screenshot showing ArcBox-Client](./automation.png)
 
