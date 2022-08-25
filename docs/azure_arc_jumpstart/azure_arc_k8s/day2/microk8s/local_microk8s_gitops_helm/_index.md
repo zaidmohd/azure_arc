@@ -95,7 +95,7 @@ GitOps on Azure Arc-enabled Kubernetes uses [Flux](https://fluxcd.io/docs/), a p
 
 The demo application that will be deployed later in this scenario relies on an ingress controller. Given that MicroK8s needs [Multipass](https://multipass.run/) on Windows and MacOS, we'll be covering that scenario and assuming Multipass is running.
 
-## NGINX Controller Deployment
+### NGINX Controller Deployment
 
 - Run the following command to install the nginx ingress controller on MicroK8s:
 
@@ -117,7 +117,7 @@ The demo application that will be deployed later in this scenario relies on an i
 
     ![Running ingress nginx controller service](./04.png)
 
-- Take note of the port where the ingress has been exposed (in the image above it was assigned port **32106**). We now need to get the IP address assigned to our microk8s-vm instance in multipass:
+- Take note of the port where the ingress has been exposed (in the image above it was assigned port **32046**). We now need to get the IP address assigned to our microk8s-vm instance in multipass:
 
     ```shell
     multipass list
@@ -167,15 +167,15 @@ To create the GitOps Configuration, we will use the _`k8s-configuration flux cre
 
 - In the screenshot below, notice how currently there is no GitOps configuration in your Arc-enabled Kubernetes cluster.
 
-    ![Screenshot showing Azure portal with no Azure Arc-enabled Kubernetes GitOps configurations](./03.png)
+    ![Screenshot showing Azure portal with no Azure Arc-enabled Kubernetes GitOps configurations](./08.png)
 
 ### Deployment Flow
 
 For our scenario, notice we have Helm chart in the "Azure Arc Jumpstart Apps" repository for the Hello-Arc application as well as the Helm Release.
 
-!["Azure Arc Jumpstart Apps" GitHub repository](./08.png)
-
 !["Azure Arc Jumpstart Apps" GitHub repository](./09.png)
+
+!["Azure Arc Jumpstart Apps" GitHub repository](./10.png)
 
 - The "Hello Arc" application (a Namespace-level component) will be deployed with 3 replica to the _hello-arc_ namespace.
 
@@ -197,6 +197,10 @@ To create the GitOps configuration and it's respective Kubernetes resources, we'
 
     Edit the environment variables in the [_az_k8sconfig_helm_microk8s_windows_](https://github.com/microsoft/azure_arc/blob/main/azure_arc_k8s_jumpstart/microk8s/gitops/helm/az_k8sconfig_helm_microk8s_windows.ps1) PowerShell file to match your parameters, and run it using the ```.\az_k8sconfig_helm_microk8s.ps1``` command.
 
+    For example:
+
+    ![Screenshot parameter examples](./11.png)
+
     The `az_k8sconfig_helm_microk8s` and `az_k8sconfig_helm_microk8s_windows` scripts will:
 
   - Login to your Azure subscription using the SPN credentials
@@ -205,13 +209,13 @@ To create the GitOps configuration and it's respective Kubernetes resources, we'
 
     > **Disclaimer: For the purpose of this guide, notice how the "_sync-interval 3s_" is set. The 3 seconds interval is useful for demo purposes since it will make the sync interval rapidly track changes on the repository but it is recommended to have a longer interval in your production environment (the default value is 5min)**
 
-- Once the script will complete it's run, you will have the GitOps configuration create all the resources deployed in your Kubernetes cluster. **NOTE:** that it takes a few min for the configuration to change status from "Pending" to Install.
+- Once the script will complete it's run, you will have the GitOps configuration create all the resources deployed in your Kubernetes cluster. **NOTE:** that it takes a few min for the configuration to change status from "Pending" to Installed.
 
-    ![Flux extension](./10.png)
+    ![Flux extension](./12.png)
 
-    ![New GitOps configurations](./11.png)
+    ![New GitOps configurations](./13.png)
 
-    ![App GitOps configuration](./12.png)
+    ![App GitOps configuration](./14.png)
 
 ## The "Hello Arc" Application & Components
 
@@ -223,7 +227,7 @@ To create the GitOps configuration and it's respective Kubernetes resources, we'
     kubectl get pods -n flux-system 
     ```
 
-    ![kubectl get pods -n flux-system ](./13.png)
+    ![kubectl get pods -n flux-system ](./15.png)
 
 - Show 3 replicas and service of the "Hello Arc" application.
 
@@ -231,7 +235,7 @@ To create the GitOps configuration and it's respective Kubernetes resources, we'
     kubectl get pods,svc -n hello-arc
     ```
 
-    ![kubectl get pods,svc -n hello-arc](./14.png)
+    ![kubectl get pods,svc -n hello-arc](./16.png)
 
 - Show NGINX rule which will route the traffic to the "Hello Arc" application from outside the cluster.
 
@@ -239,13 +243,13 @@ To create the GitOps configuration and it's respective Kubernetes resources, we'
     kubectl get ing -n hello-arc
     ```
 
-    ![kubectl get ing -n hello-arc](./15.png)
+    ![kubectl get ing -n hello-arc](./17.png)
 
 ## Initiating "Hello Arc" Application GitOps
 
 - The GitOps flow works as follow:
 
-    1. The Flux operator holds the "desired state" for both the NGINX Ingress Controller and the "Hello Arc" Helm releases, this is the configuration we deployed against the Azure Arc connected cluster. The operator "polls" the state of the ["Hello Arc"](https://github.com/microsoft/azure-arc-jumpstart-apps/blob/main/hello-arc) application repository.
+    1. The Flux operator holds the "desired state" for the "Hello Arc" Helm release, this is the configuration we deployed against the Azure Arc connected cluster. The operator "polls" the state of the ["Hello Arc"](https://github.com/microsoft/azure-arc-jumpstart-apps/blob/main/hello-arc) application repository.
 
     2. Changing the application, which is considered to be a new version of it, will trigger the Flux operator to kick in the GitOps flow.
 
@@ -259,7 +263,7 @@ To create the GitOps configuration and it's respective Kubernetes resources, we'
       kubectl get pods -n hello-arc -w
       ```
   
-    ![kubectl get pods -n hello-arc -w](./16.png)
+    ![kubectl get pods -n hello-arc -w](./18.png)
 
   - In **your fork** of the "Azure Arc Jumpstart App" repository, open the _hello-arc.yaml_ file (/hello-arc/releases/app/hello-arc.yaml).
 
@@ -267,21 +271,21 @@ To create the GitOps configuration and it's respective Kubernetes resources, we'
 
   - End result should look like that:
 
-    ![Side-by-side view of terminal, "Hello Arc" GitHub repo and the application open in a web browser](./17.png)
+    ![Side-by-side view of terminal, "Hello Arc" GitHub repo and the application open in a web browser](./19.png)
 
 - As mentioned in the prerequisites section, it is optional but highly recommended to configure the "Tab Auto Refresh" extension for your browser. If you did, in the "Hello Arc" application window, configure it to refresh every 2 seconds.
 
-    ![Tab Auto Refresh](./18.png)
+    ![Tab Auto Refresh](./20.png)
 
 - In the repository window showing the _hello-arc.yaml_ file, change the text under the "MESSAGE" section commit the change. Alternatively, you can open your cloned repository in your IDE, make the change, commit and push it.
 
-    ![Making a change to the replica count and the "MESSAGE" section](./19.png)
+    ![Making a change to the replica count and the "MESSAGE" section](./21.png)
 
-    ![Making a change to the replica count and the "MESSAGE" section](./20.png)
+    ![Making a change to the replica count and the "MESSAGE" section](./22.png)
 
 - Upon committing the changes, notice how the Kubernetes Pod rolling upgrade will start. Once the Pod is up & running, the new "Hello Arc" application version window will show the new message, showing the rolling upgrade is completed and the GitOps flow is successful.
 
-    ![New side-by-side view of terminal, "Hello Arc" GitHub repo and the application open in a web browser](./22.png)
+    ![New side-by-side view of terminal, "Hello Arc" GitHub repo and the application open in a web browser](./23.png)
 
 ## Cleanup
 
@@ -305,6 +309,6 @@ To delete the GitOps configuration and it's respective Kubernetes resources, we'
 
 - You should see the resources being deleted:
 
-    ![Cleanup script in terminal](./21.png)
+    ![Cleanup script in terminal](./24.png)
 
 - If you also wish to remove the local MicroK8s cluster and the Arc connected cluster from Azure, please refer to the [Delete the Deployment section](https://github.com/microsoft/azure_arc/blob/main/azure_arc_k8s_jumpstart/microk8s/gitops/helm/az_k8sconfig_helm_cleanup_microk8s_windows.ps1) in the onboarding guide.
