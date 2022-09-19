@@ -6,7 +6,7 @@ weight: 1
 
 ## Jumpstart HCIBox - Overview
 
-HCIBox is a turnkey solution that provides a complete sandbox for exploring Azure Stack HCI in a virtualized environment. HCIBox is designed to be completely self-contained within a single Azure subscription and resource group, which will make it easy for a user to get hands-on with Azure Stack HCI and Azure Arc technology with nothing more than an available Azure subscription.
+HCIBox is a turnkey solution that provides a complete sandbox for exploring Azure Stack HCI capabilities and hybrid cloud integration in a virtualized environment. HCIBox is designed to be completely self-contained within a single Azure subscription and resource group, which will make it easy for a user to get hands-on with Azure Stack HCI and Azure Arc technology without the need for physical hardware.
 
 ![HCIBox architecture diagram](./arch_full.png)
 
@@ -23,7 +23,7 @@ HCIBox is a turnkey solution that provides a complete sandbox for exploring Azur
 
 ### 2-node Azure Stack HCI cluster
 
-HCIBox automatically provisions and configures a two-node HCI cluster. HCIBox simulates physical hardware by using nested virtualization with Hyper-V.
+HCIBox automatically provisions and configures a two-node Azure Stack HCI cluster. HCIBox simulates physical hardware by using nested virtualization with Hyper-V running on an Azure Virtual Machine. This Hyper-V host provisions three guest virtual machines: one Hyper-V host (AzSMGMT) and two Azure Stack HCI nodes (AzSHost1, AzSHost2)
 
 ![HCIBox nested virtualization](./nested_virtualization.png)
 
