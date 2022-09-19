@@ -23,25 +23,21 @@ HCIBox is a turnkey solution that provides a complete sandbox for exploring Azur
 
 ### 2-node Azure Stack HCI cluster
 
-HCIBox automatically provisions and configures a two-node Azure Stack HCI cluster. HCIBox simulates physical hardware by using nested virtualization with Hyper-V running on an Azure Virtual Machine. This Hyper-V host provisions three guest virtual machines: one Hyper-V host (AzSMGMT) and two Azure Stack HCI nodes (AzSHost1, AzSHost2)
+HCIBox automatically provisions and configures a two-node Azure Stack HCI cluster. HCIBox simulates physical hardware by using nested virtualization with Hyper-V running on an Azure Virtual Machine. This Hyper-V host provisions three guest virtual machines: two Azure Stack HCI nodes (AzSHost1, AzSHost2), and one nested Hyper-V host (AzSMGMT). AzSMGMT itself hosts three guest VMs: a Windows Admin Center gateway server, a domain controller, and a Routing and Remote Access Server acting as a BGP router (RRAS).
 
 ![HCIBox nested virtualization](./nested_virtualization.png)
 
+### Azure Arc Resource BridgeHybrid Virtual Machine Management
+
+HCIBox installs and configures Azure Arc Resource Bridge. This allows full virtual machine lifecycle management from Azure portal or CLI. As part of this configuration, HCIBox also deploys two gallery images (Windows Server 2019 and Ubuntu). 
+
+![HCIBox nested virtualization](./arc_resource_bridge.png)
+
 ### AKS on HCI
 
-<img src="./k8s.png" width="250" alt="K8s diagram">
+HCIBox includes Azure Kubernetes Services on HCI (AKS-HCI). As part of the deployment automation, HCIBox configures AKS-HCI infrastructure including a management cluster. It then creates a target, or "workload", cluster (HCIBox-AKS-$randomguid).
 
-ArcBox deploys one single-node Rancher K3s cluster running on an Azure virtual machine. This cluster is then connected to Azure as an Azure Arc-enabled Kubernetes resource (_ArcBox-K3s_).
-
-### Azure Arc-enabled data services
-
-ArcBox deploys one single-node Rancher K3s cluster (_ArcBox-CAPI-MGMT_), which is then transformed to a [Cluster API](https://cluster-api.sigs.k8s.io/user/concepts.html) management cluster using the Cluster API Provider Azure(CAPZ), and a workload cluster is deployed onto the management cluster. The Azure Arc-enabled data services and data controller are deployed onto this workload cluster via a PowerShell script that runs when first logging into _ArcBox-Client_ virtual machine.
-
-<img src="./dataservices2.png" width="400" alt="Data services diagram">
-
-### Hybrid Unified Operations
-
-ArcBox deploys several management and operations services that work with ArcBox's Azure Arc resources. These resources include an an Azure Automation account, an Azure Log Analytics workspace with the Update Management solution, an Azure Monitor workbook, Azure Policy assignments for deploying Log Analytics agents on Windows and Linux Azure Arc-enabled servers, Azure Policy assignment for adding tags to resources, and a storage account used for staging resources needed for the deployment automation.
+<img src="./aks_hci.png" width="250" alt="AKS-HCI diagram">
 
 ![ArcBox unified operations diagram](./unifiedops.png)
 
