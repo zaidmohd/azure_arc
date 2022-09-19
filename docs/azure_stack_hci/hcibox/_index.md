@@ -6,7 +6,7 @@ weight: 1
 
 ## Jumpstart HCIBox - Overview
 
-HCIBox is a turnkey solution that provides a complete sandbox for exploring Azure Stack HCI capabilities and hybrid cloud integration in a virtualized environment. HCIBox is designed to be completely self-contained within a single Azure subscription and resource group, which will make it easy for a user to get hands-on with Azure Stack HCI and Azure Arc technology without the need for physical hardware.
+HCIBox is a turnkey solution that provides a complete sandbox for exploring [Azure Stack HCI](https://learn.microsoft.com/azure-stack/hci/overview) capabilities and hybrid cloud integration in a virtualized environment. HCIBox is designed to be completely self-contained within a single Azure subscription and resource group, which will make it easy for a user to get hands-on with Azure Stack HCI and [Azure Arc](https://learn.microsoft.com/azure/azure-arc/overview) technology without the need for physical hardware.
 
 ![HCIBox architecture diagram](./arch_full.png)
 
@@ -23,40 +23,37 @@ HCIBox is a turnkey solution that provides a complete sandbox for exploring Azur
 
 ### 2-node Azure Stack HCI cluster
 
-HCIBox automatically provisions and configures a two-node Azure Stack HCI cluster. HCIBox simulates physical hardware by using nested virtualization with Hyper-V running on an Azure Virtual Machine. This Hyper-V host provisions three guest virtual machines: two Azure Stack HCI nodes (AzSHost1, AzSHost2), and one nested Hyper-V host (AzSMGMT). AzSMGMT itself hosts three guest VMs: a Windows Admin Center gateway server, a domain controller, and a Routing and Remote Access Server acting as a BGP router (RRAS).
+HCIBox automatically provisions and configures a two-node Azure Stack HCI cluster. HCIBox simulates physical hardware by using nested virtualization with Hyper-V running on an Azure Virtual Machine. This Hyper-V host provisions three guest virtual machines: two Azure Stack HCI nodes (AzSHost1, AzSHost2), and one nested Hyper-V host (AzSMGMT). AzSMGMT itself hosts three guest VMs: a [Windows Admin Center](https://learn.microsoft.com/windows-server/manage/windows-admin-center/overview) gateway server, an [Active Directory domain controller](https://learn.microsoft.com/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview), and a [Routing and Remote Access Server](https://learn.microsoft.com/windows-server/remote/remote-access/remote-access) acting as a BGP router.
 
 ![HCIBox nested virtualization](./nested_virtualization.png)
 
 ### Azure Arc Resource BridgeHybrid Virtual Machine Management
 
-HCIBox installs and configures Azure Arc Resource Bridge. This allows full virtual machine lifecycle management from Azure portal or CLI. As part of this configuration, HCIBox also deploys two gallery images (Windows Server 2019 and Ubuntu). 
+HCIBox installs and configures [Azure Arc Resource Bridge](https://learn.microsoft.com/azure/azure-arc/resource-bridge/overview). This allows full virtual machine lifecycle management from Azure portal or CLI. As part of this configuration, HCIBox also configures a [custom location](https://learn.microsoft.com/azure-stack/hci/manage/deploy-arc-resource-bridge-using-command-line?tabs=for-static-ip-address#create-a-custom-location-by-installing-azure-arc-resource-bridge) and deploys two [gallery images](https://learn.microsoft.com/azure-stack/hci/manage/deploy-arc-resource-bridge-using-command-line?tabs=for-static-ip-address#create-virtual-network-and-gallery-image) (Windows Server 2019 and Ubuntu). These gallery images can be used to create virtual machines through the Azure portal.
 
 ![HCIBox nested virtualization](./arc_resource_bridge.png)
 
-### AKS on HCI
+### Azure Kubernetes Service on Azure Stack HCI
 
-HCIBox includes Azure Kubernetes Services on HCI (AKS-HCI). As part of the deployment automation, HCIBox configures AKS-HCI infrastructure including a management cluster. It then creates a target, or "workload", cluster (HCIBox-AKS-$randomguid).
+HCIBox includes [Azure Kubernetes Services on Azure Stack HCI (AKS-HCI)](https://learn.microsoft.com/azure-stack/aks-hci/). As part of the deployment automation, HCIBox configures AKS-HCI infrastructure including a management cluster. It then creates a [target](https://learn.microsoft.com/azure-stack/aks-hci/kubernetes-concepts), or "workload", cluster (HCIBox-AKS-$randomguid).
 
 <img src="./aks_hci.png" width="250" alt="AKS-HCI diagram">
 
-![ArcBox unified operations diagram](./unifiedops.png)
+### Hybrid unified operations
+
+HCIBox includes capabilities to support managing, monitoring and governing the cluster. The deployment automation configures [Azure Stack HCI Insights](https://learn.microsoft.com/azure-stack/hci/manage/monitor-hci-multi) along with [Azure Monitor](https://learn.microsoft.com/azure/azure-monitor/overview) and a [Log Analytics workspace](https://learn.microsoft.com/azure/azure-monitor/logs/log-query-overview). Additionally, [Azure Policy](https://learn.microsoft.com/azure/governance/policy/overview) is configured to support automation configuration and remediation of resources.
+
+![HCIBox unified operations diagram](./governance.png)
 
 ## HCIBox Azure Consumption Costs
 
-HCIBox resources generate Azure Consumption charges from the underlying Azure resources including core compute, storage, networking and auxiliary services. Note that Azure consumption costs vary depending the region where HCIBox is deployed. Be mindful of your HCIBox deployments and ensure that you disable or delete HCIBox resources when not in use to avoid unwanted charges. Please see the [Jumpstart FAQ](https://aka.ms/Jumpstart-FAQ) for more information on consumption costs.
+HCIBox resources generate Azure Consumption charges from the underlying Azure resources including core compute, storage, networking and auxiliary services. Note that Azure consumption costs may vary depending the region where HCIBox is deployed. Be mindful of your HCIBox deployments and ensure that you disable or delete HCIBox resources when not in use to avoid unwanted charges. Please see the [Jumpstart FAQ](https://aka.ms/Jumpstart-FAQ) for more information on consumption costs.
 
 ## Deployment Options and Automation Flow
 
-HCIBox provides multiple paths for deploying and configuring HCIBox resources. Deployment options include:
+HCIBox currently provides a [Bicep](https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/overview?tabs=bicep) template that deploys the infrastructure and automation that configure the solution.
 
-- Azure portal
-- ARM template via Azure CLI
-- Bicep
-- Terraform
-
-![Deployment flow diagram for ARM-based deployments](./deploymentflow.png)
-
-![Deployment flow diagram for Terraform-based deployments](./deploymentflow_tf.png)
+![Deployment flow diagram for Bicep-based deployments](./deployment_flow.png)
 
 HCIBox uses an advanced automation flow to deploy and configure all necessary resources with minimal user interaction. The previous diagrams provide an overview of the deployment flow. A high-level summary of the deployment is:
 
