@@ -433,7 +433,7 @@ ArcBox deploys bookstore application on the _ArcBox-CAPI-Data_ workload cluster.
 
 ### High availability
 
-When deploying Azure Arc-enabled SQL Managed Instance in an availability group, three SQL pods replicas will be deployed to assemble the availability group. The availability group includes three Kubernetes replicas with a primary and two secondaries with all CRUD operations for the availability group are managed internally, including creating the availability group or joining replicas to the availability group created.
+When deploying Azure Arc-enabled SQL Managed Instance in the Business critical tier, up to three SQL pods replicas will be deployed to assemble an availability group. The availability group includes three Kubernetes replicas with a primary instance and two secondary instances that can be configured to be readable secondaries. This availability groups managed the failover process to achieve high availability.
 
   ![Screenshot showing SQL MI pods](./capi_bookstore08.png)
 
