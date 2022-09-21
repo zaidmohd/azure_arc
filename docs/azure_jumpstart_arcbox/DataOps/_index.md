@@ -557,8 +557,6 @@ The _ArcBox-CAPI-Data-xxxx_ and the _ArcBox_AKS_DR_Data-xxxx_ clusters are deplo
 
 ### Additional optional scenarios on the _ArcBox-AKS-Data-xxxx_ cluster
 
-#### Azure Arc-enabled SQL Managed Instance scaling
-
 #### Migration to Azure Arc-enabled SQL Managed Instance
 
 As part of ArcBox, a SQL Server is deployed in a nested VM on the Client VM to allow you to test migrating a database to Azure Arc-enabled SQL Managed Instance.
