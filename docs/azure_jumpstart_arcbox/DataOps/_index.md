@@ -475,7 +475,7 @@ When deploying Azure Arc-enabled SQL Managed Instance in the Business critical t
 
 ### Disaster Recovery
 
-Use _az sql instance-failover-group-arc_ command to initiate a failover from primary to secondary. The following command initiates a failover from the primary instance to the secondary instance
+The _ArcBox-CAPI-Data-xxxx_ and the _ArcBox_AKS_DR_Data-xxxx_ clusters are deployed into a distributed availability group to simulate two different sites. Use the _az sql instance-failover-group-arc_ command to initiate a failover from the primary SQL instance to the secondary DR instance.
 
 - Open PowerShell and run below commands to initiate the failover.
 
@@ -486,7 +486,7 @@ Use _az sql instance-failover-group-arc_ command to initiate a failover from pri
 
   ![Screenshot showing bookstore app](./aksdr_bookstore01.png)
 
-- Right click and run the _DataOpsAppDRScript.ps1_ script placed under _C:\ArcBox\DataOps_.
+- Right click and run the _DataOpsAppDRScript.ps1_ script placed under _C:\ArcBox\DataOps_ to deploy the Bookstore application on the DR cluster to simulate application failover.
 
   ![Screenshot showing bookstore app](./aksdr_bookstore02.png)
 
