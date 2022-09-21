@@ -431,7 +431,7 @@ ArcBox deploys bookstore application on the _ArcBox-CAPI-Data_ workload cluster.
 
   ![Screenshot showing bookstore app DNS record](./capi_bookstore07.png)
 
-#### SQL Managed Instance failover
+### High availability
 
 When deploying Azure Arc-enabled SQL Managed Instance in an availability group, three SQL pods replicas will be deployed to assemble the availability group. The availability group includes three Kubernetes replicas with a primary and two secondaries with all CRUD operations for the availability group are managed internally, including creating the availability group or joining replicas to the availability group created.
 
@@ -471,7 +471,9 @@ When deploying Azure Arc-enabled SQL Managed Instance in an availability group, 
 
   ![Screenshot showing bookstore app](./capi_bookstore15.png)
 
-#### DR failover
+### Point-in-time restore
+
+### Disaster Recovery
 
 Use _az sql instance-failover-group-arc_ command to initiate a failover from primary to secondary. The following command initiates a failover from the primary instance to the secondary instance
 
@@ -501,12 +503,6 @@ Use _az sql instance-failover-group-arc_ command to initiate a failover from pri
 - Now that we perform a successful failover, we can re-validate and make sure replication still works as expected.
 
   ![Screenshot showing bookstore app records](./aksdr_bookstore04.png)
-
-### High availability
-
-### Point-in-time restore
-
-### Disaster Recovery
 
 ### Additional optional scenarios on the _ArcBox-K3s_ cluster
 
