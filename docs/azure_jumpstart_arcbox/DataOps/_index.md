@@ -224,7 +224,7 @@ ArcBox uses an advanced automation flow to deploy and configure all necessary re
 - Clone the Azure Arc Jumpstart repository
 
   ```shell
-  git clone https://github.com/microsoft/azure_arc.git
+  git clone https://github.com/microsoft/azure_arc.git -b arcbox_dataops
   ```
 
 - Upgrade to latest Bicep version
@@ -259,7 +259,7 @@ ArcBox uses an advanced automation flow to deploy and configure all necessary re
 - Clone the Azure Arc Jumpstart repository
 
   ```shell
-  git clone https://github.com/microsoft/azure_arc.git
+  git clone https://github.com/microsoft/azure_arc.git -b arcbox_dataops
   ```
 
 - Download and install the latest version of Terraform [here](https://www.terraform.io/downloads.html)
