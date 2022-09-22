@@ -189,7 +189,7 @@ ArcBox uses an advanced automation flow to deploy and configure all necessary re
 - Clone the Azure Arc Jumpstart repository
 
     ```shell
-    git clone https://github.com/microsoft/azure_arc.git
+    git clone https://github.com/microsoft/azure_arc.git -b arcbox_dataops
     ```
 
 - Edit the [azuredeploy.parameters.json](https://github.com/microsoft/azure_arc/blob/arcbox_dataops/azure_jumpstart_arcbox/ARM/azuredeploy.parameters.json) ARM template parameters file and supply some values for your environment.
