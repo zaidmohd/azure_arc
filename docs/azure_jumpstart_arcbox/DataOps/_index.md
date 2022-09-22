@@ -750,7 +750,7 @@ Occasionally deployments of ArcBox may fail at various stages. Common reasons fo
 
 ### Exploring logs from the _ArcBox-Client_ virtual machine
 
-Occasionally, you may need to review log output from scripts that run on the _ArcBox-Client_and the _ArcBox-CAPI-MGMT_ virtual machines in case of deployment failures. To make troubleshooting easier, the ArcBox deployment scripts collect all relevant logs in the _C:\ArcBox\Logs_ folder on _ArcBox-Client_. A short description of the logs and their purpose can be seen in the list below:
+Occasionally, you may need to review log output from scripts that run on the _ArcBox-Client_ and the _ArcBox-CAPI-MGMT_ virtual machines in case of deployment failures. To make troubleshooting easier, the ArcBox deployment scripts collect all relevant logs in the _C:\ArcBox\Logs_ folder on _ArcBox-Client_. A short description of the logs and their purpose can be seen in the list below:
 
 | Logfile | Description |
 | ------- | ----------- |
