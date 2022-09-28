@@ -27,7 +27,7 @@ HCIBox automatically provisions and configures a two-node Azure Stack HCI cluste
 
 ![HCIBox nested virtualization](./nested_virtualization.png)
 
-### Azure Arc Resource BridgeHybrid Virtual Machine Management
+### Azure Arc Resource Bridge
 
 HCIBox installs and configures [Azure Arc Resource Bridge](https://learn.microsoft.com/azure/azure-arc/resource-bridge/overview). This allows full virtual machine lifecycle management from Azure portal or CLI. As part of this configuration, HCIBox also configures a [custom location](https://learn.microsoft.com/azure-stack/hci/manage/deploy-arc-resource-bridge-using-command-line?tabs=for-static-ip-address#create-a-custom-location-by-installing-azure-arc-resource-bridge) and deploys two [gallery images](https://learn.microsoft.com/azure-stack/hci/manage/deploy-arc-resource-bridge-using-command-line?tabs=for-static-ip-address#create-virtual-network-and-gallery-image) (Windows Server 2019 and Ubuntu). These gallery images can be used to create virtual machines through the Azure portal.
 
@@ -35,13 +35,13 @@ HCIBox installs and configures [Azure Arc Resource Bridge](https://learn.microso
 
 ### Azure Kubernetes Service on Azure Stack HCI
 
-HCIBox includes [Azure Kubernetes Services on Azure Stack HCI (AKS-HCI)](https://learn.microsoft.com/azure-stack/aks-hci/). As part of the deployment automation, HCIBox configures AKS-HCI infrastructure including a management cluster. It then creates a [target](https://learn.microsoft.com/azure-stack/aks-hci/kubernetes-concepts), or "workload", cluster (HCIBox-AKS-$randomguid).
+HCIBox includes [Azure Kubernetes Services on Azure Stack HCI (AKS-HCI)](https://learn.microsoft.com/azure-stack/aks-hci/). As part of the deployment automation, HCIBox configures AKS-HCI infrastructure including a management cluster. It then creates a [target](https://learn.microsoft.com/azure-stack/aks-hci/kubernetes-concepts), or "workload", cluster (HCIBox-AKS-$randomguid). As an optional capability, HCIBox also includes a PowerShell script that can be used to configure a sample application on the target cluster using [GitOps](https://learn.microsoft.com/azure/azure-arc/kubernetes/tutorial-use-gitops-flux2).
 
 <img src="./aks_hci.png" width="250" alt="AKS-HCI diagram">
 
 ### Hybrid unified operations
 
-HCIBox includes capabilities to support managing, monitoring and governing the cluster. The deployment automation configures [Azure Stack HCI Insights](https://learn.microsoft.com/azure-stack/hci/manage/monitor-hci-multi) along with [Azure Monitor](https://learn.microsoft.com/azure/azure-monitor/overview) and a [Log Analytics workspace](https://learn.microsoft.com/azure/azure-monitor/logs/log-query-overview). Additionally, [Azure Policy](https://learn.microsoft.com/azure/governance/policy/overview) is configured to support automation configuration and remediation of resources.
+HCIBox includes capabilities to support managing, monitoring and governing the cluster. The deployment automation configures [Azure Stack HCI Insights](https://learn.microsoft.com/azure-stack/hci/manage/monitor-hci-multi) along with [Azure Monitor](https://learn.microsoft.com/azure/azure-monitor/overview) and a [Log Analytics workspace](https://learn.microsoft.com/azure/azure-monitor/logs/log-query-overview). Additionally, [Azure Policy](https://learn.microsoft.com/azure/governance/policy/overview) can be configured to support automation configuration and remediation of resources.
 
 ![HCIBox unified operations diagram](./governance.png)
 
@@ -55,24 +55,26 @@ HCIBox currently provides a [Bicep](https://learn.microsoft.com/en-us/azure/azur
 
 ![Deployment flow diagram for Bicep-based deployments](./deployment_flow.png)
 
-HCIBox uses an advanced automation flow to deploy and configure all necessary resources with minimal user interaction. The previous diagrams provide an overview of the deployment flow. A high-level summary of the deployment is:
+HCIBox uses an advanced automation flow to deploy and configure all necessary resources with minimal user interaction. The previous diagram provides an overview of the deployment flow. A high-level summary of the deployment is:
 
-- User deploys the primary ARM template (_azuredeploy.json_), Bicep file (_main.bicep_), or Terraform plan (_main.tf_). These objects contain several nested objects that will run simultaneously.
-  - ClientVM ARM template/plan - deploys the HCIBox-Client VM. This is the Hyper-V host VM where all user interactions with the environment are made from.
-  - Storage account template/plan - used for staging files in automation scripts
-  - Management artifacts template/plan - deploys Azure Log Analytics workspace and solutions and Azure Policy artifacts
-- User remotes into Client Windows VM, which automatically kicks off multiple scripts that:
-  - Deploy and configure five (5) nested virtual machines in Hyper-V
-    - Windows Server 2022 VM - onboarded as Azure Arc-enabled server
-    - Windows Server 2019 VM - onboarded as Azure Arc-enabled server
-    - Windows VM running SQL Server - onboarded as Azure Arc-enabled SQL Server (as well as Azure Arc-enabled server)
-    - Ubuntu VM - onboarded as Azure Arc-enabled server
-    - CentOS VM - onboarded as Azure Arc-enabled server
-  - Deploy an Azure Monitor workbook that provides example reports and metrics for monitoring ArcBox components
+- User deploys the primary Bicep file (_main.bicep_). This file contains several nested objects that will run simultaneously.
+  - Host template - deploys the HCIBox-Client VM. This is the Hyper-V host VM that uses nested virtualization to host the complete HCIBox infrastructure. Once the Bicep template finishes deploying, the user remotes into this client using RDP to start the second step of the deployment.
+  - Network template - deploys the network artifacts required for the solution
+  - Storage account template - used for staging files in automation scripts and as the cloud witness for the HCI cluster
+  - Management artifacts template - deploys Azure Log Analytics workspace and solutions and Azure Policy artifacts
+- User remotes into HCIBox-Client VM, which automatically kicks off a PowerShell script that:
+  - Deploys and configure three (3) nested virtual machines in Hyper-V
+    - Two (2) Azure Stack HCI virtual nodes
+    - One (1) Windows Server 2019 virtual machine
+  - Configures the necessary virtualization and networking infrastructure on the Hyper-V host to support the HCI cluster.
+  - Deploys an Active Directory domain controller, a Windows Admin Center server in gateway mode, and a Remote Access Server acting as a BGP router
+  - Registers the HCI Cluster with Azure
+  - Deploys AKS-HCI and a target AKS cluster
+  - Deploys Arc Resource Bridge and gallery VM images
 
 ## Prerequisites
 
-- [Install or update Azure CLI to version 2.36.0 and above](https://docs.microsoft.com/cli/azure/install-azure-cli?view=azure-cli-latest). Use the below command to check your current installed version.
+- [Install or update Azure CLI to version 2.40.0 and above](https://docs.microsoft.com/cli/azure/install-azure-cli?view=azure-cli-latest). Use the below command to check your current installed version.
 
   ```shell
   az --version
@@ -80,30 +82,24 @@ HCIBox uses an advanced automation flow to deploy and configure all necessary re
 
 - Login to AZ CLI using the ```az login``` command.
 
-- Ensure that you have selected the correct subscription you want to deploy ArcBox to by using the ```az account list --query "[?isDefault]"``` command. If you need to adjust the active subscription used by Az CLI, follow [this guidance](https://docs.microsoft.com/cli/azure/manage-azure-subscriptions-azure-cli#change-the-active-subscription).
+- Ensure that you have selected the correct subscription you want to deploy HCIBox to by using the ```az account list --query "[?isDefault]"``` command. If you need to adjust the active subscription used by Az CLI, follow [this guidance](https://docs.microsoft.com/cli/azure/manage-azure-subscriptions-azure-cli#change-the-active-subscription).
 
-- ArcBox must be deployed to one of the following regions. **Deploying ArcBox outside of these regions may result in unexpected results or deployment errors.**
+- HCIBox must be deployed to one of the following regions. **Deploying ArcBox outside of these regions may result in unexpected results or deployment errors.**
 
   - East US
   - East US 2
-  - Central US
   - West US 2
   - North Europe
-  - West Europe
-  - France Central
-  - UK South
-  - Australia East
-  - Japan East
-  - Korea Central
-  - Southeast Asia
 
-- **ArcBox Full requires 44 B-series and 16 DSv4-series vCPUs** when deploying with default parameters such as VM series/size. Ensure you have sufficient vCPU quota available in your Azure subscription and the region where you plan to deploy ArcBox. You can use the below Az CLI command to check your vCPU utilization.
+  > **NOTE: Some HCIBox resources will be created in regions other than the one you initially specify. This is due to limited regional availability of the various services included in HCIBox.**
+
+- **HCIBox requires 48 DSv5-series vCPUs** when deploying with default parameters such as VM series/size. Ensure you have sufficient vCPU quota available in your Azure subscription and the region where you plan to deploy HCIBox. You can use the below Az CLI command to check your vCPU utilization.
 
   ```shell
   az vm list-usage --location <your location> --output table
   ```
 
-  ![Screenshot showing az vm list-usage](./azvmlistusage.png)
+  ![Screenshot showing az vm list-usage](./az_vm_list_usage.png)
 
 - Register necessary Azure resource providers by running the following commands.
 
@@ -115,28 +111,17 @@ HCIBox uses an advanced automation flow to deploy and configure all necessary re
   az provider register --namespace Microsoft.ExtendedLocation --wait
   az provider register --namespace Microsoft.AzureArcData --wait
   az provider register --namespace Microsoft.OperationsManagement --wait
+  az provider register --namespace Microsoft.AzureStackHCI --wait
   ```
 
-- Create Azure service principal (SP). To deploy ArcBox, an Azure service principal assigned with multiple role-based access control (RBAC) roles is required:
-
-  - "Contributor" - Required for provisioning Azure resources
-  - "Security admin" - Required for installing Microsoft Defender for Cloud Azure-Arc enabled Kubernetes extension and dismiss alerts
-  - "Security reader" - Required for being able to view Azure-Arc enabled Kubernetes Cloud Defender extension findings
-  - "Monitoring Metrics Publisher" - Required for being Azure Arc-enabled data services billing, monitoring metrics, and logs management
-  - **(optional)** "User Access Administrator" - Required for automatically onboarding the Azure Arc-enabled SQL Server resource
-
-    > **NOTE: In the event a Service Principal with Owner cannot be created, the SQL Server can be onboarded to Azure Arc post deployment by following the [Azure Arc-enabled SQL Server onboarding](#azure-arc-enabled-sql-server-onboarding) steps below.**
+- Create Azure service principal (SP). To deploy HCIBox, an Azure service principal assigned with the "Owner" role-based access control (RBAC) role is required:
 
     To create it login to your Azure account run the below command (this can also be done in [Azure Cloud Shell](https://shell.azure.com/).
 
     ```shell
     az login
     subscriptionId=$(az account show --query id --output tsv)
-    az ad sp create-for-rbac -n "<Unique SP Name>" --role "Contributor" --scopes /subscriptions/$subscriptionId
-    az ad sp create-for-rbac -n "<Unique SP Name>" --role "Security admin" --scopes /subscriptions/$subscriptionId
-    az ad sp create-for-rbac -n "<Unique SP Name>" --role "Security reader" --scopes /subscriptions/$subscriptionId
-    az ad sp create-for-rbac -n "<Unique SP Name>" --role "Monitoring Metrics Publisher" --scopes /subscriptions/$subscriptionId
-    az ad sp create-for-rbac -n "<Unique SP Name>" --role "User Access Administrator" --scopes /subscriptions/$subscriptionId
+    az ad sp create-for-rbac -n "<Unique SP Name>" --role "Owner" --scopes /subscriptions/$subscriptionId
     ```
 
     For example:
@@ -144,11 +129,7 @@ HCIBox uses an advanced automation flow to deploy and configure all necessary re
     ```shell
     az login
     subscriptionId=$(az account show --query id --output tsv)
-    az ad sp create-for-rbac -n "JumpstartArcBox" --role "Contributor" --scopes /subscriptions/$subscriptionId
-    az ad sp create-for-rbac -n "JumpstartArcBox" --role "Security admin" --scopes /subscriptions/$subscriptionId
-    az ad sp create-for-rbac -n "JumpstartArcBox" --role "Security reader" --scopes /subscriptions/$subscriptionId
-    az ad sp create-for-rbac -n "JumpstartArcBox" --role "Monitoring Metrics Publisher" --scopes /subscriptions/$subscriptionId
-    az ad sp create-for-rbac -n "JumpstartArcBox" --role "User Access Administrator" --scopes /subscriptions/$subscriptionId
+    az ad sp create-for-rbac -n "JumpstartHCIBox" --role "Owner" --scopes /subscriptions/$subscriptionId
     ```
 
     Output should look similar to this:
@@ -156,68 +137,17 @@ HCIBox uses an advanced automation flow to deploy and configure all necessary re
     ```json
     {
     "appId": "XXXXXXXXXXXXXXXXXXXXXXXXXXXX",
-    "displayName": "JumpstartArcBox",
+    "displayName": "JumpstartHCIBox",
     "password": "XXXXXXXXXXXXXXXXXXXXXXXXXXXX",
     "tenant": "XXXXXXXXXXXXXXXXXXXXXXXXXXXX"
     }
     ```
 
-    > **NOTE: If you create multiple subsequent role assignments on the same service principal, your client secret (password) will be destroyed and recreated each time. Therefore, make sure you grab the correct password.**.
+    > **NOTE: If you create multiple subsequent role assignments on the same service principal, your client secret (password) will be destroyed and recreated each time. Therefore, make sure you grab the correct password.**
 
     > **NOTE: The Jumpstart scenarios are designed with as much ease of use in-mind and adhering to security-related best practices whenever possible. It is optional but highly recommended to scope the service principal to a specific [Azure subscription and resource group](https://docs.microsoft.com/cli/azure/ad/sp?view=azure-cli-latest) as well considering using a [less privileged service principal account](https://docs.microsoft.com/azure/role-based-access-control/best-practices)**
 
-- [Generate SSH Key](https://help.github.com/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent/) (or use existing ssh key). The SSH key is used to configure secure access to the Linux virtual machines that are used to run the Kubernetes clusters.
-
-  ```shell
-  ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
-  ```
-
-## Deployment Option 1: Azure portal
-
-- Click the <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmicrosoft%2Fazure_arc%2Fmain%2Fazure_jumpstart_arcbox%2FARM%2Fazuredeploy.json" target="_blank"><img src="https://aka.ms/deploytoazurebutton"/></a> button and enter values for the the ARM template parameters.
-
-  ![Screenshot showing Azure portal deployment of ArcBox](./portaldeploy.png)
-
-  ![Screenshot showing Azure portal deployment of ArcBox](./portaldeployinprogress.png)
-
-  ![Screenshot showing Azure portal deployment of ArcBox](./portaldeploymentcomplete.png)
-
-## Deployment Option 2: ARM template with Azure CLI
-
-- Clone the Azure Arc Jumpstart repository
-
-    ```shell
-    git clone https://github.com/microsoft/azure_arc.git
-    ```
-
-- Edit the [azuredeploy.parameters.json](https://github.com/microsoft/azure_arc/blob/main/azure_jumpstart_arcbox/ARM/azuredeploy.parameters.json) ARM template parameters file and supply some values for your environment.
-  - _`sshRSAPublicKey`_ - Your SSH public key
-  - _`spnClientId`_ - Your Azure service principal id
-  - _`spnClientSecret`_ - Your Azure service principal secret
-  - _`spnTenantId`_ - Your Azure tenant id
-  - _`windowsAdminUsername`_ - Client Windows VM Administrator name
-  - _`windowsAdminPassword`_ - Client Windows VM Password. Password must have 3 of the following: 1 lower case character, 1 upper case character, 1 number, and 1 special character. The value must be between 12 and 123 characters long.
-  - _`myIpAddress`_ - Your local IP address. This is used to allow remote RDP and SSH connections to the Client Windows VM and K3s Rancher VM.
-  - _`logAnalyticsWorkspaceName`_ - Unique name for the ArcBox Log Analytics workspace
-  - _`flavor`_ - Use the value "Full" to specify that you want to deploy the full version of ArcBox
-
-  ![Screenshot showing example parameters](./parameters.png)
-
-- Now you will deploy the ARM template. Navigate to the local cloned [deployment folder](https://github.com/microsoft/azure_arc/tree/main/azure_jumpstart_arcbox) and run the below command:
-
-  ```shell
-  az group create --name <Name of the Azure resource group> --location <Azure Region>
-  az deployment group create \
-  --resource-group <Name of the Azure resource group> \
-  --template-file azuredeploy.json \
-  --parameters azuredeploy.parameters.json 
-  ```
-
-  ![Screenshot showing az group create](./azgroupcreate.png)
-
-  ![Screenshot showing az deployment group create](./azdeploy.png)
-
-## Deployment Option 3: Bicep deployment via Azure CLI
+## Bicep deployment via Azure CLI
 
 - Clone the Azure Arc Jumpstart repository
 
@@ -231,16 +161,13 @@ HCIBox uses an advanced automation flow to deploy and configure all necessary re
   az bicep upgrade
   ```
 
-- Edit the [main.parameters.json](https://github.com/microsoft/azure_arc/blob/main/azure_jumpstart_arcbox/bicep/main.parameters.json) template parameters file and supply some values for your environment.
-  - _`sshRSAPublicKey`_ - Your SSH public key
+- Edit the [main.parameters.json](https://github.com/microsoft/azure_arc/blob/feature_azshci/azure_stack_hci/hcibox/bicep/main.parameters.json) template parameters file and supply some values for your environment.
   - _`spnClientId`_ - Your Azure service principal id
   - _`spnClientSecret`_ - Your Azure service principal secret
   - _`spnTenantId`_ - Your Azure tenant id
   - _`windowsAdminUsername`_ - Client Windows VM Administrator name
   - _`windowsAdminPassword`_ - Client Windows VM Password. Password must have 3 of the following: 1 lower case character, 1 upper case character, 1 number, and 1 special character. The value must be between 12 and 123 characters long.
-  - _`myIpAddress`_ - Your local IP address. This is used to allow remote RDP and SSH connections to the Client Windows VM and K3s Rancher VM.
   - _`logAnalyticsWorkspaceName`_ - Unique name for the ArcBox Log Analytics workspace
-  - _`flavor`_ - Use the value "Full" to specify that you want to deploy the full version of ArcBox
 
   ![Screenshot showing example parameters](./parameters_bicep.png)
 
