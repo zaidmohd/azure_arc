@@ -2,7 +2,7 @@
 type: docs
 title: "SQL Managed Instance ARM Template"
 linkTitle: "SQL Managed Instance ARM Template"
-weight: 1
+weight: 2
 description: >
 ---
 
