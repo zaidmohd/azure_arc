@@ -32,7 +32,7 @@ By the end of this scenario, you will have a Kubeadm Kubernetes cluster deployed
 
 - Create Azure service principal (SP). To deploy this scenario, an Azure service principal assigned with the following RBAC role is required:
 
-  - "Owner" - Required for provisioning Azure resources, installing Cloud Defender Azure-Arc enabled Kubernetes extension and dismiss alerts, being able to view Azure-Arc enabled Kubernetes Cloud Defender extension findings, being Azure Arc-enabled data services billing, monitoring metrics, and logs management and creating role assigment (Monitoring Metrics Publisher).
+  - "Owner" - Required for provisioning Azure resources, installing the Azure-Arc enabled Kubernetes Microsoft Cloud Defender for Containers cluster extension (incl. dismissing alerts and being able to view  findings), interact with Azure Arc-enabled data services billing, monitoring metrics, and logs management and creating role assignment for the Monitoring Metrics Publisher role.
 
     To create it login to your Azure account run the below command (this can also be done in [Azure Cloud Shell](https://shell.azure.com/).
 
