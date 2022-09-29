@@ -168,98 +168,41 @@ HCIBox uses an advanced automation flow to deploy and configure all necessary re
   - _`windowsAdminUsername`_ - Client Windows VM Administrator name
   - _`windowsAdminPassword`_ - Client Windows VM Password. Password must have 3 of the following: 1 lower case character, 1 upper case character, 1 number, and 1 special character. The value must be between 12 and 123 characters long.
   - _`logAnalyticsWorkspaceName`_ - Unique name for the ArcBox Log Analytics workspace
+  - _`deployBastion`_ - Option to deploy Azure Bastion which used to connect to the HCIBox-Client VM instead of normal RDP
 
   ![Screenshot showing example parameters](./parameters_bicep.png)
 
 - Now you will deploy the Bicep file. Navigate to the local cloned [deployment folder](https://github.com/microsoft/azure_arc/tree/main/azure_jumpstart_arcbox/bicep) and run the below command:
 
   ```shell
-  az login
   az group create --name "<resource-group-name>"  --location "<preferred-location>"
   az deployment group create -g "<resource-group-name>" -f "main.bicep" -p "main.parameters.json"
   ```
 
-## Deployment Option 4: Terraform Deployment
-
-- Clone the Azure Arc Jumpstart repository
-
-  ```shell
-  git clone https://github.com/microsoft/azure_arc.git
-  ```
-
-- Download and install the latest version of Terraform [here](https://www.terraform.io/downloads.html)
-
-  > **NOTE: Terraform 1.x or higher is supported for this deployment. Tested with Terraform v1.011.**
-
-- Create a `terraform.tfvars` file in the root of the terraform folder and supply some values for your environment.
-
-  ```HCL
-  azure_location    = "westus2"
-  spn_client_id     = "1414133c-9786-53a4-b231-f87c143ebdb1"
-  spn_client_secret = "fakeSecretValue123458125712ahjeacjh"
-  spn_tenant_id     = "33572583-d294-5b56-c4e6-dcf9a297ec17"
-  user_ip_address   = "99.88.99.88"
-  client_admin_ssh  = "C:/Temp/rsa.pub"
-  deployment_flavor = "Full"
-  ```
-
-- Variable Reference:
-  - **_`azure_location`_** - Azure location code (e.g. 'eastus', 'westus2', etc.)
-  - **_`resource_group_name`_** - Resource group which will contain all of the ArcBox artifacts
-  - **_`spn_client_id`_** - Your Azure service principal id
-  - **_`spn_client_secret`_** - Your Azure service principal secret
-  - **_`spn_tenant_id`_** - Your Azure tenant id
-  - **_`user_ip_address`_** - Your local IP address. This is used to allow remote RDP and SSH connections to the Client Windows VM and K3s Rancher VM. If you don't know your public IP, you can find it [here](https://www.whatismyip.com/)
-  - **_`client_admin_ssh`_** - SSH public key path, used for Linux VMs
-  - **_`deployment_flavor`_** - Use the value "Full" to specify that you want to deploy the full version of ArcBox
-  - _`client_admin_username`_ - Admin username for Windows & Linux VMs
-  - _`client_admin_password`_ - Admin password for Windows VMs. Password must have 3 of the following: 1 lower case character, 1 upper case character, 1 number, and 1 special character. The value must be between 12 and 123 characters long.
-  - **_`workspace_name`_** - Unique name for the ArcBox Log Analytics workspace
-
-  > **NOTE: Any variables in bold are required. If any optional parameters are not provided, defaults will be used.**
-
-- Now you will deploy the Terraform file. Navigate to the local cloned [deployment folder](https://github.com/microsoft/azure_arc/tree/main/azure_jumpstart_arcbox/terraform) and run the commands below:
-
-  ```shell
-  terraform init
-  terraform plan -out=infra.out
-  terraform apply "infra.out"
-  ```
-  
-- Example output from `terraform init`:
-
-  ![terraform init](./terraform_init.png)
-
-- Example output from `terraform plan -out=infra.out`:
-
-  ![terraform plan](./terraform_plan.png)
-
-- Example output from `terraform apply "infra.out"`:
-
-  ![terraform plan](./terraform_apply.png)
+  ![Screenshot showing bicep deploying](./bicep_deploying.png)
 
 ## Start post-deployment automation
 
-Once your deployment is complete, you can open the Azure portal and see the ArcBox resources inside your resource group. You will be using the _ArcBox-Client_ Azure virtual machine to explore various capabilities of ArcBox such as GitOps configurations and Key Vault integration. You will need to remotely access _ArcBox-Client_.
+Once your deployment is complete, you can open the Azure portal and see the initial HCIBox resources inside your resource group. You will be using both Azure portal the _HCIBox-Client_ Azure virtual machine to interact with the HCIBox resources.
 
   ![Screenshot showing all deployed resources in the resource group](./deployed_resources.png)
 
-   > **NOTE: For enhanced ArcBox security posture, RDP (3389) and SSH (22) ports are not open by default in ArcBox deployments. You will need to create a network security group (NSG) rule to allow network access to port 3389, or use [Azure Bastion](https://docs.microsoft.com/azure/bastion/bastion-overview) or [Just-in-Time (JIT)](https://docs.microsoft.com/azure/defender-for-cloud/just-in-time-access-usage?tabs=jit-config-asc%2Cjit-request-asc) access to connect to the VM.**
+   > **NOTE: For enhanced HCIBox security posture, RDP (3389) and SSH (22) ports are not open by default in ArcBox deployments. You will need to create a network security group (NSG) rule to allow network access to port 3389, or use [Azure Bastion](https://docs.microsoft.com/azure/bastion/bastion-overview) or [Just-in-Time (JIT)](https://docs.microsoft.com/azure/defender-for-cloud/just-in-time-access-usage?tabs=jit-config-asc%2Cjit-request-asc) access to connect to the VM.**
 
-### Connecting to the ArcBox Client virtual machine
+### Connecting to the HCIBox Client virtual machine
 
-Various options are available to connect to _ArcBox-Client_ VM, depending on the parameters you supplied during deployment.
+Various options are available to connect to _HCIBox-Client_ VM, depending on the parameters you supplied during deployment.
 
-- [RDP](https://azurearcjumpstart.io/azure_jumpstart_arcbox/Full/#connecting-directly-with-rdp) - available after configuring access to port 3389 on the _ArcBox-NSG_, or by enabling [Just-in-Time access (JIT)](https://azurearcjumpstart.io/azure_jumpstart_arcbox/Full/#connect-using-just-in-time-accessjit).
+- [RDP](https://azurearcjumpstart.io/azure_jumpstart_arcbox/Full/#connecting-directly-with-rdp) - available after configuring access to port 3389 on the _HCIBox-NSG_, or by enabling [Just-in-Time access (JIT)](https://azurearcjumpstart.io/azure_jumpstart_arcbox/Full/#connect-using-just-in-time-accessjit).
 - [Azure Bastion](https://azurearcjumpstart.io/azure_jumpstart_arcbox/Full/#connect-using-azure-bastion) - available if ```true``` was the value of your _`deployBastion`_ parameter during deployment.
 
 #### Connecting directly with RDP
 
-By design, ArcBox does not open port 3389 on the network security group. Therefore, you must create an NSG rule to allow inbound 3389.
+By design, HCIBox does not open port 3389 on the network security group. Therefore, you must create an NSG rule to allow inbound 3389.
 
-- Open the _ArcBox-NSG_ resource in Azure portal and click "Add" to add a new rule.
+- Open the _HCIBox-NSG_ resource in Azure portal and click "Add" to add a new rule.
 
-  ![Screenshot showing ArcBox-Client NSG with blocked RDP](./rdp_nsg_blocked.png)
+  ![Screenshot showing HCIBox-Client NSG with blocked RDP](./rdp_nsg_blocked.png)
 
   ![Screenshot showing adding a new inbound security rule](./nsg_add_rule.png)
 
