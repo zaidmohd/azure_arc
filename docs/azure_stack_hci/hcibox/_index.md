@@ -19,7 +19,7 @@ HCIBox is a turnkey solution that provides a complete sandbox for exploring [Azu
 - Rapid integration testing platform
 - Infrastructure-as-code and automation template library for building hybrid cloud management solutions
 
-## Azure Stack HCI capabilities available in ArcBox
+## Azure Stack HCI capabilities available in HCIBox
 
 ### 2-node Azure Stack HCI cluster
 
@@ -84,7 +84,7 @@ HCIBox uses an advanced automation flow to deploy and configure all necessary re
 
 - Ensure that you have selected the correct subscription you want to deploy HCIBox to by using the ```az account list --query "[?isDefault]"``` command. If you need to adjust the active subscription used by Az CLI, follow [this guidance](https://docs.microsoft.com/cli/azure/manage-azure-subscriptions-azure-cli#change-the-active-subscription).
 
-- HCIBox must be deployed to one of the following regions. **Deploying ArcBox outside of these regions may result in unexpected results or deployment errors.**
+- HCIBox must be deployed to one of the following regions. **Deploying HCIBox outside of these regions may result in unexpected results or deployment errors.**
 
   - East US
   - East US 2
@@ -167,12 +167,12 @@ HCIBox uses an advanced automation flow to deploy and configure all necessary re
   - _`spnTenantId`_ - Your Azure tenant id
   - _`windowsAdminUsername`_ - Client Windows VM Administrator name
   - _`windowsAdminPassword`_ - Client Windows VM Password. Password must have 3 of the following: 1 lower case character, 1 upper case character, 1 number, and 1 special character. The value must be between 12 and 123 characters long.
-  - _`logAnalyticsWorkspaceName`_ - Unique name for the ArcBox Log Analytics workspace
+  - _`logAnalyticsWorkspaceName`_ - Unique name for the HCIBox Log Analytics workspace
   - _`deployBastion`_ - Option to deploy Azure Bastion which used to connect to the HCIBox-Client VM instead of normal RDP
 
   ![Screenshot showing example parameters](./parameters_bicep.png)
 
-- Now you will deploy the Bicep file. Navigate to the local cloned [deployment folder](https://github.com/microsoft/azure_arc/tree/main/azure_jumpstart_arcbox/bicep) and run the below command:
+- Now you will deploy the Bicep file. Navigate to the local cloned [deployment folder](https://github.com/microsoft/azure_arc/tree/main/azure_stack_hci/hcibox/bicep) and run the below command:
 
   ```shell
   az group create --name "<resource-group-name>"  --location "<preferred-location>"
@@ -187,14 +187,14 @@ Once your deployment is complete, you can open the Azure portal and see the init
 
   ![Screenshot showing all deployed resources in the resource group](./deployed_resources.png)
 
-   > **NOTE: For enhanced HCIBox security posture, RDP (3389) and SSH (22) ports are not open by default in ArcBox deployments. You will need to create a network security group (NSG) rule to allow network access to port 3389, or use [Azure Bastion](https://docs.microsoft.com/azure/bastion/bastion-overview) or [Just-in-Time (JIT)](https://docs.microsoft.com/azure/defender-for-cloud/just-in-time-access-usage?tabs=jit-config-asc%2Cjit-request-asc) access to connect to the VM.**
+   > **NOTE: For enhanced HCIBox security posture, RDP (3389) and SSH (22) ports are not open by default in HCIBox deployments. You will need to create a network security group (NSG) rule to allow network access to port 3389, or use [Azure Bastion](https://docs.microsoft.com/azure/bastion/bastion-overview) or [Just-in-Time (JIT)](https://docs.microsoft.com/azure/defender-for-cloud/just-in-time-access-usage?tabs=jit-config-asc%2Cjit-request-asc) access to connect to the VM.**
 
 ### Connecting to the HCIBox Client virtual machine
 
 Various options are available to connect to _HCIBox-Client_ VM, depending on the parameters you supplied during deployment.
 
-- [RDP](https://azurearcjumpstart.io/azure_jumpstart_arcbox/Full/#connecting-directly-with-rdp) - available after configuring access to port 3389 on the _HCIBox-NSG_, or by enabling [Just-in-Time access (JIT)](https://azurearcjumpstart.io/azure_jumpstart_arcbox/Full/#connect-using-just-in-time-accessjit).
-- [Azure Bastion](https://azurearcjumpstart.io/azure_jumpstart_arcbox/Full/#connect-using-azure-bastion) - available if ```true``` was the value of your _`deployBastion`_ parameter during deployment.
+- [RDP](https://azurearcjumpstart.io/azure_stack_hci/hcibox/#connecting-directly-with-rdp) - available after configuring access to port 3389 on the _HCIBox-NSG_, or by enabling [Just-in-Time access (JIT)](https://azurearcjumpstart.io/azure_stack_hci/hcibox/#connect-using-just-in-time-accessjit).
+- [Azure Bastion](https://azurearcjumpstart.io/azure_stack_hci/hcibox/#connect-using-azure-bastion) - available if ```true``` was the value of your _`deployBastion`_ parameter during deployment.
 
 #### Connecting directly with RDP
 
@@ -244,7 +244,7 @@ If you already have [Microsoft Defender for Cloud](https://docs.microsoft.com/az
 
   ![Screenshot showing complete deployment](./arcbox_complete.png)
 
-  ![Screenshot showing ArcBox resources in Azure portal](./rg_arc.png)
+  ![Screenshot showing HCIBox resources in Azure portal](./rg_arc.png)
 
 ## Using HCIBox
 
@@ -280,7 +280,7 @@ The password for this account is initially set as the same password you supplied
 
 ### Next steps
   
-ArcBox is a sandbox that can be used for a large variety of use cases, such as an environment for testing and training or a kickstarter for proof of concept projects. Ultimately, you are free to do whatever you wish with ArcBox. Some suggested next steps for you to try in your ArcBox are:
+HCIBox is a sandbox that can be used for a large variety of use cases, such as an environment for testing and training or a kickstarter for proof of concept projects. Ultimately, you are free to do whatever you wish with HCIBox. Some suggested next steps for you to try in your HCIBox are:
 
 - Deploy sample databases to the PostgreSQL instance or to the SQL Managed Instance
 - Use the included kubectx to switch contexts between the two Kubernetes clusters
@@ -306,65 +306,31 @@ az group delete -n <name of your resource group>
 
 ## Basic Troubleshooting
 
-Occasionally deployments of ArcBox may fail at various stages. Common reasons for failed deployments include:
+Occasionally deployments of HCIBox may fail at various stages. Common reasons for failed deployments include:
 
 - Invalid service principal id, service principal secret or service principal Azure tenant ID provided in _azuredeploy.parameters.json_ file.
 - Not enough vCPU quota available in your target Azure region - check vCPU quota and ensure you have at least 48 available. See the [prerequisites](#prerequisites) section for more details.
-- Target Azure region does not support all required Azure services - ensure you are running ArcBox in one of the supported regions listed in the above section "ArcBox Azure Region Compatibility".
+- Target Azure region does not support all required Azure services - ensure you are running HCIBox in one of the supported regions listed in the above section "HCIBox Azure Region Compatibility".
 - "BadRequest" error message when deploying - this error returns occasionally when the Log Analytics solutions in the ARM templates are deployed. Typically, waiting a few minutes and re-running the same deployment resolves the issue. Alternatively, you can try deploying to a different Azure region.
 
   ![Screenshot showing BadRequest errors in Az CLI](./error_badrequest.png)
 
   ![Screenshot showing BadRequest errors in Azure portal](./error_badrequest2.png)
 
-### Exploring logs from the _ArcBox-Client_ virtual machine
+### Exploring logs from the _HCIBox-Client_ virtual machine
 
-Occasionally, you may need to review log output from scripts that run on the _ArcBox-Client_, _ArcBox-CAPI-MGMT_ or _ArcBox-K3s_ virtual machines in case of deployment failures. To make troubleshooting easier, the ArcBox deployment scripts collect all relevant logs in the _C:\ArcBox\Logs_ folder on _ArcBox-Client_. A short description of the logs and their purpose can be seen in the list below:
+Occasionally, you may need to review log output from scripts that run on the _HCIBox-Client_ virtual machines in case of deployment failures. To make troubleshooting easier, the HCIBox deployment scripts collect all relevant logs in the _C:\HCIBox\Logs_ folder on _HCIBox-Client_. A short description of the logs and their purpose can be seen in the list below:
 
 | Logfile | Description |
 | ------- | ----------- |
-| _C:\ArcBox\Logs\Bootstrap.log_ | Output from the initial bootstrapping script that runs on _ArcBox-Client_. |
-| _C:\ArcBox\Logs\ArcServersLogonScript.log_ | Output of _ArcServersLogonScript.ps1_ which configures the Hyper-V host and guests and onboards the guests as Azure Arc-enabled servers. |
-| _C:\ArcBox\Logs\DataServicesLogonScript.log_ | Output of _DataServicesLogonScript.ps1_ which configures Azure Arc-enabled data services baseline capability. |
-| _C:\ArcBox\Logs\deployPostgreSQL.log_ | Output of _deployPostgreSQL.ps1_ which deploys and configures PostgreSQL with Azure Arc. |
-| _C:\ArcBox\Logs\deploySQL.log_ | Output of _deploySQL.ps1_ which deploys and configures SQL Managed Instance with Azure Arc. |
-| _C:\ArcBox\Logs\installCAPI.log_ | Output from the custom script extension which runs on _ArcBox-CAPI-MGMT_ and configures the Cluster API for Azure cluster and onboards it as an Azure Arc-enabled Kubernetes cluster. If you encounter ARM deployment issues with _ubuntuCapi.json_ then review this log. |
-| _C:\ArcBox\Logs\installK3s.log_ | Output from the custom script extension which runs on _ArcBox-K3s_ and configures the Rancher cluster and onboards it as an Azure Arc-enabled Kubernetes cluster. If you encounter ARM deployment issues with _ubuntuRancher.json_ then review this log. |
-| _C:\ArcBox\Logs\MonitorWorkbookLogonScript.log_ | Output from _MonitorWorkbookLogonScript.ps1_ which deploys the Azure Monitor workbook. |
-| _C:\ArcBox\Logs\SQLMIEndpoints.log_ | Output from _SQLMIEndpoints.ps1_ which collects the service endpoints for SQL MI and uses them to configure Azure Data Studio connection settings. |
+| _C:\HCIBox\Logs\Bootstrap.log_ | Output from the initial bootstrapping script that runs on _HCIBox-Client_. |
+| _C:\HCIBox\Logs\ArcServersLogonScript.log_ | Output of _ArcServersLogonScript.ps1_ which configures the Hyper-V host and guests and onboards the guests as Azure Arc-enabled servers. |
+| _C:\HCIBox\Logs\DataServicesLogonScript.log_ | Output of _DataServicesLogonScript.ps1_ which configures Azure Arc-enabled data services baseline capability. |
+| _C:\HCIBox\Logs\deployPostgreSQL.log_ | Output of _deployPostgreSQL.ps1_ which deploys and configures PostgreSQL with Azure Arc. |
+| _C:\HCIBox\Logs\deploySQL.log_ | Output of _deploySQL.ps1_ which deploys and configures SQL Managed Instance with Azure Arc. |
+| _C:\HCIBox\Logs\installCAPI.log_ | Output from the custom script extension which runs on _HCIBox-CAPI-MGMT_ and configures the Cluster API for Azure cluster and onboards it as an Azure Arc-enabled Kubernetes cluster. If you encounter ARM deployment issues with _ubuntuCapi.json_ then review this log. |
+| _C:\HCIBox\Logs\installK3s.log_ | Output from the custom script extension which runs on _HCIBox-K3s_ and configures the Rancher cluster and onboards it as an Azure Arc-enabled Kubernetes cluster. If you encounter ARM deployment issues with _ubuntuRancher.json_ then review this log. |
+| _C:\HCIBox\Logs\MonitorWorkbookLogonScript.log_ | Output from _MonitorWorkbookLogonScript.ps1_ which deploys the Azure Monitor workbook. |
+| _C:\HCIBox\Logs\SQLMIEndpoints.log_ | Output from _SQLMIEndpoints.ps1_ which collects the service endpoints for SQL MI and uses them to configure Azure Data Studio connection settings. |
 
-  ![Screenshot showing ArcBox logs folder on ArcBox-Client](./troubleshoot_logs.png)
-
-### Exploring installation logs from the Linux virtual machines
-
-In the case of a failed deployment, pointing to a failure in either the _ubuntuRancherDeployment_ or the _ubuntuCAPIDeployment_ Azure deployments, an easy way to explore the deployment logs is available directly from the associated virtual machines.
-
-  ![Screenshot showing failed deployments](./failed_deployments.png)
-
-- Depends on which deployment failed, connect using SSH to the associated virtual machine public IP:
-  - _ubuntuCAPIDeployment_ - _ArcBox-CAPI-MGMT_ virtual machine.
-  - _ubuntuRancherDeployment_ - _ArcBox-K3s_ virtual machine.
-
-    Since you are logging in using the provided SSH public key, all you need is the _arcdemo_ username.
-
-      ![Screenshot showing ArcBox-CAPI-MGMT virtual machine public IP](./arcbox_capi_mgmt_vm_ip.png)
-
-      ![Screenshot showing ArcBox-K3s virtual machine public IP](./arcbox_k3s_vm_ip.png)
-
-- As described in the message of the day (motd), depends on which virtual machine you logged into, the installation log can be found in the *jumpstart_logs* folder. This installation logs can help determine the root cause for the failed deployment.
-  - _ArcBox-CAPI-MGMT_ log path: *jumpstart_logs/installCAPI.log*
-  - _ArcBox-K3s_ log path: *jumpstart_logs/installK3s.log*
-
-      ![Screenshot showing login and the message of the day](./login_motd.png)
-
-- From the screenshot below, looking at _ArcBox-CAPI-MGMT_ virtual machine CAPI installation log using the `cat jumpstart_logs/installCAPI.log` command, we can see the _az login_ command failed due to bad service principal credentials.
-
-  ![Screenshot showing cat command for showing installation log](./cat_command.png)
-
-  ![Screenshot showing az login error](./az_login_error.png)
-
-If you are still having issues deploying ArcBox, please [submit an issue](https://github.com/microsoft/azure_arc/issues/new/choose) on GitHub and include a detailed description of your issue, the Azure region you are deploying to, the flavor of ArcBox you are trying to deploy. Inside the _C:\ArcBox\Logs_ folder you can also find instructions for uploading your logs to an Azure storage account for review by the Jumpstart team.
-
-## Known issues
-
-- Azure Arc-enabled SQL Server assessment report not always visible in Azure portal.
+  ![Screenshot showing HCIBox logs folder on HCIBox-Client](./troubleshoot_logs.png)
