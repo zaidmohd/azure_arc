@@ -49,10 +49,6 @@ HCIBox includes capabilities to support managing, monitoring and governing the c
 
 HCIBox resources generate Azure Consumption charges from the underlying Azure resources including core compute, storage, networking and auxiliary services. Note that Azure consumption costs may vary depending the region where HCIBox is deployed. Be mindful of your HCIBox deployments and ensure that you disable or delete HCIBox resources when not in use to avoid unwanted charges. Please see the [Jumpstart FAQ](https://aka.ms/Jumpstart-FAQ) for more information on consumption costs.
 
-## Understanding HCIBox Architecture
-
-HCIBox simulates a 2-node physical deployment of Azure Stack HCI by using [nested virtualization on Hyper-V](https://learn.microsoft.com/virtualization/hyper-v-on-windows/user-guide/nested-virtualization). 
-
 ## Deployment Options and Automation Flow
 
 HCIBox currently provides a [Bicep](https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/overview?tabs=bicep) template that deploys the infrastructure and automation that configure the solution.
@@ -252,50 +248,35 @@ If you already have [Microsoft Defender for Cloud](https://docs.microsoft.com/az
 
 ## Using HCIBox
 
-HCIBox has many features that can be explored through the Azure portal or from inside the _HCIBox-Client_ virtual machine. When remoted into the client VM, here are some things to try:
+HCIBox has many features that can be explored through the Azure portal or from inside the _HCIBox-Client_ virtual machine. To help you navigate all the features included, read through the following sections to understand the general architecture and how to use various features.
 
-- Open Hyper-V and access the Azure Arc-enabled servers
-  - **Username: arcdemo**
-  - **Password: ArcDemo123!!**
+### Nested virtualization
 
-  ![Screenshot showing ArcBox Client VM with Hyper-V](./hypervterminal.png)
+HCIBox simulates a 2-node physical deployment of Azure Stack HCI by using [nested virtualization on Hyper-V](https://learn.microsoft.com/virtualization/hyper-v-on-windows/user-guide/nested-virtualization). To ensure you have the best experience with HCIBox, take a moment to review the diagram below to help you understand the various nested VMs that make up the solution.
 
-- Use the included [kubectx](https://github.com/ahmetb/kubectx) tool to switch Kubernetes contexts between the Rancher K3s and AKS clusters.
+  * HCIBox-Client - Azure virtual machine - Windows Server 2022 with Hyper-V
+    * AzSMGMT - Nested hypervisor - Windows Server 2019 with Hyper-V
+      * AdminCenter - Guest virtual machine - Windows Admin Center gateway server
+      * BGPTorRouter - Guest virtual machine - Remote Access Server
+      * DomainController - Guest virtual machine - Active Directory domain controller
+    * AzSHOST1 - Azure Stack HCI node
+    * AzSHOST2 - Azure Stack HCI node
 
-  ```shell
-  kubectx
-  kubectx arcbox-capi
-  kubectl get nodes
-  kubectl get pods -n arc
-  kubectx arcbox-k3s
-  kubectl get nodes
-  ```
+### Active Directory domain user credentials
 
-  ![Screenshot showing usage of kubectx](./kubectx.png)
+Once you are logged into the HCIBox-Client VM using the local admin credentials you supplied in your template parameters during deployment you will need to switch to using a domain account to access most other functions, such as logging into the HCI nodes or accessing Windows Admin Center. This domain account is automatically configured for you using the same usernmame and password you supplied at deployment. The default domain name is jumpstart.local, making your domain account:
 
-- Open Azure Data Studio and explore the SQL MI and PostgreSQL instances.
+  <username_supplied_at_deployment>@jumpstart.local
 
-  ![Screenshot showing Azure Data Studio usage](./azdatastudio.png)
+The password for this account is initially set as the same password you supplied during deployment for the local account. In general, for most basic operations you will use the domain account wherever credentials are required.
 
-### Azure Arc-enabled data services operations
+### VM Lifecycle management with Arc Resource Bridge
 
-Open the [data services operations page](https://azurearcjumpstart.io/azure_jumpstart_arcbox/data_ops/) and explore various ways you can perform operations against the Azure Arc-enabled data services deployed with ArcBox.
+### AKS on HCI
 
-  ![Screenshot showing Grafana dashboard](./activity1.png)
+### Windows Admin Center
 
-### Included tools
-
-The following tools are including on the _ArcBox-Client_ VM.
-
-- Azure Data Studio with Arc and PostgreSQL extensions
-- kubectl, kubectx, helm
-- Chocolatey
-- Visual Studio Code
-- Putty
-- 7zip
-- Terraform
-- Git
-- SqlQueryStress
+### Advanced Configurations
 
 ### Next steps
   
