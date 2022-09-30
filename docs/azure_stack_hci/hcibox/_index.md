@@ -256,29 +256,57 @@ HCIBox has many features that can be explored through the Azure portal or from i
 
 ### Nested virtualization
 
-HCIBox simulates a 2-node physical deployment of Azure Stack HCI by using [nested virtualization on Hyper-V](https://learn.microsoft.com/virtualization/hyper-v-on-windows/user-guide/nested-virtualization). To ensure you have the best experience with HCIBox, take a moment to review the diagram below to help you understand the various nested VMs that make up the solution.
+HCIBox simulates a 2-node physical deployment of Azure Stack HCI by using [nested virtualization on Hyper-V](https://learn.microsoft.com/virtualization/hyper-v-on-windows/user-guide/nested-virtualization). To ensure you have the best experience with HCIBox, take a moment to review the details below to help you understand the various nested VMs that make up the solution.
 
-  * HCIBox-Client - Azure virtual machine - Windows Server 2022 with Hyper-V
-    * AzSMGMT - Nested hypervisor - Windows Server 2019 with Hyper-V
-      * AdminCenter - Guest virtual machine - Windows Admin Center gateway server
-      * BGPTorRouter - Guest virtual machine - Remote Access Server
-      * DomainController - Guest virtual machine - Active Directory domain controller
-    * AzSHOST1 - Azure Stack HCI node
-    * AzSHOST2 - Azure Stack HCI node
+- HCIBox-Client - Azure virtual machine - Windows Server 2022 with Hyper-V
+  - AzSHOST1 - Azure Stack HCI node
+  - AzSHOST2 - Azure Stack HCI node
+  - AzSMGMT - Nested hypervisor - Windows Server 2019 with Hyper-V
+    - AdminCenter - Guest virtual machine - Windows Admin Center gateway server
+    - BGPTorRouter - Guest virtual machine - Remote Access Server
+    - DomainController - Guest virtual machine - Active Directory domain controller
 
 ### Active Directory domain user credentials
 
 Once you are logged into the HCIBox-Client VM using the local admin credentials you supplied in your template parameters during deployment you will need to switch to using a domain account to access most other functions, such as logging into the HCI nodes or accessing Windows Admin Center. This domain account is automatically configured for you using the same usernmame and password you supplied at deployment. The default domain name is jumpstart.local, making your domain account:
 
-  <username_supplied_at_deployment>@jumpstart.local
+- username_supplied_at_deployment@jumpstart.local
 
-The password for this account is initially set as the same password you supplied during deployment for the local account. In general, for most basic operations you will use the domain account wherever credentials are required.
+The password for this account is set as the same password you supplied during deployment for the local account. In general, for most basic operations you will use the domain account wherever credentials are required.
 
-### VM Lifecycle management with Arc Resource Bridge
+### VM provisioning through Azure portal with Arc Resource Bridge
 
-### AKS on HCI
+Azure Stack HCI supports [VM provisioning the Azure portal](https://learn.microsoft.com/azure-stack/hci/manage/azure-arc-enabled-virtual-machines). HCIBox is preconfigured with [Arc resource bridge](https://learn.microsoft.com/azure-stack/hci/manage/azure-arc-enabled-virtual-machines#what-is-azure-arc-resource-bridge) to support this capability. To experience this for yourself, follow these steps:
+
+- Navigate to the Azure Stack HCI cluster resource in your HCIBox resource group.
+
+  [Screenshot showing Azure Stack HCI cluster in RG]()
+
+  [Screenshot showing Azure Stack HCI cluster resource blade]()
+
+- Click on "Virtual Machines" in the navigation menu, then click "Create VM"
+
+  [Screenshot showing Create VM blade]()
+
+- Select one of the prepopulated gallery images (either Windows or Ubuntu) and click next.
+
+  [Screenshot showing select gallery image]()
+
+- Add NIC
+
+  [Screenshot showing NIC create]()
+
+- Finish creation and wait for VM to appear under Virtual Machines.
+
+  [Screenshot showing deployment in progress]()
+
+  [Screenshot showing VM under Virtual Machines in cluster]()
 
 ### Windows Admin Center
+
+HCIBox includes a deployment of [Windows Admin Center as a gateway server](https://learn.microsoft.com/windows-server/manage/windows-admin-center/plan/installation-options).
+
+### AKS on HCI
 
 ### Advanced Configurations
 
