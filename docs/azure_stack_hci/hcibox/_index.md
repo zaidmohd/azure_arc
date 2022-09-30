@@ -220,7 +220,7 @@ By design, HCIBox does not open port 3389 on the network security group. Therefo
 
   ![Screenshot showing connecting to the VM using Bastion](./bastion_connect.png)
 
-  > **NOTE: When using Azure Bastion, the desktop background image is not visible. Therefore some screenshots in this guide may not exactly match your experience if you are connecting to _ArcBox-Client_ with Azure Bastion.**
+  > **NOTE: When using Azure Bastion, the desktop background image is not visible. Therefore some screenshots in this guide may not exactly match your experience if you are connecting to _HCIBox-Client_ with Azure Bastion.**
 
 #### Connect using just-in-time access (JIT)
 
@@ -236,51 +236,19 @@ If you already have [Microsoft Defender for Cloud](https://docs.microsoft.com/az
 
 #### The Logon scripts
 
-- Once you log into the _ArcBox-Client_ VM, multiple automated scripts will open and start running. These scripts usually take 10-20 minutes to finish, and once completed, the script windows will close automatically. At this point, the deployment is complete.
+- Once you log into the _HCIBox-Client_ VM, a PowerShell script will open and start running. This script will take between 3-4 hours to finish, and once completed, the script window will close automatically. At this point, the deployment is complete and you can start exploring all that HCIBox has to offer.
 
-  ![Screenshot showing ArcBox-Client](./automation.png)
+  ![Screenshot showing HCIBox-Client](./automation.png)
 
-- Deployment is complete! Let's begin exploring the features of Azure Arc with ArcBox!
+- Deployment is complete! Let's begin exploring the features of HCIBox!
 
   ![Screenshot showing complete deployment](./arcbox_complete.png)
 
   ![Screenshot showing ArcBox resources in Azure portal](./rg_arc.png)
 
-## Azure Arc-enabled SQL Server onboarding
+## Using HCIBox
 
-- During deployment, a check is performed to determine whether or not the Service Principal being used has permissions of _'Microsoft.Authorization/roleAssignments/write'_ on the target resource group. This permission can be found in the Azure built-in roles of Owner, User Access Administrator, or you may have a custom RBAC role which provides this permission. If the Service Principal has been granted the rights to change the role assignments on the resource group, the Azure Arc-enabled SQL Server can be automatically onboarded as part of the port-deployment automation.
-
-- In the event that the Service Principal does *not* have _'Microsoft.Authorization/roleAssignments/write'_ on the target resource group, and icon will created on the _ArcBox-Client_ desktop, which will allow you to onboard the Azure Arc-enabled SQL Server after the post-deployment automation is complete. To start the onboarding process in this scenario, simply click the _'Onboard SQL Server'_ icon on the desktop. This process should take around 10-15 minutes to complete.
-
-  ![Screenshot showing ArcBox-Client](./sql_manual_onboard_icon.png)
-
-- A pop-up box will walk you through the target SQL Server which will be onboarded to Azure Arc, as well as provide details around the flow of the onboarding automation and how to complete the Azure authentication process when prompted.
-
-  ![Screenshot showing ArcBox-Client](./sql_manual_onboard_start.png)
-
-- The automation uses the PowerShell SDK to onboard the Azure Arc-enabled SQL Server on your behalf. To accomplish this, it will login to Azure with the _-UseDeviceAuthentication_ flag. The device code will be copied to the clipboard on your behalf, so you can simply paste the value into box when prompted.
-
-  ![Screenshot showing ArcBox-Client](./sql_manual_onboard_code.png)
-
-- You'll then need to provide your Azure credentials to complete the authentication process. The user you login as will need _'Microsoft.Authorization/roleAssignments/write'_ permissions on the ArcBox resource group to complete the onboarding process.
-
-  ![Screenshot showing ArcBox-Client](./sql_manual_onboard_login.png)
-
-- The output of each step of the onboarding process will be displayed in the PowerShell script window, so you'll be able to see where the script currently is in the process at all times.
-
-  ![Screenshot showing ArcBox-Client](./sql_manual_onboard_output.png)
-
-- Once complete, you'll receive a pop-up notification informing you that the onboarding process is complete, and to check the Azure Arc blade in the Azure portal in the next few minutes.
-
-  ![Screenshot showing ArcBox-Client](./sql_manual_onboard_complete.png)
-
-- From the Azure portal, the SQL Server should now be visible as an Azure Arc-enabled SQL Server.
-
-  ![Screenshot showing ArcBox-Client](./sql_manual_onboard_portal.png)
-
-## Using ArcBox
-
-After deployment is complete, its time to start exploring ArcBox. Most interactions with ArcBox will take place either from Azure itself (Azure portal, CLI or similar) or from inside the _ArcBox-Client_ virtual machine. When remoted into the client VM, here are some things to try:
+HCIBox has many features that can be explored through the Azure portal or from inside the _HCIBox-Client_ virtual machine. When remoted into the client VM, here are some things to try:
 
 - Open Hyper-V and access the Azure Arc-enabled servers
   - **Username: arcdemo**
@@ -304,12 +272,6 @@ After deployment is complete, its time to start exploring ArcBox. Most interacti
 - Open Azure Data Studio and explore the SQL MI and PostgreSQL instances.
 
   ![Screenshot showing Azure Data Studio usage](./azdatastudio.png)
-
-### ArcBox Azure Monitor workbook
-
-Open the [ArcBox Azure Monitor workbook documentation](https://azurearcjumpstart.io/azure_jumpstart_arcbox/workbook/flavors/Full) and explore the visualizations and reports of hybrid cloud resources.
-
-  ![Screenshot showing Azure Monitor workbook usage](./workbook.png)
 
 ### Azure Arc-enabled data services operations
 
@@ -362,12 +324,7 @@ az group delete -n <name of your resource group>
 Occasionally deployments of ArcBox may fail at various stages. Common reasons for failed deployments include:
 
 - Invalid service principal id, service principal secret or service principal Azure tenant ID provided in _azuredeploy.parameters.json_ file.
-- Invalid SSH public key provided in _azuredeploy.parameters.json_ file.
-  - An example SSH public key is shown here. Note that the public key includes "ssh-rsa" at the beginning. The entire value should be included in your _azuredeploy.parameters.json_ file.
-
-      ![Screenshot showing SSH public key example](./ssh_example.png)
-
-- Not enough vCPU quota available in your target Azure region - check vCPU quota and ensure you have at least 52 available. See the [prerequisites](#prerequisites) section for more details.
+- Not enough vCPU quota available in your target Azure region - check vCPU quota and ensure you have at least 48 available. See the [prerequisites](#prerequisites) section for more details.
 - Target Azure region does not support all required Azure services - ensure you are running ArcBox in one of the supported regions listed in the above section "ArcBox Azure Region Compatibility".
 - "BadRequest" error message when deploying - this error returns occasionally when the Log Analytics solutions in the ARM templates are deployed. Typically, waiting a few minutes and re-running the same deployment resolves the issue. Alternatively, you can try deploying to a different Azure region.
 
