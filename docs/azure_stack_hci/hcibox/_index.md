@@ -232,7 +232,7 @@ If you already have [Microsoft Defender for Cloud](https://docs.microsoft.com/az
 
   ![Screenshot showing connecting to the VM using RDP](./rdp_connect.png)
 
-  ![Screenshot showing connecting to the VM using JIT](./jit_connect_rdp.png)
+  ![Screenshot showing connecting to the VM using JIT](./jit_rdp_connect.png)
 
 #### The Logon scripts
 
@@ -242,9 +242,13 @@ If you already have [Microsoft Defender for Cloud](https://docs.microsoft.com/az
 
 - Deployment is complete! Let's begin exploring the features of HCIBox!
 
-  ![Screenshot showing complete deployment](./arcbox_complete.png)
+  ![Screenshot showing complete deployment](./hcibox_complete.png)
 
-  ![Screenshot showing HCIBox resources in Azure portal](./rg_arc.png)
+  ![Screenshot showing HCIBox resources in Azure portal](./rg_hcibox.png)
+
+  > **NOTE: The Register-AzStackHCI PowerShell command currently does not support registering the Azure Arc-enabled server resources for each cluster node to the same resource group as the registered cluster itself. For this reason, HCIBox will create a new resource group for the HCI nodes' Arc-enabled server resources. This resource group will be named by appending "-ArcServers" to the end of the resource group used in the initial deployment.**
+  
+  ![Screenshot showing HCIBox resources in Azure portal](./rg_arc_servers.png)
 
 ## Using HCIBox
 
