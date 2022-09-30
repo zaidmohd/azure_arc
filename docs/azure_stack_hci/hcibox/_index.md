@@ -396,13 +396,9 @@ Occasionally, you may need to review log output from scripts that run on the _HC
 | Logfile | Description |
 | ------- | ----------- |
 | _C:\HCIBox\Logs\Bootstrap.log_ | Output from the initial bootstrapping script that runs on _HCIBox-Client_. |
-| _C:\HCIBox\Logs\ArcServersLogonScript.log_ | Output of _ArcServersLogonScript.ps1_ which configures the Hyper-V host and guests and onboards the guests as Azure Arc-enabled servers. |
-| _C:\HCIBox\Logs\DataServicesLogonScript.log_ | Output of _DataServicesLogonScript.ps1_ which configures Azure Arc-enabled data services baseline capability. |
-| _C:\HCIBox\Logs\deployPostgreSQL.log_ | Output of _deployPostgreSQL.ps1_ which deploys and configures PostgreSQL with Azure Arc. |
-| _C:\HCIBox\Logs\deploySQL.log_ | Output of _deploySQL.ps1_ which deploys and configures SQL Managed Instance with Azure Arc. |
-| _C:\HCIBox\Logs\installCAPI.log_ | Output from the custom script extension which runs on _HCIBox-CAPI-MGMT_ and configures the Cluster API for Azure cluster and onboards it as an Azure Arc-enabled Kubernetes cluster. If you encounter ARM deployment issues with _ubuntuCapi.json_ then review this log. |
-| _C:\HCIBox\Logs\installK3s.log_ | Output from the custom script extension which runs on _HCIBox-K3s_ and configures the Rancher cluster and onboards it as an Azure Arc-enabled Kubernetes cluster. If you encounter ARM deployment issues with _ubuntuRancher.json_ then review this log. |
-| _C:\HCIBox\Logs\MonitorWorkbookLogonScript.log_ | Output from _MonitorWorkbookLogonScript.ps1_ which deploys the Azure Monitor workbook. |
-| _C:\HCIBox\Logs\SQLMIEndpoints.log_ | Output from _SQLMIEndpoints.ps1_ which collects the service endpoints for SQL MI and uses them to configure Azure Data Studio connection settings. |
+| _C:\HCIBox\Logs\New-HCIBoxCluster.log_ | Output of _New-HCIBoxCluster.ps1_ which configures the Hyper-V host and builds the HCI cluster, management VMs, and other configurations. |
+| _C:\HCIBox\Logs\Register-AzSHCI.log_ | Output of _Register-AzSHCI.ps1_ which registers the cluster with Azure. |
+| _C:\HCIBox\Logs\Deploy-ArcResourceBridge.log_ | Output of _Deploy-ArcResourceBridge.ps1_ which deploys and configures Arc resource bridge and builds gallery images. |
+| _C:\HCIBox\Logs\Deploy-AKS.log_ | Output of _Deploy-AKS.ps1_ which deploys and configures AKS on HCI. |
 
   ![Screenshot showing HCIBox logs folder on HCIBox-Client](./troubleshoot_logs.png)
