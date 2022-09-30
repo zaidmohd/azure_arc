@@ -304,9 +304,53 @@ Azure Stack HCI supports [VM provisioning the Azure portal](https://learn.micros
 
 ### Windows Admin Center
 
-HCIBox includes a deployment of [Windows Admin Center as a gateway server](https://learn.microsoft.com/windows-server/manage/windows-admin-center/plan/installation-options).
+HCIBox includes a deployment of [Windows Admin Center as a gateway server](https://learn.microsoft.com/windows-server/manage/windows-admin-center/plan/installation-options). A shortcut to the Windows Admin Center (WAC) gateway server is available on the HCIBox-Client desktop.
 
-### AKS on HCI
+- Open this shortcut and use the domain credential (username_supplied_at_deployment@jumpstart.local) to start an RDP session to the Windows Admin Center VM.
+
+  [Screenshot showing WAC desktop shortcut]()
+
+  [Screenshot showing the WAC desktop]()
+
+- Now you can open the Windows Admin Center shortcut on the desktop. Once again you will use your domain account to access WAC.
+
+  [Screenshot showing logging into WAC]()
+
+  [Screenshot showing WAC]()
+
+- Our first step is to add a connection to our HCI cluster. Click on "Add cluster" and supply the name "hciboxcluster" as seen in the screenshots below.
+
+  [Screenshot showing adding the cluster #1]()
+
+  [Screenshot showing adding the cluster #2]()
+
+  [Screenshot showing adding the cluster #3]()
+
+  [Screenshot showing adding the cluster #4]()
+
+- Now that the cluster is added, we can explore management capabilities for the cluster inside of WAC. Click on "Virtual Machines"
+
+  [Screenshot showing Virtual Machines inside WAC]()
+
+- If you followed the previous steps to deploy a VM from Azure portal, you should see that VM here inside of Windows Admin Center. Click on it. 
+
+  [Screenshot showing the VM we created earlier]()
+
+- Windows Admin Center also provides the ability to connect directly to the VM. Click "Connect" and login with the credentials you supplied when creating the VM.
+
+  [Screenshot showing connecting to the VM]()
+
+  [Screenshot showing the console of the running VM]()
+
+- We can also seamlessly move the VM from one cluster node to another using [live migration](https://learn.microsoft.com/windows-server/virtualization/hyper-v/manage/live-migration-overview). TEXT TO START LIVE MIGRATION.
+
+  [Screenshot showing live migration step 1]()
+
+  [Screenshot showing live migration step 2]()
+
+### Azure Kubernetes Service on Azure Stack HCI
+
+HCIBox also comes preconfigured with [Azure Kubernetes Service on Azure Stack HCI](https://learn.microsoft.com/azure-stack/aks-hci/).
 
 ### Advanced Configurations
 
@@ -326,9 +370,10 @@ Do you have an interesting use case to share? [Submit an issue](https://github.c
 
 ## Clean up the deployment
 
-To clean up your deployment, simply delete the resource group using Azure CLI or Azure portal.
+To clean up your deployment, simply delete the resource groups using Azure CLI or Azure portal.
 
 ```shell
+az group delete -n <name of your resource group>-ArcServers
 az group delete -n <name of your resource group>
 ```
 
@@ -343,11 +388,6 @@ Occasionally deployments of HCIBox may fail at various stages. Common reasons fo
 - Invalid service principal id, service principal secret or service principal Azure tenant ID provided in _azuredeploy.parameters.json_ file.
 - Not enough vCPU quota available in your target Azure region - check vCPU quota and ensure you have at least 48 available. See the [prerequisites](#prerequisites) section for more details.
 - Target Azure region does not support all required Azure services - ensure you are running HCIBox in one of the supported regions listed in the above section "HCIBox Azure Region Compatibility".
-- "BadRequest" error message when deploying - this error returns occasionally when the Log Analytics solutions in the ARM templates are deployed. Typically, waiting a few minutes and re-running the same deployment resolves the issue. Alternatively, you can try deploying to a different Azure region.
-
-  ![Screenshot showing BadRequest errors in Az CLI](./error_badrequest.png)
-
-  ![Screenshot showing BadRequest errors in Azure portal](./error_badrequest2.png)
 
 ### Exploring logs from the _HCIBox-Client_ virtual machine
 
