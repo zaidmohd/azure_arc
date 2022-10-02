@@ -377,8 +377,7 @@ Example:
 
   ![Screenshot showing connecting to the VM using UPN format](./domain_login.png)
 
-> Warning
-> Logging into the Client VM without the UPN format _<username>@jumpstart.local_ will prevent the automation from running automatically.
+> **Warning :Logging into the Client VM without the UPN format _username@jumpstart.local_ will prevent the automation from running automatically.**
 
 #### The Logon scripts
 
@@ -675,6 +674,7 @@ As part of ArcBox, a SQL Server is deployed in a nested VM on the Client VM to a
   WITH FORMAT, MEDIANAME = 'AdventureWorksLT2019' ;
   GO
   ```
+
   ![Screenshot showing a new in the Microsoft SQL Server Management Studio (SSMS)](./ssms_new_query.png)
 
   ![Screenshot showing running a backup query in the Microsoft SQL Server Management Studio (SSMS)](./ssms_db_backup_complete.png)
