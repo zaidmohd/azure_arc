@@ -371,14 +371,18 @@ If you already have [Microsoft Defender for Cloud](https://docs.microsoft.com/az
 #### Client VM credentials
 
 After configuring access to the Client VM, you have to connect using the UPN format whether you are connecting using RDP or Azure Bastion.
-Example: 
-  - Username: arcdemo@jumpstart.local
+Example:
+
+- Username: arcdemo@jumpstart.local
 
   ![Screenshot showing connecting to the VM using UPN format](./domain_login.png)
 
+> Warning
+> Logging into the Client VM without the UPN format _<username>@jumpstart.local_ will prevent the automation from running automatically.
+
 #### The Logon scripts
 
-- Once you log into the _ArcBox-Client_ VM, multiple automated scripts will open and start running. These scripts usually take 60-90 minutes to finish, and once completed, the script windows will close automatically. At this point, the deployment is complete.
+- Once you log into the _ArcBox-Client_ VM, multiple automated scripts will open and start running. These scripts usually take up to 60 minutes to finish, and once completed, the script windows will close automatically. At this point, the deployment is complete.
 
   ![Screenshot showing ArcBox-Client](./automation.png)
 
@@ -768,7 +772,13 @@ Occasionally, you may need to review log output from scripts that run on the _Ar
 | _C:\ArcBox\Logs\installCAPI.log_ | Output from the custom script extension which runs on _ArcBox-CAPI-MGMT_ and configures the Cluster API for Azure cluster and onboards it as an Azure Arc-enabled Kubernetes cluster. If you encounter ARM deployment issues with _ubuntuCapi.json_ then review this log. |
 | _C:\ArcBox\Logs\MonitorWorkbookLogonScript.log_ | Output from _MonitorWorkbookLogonScript.ps1_ which deploys the Azure Monitor workbook. |
 |_C:\ArcBox\Logs\DeploySQLMIADAuth.log_ | Output from the _DeploySQLMIADAuth.ps1_ script which deploys the AD connector and the Arc-enabled SQL Managed Instances|
-| _C:\ArcBox\Logs\DataOpsAppScript.ps1_ | Output from the _DataOpsAppScript.ps1_ script which deploys the book store application |
+| _C:\ArcBox\Logs\DataOpsAppScript.log_ | Output from the _DataOpsAppScript.ps1_ script which deploys the book store application |
+| _C:\ArcBox\Logs\DataController-capi.log_ | Output from the CAPI cluster's Data Controller deployment |
+| _C:\ArcBox\Logs\DataController-aks.log_ | Output from the AKS cluster's Data Controller deployment |
+| _C:\ArcBox\Logs\DataController-aks-dr.log_ | Output from the AKS DR cluster's Data Controller deployment |
+| _C:\ArcBox\Logs\DataController-sqlmi-capi.log_ | Output from the CAPI cluster's Arc SQL Managed Instance deployment |
+| _C:\ArcBox\Logs\DataController-sqlmi-aks.log_ | Output from the AKS cluster's Arc SQL Managed Instance deployment |
+| _C:\ArcBox\Logs\DataController-sqlmi-aks-dr.log_ | Output from the AKS DR cluster's Arc SQL Managed Instance deployment |
 
   ![Screenshot showing ArcBox logs folder on ArcBox-Client](./troubleshoot_logs.png)
 
