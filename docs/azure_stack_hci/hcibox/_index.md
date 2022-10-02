@@ -58,11 +58,11 @@ HCIBox currently provides a [Bicep](https://learn.microsoft.com/en-us/azure/azur
 HCIBox uses an advanced automation flow to deploy and configure all necessary resources with minimal user interaction. The previous diagram provides an overview of the deployment flow. A high-level summary of the deployment is:
 
 - User deploys the primary Bicep file (_main.bicep_). This file contains several nested objects that will run simultaneously.
-  - Host template - deploys the HCIBox-Client VM. This is the Hyper-V host VM that uses nested virtualization to host the complete HCIBox infrastructure. Once the Bicep template finishes deploying, the user remotes into this client using RDP to start the second step of the deployment.
+  - Host template - deploys the _HCIBox-Client_ VM. This is the Hyper-V host VM that uses nested virtualization to host the complete HCIBox infrastructure. Once the Bicep template finishes deploying, the user remotes into this client using RDP to start the second step of the deployment.
   - Network template - deploys the network artifacts required for the solution
   - Storage account template - used for staging files in automation scripts and as the cloud witness for the HCI cluster
   - Management artifacts template - deploys Azure Log Analytics workspace and solutions and Azure Policy artifacts
-- User remotes into HCIBox-Client VM, which automatically kicks off a PowerShell script that:
+- User remotes into _HCIBox-Client_ VM, which automatically kicks off a PowerShell script that:
   - Deploys and configure three (3) nested virtual machines in Hyper-V
     - Two (2) Azure Stack HCI virtual nodes
     - One (1) Windows Server 2019 virtual machine
@@ -169,7 +169,7 @@ HCIBox uses an advanced automation flow to deploy and configure all necessary re
   - _`windowsAdminUsername`_ - Client Windows VM Administrator name
   - _`windowsAdminPassword`_ - Client Windows VM Password. Password must have 3 of the following: 1 lower case character, 1 upper case character, 1 number, and 1 special character. The value must be between 12 and 123 characters long.
   - _`logAnalyticsWorkspaceName`_ - Unique name for the HCIBox Log Analytics workspace
-  - _`deployBastion`_ - Option to deploy Azure Bastion which used to connect to the HCIBox-Client VM instead of normal RDP
+  - _`deployBastion`_ - Option to deploy Azure Bastion which used to connect to the _HCIBox-Client_ VM instead of normal RDP
 
   ![Screenshot showing example parameters](./parameters_bicep.png)
 
@@ -203,7 +203,7 @@ By design, HCIBox does not open port 3389 on the network security group. Therefo
 
 - Open the _HCIBox-NSG_ resource in Azure portal and click "Add" to add a new rule.
 
-  ![Screenshot showing HCIBox-Client NSG with blocked RDP](./rdp_nsg_blocked.png)
+  ![Screenshot showing _HCIBox-Client_ NSG with blocked RDP](./rdp_nsg_blocked.png)
 
   ![Screenshot showing adding a new inbound security rule](./nsg_add_rule.png)
 
@@ -239,7 +239,7 @@ If you already have [Microsoft Defender for Cloud](https://docs.microsoft.com/az
 
 - Once you log into the _HCIBox-Client_ VM, a PowerShell script will open and start running. This script will take between 3-4 hours to finish, and once completed, the script window will close automatically. At this point, the deployment is complete and you can start exploring all that HCIBox has to offer.
 
-  ![Screenshot showing HCIBox-Client](./automation.png)
+  ![Screenshot showing _HCIBox-Client_](./automation.png)
 
 - Deployment is complete! Let's begin exploring the features of HCIBox!
 
@@ -267,13 +267,23 @@ HCIBox simulates a 2-node physical deployment of Azure Stack HCI by using [neste
     - BGPTorRouter - Guest virtual machine - Remote Access Server
     - DomainController - Guest virtual machine - Active Directory domain controller
 
+| Computer Name | Role | Domain Joined | Parent Host | OS |
+|---|---|---|---|---|
+| HCIBox-Client | Primary host | No | Azure | Windows Server 2022 |
+| AzSHOST1 | HCI node | Yes | HCIBox-Client | Azure Stack HCI |
+| AzSHOST2 | HCI node | Yes | HCIBox-Client | Azure Stack HCI |
+| AzSMGMT | Nested hypervisor | No | HCIBox-Client | Windows Server 2022 |
+| JumpstartDC | Domain controller | Yes (DC) | AzSMGMT | Windows Server 2022 |
+| AdminCenter | Windows Admin Center gateway server | Yes | AzSMGMT | Windows Server 2022 |
+| Bgp-Tor-Router | Remote Access Server | No | AzSMGMT | Windows Server 2022 |
+
 ### Active Directory domain user credentials
 
-Once you are logged into the HCIBox-Client VM using the local admin credentials you supplied in your template parameters during deployment you will need to switch to using a domain account to access most other functions, such as logging into the HCI nodes or accessing Windows Admin Center. This domain account is automatically configured for you using the same usernmame and password you supplied at deployment. The default domain name is jumpstart.local, making your domain account:
+Once you are logged into the _HCIBox-Client_ VM using the local admin credentials you supplied in your template parameters during deployment you will need to switch to using a domain account to access most other functions, such as logging into the HCI nodes or accessing Windows Admin Center. This domain account is automatically configured for you using the same usernmame and password you supplied at deployment. The default domain name is jumpstart.local, making your domain account:
 
 - username_supplied_at_deployment@jumpstart.local
 
-The password for this account is set as the same password you supplied during deployment for the local account. In general, for most basic operations you will use the domain account wherever credentials are required.
+The password for this account is set as the same password you supplied during deployment for the local account. Many HCIBox operations will use the domain account wherever credentials are required.
 
 ### VM provisioning through Azure portal with Arc Resource Bridge
 
@@ -305,7 +315,7 @@ Azure Stack HCI supports [VM provisioning the Azure portal](https://learn.micros
 
 ### Windows Admin Center
 
-HCIBox includes a deployment of [Windows Admin Center as a gateway server](https://learn.microsoft.com/windows-server/manage/windows-admin-center/plan/installation-options). A shortcut to the Windows Admin Center (WAC) gateway server is available on the HCIBox-Client desktop.
+HCIBox includes a deployment of [Windows Admin Center as a gateway server](https://learn.microsoft.com/windows-server/manage/windows-admin-center/plan/installation-options). A shortcut to the Windows Admin Center (WAC) gateway server is available on the _HCIBox-Client_ desktop.
 
 - Open this shortcut and use the domain credential (username_supplied_at_deployment@jumpstart.local) to start an RDP session to the Windows Admin Center VM.
 
@@ -402,4 +412,4 @@ Occasionally, you may need to review log output from scripts that run on the _HC
 | _C:\HCIBox\Logs\Deploy-ArcResourceBridge.log_ | Output of _Deploy-ArcResourceBridge.ps1_ which deploys and configures Arc resource bridge and builds gallery images. |
 | _C:\HCIBox\Logs\Deploy-AKS.log_ | Output of _Deploy-AKS.ps1_ which deploys and configures AKS on HCI. |
 
-  ![Screenshot showing HCIBox logs folder on HCIBox-Client](./troubleshoot_logs.png)
+  ![Screenshot showing HCIBox logs folder on _HCIBox-Client_](./troubleshoot_logs.png)
