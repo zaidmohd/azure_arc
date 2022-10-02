@@ -130,7 +130,7 @@ ArcBox uses an advanced automation flow to deploy and configure all necessary re
 
   - "Owner" - Required for provisioning Azure resources, view Azure Arc-enabled Kubernetes Cloud Defender extension findings and Azure Arc-enabled data services billing, monitoring metrics, and logs management
 
-> **NOTE: Jumpstart is following the guidance and best practices of the Azure Arc Data Services documentation for enabling and configuring Automatic upload of metrics and logs to Azure Monitor**
+  > **NOTE: Jumpstart is following the guidance and best practices of the Azure Arc Data Services documentation for enabling and configuring Automatic upload of metrics and logs to Azure**
 
     To create it login to your Azure account run the below commands (this can also be done in [Azure Cloud Shell](https://shell.azure.com/).
 
