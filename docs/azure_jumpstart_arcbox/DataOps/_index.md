@@ -126,30 +126,25 @@ ArcBox uses an advanced automation flow to deploy and configure all necessary re
 
   ![Screenshot showing az vm list-skus with restrictions](./list_skus.png)
 
-- Create an Azure service principal (SP). To deploy ArcBox, an Azure service principal assigned with multiple role-based access control (RBAC) roles is required:
+- Create an Azure service principal (SP). To deploy ArcBox, an Azure service principal assigned with _Owner_ role-based access control (RBAC) role is required:
 
-  - "Contributor" - Required for provisioning Azure resources
-  - "Security admin" - Required for installing Microsoft Defender for Cloud Azure Arc-enabled Kubernetes extension and dismiss alerts
-  - "Security reader" - Required for being able to view Azure Arc-enabled Kubernetes Cloud Defender extension findings
-  - "Monitoring Metrics Publisher" - Required for being Azure Arc-enabled data services billing, monitoring metrics, and logs management
+  - "Owner" - Required for provisioning Azure resources, view Azure Arc-enabled Kubernetes Cloud Defender extension findings and Azure Arc-enabled data services billing, monitoring metrics, and logs management
+
+> **NOTE: Jumpstart is following the guidance and best practices of the Azure Arc Data Services documentation for enabling and configuring Automatic upload of metrics and logs to Azure Monitor**
 
     To create it login to your Azure account run the below commands (this can also be done in [Azure Cloud Shell](https://shell.azure.com/).
 
     ```shell
     az login
-    subscriptionId=$(az account show --query id --output tsv)
-    az ad sp create-for-rbac -n "<Unique SP Name>" --role "Contributor" --scopes /subscriptions/$subscriptionId
-    az ad sp create-for-rbac -n "<Unique SP Name>" --role "Security admin" --scopes /subscriptions/$subscriptionId
-    az ad sp create-for-rbac -n "<Unique SP Name>" --role "Security reader" --scopes /subscriptions/$subscriptionId
+    $subscriptionId=$(az account show --query id --output tsv)
+    az ad sp create-for-rbac -n "<Unique SP Name>" --role "Owner" --scopes /subscriptions/$subscriptionId
     ```
 
     For example:
 
     ```shell
-    subscriptionId=$(az account show --query id --output tsv)
-    az ad sp create-for-rbac -n "JumpstartArcBox" --role "Contributor" --scopes /subscriptions/$subscriptionId
-    az ad sp create-for-rbac -n "JumpstartArcBox" --role "Security admin" --scopes /subscriptions/$subscriptionId
-    az ad sp create-for-rbac -n "JumpstartArcBox" --role "Security reader" --scopes /subscriptions/$subscriptionId
+    $subscriptionId=$(az account show --query id --output tsv)
+    az ad sp create-for-rbac -n "JumpstartArcBox" --role "Owner" --scopes /subscriptions/$subscriptionId
     az ad sp create-for-rbac -n "JumpstartArcBox" --role "Monitoring Metrics Publisher" --scopes /subscriptions/$subscriptionId
     ```
 
