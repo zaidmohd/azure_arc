@@ -653,7 +653,7 @@ As part of ArcBox, a SQL Server is deployed in a nested VM on the Client VM to a
 
   ![Screenshot showing connection to AKS SQL Managed Instance using Microsoft SQL Server Management Studio (SSMS)](./ssms_aks_connection.png)
 
-- Connect also to the nested SQL server using the details you got from Azure Data Studio. Use the username and password you entered when provisioning ArcBox.
+- Connect also to the nested SQL server using the details you got from Azure Data Studio. Use the password you entered when provisioning ArcBox.
 
   ![Screenshot showing opening a new connection on the SQL server using Microsoft SQL Server Management Studio (SSMS)](./ssms_connect.png)
 
