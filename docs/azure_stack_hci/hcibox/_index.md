@@ -112,6 +112,7 @@ HCIBox uses an advanced automation flow to deploy and configure all necessary re
   az provider register --namespace Microsoft.AzureArcData --wait
   az provider register --namespace Microsoft.OperationsManagement --wait
   az provider register --namespace Microsoft.AzureStackHCI --wait
+  az provider register --namespace Microsoft.ResourceConnector --wait
   ```
 
 - Create Azure service principal (SP). To deploy HCIBox, an Azure service principal assigned with the "Owner" role-based access control (RBAC) role is required:
