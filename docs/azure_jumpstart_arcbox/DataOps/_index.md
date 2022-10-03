@@ -130,7 +130,7 @@ ArcBox uses an advanced automation flow to deploy and configure all necessary re
 
   - "Owner" - Required for provisioning Azure resources, view Azure Arc-enabled Kubernetes Cloud Defender extension findings and Azure Arc-enabled data services billing, monitoring metrics, and logs management
 
-  > **NOTE: Jumpstart is following the guidance and best practices of the [Azure Arc Data Services documentation](https://learn.microsoft.com/azure/azure-arc/data/upload-metrics) for enabling and configuring Automatic upload of metrics and logs to Azure**
+  > **NOTE: Jumpstart is following the guidance and best practices of the [Azure Arc Data Services documentation](https://learn.microsoft.com/azure/azure-arc/data/upload-metrics) for enabling and configuring Automatic upload of metrics and logs to Azure Monitor**
 
     To create it login to your Azure account run the below commands (this can also be done in [Azure Cloud Shell](https://shell.azure.com/).
 
@@ -567,7 +567,7 @@ SELECT TOP (1000) [backup_set_id]
 
 ![Connect to Azure Arc Data Controller](./sqlmi-pitr-connect-datacontroller.png)
 
-- Specify **arc** as namespace, leave the default values and click on Connect
+- Specify **arc** as the namespace, leave the default values (leave **Name** as empty) and click on Connect
 
 ![Connect to Azure Arc Data Controller details](./sqlmi-pitr-connect-datacontroller-details.png)
 
@@ -748,7 +748,8 @@ az group delete -n <name of your resource group>
 
 Occasionally deployments of ArcBox may fail at various stages. Common reasons for failed deployments include:
 
-- Automation scripts do not start after login, this is usually caused by logging into the client VM with local credentials. Login needs to be done using domain credentials in UPN formst _username@jumpstart.local_.
+- Automation scripts do not start after login, this is usually caused by logging into the client VM with wrong format of the username. Login needs to be done using domain credentials in UPN format _username@jumpstart.local_.
+- "User disabled" error message appears when you try to RDP or connect using Bastion to the Client VM, this is caused by logging into the client VM with wrong format of the username. Login needs to be done using domain credentials in UPN format _username@jumpstart.local_.
 - Invalid service principal id, service principal secret or service principal Azure tenant ID provided in _azuredeploy.parameters.json_ file.
 - Invalid SSH public key provided in _azuredeploy.parameters.json_ file.
   - An example SSH public key is shown here. Note that the public key includes "ssh-rsa" at the beginning. The entire value should be included in your _azuredeploy.parameters.json_ file.
