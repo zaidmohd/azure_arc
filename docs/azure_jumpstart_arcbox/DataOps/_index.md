@@ -145,7 +145,6 @@ ArcBox uses an advanced automation flow to deploy and configure all necessary re
     ```shell
     $subscriptionId=$(az account show --query id --output tsv)
     az ad sp create-for-rbac -n "JumpstartArcBox" --role "Owner" --scopes /subscriptions/$subscriptionId
-    az ad sp create-for-rbac -n "JumpstartArcBox" --role "Monitoring Metrics Publisher" --scopes /subscriptions/$subscriptionId
     ```
 
     Output should look similar to this.
@@ -374,7 +373,7 @@ Example:
 
   ![Screenshot showing connecting to the VM using UPN format in Bastion](./domain_login_bastion.png)
 
-> **Warning :Logging into the Client VM without the UPN format _username@jumpstart.local_ will prevent the automation from running automatically.**
+> **Warning: Logging into the Client VM without the UPN format _username@jumpstart.local_ will prevent the automation from running automatically.**
 
 #### The Logon scripts
 
@@ -406,7 +405,7 @@ Included in ArcBox, is a dedicated SQL stress simulation tool named SqlQueryStre
 
   ![Screenshot showing SQL Managed Instance connection](./sql_stress_connection.png)
 
-- To generate some load, we will be running a simple stored procedure. Copy the below procedure and change the number of iterations you want it to run as well as the number of threads to generate even more load on the database. In addition, change the delay between queries to 1ms for allowing the stored procedure to run for a while.
+- To generate some load, we will be running a simple stored procedure. Copy the below procedure and change the number of iterations you want it to run as well as the number of threads to generate even more load on the database. In addition, change the delay between queries to 1ms for allowing the stored procedure to run for a while. Click on Go to start generating load.
 
     ```sql
     exec [dbo].[uspGetEmployeeManagers] @BusinessEntityID = 8
@@ -530,7 +529,7 @@ Arc-enabled SQL Managed Instance is deployed as part of ArcBox deployment. By de
 
 This section provides instructions on how to perform point in time restore from the automatic backups available in Arc-enabled SQL Managed Instance to recover lost or corrupted data.
 
-To view backups of full, differential, and transaction logs wait for more than 12 hours after deploying the ArcBox DataOps flavor. Once these backups are available follow instructions below to perform a point in time restore of database.
+To view backups of full, differential, and transaction logs wait for more than 12 hours after deploying the ArcBox DataOps flavor. Once these backups are available follow instructions below to perform a point in time restore of database. If you would like to test this feature immediately, you can simply use the latest backup set when restoring.
 
 - Once you login to the ArcBox-Client VM using RDP or bastion host, locate Azure Data Studio icon on the desktop and open.
 
@@ -749,6 +748,7 @@ az group delete -n <name of your resource group>
 
 Occasionally deployments of ArcBox may fail at various stages. Common reasons for failed deployments include:
 
+- Automation scripts do not start after login, this is usually caused by logging into the client VM with local credentials. Login needs to be done using domain credentials in UPN formst _username@jumpstart.local_.
 - Invalid service principal id, service principal secret or service principal Azure tenant ID provided in _azuredeploy.parameters.json_ file.
 - Invalid SSH public key provided in _azuredeploy.parameters.json_ file.
   - An example SSH public key is shown here. Note that the public key includes "ssh-rsa" at the beginning. The entire value should be included in your _azuredeploy.parameters.json_ file.
