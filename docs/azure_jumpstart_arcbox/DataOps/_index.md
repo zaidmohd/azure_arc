@@ -128,7 +128,7 @@ ArcBox uses an advanced automation flow to deploy and configure all necessary re
 
 - Create an Azure service principal (SP). To deploy ArcBox, an Azure service principal assigned with _Owner_ role-based access control (RBAC) role is required:
 
-  - "Owner" - Required for provisioning Azure resources, view Azure Arc-enabled Kubernetes Cloud Defender extension findings and Azure Arc-enabled data services billing, monitoring metrics, and logs management
+  - "Owner" - Required for provisioning Azure resources, view Azure Arc-enabled Kubernetes, Azure Arc-enabled Data Services billing, monitoring metrics, and logs management
 
   > **NOTE: Jumpstart is following the guidance and best practices of the [Azure Arc Data Services documentation](https://learn.microsoft.com/azure/azure-arc/data/upload-metrics) for enabling and configuring Automatic upload of metrics and logs to Azure Monitor**
 
