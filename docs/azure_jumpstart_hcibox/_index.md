@@ -261,13 +261,7 @@ HCIBox has many features that can be explored through the Azure portal or from i
 
 HCIBox simulates a 2-node physical deployment of Azure Stack HCI by using [nested virtualization on Hyper-V](https://learn.microsoft.com/virtualization/hyper-v-on-windows/user-guide/nested-virtualization). To ensure you have the best experience with HCIBox, take a moment to review the details below to help you understand the various nested VMs that make up the solution.
 
-- HCIBox-Client - Azure virtual machine - Windows Server 2022 with Hyper-V
-  - AzSHOST1 - Azure Stack HCI node
-  - AzSHOST2 - Azure Stack HCI node
-  - AzSMGMT - Nested hypervisor - Windows Server 2019 with Hyper-V
-    - AdminCenter - Guest virtual machine - Windows Admin Center gateway server
-    - BGPTorRouter - Guest virtual machine - Remote Access Server
-    - DomainController - Guest virtual machine - Active Directory domain controller
+  ![ArcBox nested virtualization diagram](./nested_virtualization_arch.png)
 
 | Computer Name | Role | Domain Joined | Parent Host | OS |
 |---|---|---|---|---|
