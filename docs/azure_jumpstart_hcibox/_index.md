@@ -162,7 +162,7 @@ HCIBox uses an advanced automation flow to deploy and configure all necessary re
   az bicep upgrade
   ```
 
-- Edit the [main.parameters.json](https://github.com/microsoft/azure_arc/blob/feature_azshci/azure_stack_hci/hcibox/bicep/main.parameters.json) template parameters file and supply some values for your environment.
+- Edit the [main.parameters.json](https://github.com/microsoft/azure_arc/blob/feature_azshci/azure_jumpstart_hcibox/bicep/main.parameters.json) template parameters file and supply some values for your environment.
   - _`spnClientId`_ - Your Azure service principal id
   - _`spnClientSecret`_ - Your Azure service principal secret
   - _`spnTenantId`_ - Your Azure tenant id
@@ -173,7 +173,7 @@ HCIBox uses an advanced automation flow to deploy and configure all necessary re
 
   ![Screenshot showing example parameters](./parameters_bicep.png)
 
-- Now you will deploy the Bicep file. Navigate to the local cloned [deployment folder](https://github.com/microsoft/azure_arc/tree/main/azure_stack_hci/hcibox/bicep) and run the below command:
+- Now you will deploy the Bicep file. Navigate to the local cloned [deployment folder](https://github.com/microsoft/azure_arc/tree/main/azure_jumpstart_hcibox/bicep) and run the below command:
 
   ```shell
   az group create --name "<resource-group-name>"  --location "<preferred-location>"
@@ -194,8 +194,8 @@ Once your deployment is complete, you can open the Azure portal and see the init
 
 Various options are available to connect to _HCIBox-Client_ VM, depending on the parameters you supplied during deployment.
 
-- [RDP](https://azurearcjumpstart.io/azure_stack_hci/hcibox/#connecting-directly-with-rdp) - available after configuring access to port 3389 on the _HCIBox-NSG_, or by enabling [Just-in-Time access (JIT)](https://azurearcjumpstart.io/azure_stack_hci/hcibox/#connect-using-just-in-time-accessjit).
-- [Azure Bastion](https://azurearcjumpstart.io/azure_stack_hci/hcibox/#connect-using-azure-bastion) - available if ```true``` was the value of your _`deployBastion`_ parameter during deployment.
+- [RDP](https://azurearcjumpstart.io/azure_jumpstart_hcibox/#connecting-directly-with-rdp) - available after configuring access to port 3389 on the _HCIBox-NSG_, or by enabling [Just-in-Time access (JIT)](https://azurearcjumpstart.io/azure_jumpstart_hcibox/#connect-using-just-in-time-accessjit).
+- [Azure Bastion](https://azurearcjumpstart.io/azure_jumpstart_hcibox/#connect-using-azure-bastion) - available if ```true``` was the value of your _`deployBastion`_ parameter during deployment.
 
 #### Connecting directly with RDP
 
@@ -240,6 +240,8 @@ If you already have [Microsoft Defender for Cloud](https://docs.microsoft.com/az
 - Once you log into the _HCIBox-Client_ VM, a PowerShell script will open and start running. This script will take between 3-4 hours to finish, and once completed, the script window will close automatically. At this point, the deployment is complete and you can start exploring all that HCIBox has to offer.
 
   ![Screenshot showing _HCIBox-Client_](./automation.png)
+
+  > **NOTE: The automation will take 3-4 hours to fully complete. Do not close the PowerShell during this time. When automation is completed successfully, the desktop background will be changed to the HCIBox wallpaper.**
 
 - Deployment is complete! Let's begin exploring the features of HCIBox!
 
