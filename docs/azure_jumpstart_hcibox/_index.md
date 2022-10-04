@@ -275,39 +275,14 @@ HCIBox simulates a 2-node physical deployment of Azure Stack HCI by using [neste
 
 ### Active Directory domain user credentials
 
-Once you are logged into the _HCIBox-Client_ VM using the local admin credentials you supplied in your template parameters during deployment you will need to switch to using a domain account to access most other functions, such as logging into the HCI nodes or accessing Windows Admin Center. This domain account is automatically configured for you using the same usernmame and password you supplied at deployment. The default domain name is jumpstart.local, making your domain account:
-
-- username_supplied_at_deployment@jumpstart.local
+Once you are logged into the _HCIBox-Client_ VM using the local admin credentials you supplied in your template parameters during deployment you will need to switch to using a domain account to access most other functions, such as logging into the HCI nodes or accessing Windows Admin Center. This domain account is automatically configured for you using the same usernmame and password you supplied at deployment. The default domain name is jumpstart.local, so if the username supplied at deployment is "arcdemo", your domain account would be arcdemo@jumpstart.local.
 
 The password for this account is set as the same password you supplied during deployment for the local account. Many HCIBox operations will use the domain account wherever credentials are required.
 
 ### VM provisioning through Azure portal with Arc Resource Bridge
 
-Azure Stack HCI supports [VM provisioning the Azure portal](https://learn.microsoft.com/azure-stack/hci/manage/azure-arc-enabled-virtual-machines). HCIBox is preconfigured with [Arc resource bridge](https://learn.microsoft.com/azure-stack/hci/manage/azure-arc-enabled-virtual-machines#what-is-azure-arc-resource-bridge) to support this capability. To experience this for yourself, follow these steps:
+Azure Stack HCI supports [VM provisioning the Azure portal](https://learn.microsoft.com/azure-stack/hci/manage/azure-arc-enabled-virtual-machines). Open the [HCIBox VM provisioning documentation](./RB/_index.md) to get started with WAC in HCIBox.
 
-- Navigate to the Azure Stack HCI cluster resource in your HCIBox resource group.
-
-  [Screenshot showing Azure Stack HCI cluster in RG]()
-
-  [Screenshot showing Azure Stack HCI cluster resource blade]()
-
-- Click on "Virtual Machines" in the navigation menu, then click "Create VM"
-
-  [Screenshot showing Create VM blade]()
-
-- Select one of the prepopulated gallery images (either Windows or Ubuntu) and click next.
-
-  [Screenshot showing select gallery image]()
-
-- Add NIC
-
-  [Screenshot showing NIC create]()
-
-- Finish creation and wait for VM to appear under Virtual Machines.
-
-  [Screenshot showing deployment in progress]()
-
-  [Screenshot showing VM under Virtual Machines in cluster]()
 
 ### Windows Admin Center
 
