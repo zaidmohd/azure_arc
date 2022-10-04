@@ -476,7 +476,7 @@ ArcBox deploys bookstore application on the _ArcBox-CAPI-Data_ workload cluster.
   ```shell
   kubectx capi
   kubectl --namespace arc get ingress
-  nslookup dataops.jumpstart.local
+  nslookup jumpstartbooks.jumpstart.local
   ```
 
   ![Screenshot showing bookstore app DNS record](./capi_bookstore07.png)
