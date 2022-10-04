@@ -35,9 +35,9 @@ ArcBox for DataOps deploys two sample applications on the _ArcBox-CAPI-Data-xxxx
 
 The sample applications included in ArcBox are:
 
-- **Bookstore** - An MVC web application. ArcBox will deploy **one Kubernetes pod replica** of the _Bookstore_ application in the _arc_ namespace onto the _ArcBox-CAPI-Data-xxxx_ and the _ArcBox-AKS-DR-Data-xxxx_ clusters.
+- **The Bookstore Application** - An MVC web application. ArcBox will deploy **one Kubernetes pod replica** of the _Bookstore_ application in the _arc_ namespace onto the _ArcBox-CAPI-Data-xxxx_ and the _ArcBox-AKS-DR-Data-xxxx_ clusters.
 
-- **DB Connection app** - An MVC application. ArcBox will deploy **one Kubernetes pod replica** as part of the DB connection app and an Ingress controller to demonstrate the active connections to the different Azure Arc-enabled SQL Managed Instances replicas.
+- **DB Connection Application** - An MVC application. ArcBox will deploy **one Kubernetes pod replica** as part of the DB connection app and an Ingress controller to demonstrate the active connections to the different Azure Arc-enabled SQL Managed Instances replicas.
 
 ### Azure Monitor integration
 
@@ -126,31 +126,25 @@ ArcBox uses an advanced automation flow to deploy and configure all necessary re
 
   ![Screenshot showing az vm list-skus with restrictions](./list_skus.png)
 
-- Create an Azure service principal (SP). To deploy ArcBox, an Azure service principal assigned with multiple role-based access control (RBAC) roles is required:
+- Create an Azure service principal (SP). To deploy ArcBox, an Azure service principal assigned with _Owner_ role-based access control (RBAC) role is required:
 
-  - "Contributor" - Required for provisioning Azure resources
-  - "Security admin" - Required for installing Microsoft Defender for Cloud Azure Arc-enabled Kubernetes extension and dismiss alerts
-  - "Security reader" - Required for being able to view Azure Arc-enabled Kubernetes Cloud Defender extension findings
-  - "Monitoring Metrics Publisher" - Required for being Azure Arc-enabled data services billing, monitoring metrics, and logs management
+  - "Owner" - Required for provisioning Azure resources, view Azure Arc-enabled Kubernetes, Azure Arc-enabled Data Services billing, monitoring metrics, and logs management
+
+  > **NOTE: Jumpstart is following the guidance and best practices of the [Azure Arc Data Services documentation](https://learn.microsoft.com/azure/azure-arc/data/upload-metrics) for enabling and configuring Automatic upload of metrics and logs to Azure Monitor**
 
     To create it login to your Azure account run the below commands (this can also be done in [Azure Cloud Shell](https://shell.azure.com/).
 
     ```shell
     az login
-    subscriptionId=$(az account show --query id --output tsv)
-    az ad sp create-for-rbac -n "<Unique SP Name>" --role "Contributor" --scopes /subscriptions/$subscriptionId
-    az ad sp create-for-rbac -n "<Unique SP Name>" --role "Security admin" --scopes /subscriptions/$subscriptionId
-    az ad sp create-for-rbac -n "<Unique SP Name>" --role "Security reader" --scopes /subscriptions/$subscriptionId
+    $subscriptionId=$(az account show --query id --output tsv)
+    az ad sp create-for-rbac -n "<Unique SP Name>" --role "Owner" --scopes /subscriptions/$subscriptionId
     ```
 
     For example:
 
     ```shell
-    subscriptionId=$(az account show --query id --output tsv)
-    az ad sp create-for-rbac -n "JumpstartArcBox" --role "Contributor" --scopes /subscriptions/$subscriptionId
-    az ad sp create-for-rbac -n "JumpstartArcBox" --role "Security admin" --scopes /subscriptions/$subscriptionId
-    az ad sp create-for-rbac -n "JumpstartArcBox" --role "Security reader" --scopes /subscriptions/$subscriptionId
-    az ad sp create-for-rbac -n "JumpstartArcBox" --role "Monitoring Metrics Publisher" --scopes /subscriptions/$subscriptionId
+    $subscriptionId=$(az account show --query id --output tsv)
+    az ad sp create-for-rbac -n "JumpstartArcBox" --role "Owner" --scopes /subscriptions/$subscriptionId
     ```
 
     Output should look similar to this.
@@ -371,14 +365,19 @@ If you already have [Microsoft Defender for Cloud](https://docs.microsoft.com/az
 #### Client VM credentials
 
 After configuring access to the Client VM, you have to connect using the UPN format whether you are connecting using RDP or Azure Bastion.
-Example: 
-  - Username: arcdemo@jumpstart.local
+Example:
+
+- Username: arcdemo@jumpstart.local
 
   ![Screenshot showing connecting to the VM using UPN format](./domain_login.png)
 
+  ![Screenshot showing connecting to the VM using UPN format in Bastion](./domain_login_bastion.png)
+
+> **Warning: Logging into the Client VM without the UPN format _username@jumpstart.local_ will prevent the automation from running automatically.**
+
 #### The Logon scripts
 
-- Once you log into the _ArcBox-Client_ VM, multiple automated scripts will open and start running. These scripts usually take 60-90 minutes to finish, and once completed, the script windows will close automatically. At this point, the deployment is complete.
+- Once you log into the _ArcBox-Client_ VM, multiple automated scripts will open and start running. These scripts usually take up to 60 minutes to finish, and once completed, the script windows will close automatically. At this point, the deployment is complete.
 
   ![Screenshot showing ArcBox-Client](./automation.png)
 
@@ -396,17 +395,17 @@ After deployment is complete, it's time to start exploring ArcBox. Most interact
 
 Included in ArcBox, is a dedicated SQL stress simulation tool named SqlQueryStress automatically installed for you on the Client VM. SqlQueryStress will allow you to generate load on the Azure Arc-enabled SQL Managed Instance that can be done used to showcase how the SQL database and services are performing as well to highlight operational practices described in the next section.
 
-- To start with, open the SqlQueryStress desktop shortcut and connect to the CAPI SQL Managed Instance primary endpoint IP address. This can be found in the SQLMI Endpoints text file desktop shortcut that was created for you.
+- To start with, open the SqlQueryStress desktop shortcut and connect to the CAPI SQL Managed Instance primary endpoint IP address. This can be found in the _SQLMI Endpoints_ text file desktop shortcut that was created for you.
 
   ![Screenshot showing SQL Stress application](./sql_stress_start.png)
 
-  ![Screenshot showing SQL MI endpoints file](./sqlmi-endpoint_file.png)
+  ![Screenshot showing SQL Managed Instance endpoints file](./sqlmi-endpoint_file.png)
 
-- To connect, use "Integrated Authentication" and select the deployed sample AdventureWorks database (you can use the “Test” button to check the connection).
+- To connect, use "Integrated Authentication" and select the deployed sample AdventureWorks database (you can use the "Test" button to check the connection).
 
-  ![Screenshot showing SQL MI connection](./sql_stress_connection.png)
+  ![Screenshot showing SQL Managed Instance connection](./sql_stress_connection.png)
 
-- To generate some load, we will be running a simple stored procedure. Copy the below procedure and change the number of iterations you want it to run as well as the number of threads to generate even more load on the database. In addition, change the delay between queries to 1ms for allowing the stored procedure to run for a while.
+- To generate some load, we will be running a simple stored procedure. Copy the below procedure and change the number of iterations you want it to run as well as the number of threads to generate even more load on the database. In addition, change the delay between queries to 1ms for allowing the stored procedure to run for a while. Click on Go to start generating load.
 
     ```sql
     exec [dbo].[uspGetEmployeeManagers] @BusinessEntityID = 8
@@ -472,27 +471,27 @@ ArcBox deploys bookstore application on the _ArcBox-CAPI-Data_ workload cluster.
 
   ![Screenshot showing Azure Data Studio records query](./capi_bookstore06.png)
 
-- Arcbox deploys the Bookstore app service, creates the Ingress and creates a DNS record to resolve to CAPI cluster Ingress IP. Open PowerShell and run below commands to validate.
+- ArcBox deploys the Bookstore application's service, creates the Ingress and creates a DNS record to resolve to CAPI cluster Ingress IP. Open PowerShell and run below commands to validate.
 
   ```shell
   kubectx capi
   kubectl --namespace arc get ingress
-  nslookup dataops.jumpstart.local
+  nslookup jumpstartbooks.jumpstart.local
   ```
 
   ![Screenshot showing bookstore app DNS record](./capi_bookstore07.png)
 
 ### High availability
 
-When deploying Azure Arc-enabled SQL Managed Instance in the Business critical tier, up to three SQL pods replicas will be deployed to assemble an availability group. The availability group includes three Kubernetes replicas with a primary instance and two secondary instances that can be configured to be readable secondaries. This availability groups managed the failover process to achieve high availability.
+When deploying Azure Arc-enabled SQL Managed Instance in the Business Critical tier, up to three SQL pods replicas will be deployed to assemble an availability group. The availability group includes three Kubernetes replicas with a primary instance and two secondary instances that can be configured to be readable secondaries. This availability groups managed the failover process to achieve high availability.
 
-  ![Screenshot showing SQL MI pods](./capi_bookstore08.png)
+  ![Screenshot showing SQL Managed Instance pods](./capi_bookstore08.png)
 
 - Right click and run the _DataOpsTestAppScript.ps1_ script placed under _C:\ArcBox\DataOps_. The script will deploy the DB Connection App.
 
   ![Screenshot showing DB Connection App script](./capi_bookstore09.png)
 
-- DB Connection App connects to SQL MI Primary and inserts new book every second, and logs information of server it is connected to. Open PowerShell and run the below commands and follow the logs.
+- DB Connection App connects to the primary SQL Managed Instance and inserts new book every second, and logs information of server it is connected to. Open PowerShell and run the below commands and follow the logs.
 
   ```shell
   $pod=kubectl --namespace arc get pods --selector=app=dbconnecttest --output="jsonpath={.items..metadata.name}"
@@ -503,18 +502,20 @@ When deploying Azure Arc-enabled SQL Managed Instance in the Business critical t
   
   ![Screenshot showing DB Connection App logs 02](./capi_bookstore11.png)
 
-- To test that failover between the replicas, we will simulate a “crash” that will trigger an HA event and will force one of the secondary replicas to get promoted to a primary replica. Open two side-by-side PowerShell sessions. On the left side session review the deployed pods. The right-side session will be used to follow the DB Connection App logs. Delete the Primary replica by running below commands.
+- To test failover between the replicas, we will simulate a "crash" that will trigger an HA event and will force one of the secondary replicas to get promoted to a primary replica. Open two side-by-side PowerShell sessions. On the left side session review the deployed pods. The right-side session will be used to follow the DB Connection App logs. Delete the Primary replica by running below commands.
 
   ```shell
   kubectl --namespace arc get pods
   kubectl --namespace arc delete pod capi-sql-0
   ```
 
-  ![Screenshot showing SQL MI failover 01](./capi_bookstore12.png)
+- On the right-side session, you can see some failures once the pod is deleted simulating a primary replica crash. In that time one of the secondary replicas is being promoted to secondary to start receiving requests from the application.
+
+  ![Screenshot showing SQL Managed Instance failover 01](./capi_bookstore12.png)
 
 - It might take a few minutes for the availability group to return to an healthy state. The secondary replica and _capi-sql-1_ was promoted to primary and DB Connection App is able to insert new records in the database.
 
-  ![Screenshot showing SQL MI failover 02](./capi_bookstore13.png)
+  ![Screenshot showing SQL Managed Instance failover 02](./capi_bookstore13.png)
 
 - Open _Azure Data Studio_ and query the _demo_ DB to review the records inserted in the database. Also,review the data inserted in App browser.
 
@@ -524,21 +525,21 @@ When deploying Azure Arc-enabled SQL Managed Instance in the Business critical t
 
 ### Point-in-time restore
 
-Arc-enabled SQL Managed Instance is deployed as part of ArcBox deployment. By default [automatic backups](/azure/azure-arc/data/point-in-time-restore#automatic-backups) of the databases is enabled in Arc-enabled SQL MI . Full backup is performed when a new database is created or restored and subsequent full backups are performed weekly. Differential backups are taken every 12 hours and transaction log backups every 5 minutes. Default retention period of these backups is 7 days and is [configurable](/azure/azure-arc/data/point-in-time-restore#configure-retention-period).
+Arc-enabled SQL Managed Instance is deployed as part of ArcBox deployment. By default [automatic backups](https://learn.microsoft.com/azure/azure-arc/data/point-in-time-restore#automatic-backups) of the databases are enabled in Arc-enabled SQL Managed Instances. Full backup is performed when a new database is created or restored and subsequent full backups are performed weekly. Differential backups are taken every 12 hours and transaction log backups every 5 minutes. Default retention period of these backups is 7 days and is [configurable](https://learn.microsoft.com/azure/azure-arc/data/point-in-time-restore#configure-retention-period).
 
-This article provides instructions on how to perform point in time restore from the automatic backups available in Arc-enabled SQL MI to recover lost or corrupted data.
+This section provides instructions on how to perform point in time restore from the automatic backups available in Arc-enabled SQL Managed Instance to recover lost or corrupted data.
 
-To view backups of full, differential, and transaction logs wait for more than 12 hours after deploying the ArcBox DataOps or Full flavor. Once these backups are available follow instructions below to perform a point in time restore of database.
+To view backups of full, differential, and transaction logs wait for more than 12 hours after deploying the ArcBox DataOps flavor. Once these backups are available follow instructions below to perform a point in time restore of database. If you would like to test this feature immediately, you can simply use the latest backup set when restoring.
 
 - Once you login to the ArcBox-Client VM using RDP or bastion host, locate Azure Data Studio icon on the desktop and open.
 
 ![Open Azure Data Studio](./sqlmi-pitr-azdatastudio.png)
 
-- Click on ArcBoxDAG to connect to the **capi-sql** Arc-enabled SQL MI and view databases. Right click and select **Manage** to view databases. Alternatively you can expand ArcBoxDAG connection to view databases.
+- Click on _ArcBoxDAG_ to connect to the **capi-sql** Arc-enabled SQL Managed Instance and view databases. Right click and select **Manage** to view databases. Alternatively you can expand _ArcBoxDAG_ connection to view databases.
 
-![View Arc-enabled SQL MI databases](./sqlmi-pitr-azdatastudio-capisql.png)
+![View Arc-enabled SQL Managed Instance databases](./sqlmi-pitr-azdatastudio-capisql.png)
 
-![View Arc-enabled SQL MI databases](./sqlmi-pitr-databases.png)
+![View Arc-enabled SQL Managed Instance databases](./sqlmi-pitr-databases.png)
 
 - In order to restore database you need to find the last well known backup copy that you would like to restore. You can list all the available backups by running the following SQL query in **msdb** database.
 
@@ -558,45 +559,45 @@ SELECT TOP (1000) [backup_set_id]
 
 - Run this query in Azure Data Studio to display available backups. Right click **msdb**, select New Query and copy paste above query in the query editor and click Run.
 
-![View Arc-enabled SQL MI databases](./sqlmi-pitr-backuplist.png)
+![View Arc-enabled SQL Managed Instance databases](./sqlmi-pitr-backuplist.png)
 
 - Identify the backup set that you would like to restore and make note of the **backup_finish_date** value to use in the restore step. Modify the date format as **2022-09-20T23:14:13.000000Z**
 
-- Connect to the Arc data controller to restore database using Azure Data Studio. Click on the Connect controller button under Azure Arc Controllers to connecting to an existing data controller.
+- Connect to the Arc Data Controller to restore database using Azure Data Studio. Click on the Connect controller button under Azure Arc Controllers to connecting to an existing data controller.
 
 ![Connect to Azure Arc Data Controller](./sqlmi-pitr-connect-datacontroller.png)
 
-- Specify **arc** as namespace, leave the default values and click on Connect
+- Specify **arc** as the namespace, leave the default values (leave **Name** as empty) and click on Connect
 
 ![Connect to Azure Arc Data Controller details](./sqlmi-pitr-connect-datacontroller-details.png)
 
-- Once connection is successful, expand Azure Arc Controllers, expand **arcbox-capi-dc** to view Arc-enabled SQL MI
+- Once connection is successful, expand Azure Arc Controllers, expand _arcbox-capi-dc_ to view Arc-enabled SQL Managed Instance
 
 ![Azure Arc Data Controller](./sqlmi-pitr-datacontroller.png)
 
-- Right click on capi-sql Arc-enabled SQL MI and select Manage.
+- Right-click on the _capi-sql_ Arc-enabled SQL Managed Instance and select Manage.
 
-![Azure Arc Data Controller Manage SQL MI](./sqlmi-pitr-connect-datacontroller-manage.png)
+![Azure Arc Data Controller Manage SQL Managed Instance](./sqlmi-pitr-connect-datacontroller-manage.png)
 
-- Click on Connect to Server and enter database username and password to connect to the database to view databases.
+- Click on "Connect to Server" and enter database username and password to connect to the SQL Managed Instance to view the databases. It can take about a minute to start populating the databases.
 
-![Azure Arc Data Controller Manage SQL MI](./sqlmi-pitr-connect-to-sqlmi.png)
+![Azure Arc Data Controller Manage SQL Managed Instance](./sqlmi-pitr-connect-to-sqlmi.png)
 
-- Click on Backups to view databases and available backups to restore
+- Click on "Backups" to view databases and available backups to restore
 
-![Azure Arc-enabled SQL MI databases](./sqlmi-pitr-database-list.png)
+![Azure Arc-enabled SQL Managed Instance databases](./sqlmi-pitr-database-list.png)
 
-- Click on Restore link as shown below to restore AdeventureWorks2019 database.
+- Click on the "Restore" link as shown below to restore the _AdventureWorks2019_ database.
 
-![Azure Arc-enabled SQL MI database restore](./sqlmi-pitr-database-select-restore.png)
+![Azure Arc-enabled SQL Managed InstanceI database restore](./sqlmi-pitr-database-select-restore.png)
 
 - Specify target database name to restore and backup set datetime that is noted down in the previous steps and click on Restore.
 
-![Azure Arc-enabled SQL MI target database restore](./sqlmi-pitr-targetdb.png)
+![Azure Arc-enabled SQL Managed Instance target database restore](./sqlmi-pitr-targetdb.png)
 
-- Wait until database restore operation is complete and refresh ArcBoxDAG connection to refresh and view restored database.
+- Wait until database restore operation is complete and refresh the _ArcBoxDAG_ connection to refresh and view restored database.
 
-![Azure Arc-enabled SQL MI restored database](./sqlmi-pitr-restored-database.png)
+![Azure Arc-enabled SQL Managed Instance restored database](./sqlmi-pitr-restored-database.png)
 
 ### Disaster Recovery
 
@@ -635,7 +636,7 @@ The _ArcBox-CAPI-Data-xxxx_ and the _ArcBox-AKS-DR-Data-xxxx_ clusters are deplo
 
 As part of ArcBox, a SQL Server is deployed in a nested VM on the Client VM to allow you to test migrating a database to Azure Arc-enabled SQL Managed Instance.
 
-- To connect to the source SQL instance on the nested VM, you can find the connection details in the Azure Data Studio.
+- To connect to the nested SQL Server instance, you can find the connection details in the Azure Data Studio.
 
   ![Screenshot showing the nested SQL Server in Azure Data Studio](./sql_server_azure_data_studio.png)
 
@@ -645,11 +646,13 @@ As part of ArcBox, a SQL Server is deployed in a nested VM on the Client VM to a
 
   ![Screenshot showing Microsoft SQL Server Management Studio (SSMS)](./ssms_start.png)
 
-- Connect to the AKS SQL MI Managed Instance primary endpoint IP address. This can be found in the SQLMI Endpoints text file desktop shortcut and select the authentication to be _Windows Authentication_.
+- Connect to the AKS primary SQL Managed Instance's endpoint IP address. This can be found in the _SQLMI Endpoints_ text file desktop shortcut and select the authentication to be _Windows Authentication_.
 
-  ![Screenshot showing connection to AKS SQL MI using Microsoft SQL Server Management Studio (SSMS)](./ssms_aks_connection.png)
+  ![Screenshot showing connection details of the AKS SQL Managed Instance in the endpoints file](./ssms_aks_endpoints_file.png)
 
-- Connect also to the nested SQL server using the details you got from Azure Data Studio. Use the username and password you entered when provisioning ArcBox.
+  ![Screenshot showing connection to AKS SQL Managed Instance using Microsoft SQL Server Management Studio (SSMS)](./ssms_aks_connection.png)
+
+- Connect also to the nested SQL server using the details you got from Azure Data Studio. Use the password you entered when provisioning ArcBox.
 
   ![Screenshot showing opening a new connection on the SQL server using Microsoft SQL Server Management Studio (SSMS)](./ssms_connect.png)
 
@@ -659,7 +662,7 @@ As part of ArcBox, a SQL Server is deployed in a nested VM on the Client VM to a
 
   ![Screenshot showing the databases view for both servers in the Microsoft SQL Server Management Studio (SSMS)](./ssms_db_comparison.png)
 
-- Expand the nested SQL instance and navigate to the AdventureWorks database and execute the following query, use the same username and password as the previous step.
+- Expand the nested SQL Server instance and navigate to the AdventureWorks database and execute the following query, use the same username and password as the previous step.
 
   ```sql
   BACKUP DATABASE AdventureWorksLT2019
@@ -667,32 +670,38 @@ As part of ArcBox, a SQL Server is deployed in a nested VM on the Client VM to a
   WITH FORMAT, MEDIANAME = 'AdventureWorksLT2019' ;
   GO
   ```
+
   ![Screenshot showing a new in the Microsoft SQL Server Management Studio (SSMS)](./ssms_new_query.png)
 
   ![Screenshot showing running a backup query in the Microsoft SQL Server Management Studio (SSMS)](./ssms_db_backup_complete.png)
 
-- To migrate the backup created to SQL MI, open a new PowerShell ISE session and use the following PowerShell snippet to:
-  - Copy the created backup to the client VM from the nested SQL VM
+- To migrate the backup created to the Arc-enabled SQL Managed Instance, open a new PowerShell session and use the following PowerShell snippet to:
+  - Copy the created backup to the client VM from the nested SQL Server instance
   - Copy the backup to the Azure Arc-enabled SQL Managed Instance pod
 Initiate the backup restore process
 
   ```powershell
   Set-Location -Path c:\temp
+  #Connecting to the nested Windows Server VM
   $nestedWindowsUsername = "Administrator"
   $nestedWindowsPassword = "ArcDemo123!!"
   $secWindowsPassword = ConvertTo-SecureString $nestedWindowsPassword -AsPlainText -Force
   $winCreds = New-Object System.Management.Automation.PSCredential ($nestedWindowsUsername, $secWindowsPassword)
   $session = New-PSSession -VMName Arcbox-SQL -Credential $winCreds
+  #Copying the database backup to the Client VM
   Copy-Item -FromSession $session -Path C:\temp\AdventureWorksLT2019.bak -Destination C:\Temp\AdventureWorksLT2019.bak
+  #Copying the database to the AKS SQL Managed Instance
   kubectx aks
   kubectl cp ./AdventureWorksLT2019.bak aks-sql-0:var/opt/mssql/data/AdventureWorksLT2019.bak -n arc -c arc-sqlmi
+  #Initiating restore on the AKS SQL Managed Instance
   kubectl exec aks-sql-0 -n arc -c arc-sqlmi -- /opt/mssql-tools/bin/sqlcmd -S localhost -U $Env:AZDATA_USERNAME -P $Env:AZDATA_PASSWORD -Q "RESTORE DATABASE AdventureWorksLT2019 FROM  DISK = N'/var/opt/mssql/data/AdventureWorksLT2019.bak' WITH MOVE 'AdventureWorksLT2012_Data' TO '/var/opt/mssql/data/AdventureWorksLT2012.mdf', MOVE 'AdventureWorksLT2012_Log' TO '/var/opt/mssql/data/AdventureWorksLT2012_log.ldf'"
   ```
-  ![Screenshot showing a PowerShell command to copy and restore the database backup to SQL MI](./powershell_db_restore.png)
 
-- Navigate to the Azure Arc-enabled SQL Managed Instance in the Microsoft SQL Server Management Studio (SSMS) and you can see that the AdventureWorks database has been restored successfully.
+  ![Screenshot showing a PowerShell command to copy and restore the database backup to SQL Managed Instance](./powershell_db_restore.png)
 
-  ![Screenshot showing the restored DB on SQL MI](./ssms_db_restore_complete.png)
+- Navigate to the Azure Arc-enabled SQL Managed Instance in the Microsoft SQL Server Management Studio (SSMS) and you can see that the _AdventureWorks_ database has been restored successfully.
+
+  ![Screenshot showing the restored DB on SQL Managed Instance](./ssms_db_restore_complete.png)
 
 ### ArcBox Azure Monitor workbook
 
@@ -722,7 +731,7 @@ ArcBox is a sandbox that can be used for a large variety of use cases, such as a
 
 - Use the included kubectx to switch contexts between the three Kubernetes clusters
 - Explore the different visualizations in Grafana
-- Scale the SQL MI instance's cores and memory up and down
+- Scale the SQL Managed Instance's cores and memory up and down
 - Test failover and failback  scenarios to and from the DR instance
 
 ## Clean up the deployment
@@ -739,7 +748,8 @@ az group delete -n <name of your resource group>
 
 Occasionally deployments of ArcBox may fail at various stages. Common reasons for failed deployments include:
 
-- If you have logged into the Client VM and the automation scripts aren't running, you might have logged into the Client VM without using the format <username>@jumpstart.local. You would need to manually run the _DataOpsLogonScript_ scheduled task or re-deploy ArcBox.
+- Automation scripts do not start after login, this is usually caused by logging into the client VM with wrong format of the username. Login needs to be done using domain credentials in UPN format _username@jumpstart.local_.
+- "User disabled" error message appears when you try to RDP or connect using Bastion to the Client VM, this is caused by logging into the client VM with wrong format of the username. Login needs to be done using domain credentials in UPN format _username@jumpstart.local_.
 - Invalid service principal id, service principal secret or service principal Azure tenant ID provided in _azuredeploy.parameters.json_ file.
 - Invalid SSH public key provided in _azuredeploy.parameters.json_ file.
   - An example SSH public key is shown here. Note that the public key includes "ssh-rsa" at the beginning. The entire value should be included in your _azuredeploy.parameters.json_ file.
@@ -759,8 +769,15 @@ Occasionally, you may need to review log output from scripts that run on the _Ar
 | _C:\ArcBox\Logs\DataOpsLogonScript.log_ | Output of _DataOpsLogonScript.ps1_ which configures the Hyper-V host and guests and onboards the guests as Azure Arc-enabled servers. |
 | _C:\ArcBox\Logs\installCAPI.log_ | Output from the custom script extension which runs on _ArcBox-CAPI-MGMT_ and configures the Cluster API for Azure cluster and onboards it as an Azure Arc-enabled Kubernetes cluster. If you encounter ARM deployment issues with _ubuntuCapi.json_ then review this log. |
 | _C:\ArcBox\Logs\MonitorWorkbookLogonScript.log_ | Output from _MonitorWorkbookLogonScript.ps1_ which deploys the Azure Monitor workbook. |
-|_C:\ArcBox\Logs\DeploySQLMIADAuth.log_ | Output from the _DeploySQLMIADAuth.ps1_ script which deploys the AD connector and SQL MI|
-| _C:\ArcBox\Logs\DataOpsAppScript.ps1_ | Output from the _DataOpsAppScript.ps1_ script which deploys the book store application |
+|_C:\ArcBox\Logs\DeploySQLMIADAuth.log_ | Output from the _DeploySQLMIADAuth.ps1_ script which deploys the AD connector and the Arc-enabled SQL Managed Instances|
+| _C:\ArcBox\Logs\DataOpsAppScript.log_ | Output from the _DataOpsAppScript.ps1_ script which deploys the book store application |
+| _C:\ArcBox\Logs\NestedSqlLogonScript.log_ | Output from the ArcServersLogonScript deployment |
+| _C:\ArcBox\Logs\DataController-capi.log_ | Output from the CAPI cluster's Data Controller deployment |
+| _C:\ArcBox\Logs\DataController-aks.log_ | Output from the AKS cluster's Data Controller deployment |
+| _C:\ArcBox\Logs\DataController-aks-dr.log_ | Output from the AKS DR cluster's Data Controller deployment |
+| _C:\ArcBox\Logs\DataController-sqlmi-capi.log_ | Output from the CAPI cluster's Arc SQL Managed Instance deployment |
+| _C:\ArcBox\Logs\DataController-sqlmi-aks.log_ | Output from the AKS cluster's Arc SQL Managed Instance deployment |
+| _C:\ArcBox\Logs\DataController-sqlmi-aks-dr.log_ | Output from the AKS DR cluster's Arc SQL Managed Instance deployment |
 
   ![Screenshot showing ArcBox logs folder on ArcBox-Client](./troubleshoot_logs.png)
 
