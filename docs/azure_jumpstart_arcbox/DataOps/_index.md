@@ -406,11 +406,13 @@ After deployment is complete, it's time to start exploring ArcBox. Most interact
 
 Included in ArcBox, is a dedicated SQL stress simulation tool named SqlQueryStress automatically installed for you on the Client VM. SqlQueryStress will allow you to generate load on the Azure Arc-enabled SQL Managed Instance that can be done used to showcase how the SQL database and services are performing as well to highlight operational practices described in the next section.
 
-- To start with, open the SqlQueryStress desktop shortcut and connect to the CAPI SQL Managed Instance primary endpoint IP address. This can be found in the _SQLMI Endpoints_ text file desktop shortcut that was created for you.
+- To start with, open the SqlQueryStress desktop shortcut and connect to the CAPI SQL Managed Instance primary endpoint Ip address. This can be found in the _SQLMI Endpoints_ text file desktop shortcut that was created for you. Or you can get the primary endpoint from the Azure portal.
 
   ![Screenshot showing SQL Stress application](./sql_stress_start.png)
 
   ![Screenshot showing SQL Managed Instance endpoints file](./sqlmi-endpoint_file.png)
+
+  ![Screenshot showing SQL Managed Instance endpoints in the Azure portal](./sqlmi_connection_portal.png)
 
 - To connect, use "Integrated Authentication" and select the deployed sample AdventureWorks database (you can use the "Test" button to check the connection).
 
