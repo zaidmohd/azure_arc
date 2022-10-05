@@ -279,6 +279,24 @@ Once you are logged into the _HCIBox-Client_ VM using the local admin credential
 
 The password for this account is set as the same password you supplied during deployment for the local account. Many HCIBox operations will use the domain account wherever credentials are required.
 
+### Monitoring Azure Stack HCI
+
+Azure Stack HCI integrates with [Azure Monitor](https://learn.microsoft.com/azure-stack/hci/manage/monitor-hci-single) to support monitoring HCI clusters through the Azure portal. Follow these steps to configure monitoring on your HCIBox cluster.
+
+- From the Overview blade of the _HCIBox-Cluster_ resource, select the "Capabilities" tab, then click on "Not configured" on the "Logs" box.
+
+  ![Screenshot showing capabilties tab](./enable_monitoring_1.png)
+
+- On the dialog box, select the HCIBox-Workspace log analytics workspace in the dropdown, then click "Add". This will begin the process of installing the Log Analytics extensions on the host nodes and will take a few minutes. When complete, the Logs box will show as "Configured" on the Capabilities tab.
+
+  ![Screenshot showing capabilties tab](./enable_monitoring_2.png)
+
+  ![Screenshot showing logs configured](./enable_monitoring_3.png)
+
+- It will take time for logs data to flow through to Log Analytics. Once data is available, click on the Insights blade of the _HCIBox-Cluster_ resource to view the Insights workbook and explore logs from your cluster.
+
+  ![Screenshot showing logs configured](./hci_insights.png)
+
 ### VM provisioning through Azure portal with Arc Resource Bridge
 
 Azure Stack HCI supports [VM provisioning the Azure portal](https://learn.microsoft.com/azure-stack/hci/manage/azure-arc-enabled-virtual-machines). Open the [HCIBox VM provisioning documentation](./RB/_index.md) to get started.
