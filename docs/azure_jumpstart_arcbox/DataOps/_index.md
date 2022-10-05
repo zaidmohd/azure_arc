@@ -125,6 +125,16 @@ ArcBox uses an advanced automation flow to deploy and configure all necessary re
   ![Screenshot showing az vm list-skus with no restrictions](./list_skus_unrestricted.png)
 
   ![Screenshot showing az vm list-skus with restrictions](./list_skus.png)
+  
+ - Register necessary Azure resource providers by running the following commands.
+
+    ```shell
+    az provider register --namespace Microsoft.Kubernetes --wait
+    az provider register --namespace Microsoft.KubernetesConfiguration --wait
+    az provider register --namespace Microsoft.ExtendedLocation --wait
+    az provider register --namespace Microsoft.AzureArcData --wait
+    az provider register --namespace Microsoft.OperationsManagement --wait
+    ```
 
 - Create an Azure service principal (SP). To deploy ArcBox, an Azure service principal assigned with _Owner_ role-based access control (RBAC) role is required:
 
