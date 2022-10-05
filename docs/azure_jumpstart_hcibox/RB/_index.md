@@ -57,3 +57,7 @@ HCIBox includes a preconfigured Linux virtual machine image that you can use to 
 - Click on the VM to drill into the Azure Arc-enabled HCI machine detail.
 
   ![Screenshot showing created VM detail](./created_vm_detail.png)
+
+### Next steps
+
+Review the [Arc resource bridge](https://learn.microsoft.com/azure-stack/hci/manage/azure-arc-enabled-virtual-machines#what-is-azure-arc-resource-bridge) documentation for additional information.
