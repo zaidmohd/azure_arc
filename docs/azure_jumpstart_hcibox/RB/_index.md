@@ -1,8 +1,8 @@
----
+<!-- ---
 type: docs
 weight: 100
 toc_hide: true
----
+--- -->
 
 # Jumpstart HCIBox - Virtual machine provisioning with Azure Arc
 
@@ -24,30 +24,36 @@ HCIBox includes a preconfigured Linux virtual machine image that you can use to 
 
 - Provide a name for the VM, select the _ubuntu20_ image, and set the virtual processor count to 1 and the memory count to 2.
 
-![Screenshot showing select gallery image](./create_vm_detail_1.png)
+  ![Screenshot showing select gallery image](./create_vm_detail_1.png)
 
 - Click the Networking tab of the create wizard, then click Add network interface.
 
-![Screenshot showing network tab of create vm wizard](./create_vm_detail_2.png)
+  ![Screenshot showing network tab of create vm wizard](./create_vm_detail_2.png)
 
 - Give the new network interface a name and select _sdnswitch_ in the Network dropdown, then click Add.
 
-![Screenshot showing create NIC tab of create vm wizard](./create_vm_detail_3.png)
+  ![Screenshot showing create NIC tab of create vm wizard](./create_vm_detail_3.png)
 
-![Screenshot showing NIC was created](./create_vm_detail_4.png)
+  ![Screenshot showing NIC was created](./create_vm_detail_4.png)
 
 - Click the Review + Create tab and then click Create.
 
-![Screenshot showing NIC was created](./create_vm_detail_5.png)
+  ![Screenshot showing Review and Create tab](./create_vm_detail_5.png)
 
 - Download the private key and save it to your local computer.
 
-![Screenshot showing NIC was created](./create_vm_detail_6.png)
+  ![Screenshot showing download the private key](./create_vm_detail_6.png)
 
 - Wait for the deployment to complete.
 
-![Screenshot showing NIC was created](./create_vm_detail_7.png)
+  ![Screenshot showing deployment in progress](./create_vm_detail_7.png)
 
-  [Screenshot showing deployment in progress]()
+  ![Screenshot showing deployment complete](./create_vm_detail_8.png)
 
-  [Screenshot showing VM under Virtual Machines in cluster]()
+- Navigate back to the HCI cluster Virtual machines tab to view your created VM.
+
+  ![Screenshot showing created VM](./created_vm.png)
+
+- Click on the VM to drill into the Azure Arc-enabled HCI machine detail.
+
+  ![Screenshot showing created VM detail](./created_vm_detail.png)
