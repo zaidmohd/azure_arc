@@ -1,9 +1,9 @@
----
+<!-- ---
 type: docs
 weight: 99
 toc_hide: true
 ---
-
+-->
 # Jumpstart ArcBox for DataOps - Azure Monitor Workbook
 
 ArcBox for DataOps is a special "flavor" of ArcBox that is intended for users who want to experience Azure Arc-enabled SQL Managed Instance capabilities in a sandbox environment. This document provides specific guidance on the included ArcBox [Azure Monitor Workbook](https://docs.microsoft.com/azure/azure-monitor/visualize/workbooks-overview). Please refer to the main [ArcBox documentation](https://azurearcjumpstart.io/azure_jumpstart_arcbox/) for information on deploying and using ArcBox.
@@ -54,7 +54,7 @@ The "Inventory" tab in the ArcBox Workbook has three sections:
 
 ### Monitoring
 
-Enabling a resource in Azure Arc gives you the ability to perform configuration management and monitoring tasks on those services as if they were first-class citizens in Azure. You are able to monitor your Kubernetes clusters at the scope of the resource with container Insights. In ArcBox for DataOps the Azure Arc-enabled Kubernetes clusters have been onboarded onto Azure Monitor.
+Enabling a resource in Azure Arc gives you the ability to perform configuration management and monitoring tasks on those services as if they were first-class citizens in Azure. You are able to monitor your Kubernetes clusters at the scope of the resource with container Insights and your Azure Arc-enabled SQL Managed Instances. In ArcBox for DataOps the Azure Arc-enabled Kubernetes clusters have been onboarded onto Azure Monitor.
 
 The "Monitoring" tab of the Jumpstart Workbook shows metrics and alerts for ArcBox resources organized in three sections:
 

@@ -1,8 +1,9 @@
----
+<!-- ---
 type: docs
 linkTitle: "Jumpstart ArcBox for DataOps"
 weight: 4
 ---
+-->
 
 ## Jumpstart ArcBox for DataOps
 
@@ -12,7 +13,7 @@ ArcBox for DataOps is a special "flavor" of ArcBox that is intended for users wh
 
 ### Use cases
 
-- Sandbox environment for getting hands-on with Azure Arc technologies and [Azure Arc-enabled SQL Managed Instance landing zone accelerator](PLACEHOLDER)
+- Sandbox environment for getting hands-on with Azure Arc technologies and [Azure Arc-enabled SQL Managed Instance landing zone accelerator](https://aka.ms/ArcLZAcceleratorReady)
 - Accelerator for Proof-of-concepts or pilots
 - Training solution for Azure Arc skills development
 - Demo environment for customer presentations or events
@@ -140,7 +141,7 @@ ArcBox uses an advanced automation flow to deploy and configure all necessary re
 
   - "Owner" - Required for provisioning Azure resources, view Azure Arc-enabled Kubernetes, Azure Arc-enabled Data Services billing, monitoring metrics, and logs management
 
-  > **NOTE: Jumpstart is following the guidance and best practices of the [Azure Arc Data Services documentation](https://learn.microsoft.com/azure/azure-arc/data/upload-metrics) for enabling and configuring Automatic upload of metrics and logs to Azure Monitor**
+  > **NOTE: Jumpstart is following the guidance and best practices of the [Azure Arc Data Services documentation](https://learn.microsoft.com/azure/azure-arc/data/upload-metrics) for enabling and configuring automatic upload of metrics and logs to Azure Monitor**
 
     To create it login to your Azure account run the below commands (this can also be done in [Azure Cloud Shell](https://shell.azure.com/).
 
@@ -405,11 +406,13 @@ After deployment is complete, it's time to start exploring ArcBox. Most interact
 
 Included in ArcBox, is a dedicated SQL stress simulation tool named SqlQueryStress automatically installed for you on the Client VM. SqlQueryStress will allow you to generate load on the Azure Arc-enabled SQL Managed Instance that can be done used to showcase how the SQL database and services are performing as well to highlight operational practices described in the next section.
 
-- To start with, open the SqlQueryStress desktop shortcut and connect to the CAPI SQL Managed Instance primary endpoint IP address. This can be found in the _SQLMI Endpoints_ text file desktop shortcut that was created for you.
+- To start with, open the SqlQueryStress desktop shortcut and connect to the CAPI SQL Managed Instance primary endpoint Ip address. This can be found in the _SQLMI Endpoints_ text file desktop shortcut that was created for you. Or you can get the primary endpoint from the Azure portal.
 
   ![Screenshot showing SQL Stress application](./sql_stress_start.png)
 
   ![Screenshot showing SQL Managed Instance endpoints file](./sqlmi-endpoint_file.png)
+
+  ![Screenshot showing SQL Managed Instance endpoints in the Azure portal](./sqlmi_connection_portal.png)
 
 - To connect, use "Integrated Authentication" and select the deployed sample AdventureWorks database (you can use the "Test" button to check the connection).
 
@@ -812,5 +815,7 @@ In the case of a failed deployment, pointing to a failure in the _ubuntuCAPIDepl
   ![Screenshot showing cat command for showing installation log](./cat_command.png)
 
   ![Screenshot showing az login error](./az_login_error.png)
+
+- You might randomly get a similar error in the _InstallCAPI.log_ to `Error from server (InternalError): error when creating "template.yaml": Internal error occurred: failed calling webhook "default.azuremachinetemplate.infrastructure.cluster.x-k8s.io": failed to call webhook: Post "https://capz-webhook-service.capz-system.svc:443/mutate-infrastructure-cluster-x-k8s-io-v1beta1-azuremachinetemplate?timeout=10s": EOF`. This is an issue we are currently investigating. To resolve please redeploy ArcBox.
 
 If you are still having issues deploying ArcBox, please [submit an issue](https://github.com/microsoft/azure_arc/issues/new/choose) on GitHub and include a detailed description of your issue, the Azure region you are deploying to, the flavor of ArcBox you are trying to deploy. Inside the _C:\ArcBox\Logs_ folder you can also find instructions for uploading your logs to an Azure storage account for review by the Jumpstart team.
