@@ -52,6 +52,7 @@ ArcBox incurs normal Azure consumption charges for various Azure resources such 
 - [ArcBox Full cost estimate](https://aka.ms/ArcBoxFullCost)
 - [ArcBox for ITPro cost estimate](https://aka.ms/ArcBoxITProCost)
 - [ArcBox for DevOps cost estimate](https://aka.ms/ArcBoxDevOpsCost)
+<!-- - [ArcBox for DataOps cost estimate](https://aka.ms/ArcBoxDataOpsCost) -->
 
 ## Where can I go if I have trouble deploying or using ArcBox?
 
