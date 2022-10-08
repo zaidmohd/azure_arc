@@ -43,6 +43,7 @@ ArcBox offers three different configurations, or "flavors", that allow the user 
 - [ArcBox "Full"](https://azurearcjumpstart.io/azure_jumpstart_arcbox/Full) - The core ArcBox experience with Azure Arc-enabled servers, Kubernetes, and data services capabilities.
 - [ArcBox for IT Pros](https://azurearcjumpstart.io/azure_jumpstart_arcbox/ITPro) - This essential Azure Arc-enabled servers sandbox includes a mix of Microsoft Windows and Linux servers managed using the included capabilities such Azure Monitor, Microsoft Defender for Cloud, Azure Policy, Update Management and more.
 - [ArcBox for DevOps](https://azurearcjumpstart.io/azure_jumpstart_arcbox/DevOps) - This essential Azure Arc-enabled Kubernetes sandbox with the included capabilities such as GitOps, Open Service Mesh (OSM), secretes management, monitoring, and more.
+<!-- - [ArcBox for DataOps](https://azurearcjumpstart.io/azure_jumpstart_arcbox/DataOps) - This essential Azure Arc-enabled SQL Managed Instance sandbox with the included capabilities such as AD authentication, disaster recovery, point-in-time restore, migration, and more. -->
 
 ## What are the costs for using ArcBox?
 
@@ -59,5 +60,6 @@ Each ArcBox flavor has a troubleshooting section of its documentation that you c
 - [Troubleshooting ArcBox Full](https://azurearcjumpstart.io/azure_jumpstart_arcbox/full/#basic-troubleshooting)
 - [Troubleshooting ArcBox for IT Pros](https://azurearcjumpstart.io/azure_jumpstart_arcbox/ITPro/#basic-troubleshooting)
 - [Troubleshooting ArcBox for DevOps](https://azurearcjumpstart.io/azure_jumpstart_arcbox/DevOps/#basic-troubleshooting)
+<!-- - [Troubleshooting ArcBox for DataOps](https://azurearcjumpstart.io/azure_jumpstart_arcbox/DataOps/#basic-troubleshooting) -->
 
 If you're still stuck, please [submit an issue](https://github.com/microsoft/azure_arc/issues/new/choose) on our GitHub repository and the Jumpstart team will try to assist you.
