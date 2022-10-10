@@ -27,7 +27,7 @@ Please review the [Azure Monitor Agent (AMA) supported OS documentation](https:/
 
 ## Prerequisites
 
-- As mentioned, this scenario starts at the point where you already deployed and connected VMs or servers to Azure Arc. In the screenshots below, you can see a Windows server that have been connected with Azure Arc and are visible as a resource in Azure.
+- As mentioned, this scenario starts at the point where you already deployed and connected VMs or servers to Azure Arc. In the screenshots below, you can see a Windows server that have been connected with Azure Arc and is visible as a resource in Azure.
 
     ![Screenshot Azure Arc-enabled servers on resource group](./01.png)
 
