@@ -94,7 +94,7 @@ As mentioned, this deployment will leverage ARM templates.
 
     ![Screenshot AMA extension on Windows](./07.png)
 
-- Moreover, a **Data Collection Rule (DCR)** is created to send logs from the Azure Arc-enabled servers to the new **Log Analytics workspace**. In addition the **Azure Managed Grafana** service is deployed which we will explore later in this scenario.
+- Moreover, a **Data Collection Rule (DCR)** is created to send logs from the Azure Arc-enabled servers to the new **Log Analytics workspace**. In addition, the **Azure Managed Grafana** service is deployed which we will explore later in this scenario.
 
     ![Screenshot Data Collection Rules and Log Analytics workspace](./08.png)
 
