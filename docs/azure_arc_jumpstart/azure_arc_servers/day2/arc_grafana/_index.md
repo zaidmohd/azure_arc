@@ -76,7 +76,7 @@ As mentioned, this deployment will leverage ARM templates.
 
 - Edit the [_parameters file_](https://github.com/microsoft/azure_arc/blob/main/azure_arc_servers_jumpstart/grafana/grafana-template.parameters.json) providing the values that match your configuration as described above.
 
-    ![Screenshot ARM template parameters file](./05.png)
+    ![Screenshot of ARM template parameters file](./05.png)
 
 - Locate the [*ARM template*](https://github.com/microsoft/azure_arc/blob/main/azure_arc_servers_jumpstart/grafana/grafana-template.json) and deploy it by running the following command:
 
