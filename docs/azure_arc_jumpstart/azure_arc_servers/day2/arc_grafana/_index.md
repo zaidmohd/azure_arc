@@ -102,7 +102,7 @@ As mentioned, this deployment will leverage ARM templates.
 
     ![Screenshot Data Collection Rules and Log Analytics workspace](./08_2.png)
 
-- If you click on the **Data Collection Rules (DCR)**, you will see the **Resources** attached to it and the collected **Data Sources**.
+- If you click on the **Data Collection Rule (DCR)**, you will see the **Resources** attached to it and the collected **Data Sources**.
 
   - On the **Resources** blade, you will see your Windows Azure Arc-enabled server:
 
