@@ -8,7 +8,7 @@ description: >
 
 ## Dashboard visualization on Azure Arc-enabled servers with Azure Managed Grafana and Azure Monitor Agent
 
-The following scenario will guide you on how to deploy the [Azure Monitor Agent (AMA)](https://docs.microsoft.com/azure/azure-monitor/agents/azure-monitor-agent-overview) as an extension on your Windows Azure Arc-enabled servers, as well as deploying Azure Managed Grafana for dashboard visualization to extend monitoring capabilities across hybrid multi-cloud and on-premises environments. [Azure Managed Grafana](https://azure.microsoft.com/en-us/services/managed-grafana/#overview) is a fully managed service for analytics and monitoring solutions.
+The following scenario will guide you on how to deploy the [Azure Monitor Agent (AMA)](https://docs.microsoft.com/azure/azure-monitor/agents/azure-monitor-agent-overview) as an extension on your Windows Azure Arc-enabled servers, as well as deploying Azure Managed Grafana for dashboard visualization to extend monitoring capabilities across hybrid multi-cloud and on-premises environments. [Azure Managed Grafana](https://azure.microsoft.com/services/managed-grafana/#overview) is a fully managed service for analytics and monitoring solutions.
 
 > **NOTE: This scenario assumes you already deployed VMs or servers that are running on-premises or other clouds and you have connected them to Azure Arc. If you haven't, this repository offers you a way to do so in an automated fashion:**
 
@@ -29,9 +29,9 @@ Please review the [Azure Monitor Agent (AMA) supported OS documentation](https:/
 
 - As mentioned, this scenario starts at the point where you already deployed and connected VMs or servers to Azure Arc. In the screenshots below, you can see a Windows server that have been connected with Azure Arc and are visible as a resource in Azure.
 
-    ![Screenshot Azure Arc-enabled servers on resource group](./01.png)
+    ![Screenshot of Azure Arc-enabled servers on resource group](./01.png)
 
-    ![Screenshot Windows Azure Arc-enabled server connected status](./02.png)
+    ![Screenshot of Windows Azure Arc-enabled server connected status](./02.png)
 
 - [Install or update Azure CLI](https://docs.microsoft.com/cli/azure/install-azure-cli?view=azure-cli-latest). Azure CLI should be running version 2.14 or later. Use ```az --version``` to check your current installed version.
 
@@ -54,15 +54,15 @@ The steps below will help you get familiar with the automation and deployment fl
 
 - Click the <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmicrosoft%2Fazure_arc%2Fmain%2Fazure_arc_servers_jumpstart%2Fgrafana%2Fgrafana-template.json" target="_blank"><img src="https://aka.ms/deploytoazurebutton"/></a> button and enter values for the the ARM template parameters.
 
-  ![Screenshot showing Azure portal deployment](./03.png)
+> **NOTE:** Use the following command to get the AAD id of the current signed in user and copy it to the Grafana Adminprincipal Id parameter:
 
-Use the following command to get the AAD id of the current signed in user and copy it to the Grafana Adminprincipal Id parameter:
+  ```shell
+  az ad signed-in-user show --query id -o tsv
+  ```
 
-```shell
-az ad signed-in-user show --query id -o tsv
-```
+  ![Screenshot showing Azure portal deployment with required parameters](./03.png)
 
-  ![Screenshot showing Azure portal deployment](./04.png)
+  ![Screenshot showing successful Azure portal deployment](./04.png)
 
 ## Deployment Option 2: ARM template with Azure CLI
 
@@ -74,11 +74,11 @@ As mentioned, this deployment will leverage ARM templates.
     git clone https://github.com/microsoft/azure_arc.git
     ```
 
-- Edit the [*parameters file*](https://github.com/microsoft/azure_arc/blob/main/azure_arc_servers_jumpstart/grafana/grafana-template.parameters.json) providing the values that match your configuration as described above.
+- Edit the [_parameters file_](https://github.com/microsoft/azure_arc/blob/main/azure_arc_servers_jumpstart/grafana/grafana-template.parameters.json) providing the values that match your configuration as described above.
 
-    ![Screenshot ARM template parameters file](./05.png)
+    ![Screenshot of ARM template parameters file](./05.png)
 
-- Locate the [*ARM template*](https://github.com/microsoft/azure_arc/blob/main/azure_arc_servers_jumpstart/grafana/grafana-template.json) and deploy it by running the following command:
+- Locate the [_ARM template_](https://github.com/microsoft/azure_arc/blob/main/azure_arc_servers_jumpstart/grafana/grafana-template.json) and deploy it by running the following command:
 
     ```shell
     az deployment group create --resource-group <Name of the Azure resource group> \
@@ -88,43 +88,43 @@ As mentioned, this deployment will leverage ARM templates.
 
 - Once the template has completed its run, you should see an output as follows:
 
-    ![Screenshot ARM template execution output](./06.png)
+    ![Screenshot of ARM template execution output](./06.png)
 
 - You will have the Azure Monitor Agent (AMA) deployed on your Windows or Linux system and reporting to the Log Analytics workspace that has been created. You can verify by going back to your Azure Arc-enabled server, **Extensions** section:
 
-    ![Screenshot AMA extension on Windows](./07.png)
+    ![Screenshot of AMA extension on Windows](./07.png)
 
-- Moreover, a **Data Collection Rule (DCR)** is created to send logs from the Azure Arc-enabled servers to the new **Log Analytics workspace**. In addition the **Azure Managed Grafana** service is deployed which we will explore later in this scenario.
+- Moreover, a **Data Collection Rule (DCR)** is created to send logs from the Azure Arc-enabled servers to the new **Log Analytics workspace**. In addition, the **Azure Managed Grafana** service is deployed which we will explore later in this scenario.
 
-    ![Screenshot Data Collection Rules and Log Analytics workspace](./08.png)
+    ![Screenshot of Data Collection Rules and Log Analytics workspace](./08.png)
 
 - Note that the template deployment also created a required role assignment for **Azure Managed Grafana** to be able to access your monitoring data from its **Managed Identity**:
 
-    ![Screenshot Data Collection Rules and Log Analytics workspace](./08_2.png)
+    ![Screenshot showing Access control (IAM) blade](./08_2.png)
 
 - If you click on the **Data Collection Rules (DCR)**, you will see the **Resources** attached to it and the collected **Data Sources**.
 
   - On the **Resources** blade, you will see your Windows Azure Arc-enabled server:
 
-    ![Screenshot Windows Data Collection Rules - Resources](./09.png)
+    ![Screenshot of Windows Data Collection Rules - Resources](./09.png)
 
-  - On the **Data Sources** blade, you will see *Performance Counters*
+  - On the **Data Sources** blade, you will see _Performance Counters_
 
-    ![Screenshot Windows Data Collection Rules - Perf Counters](./10.png)
+    ![Screenshot of Windows Data Collection Rules - Perf Counters](./10.png)
 
-  - If you click on *Performance Counters*, you will see the **Data source** that is collected and the **Destination**, which is the Log Analytics workspace created as part of this scenario:
+  - If you click on _Performance Counters_, you will see the **Data source** that is collected and the **Destination**, which is the Log Analytics workspace created as part of this scenario:
 
-    ![Screenshot Windows Data Collection Rules - Perf Counters - Data Source](./11.png)
+    ![Screenshot of Windows Data Collection Rules - Perf Counters - Data Source](./11.png)
 
-    ![Screenshot Windows Data Collection Rules - Perf Counters - Destination](./12.png)
+    ![Screenshot of Windows Data Collection Rules - Perf Counters - Destination](./12.png)
 
 - Go back to your **resource group** and click on the **Log Analytics Workspace**:
 
-  ![Screenshot Log Analytics workspace](./13.png)
+  ![Screenshot of Log Analytics workspace](./13.png)
 
 - Click on **Logs**:
 
-  ![Screenshot Log Analytics workspace - Logs](./14.png)
+  ![Screenshot of Log Analytics workspace - Logs section](./14.png)
 
 - **Run** the following **query**. It will show you the **data types collected** by the **Azure Monitor Agent (AMA)** on each machine by using the **Data Collection Rules (DCR)**:
 
@@ -135,29 +135,29 @@ As mentioned, this deployment will leverage ARM templates.
   | sort by Computer asc
   ```
 
-  ![Screenshot Log Analytics workspace - Query](./15.png)
+  ![Screenshot of Log Analytics workspace - Query](./15.png)
 
 - It is time to explore **Azure Managed Grafana** and the included sample dashboard. Go back to your **resource group** and click on **Azure Managed Grafana**:
 
-  ![Screenshot Azure Managed Grafana resource group](./16.png)
+  ![Screenshot of Azure Managed Grafana resource group](./16.png)
 
 - In the **Azure Managed Grafana** overview click on the **Endpoint** url to open the Grafana webinterface.
 
 > **NOTE: Authenticate to Grafana with the user you provided in the template deployment (grafanaAdminprincipalId) or add your current user to one of the Azure RBAC roles Grafana Admin, Grafana Editor, Grafana Viewer**.
 
-  ![Screenshot Azure Managed Grafana endpoint](./17.png)
+  ![Screenshot showing Azure Managed Grafana endpoint location](./17.png)
 
 - Click on **Dashboards** and expand **Azure Monitor** to explore the included sample dashboards. Click on **Azure / Insights / Virtual Machines by Workspace**.
 
-  ![Screenshot Azure Managed Grafana endpoint](./18.png)
+  ![Screenshot of Azure Managed Grafana Dashboards navigation area](./18.png)
 
 - Finally, explore the included panels with monitoring data from your **Log Analytics workspace** and Azure Arc-enabled server.
 
-  ![Screenshot Azure Managed Grafana endpoint](./19.png)
+  ![Screenshot of Azure Managed Grafana Virtual Machine by Workspace sample dashboard](./19.png)
 
   - As an added bonus you also have the flexibility to use Azure Monitor and Virtual Machine Insights to vizualize monitoring data collected by **Azure Monitor Agent (AMA)**.
 
-  ![Screenshot Azure Managed Grafana endpoint](./20.png)
+  ![Screenshot of Azure Monitor Virtual Machines Insights](./20.png)
 
 ## Clean up environment
 
@@ -166,5 +166,5 @@ Complete the following steps to clean up your environment:
 - [Remove Data Collection Rule Association](https://docs.microsoft.com/powershell/module/az.monitor/remove-azdatacollectionruleassociation?view=azps-8.1.0)
 - [Remove Data Collection Rule](https://docs.microsoft.com/powershell/module/az.monitor/remove-azdatacollectionrule?view=azps-8.1.0)
 - [Uninstall Azure Monitor Agent (AMA)](https://docs.microsoft.com/azure/azure-monitor/agents/azure-monitor-agent-manage?tabs=ARMAgentPowerShell%2CPowerShellWindows%2CPowerShellWindowsArc%2CCLIWindows%2CCLIWindowsArc#uninstall-on-azure-arc-enabled-servers)
-- [Delete the Log Analytics workspace](https://docs.microsoft.com/en-us/azure/azure-monitor/logs/delete-workspace#powershell)
-- [Delete Azure Managed Grafana instance](https://learn.microsoft.com/en-us/cli/azure/grafana?view=azure-cli-latest#az-grafana-delete)
+- [Delete the Log Analytics workspace](https://docs.microsoft.com/azure/azure-monitor/logs/delete-workspace#powershell)
+- [Delete Azure Managed Grafana instance](https://learn.microsoft.com/cli/azure/grafana?view=azure-cli-latest#az-grafana-delete)
