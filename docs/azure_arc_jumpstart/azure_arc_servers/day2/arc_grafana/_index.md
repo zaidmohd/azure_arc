@@ -27,13 +27,13 @@ Please review the [Azure Monitor Agent (AMA) supported OS documentation](https:/
 
 ## Prerequisites
 
-- As mentioned, this scenario starts at the point where you already deployed and connected VMs or servers to Azure Arc. In the screenshots below, you can see a Windows server that have been connected with Azure Arc and are visible as a resource in Azure.
+- As mentioned, this scenario starts at the point where you already deployed and connected VMs or servers to Azure Arc. In the screenshots below, you can see a Windows server that have been connected with Azure Arc and is visible as a resource in Azure.
 
     ![Screenshot of Azure Arc-enabled servers on resource group](./01.png)
 
     ![Screenshot of Windows Azure Arc-enabled server connected status](./02.png)
 
-- [Install or update Azure CLI](https://docs.microsoft.com/cli/azure/install-azure-cli?view=azure-cli-latest). Azure CLI should be running version 2.14 or later. Use ```az --version``` to check your current installed version.
+- [Install or update Azure CLI](https://docs.microsoft.com/cli/azure/install-azure-cli?view=azure-cli-latest). Azure CLI should be running version 2.36 or later. Use ```az --version``` to check your current installed version.
 
 ## Deployment Options and Automation Flow
 
@@ -102,7 +102,7 @@ As mentioned, this deployment will leverage ARM templates.
 
     ![Screenshot showing Access control (IAM) blade](./08_2.png)
 
-- If you click on the **Data Collection Rules (DCR)**, you will see the **Resources** attached to it and the collected **Data Sources**.
+- If you click on the **Data Collection Rule (DCR)**, you will see the **Resources** attached to it and the collected **Data Sources**.
 
   - On the **Resources** blade, you will see your Windows Azure Arc-enabled server:
 
