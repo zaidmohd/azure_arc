@@ -189,7 +189,7 @@ ArcBox uses an advanced automation flow to deploy and configure all necessary re
 
   ![Screenshot showing Azure portal deployment of ArcBox](./portal_deploy03.png)
   
-    > **NOTE: The deployment can take up to 45 minutes.**
+    > **NOTE: The deployment can take up to 45 minutes. If it keeps running for more than that, please check the troubleshooting guide.**
 
 ## Deployment Option 2: ARM template with Azure CLI
 
@@ -226,7 +226,7 @@ ArcBox uses an advanced automation flow to deploy and configure all necessary re
 
   ![Screenshot showing az deployment group create](./az_deploy.png)
   
-  > **NOTE: The deployment can take up to 45 minutes.**
+  > **NOTE: The deployment can take up to 45 minutes. If it keeps running for more than that, please check the troubleshooting guide.**
 
 ## Deployment Option 3: Azure Bicep deployment via Azure CLI
 
@@ -263,7 +263,7 @@ ArcBox uses an advanced automation flow to deploy and configure all necessary re
   az deployment group create -g "<resource-group-name>" -f "main.bicep" -p "main.parameters.json"
   ```
   
-  > **NOTE: The deployment can take up to 45 minutes.**
+  > **NOTE: The deployment can take up to 45 minutes. If it keeps running for more than that, please check the troubleshooting guide.**
 
 ## Deployment Option 4: HashiCorp Terraform Deployment
 
@@ -325,7 +325,7 @@ ArcBox uses an advanced automation flow to deploy and configure all necessary re
 
   ![terraform plan](./terraform_apply.png)
   
-  > **NOTE: The deployment can take up to 45 minutes.**
+  > **NOTE: The deployment can take up to 45 minutes. If it keeps running for more than that, please check the troubleshooting guide.**
 
 ## Start post-deployment automation
 
