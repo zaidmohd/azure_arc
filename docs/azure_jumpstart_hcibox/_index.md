@@ -239,7 +239,7 @@ If you already have [Microsoft Defender for Cloud](https://docs.microsoft.com/az
 
 #### The Logon scripts
 
-- Once you log into the _HCIBox-Client_ VM, a PowerShell script will open and start running. This script will take between 3-4 hours to finish, and once completed, the script window will close automatically. At this point, the deployment is complete and you can start exploring all that HCIBox has to offer.
+- Once you log into the _HCIBox-Client_ VM, a PowerShell script will open and start running. **This script will take between 3-4 hours to finish**, and once completed, the script window will close automatically. At this point, the deployment is complete and you can start exploring all that HCIBox has to offer.
 
   ![Screenshot showing _HCIBox-Client_](./automation.png)
 
@@ -350,7 +350,7 @@ az group delete -n <name of your resource group>
 
 Occasionally deployments of HCIBox may fail at various stages. Common reasons for failed deployments include:
 
-- Invalid service principal id - service principal secret or service principal Azure tenant ID provided in _azuredeploy.parameters.json_ file.
+- Invalid service principal id, service principal secret or service principal Azure tenant ID provided in _main.parameters.json_ file. This can cause failures when running automation that requires logging into Azure, such as the scripts that register the HCI cluster, deploy AKS-HCI, or configure Arc resource bridge.
 - Not enough vCPU quota available in your target Azure region - check vCPU quota and ensure you have at least 48 available. See the [prerequisites](#prerequisites) section for more details.
 - Target Azure region does not support all required Azure services - ensure you are running HCIBox in one of the supported regions. See the [prerequisites](#prerequisites) section for more details.
 - Authentication issues - Most HCIBox operations require the use of the domain credentials configured during deployment. These credentials take the UPN format of _<username>@jumpstart.local_. If you have issues accessing services such as Windows Admin Center make sure you are using the correct credential.
