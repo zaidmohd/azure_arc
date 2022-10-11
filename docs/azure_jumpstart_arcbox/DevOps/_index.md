@@ -113,7 +113,7 @@ ArcBox uses an advanced automation flow to deploy and configure all necessary re
 
 ## Prerequisites
 
-- [Install or update Azure CLI to version 2.36.0 and above](https://docs.microsoft.com/cli/azure/install-azure-cli?view=azure-cli-latest). Use the below command to check your current installed version.
+- [Install or update Azure CLI to version 2.40.0 and above](https://docs.microsoft.com/cli/azure/install-azure-cli?view=azure-cli-latest). Use the below command to check your current installed version.
 
   ```shell
   az --version
@@ -169,32 +169,25 @@ ArcBox uses an advanced automation flow to deploy and configure all necessary re
 
   ![Screenshot showing forking sample apps repo](./apps_fork03.png)
 
-- Create an Azure service principal (SP). To deploy ArcBox, an Azure service principal assigned with multiple role-based access control (RBAC) roles is required:
+- Create Azure service principal (SP). To deploy ArcBox, an Azure service principal assigned with the _Owner_ role-based access control (RBAC) role is required. You can use Azure Cloud Shell (or other Bash shell), or PowerShell to create the service principal.
 
-  - "Contributor" - Required for provisioning Azure resources
-  - "Security admin" - Required for installing Microsoft Defender for Cloud Azure Arc-enabled Kubernetes extension and dismiss alerts
-  - "Security reader" - Required for being able to view Azure Arc-enabled Kubernetes Cloud Defender extension findings
-
-    To create it login to your Azure account run the below commands (this can also be done in [Azure Cloud Shell](https://shell.azure.com/).
+  - (Option 1) Create service principal using [Azure Cloud Shell](https://shell.azure.com/) or Bash shell with Azure CLI:
 
     ```shell
     az login
     subscriptionId=$(az account show --query id --output tsv)
-    az ad sp create-for-rbac -n "<Unique SP Name>" --role "Contributor" --scopes /subscriptions/$subscriptionId
-    az ad sp create-for-rbac -n "<Unique SP Name>" --role "Security admin" --scopes /subscriptions/$subscriptionId
-    az ad sp create-for-rbac -n "<Unique SP Name>" --role "Security reader" --scopes /subscriptions/$subscriptionId
+    az ad sp create-for-rbac -n "<Unique SP Name>" --role "Owner" --scopes /subscriptions/$subscriptionId
     ```
 
     For example:
 
     ```shell
+    az login
     subscriptionId=$(az account show --query id --output tsv)
-    az ad sp create-for-rbac -n "JumpstartArcBox" --role "Contributor" --scopes /subscriptions/$subscriptionId
-    az ad sp create-for-rbac -n "JumpstartArcBox" --role "Security admin" --scopes /subscriptions/$subscriptionId
-    az ad sp create-for-rbac -n "JumpstartArcBox" --role "Security reader" --scopes /subscriptions/$subscriptionId
+    az ad sp create-for-rbac -n "JumpstartArcBoxSPN" --role "Owner" --scopes /subscriptions/$subscriptionId
     ```
 
-    Output should look similar to this.
+    Output should look similar to this:
 
     ```json
     {
@@ -204,6 +197,28 @@ ArcBox uses an advanced automation flow to deploy and configure all necessary re
     "tenant": "XXXXXXXXXXXXXXXXXXXXXXXXXXXX"
     }
     ```
+  
+  - (Option 2) Create service principal using PowerShell. If necessary, follow [this documentation](https://learn.microsoft.com/powershell/azure/install-az-ps?view=azps-8.3.0) to install Azure PowerShell modules.
+
+    ```PowerShell
+    $account = Connect-AzAccount
+    $spn = New-AzADServicePrincipal -DisplayName "<Unique SPN name>" -Role "Owner" -Scope "/subscriptions/$($account.Context.Subscription.Id)"
+    echo "SPN App id: $($spn.AppId)"
+    echo "SPN secret: $($spn.PasswordCredentials.SecretText)"
+    ```
+
+    For example:
+
+    ```PowerShell
+    $account = Connect-AzAccount
+    $spn = New-AzADServicePrincipal -DisplayName "JumpstartArcBoxSPN" -Role "Owner" -Scope "/subscriptions/$($account.Context.Subscription.Id)"
+    echo "SPN App id: $($spn.AppId)"
+    echo "SPN secret: $($spn.PasswordCredentials.SecretText)"
+    ```
+
+    Output should look similar to this:
+
+    ![Screenshot showing creating an SPN with PowerShell](./create_spn_powershell.png)
 
     > **NOTE: If you create multiple subsequent role assignments on the same service principal, your client secret (password) will be destroyed and recreated each time. Therefore, make sure you grab the correct password.**
 
@@ -855,7 +870,7 @@ Occasionally deployments of ArcBox may fail at various stages. Common reasons fo
 
 Occasionally, you may need to review log output from scripts that run on the _ArcBox-Client_, _ArcBox-CAPI-MGMT_ or _ArcBox-K3s_ virtual machines in case of deployment failures. To make troubleshooting easier, the ArcBox deployment scripts collect all relevant logs in the _C:\ArcBox\Logs_ folder on _ArcBox-Client_. A short description of the logs and their purpose can be seen in the list below:
 
-| Logfile | Description |
+| Log file | Description |
 | ------- | ----------- |
 | _C:\ArcBox\Logs\Bootstrap.log_ | Output from the initial bootstrapping script that runs on _ArcBox-Client_. |
 | _C:\ArcBox\Logs\DevOpsLogonScript.log_ | Output of _DevOpsLogonScript.ps1_ which configures the Hyper-V host and guests and onboards the guests as Azure Arc-enabled servers. |
@@ -892,6 +907,8 @@ In the case of a failed deployment, pointing to a failure in either the _ubuntuR
   ![Screenshot showing cat command for showing installation log](./cat_command.png)
 
   ![Screenshot showing az login error](./az_login_error.png)
+
+- You might randomly get a similar error in the _InstallCAPI.log_ to `Error from server (InternalError): error when creating "template.yaml": Internal error occurred: failed calling webhook "default.azuremachinetemplate.infrastructure.cluster.x-k8s.io": failed to call webhook: Post "https://capz-webhook-service.capz-system.svc:443/mutate-infrastructure-cluster-x-k8s-io-v1beta1-azuremachinetemplate?timeout=10s": EOF`. This is an issue we are currently investigating. To resolve please redeploy ArcBox.
 
 If you are still having issues deploying ArcBox, please [submit an issue](https://github.com/microsoft/azure_arc/issues/new/choose) on GitHub and include a detailed description of your issue, the Azure region you are deploying to, the flavor of ArcBox you are trying to deploy. Inside the _C:\ArcBox\Logs_ folder you can also find instructions for uploading your logs to an Azure storage account for review by the Jumpstart team.
 
