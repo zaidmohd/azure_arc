@@ -155,7 +155,7 @@ As mentioned, this deployment will leverage ARM templates.
 
   ![Screenshot of Azure Managed Grafana Virtual Machine by Workspace sample dashboard](./19.png)
 
-  - As an added bonus you also have the flexibility to use Azure Monitor and Virtual Machine Insights to vizualize monitoring data collected by **Azure Monitor Agent (AMA)**.
+- As an added bonus, you also have the flexibility to use Azure Monitor and Virtual Machine Insights to visualize the monitoring data collected by **Azure Monitor Agent (AMA)**.
 
   ![Screenshot of Azure Monitor Virtual Machines Insights](./20.png)
 
