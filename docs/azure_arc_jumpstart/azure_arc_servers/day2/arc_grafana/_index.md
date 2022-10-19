@@ -122,7 +122,7 @@ As mentioned, this deployment will leverage ARM templates.
 
   ![Screenshot of Log Analytics workspace](./13.png)
 
-- Click on **Logs**:
+- Click on **Logs** and close the **Queries** pop-up window:
 
   ![Screenshot of Log Analytics workspace - Logs section](./14.png)
 
