@@ -175,9 +175,13 @@ As an alternative approach use the following script to clean up the resources th
   ArcResourceGroup="<Name of the Azure resource group>"
   ArcMachineName="<Name of the Arc-enabled server>"
   ArcSubscription="<Id of your subscription>"
+  
   az connectedmachine extension delete --name AzureMonitorWindowsAgent --machine-name $ArcMachineName --resource-group $ArcResourceGroup
+  
   az monitor data-collection rule association delete --name "arc-win-demovminsights-dcr-association" --resource "/subscriptions/$ArcSubscription/resourcegroups/$ArcResourceGroup/providers/microsoft.hybridcompute/machines/$ArcMachineName"
+  
   az monitor data-collection rule delete --name "MSVMI-la-ama-jumpstart" --resource-group $ArcResourceGroup
+  
   az grafana delete --name grafana-ama-jumpstart --resource-group $ArcResourceGroup
+  
   az monitor log-analytics workspace delete --resource-group $ArcResourceGroup --workspace-name la-ama-jumpstart
-  ```
