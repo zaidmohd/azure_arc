@@ -1,9 +1,9 @@
-<!-- ---
+---
 type: docs
 linkTitle: "Jumpstart ArcBox for DataOps"
 weight: 4
 ---
--->
+
 
 ## Jumpstart ArcBox for DataOps
 
@@ -127,7 +127,7 @@ ArcBox uses an advanced automation flow to deploy and configure all necessary re
 
   ![Screenshot showing az vm list-skus with restrictions](./list_skus.png)
   
- - Register necessary Azure resource providers by running the following commands.
+- Register necessary Azure resource providers by running the following commands.
 
     ```shell
     az provider register --namespace Microsoft.Kubernetes --wait
@@ -137,28 +137,25 @@ ArcBox uses an advanced automation flow to deploy and configure all necessary re
     az provider register --namespace Microsoft.OperationsManagement --wait
     ```
 
-- Create an Azure service principal (SP). To deploy ArcBox, an Azure service principal assigned with _Owner_ role-based access control (RBAC) role is required:
+- Create Azure service principal (SP). To deploy ArcBox, an Azure service principal assigned with the _Owner_ role-based access control (RBAC) role is required. You can use Azure Cloud Shell (or other Bash shell), or PowerShell to create the service principal.
 
-  - "Owner" - Required for provisioning Azure resources, view Azure Arc-enabled Kubernetes, Azure Arc-enabled Data Services billing, monitoring metrics, and logs management
-
-  > **NOTE: Jumpstart is following the guidance and best practices of the [Azure Arc Data Services documentation](https://learn.microsoft.com/azure/azure-arc/data/upload-metrics) for enabling and configuring automatic upload of metrics and logs to Azure Monitor**
-
-    To create it login to your Azure account run the below commands (this can also be done in [Azure Cloud Shell](https://shell.azure.com/).
+  - (Option 1) Create service principal using [Azure Cloud Shell](https://shell.azure.com/) or Bash shell with Azure CLI:
 
     ```shell
     az login
-    $subscriptionId=$(az account show --query id --output tsv)
+    subscriptionId=$(az account show --query id --output tsv)
     az ad sp create-for-rbac -n "<Unique SP Name>" --role "Owner" --scopes /subscriptions/$subscriptionId
     ```
 
     For example:
 
     ```shell
-    $subscriptionId=$(az account show --query id --output tsv)
-    az ad sp create-for-rbac -n "JumpstartArcBox" --role "Owner" --scopes /subscriptions/$subscriptionId
+    az login
+    subscriptionId=$(az account show --query id --output tsv)
+    az ad sp create-for-rbac -n "JumpstartArcBoxSPN" --role "Owner" --scopes /subscriptions/$subscriptionId
     ```
 
-    Output should look similar to this.
+    Output should look similar to this:
 
     ```json
     {
@@ -168,6 +165,28 @@ ArcBox uses an advanced automation flow to deploy and configure all necessary re
     "tenant": "XXXXXXXXXXXXXXXXXXXXXXXXXXXX"
     }
     ```
+  
+  - (Option 2) Create service principal using PowerShell. If necessary, follow [this documentation](https://learn.microsoft.com/powershell/azure/install-az-ps?view=azps-8.3.0) to install Azure PowerShell modules.
+
+    ```PowerShell
+    $account = Connect-AzAccount
+    $spn = New-AzADServicePrincipal -DisplayName "<Unique SPN name>" -Role "Owner" -Scope "/subscriptions/$($account.Context.Subscription.Id)"
+    echo "SPN App id: $($spn.AppId)"
+    echo "SPN secret: $($spn.PasswordCredentials.SecretText)"
+    ```
+
+    For example:
+
+    ```PowerShell
+    $account = Connect-AzAccount
+    $spn = New-AzADServicePrincipal -DisplayName "JumpstartArcBoxSPN" -Role "Owner" -Scope "/subscriptions/$($account.Context.Subscription.Id)"
+    echo "SPN App id: $($spn.AppId)"
+    echo "SPN secret: $($spn.PasswordCredentials.SecretText)"
+    ```
+
+    Output should look similar to this:
+
+    ![Screenshot showing creating an SPN with PowerShell](./create_spn_powershell.png)
 
     > **NOTE: If you create multiple subsequent role assignments on the same service principal, your client secret (password) will be destroyed and recreated each time. Therefore, make sure you grab the correct password.**
 
@@ -189,7 +208,7 @@ ArcBox uses an advanced automation flow to deploy and configure all necessary re
 
   ![Screenshot showing Azure portal deployment of ArcBox](./portal_deploy03.png)
   
-    > **NOTE: The deployment can take up to 45 minutes.**
+    > **NOTE: The deployment can take up to 45 minutes. If it keeps running for more than that, please check the troubleshooting guide.**
 
 ## Deployment Option 2: ARM template with Azure CLI
 
@@ -226,7 +245,7 @@ ArcBox uses an advanced automation flow to deploy and configure all necessary re
 
   ![Screenshot showing az deployment group create](./az_deploy.png)
   
-  > **NOTE: The deployment can take up to 45 minutes.**
+  > **NOTE: The deployment can take up to 45 minutes. If it keeps running for more than that, please check the troubleshooting guide.**
 
 ## Deployment Option 3: Azure Bicep deployment via Azure CLI
 
@@ -263,7 +282,7 @@ ArcBox uses an advanced automation flow to deploy and configure all necessary re
   az deployment group create -g "<resource-group-name>" -f "main.bicep" -p "main.parameters.json"
   ```
   
-  > **NOTE: The deployment can take up to 45 minutes.**
+  > **NOTE: The deployment can take up to 45 minutes. If it keeps running for more than that, please check the troubleshooting guide.**
 
 ## Deployment Option 4: HashiCorp Terraform Deployment
 
@@ -288,7 +307,6 @@ ArcBox uses an advanced automation flow to deploy and configure all necessary re
   client_admin_ssh    = "C:/Temp/rsa.pub"
   deployment_flavor   = "DataOps"
   deploy_bastion      = false
-  github_username     = "GitHubUser"
   ```
 
 - Variable Reference:
@@ -300,8 +318,8 @@ ArcBox uses an advanced automation flow to deploy and configure all necessary re
   - **_`client_admin_ssh`_** - SSH public key path, used for Linux VMs
   - **_`deployment_flavor`_** - Use the value "DataOps" to specify that you want to deploy the DataOps flavor of ArcBox
   - _`deployBastion`_ - Set to true if you want to use Azure Bastion to connect to _ArcBox-Client_
-  - **_`client_admin_username`_** - Admin username for Windows & Linux VMs
-  - **_`client_admin_password`_** - Admin password for Windows VMs. Password must have 3 of the following: 1 lower case character, 1 upper case character, 1 number, and 1 special character. The value must be between 12 and 123 characters long.
+  - _`client_admin_username`_ - Admin username for Windows & Linux VMs
+  - _`client_admin_password`_ - Admin password for Windows VMs. Password must have 3 of the following: 1 lower case character, 1 upper case character, 1 number, and 1 special character. The value must be between 12 and 123 characters long.
   - **_`workspace_name`_** - Unique name for the ArcBox Log Analytics workspace that will be created
 
   > **NOTE: Any variables in bold are required. If any optional parameters are not provided, defaults will be used.**
@@ -326,7 +344,7 @@ ArcBox uses an advanced automation flow to deploy and configure all necessary re
 
   ![terraform plan](./terraform_apply.png)
   
-  > **NOTE: The deployment can take up to 45 minutes.**
+  > **NOTE: The deployment can take up to 45 minutes. If it keeps running for more than that, please check the troubleshooting guide.**
 
 ## Start post-deployment automation
 
@@ -386,13 +404,13 @@ If you already have [Microsoft Defender for Cloud](https://docs.microsoft.com/az
 After configuring access to the Client VM, you have to connect using the UPN format whether you are connecting using RDP or Azure Bastion.
 Example:
 
-- Username: arcdemo@jumpstart.local
+- Username: arcdemo@&#65279;jumpstart.local
 
   ![Screenshot showing connecting to the VM using UPN format](./domain_login.png)
 
   ![Screenshot showing connecting to the VM using UPN format in Bastion](./domain_login_bastion.png)
 
-> **Warning: Logging into the Client VM without the UPN format _username@jumpstart.local_ will prevent the automation from running automatically.**
+> **Warning: Logging into the Client VM without the UPN format _username@&#65279;jumpstart.local_ will prevent the automation from running automatically.**
 
 #### The Logon scripts
 
