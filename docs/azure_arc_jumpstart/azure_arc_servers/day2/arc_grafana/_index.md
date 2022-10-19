@@ -141,7 +141,7 @@ As mentioned, this deployment will leverage ARM templates.
 
   ![Screenshot of Azure Managed Grafana resource group](./16.png)
 
-- In the **Azure Managed Grafana** overview click on the **Endpoint** url to open the Grafana webinterface.
+- In the **Azure Managed Grafana** overview click on the **Endpoint** url to open the Grafana web interface.
 
 > **NOTE: Authenticate to Grafana with the user you provided in the template deployment (grafanaAdminprincipalId) or add your current user to one of the Azure RBAC roles Grafana Admin, Grafana Editor, Grafana Viewer**.
 
