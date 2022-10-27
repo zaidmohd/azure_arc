@@ -61,8 +61,7 @@ ArcBox uses an advanced automation flow to deploy and configure all necessary re
     - Windows Server 2022 VM - onboarded as Azure Arc-enabled server
     - Windows Server 2019 VM - onboarded as Azure Arc-enabled server
     - Windows VM running SQL Server - onboarded as Azure Arc-enabled SQL Server (as well as Azure Arc-enabled server)
-    - Ubuntu VM - onboarded as Azure Arc-enabled server
-    - CentOS VM - onboarded as Azure Arc-enabled server
+    - 2 x Ubuntu VM - onboarded as Azure Arc-enabled servers
   - Deploy an Azure Monitor workbook that provides example reports and metrics for monitoring ArcBox components
 
 ## Prerequisites
