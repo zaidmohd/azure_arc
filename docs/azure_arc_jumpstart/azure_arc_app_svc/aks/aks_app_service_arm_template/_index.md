@@ -157,19 +157,21 @@ By design, port 3389 is not allowed on the network security group. Therefore, yo
 
   ![Screenshot showing Arc-App-Client NSG with blocked RDP](./03.png)
 
-- Specify the IP address that you will be connecting from and select RDP as the service with "Allow" set as the action. You can retrieve your public IP address by accessing [https://icanhazip.com](https://icanhazip.com) or [https://whatismyip.com](https://whatismyip.com).
+  ![Screenshot showing adding a new inbound security rule](./04.png)
 
-  <img src="./04.png" alt="Screenshot showing adding a new allow RDP inbound security rule" width="400">
+- Specify the IP address that you will be connecting from and select RDP as the service with "Allow" set as the action. You can retrieve your public IP address by accessing [https://icanhazip.com](https://icanhazip.com) or [https://whatismyip.com](https://whatismyip.com).
 
   ![Screenshot showing all inbound security rule](./05.png)
 
-  ![Screenshot showing connecting to the VM using RDP](./06.png)
+  ![Screenshot showing all NSG rules after opening RDP](./06.png)
+
+  ![Screenshot showing connecting to the VM using RDP](./07.png)
 
 ### Connect using Azure Bastion
 
 - If you have chosen to deploy Azure Bastion in your deployment, use it to connect to the VM.
 
-  ![Screenshot showing connecting to the VM using Bastion](./07.png)
+  ![Screenshot showing connecting to the VM using Bastion](./08.png)
 
   > **NOTE: When using Azure Bastion, the desktop background image is not visible. Therefore some screenshots in this guide may not exactly match your experience if you are connecting to _ArcBox-Client_ with Azure Bastion.**
 
@@ -179,9 +181,7 @@ If you already have [Microsoft Defender for Cloud](https://docs.microsoft.com/az
 
 - In the Client VM configuration pane, enable just-in-time. This will enable the default settings.
 
-  ![Screenshot showing the Microsoft Defender for cloud portal, allowing RDP on the client VM](./08.png)
-
-  ![Screenshot showing connecting to the VM using RDP](./09.png)
+  ![Screenshot showing the Microsoft Defender for cloud portal, allowing RDP on the client VM](./09.png)
 
   ![Screenshot showing connecting to the VM using JIT](./10.png)
 
