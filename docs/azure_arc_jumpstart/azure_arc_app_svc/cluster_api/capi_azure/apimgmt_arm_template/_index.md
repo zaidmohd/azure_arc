@@ -199,21 +199,21 @@ If you already have [Microsoft Defender for Cloud](https://docs.microsoft.com/az
 
     > **NOTE: As you will notices from the screenshots below, during the Azure Arc-enabled app services environment, the _log-processor_ service pods will be restarted and will go through multiple Kubernetes pod lifecycle stages. This is normal and can safely be ignored. To learn more about the various Azure Arc-enabled app services Kubernetes components, visit the official [Azure Docs page](https://docs.microsoft.com/azure/app-service/overview-arc-integration#pods-created-by-the-app-service-extension).**
 
-    ![PowerShell logon script run](./05.png)
+    ![PowerShell logon script run](./11.png)
 
-    ![PowerShell logon script run](./06.png)
+    ![PowerShell logon script run](./12.png)
 
-    ![PowerShell logon script run](./07.png)
+    ![PowerShell logon script run](./13.png)
 
-    ![PowerShell logon script run](./08.png)
+    ![PowerShell logon script run](./14.png)
 
-    ![PowerShell logon script run](./09.png)
+    ![PowerShell logon script run](./15.png)
 
-    ![PowerShell logon script run](./10.png)
+    ![PowerShell logon script run](./16.png)
 
   Once the script finishes it's run, the logon script PowerShell session will be closed, the Windows wallpaper will change, and both the API Management gateway and the sample API will be configured on the cluster.
 
-    ![Wallpaper change](./11.png)
+    ![Wallpaper change](./17.png)
 
 - Since this scenario is deploying both the app service plan and a sample web application, you will also notice additional, newly deployed Azure resources in the resources group. The important ones to notice are:
 
@@ -227,7 +227,7 @@ If you already have [Microsoft Defender for Cloud](https://docs.microsoft.com/az
 
   - [**App Service**](https://docs.microsoft.com/azure/app-service/overview) - Azure App Service is an HTTP-based service for hosting web applications, REST APIs, and mobile back ends.
 
-  ![Additional Azure resources in the resource group](./12.png)
+  ![Additional Azure resources in the resource group](./18.png)
 
 ## API Management self-hosted gateway
 
@@ -235,25 +235,25 @@ In this scenario, the Azure Arc-enabled API Management cluster extension was dep
 
 - In order to view cluster extensions, click on the azure Arc-enabled Kubernetes resource Extensions settings.
 
-  ![Azure Arc enabled Kubernetes resource](./13.png)
+  ![Azure Arc enabled Kubernetes resource](./19.png)
 
-  ![Azure Arc enabled Kubernetes cluster extensions settings](./14.png)
+  ![Azure Arc enabled Kubernetes cluster extensions settings](./20.png)
 
 Deploying the API Management gateway extension to an Azure Arc-enabled Kubernetes cluster creates an Azure API Management self-hosted gateway. You can verify this from the portal by going to the Resource Group and selecting the API management service.
 
-  ![API management service](./15.png)
+  ![API management service](./21.png)
 
 Select Gateways on the Deployment + infrastructure section.
 
-  ![Self-hosted Gateway](./16.png)
+  ![Self-hosted Gateway](./22.png)
 
 A self-hosted gateway should be deployed with one connected node.
 
-  ![Connected node on self-hosted gateway](./17.png)
+  ![Connected node on self-hosted gateway](./23.png)
 
 In this scenario, a sample Demo conference API was deployed. To view the deployed API, simply click on the self-hosted gateway resource and select on APIs.
 
-  ![Demo Conference API](./18.png)
+  ![Demo Conference API](./24.png)
 
 To demonstrate that the self-hosted gateway is processing API requests you need to identify two elements:
 
@@ -263,13 +263,13 @@ To demonstrate that the self-hosted gateway is processing API requests you need 
     kubectl get svc -n apimgmt
     ```
 
-  ![Self-hosted gateway public IP](./19.png)
+  ![Self-hosted gateway public IP](./25.png)
 
 - API management subscription key, from the Azure portal on the API Management service resource select Subscriptions under APIs and select Show/hide keys for the one with display name "Built-in all-access subscription".
 
-  ![Self-hosted gateway subscriptions](./20.png)
+  ![Self-hosted gateway subscriptions](./26.png)
 
-  ![Subscription key](./21.png)
+  ![Subscription key](./27.png)
 
 Once you have obtained these two parameters, replace them on the following code snippet and run it from the client VM PowerShell.
 
@@ -290,14 +290,14 @@ Once you have obtained these two parameters, replace them on the following code 
     }
   ```
 
-  ![API calls test](./22.png)
+  ![API calls test](./28.png)
 
 In the Overview page of the API Management service, you can now see how the self-hosted gateway API requests are now shown.
 
-  ![API requests metrics](./23.png)
+  ![API requests metrics](./29.png)
 
 ## Cleanup
 
 - If you want to delete the entire environment, simply delete the deployed resource group from the Azure Portal.
 
-  ![Delete Azure resource group](./24.png)
+  ![Delete Azure resource group](./30.png)
