@@ -157,11 +157,9 @@ By design, port 3389 is not allowed on the network security group. Therefore, yo
 
   ![Screenshot showing Arc-App-Client NSG with blocked RDP](./03.png)
 
-  ![Screenshot showing adding a new inbound security rule](./04.png)
-
 - Specify the IP address that you will be connecting from and select RDP as the service with "Allow" set as the action. You can retrieve your public IP address by accessing [https://icanhazip.com](https://icanhazip.com) or [https://whatismyip.com](https://whatismyip.com).
 
-  <img src="./nsg_add_rdp_rule.png" alt="Screenshot showing adding a new allow RDP inbound security rule" width="400">
+  <img src="./04.png" alt="Screenshot showing adding a new allow RDP inbound security rule" width="400">
 
   ![Screenshot showing all inbound security rule](./05.png)
 
