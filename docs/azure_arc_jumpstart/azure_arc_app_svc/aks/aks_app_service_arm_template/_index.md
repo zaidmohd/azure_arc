@@ -155,23 +155,23 @@ By design, port 3389 is not allowed on the network security group. Therefore, yo
 
 - Open the _Arc-App-Client-NSG_ resource in Azure portal and click "Add" to add a new rule.
 
-  ![Screenshot showing ArcBox-Client NSG with blocked RDP](./rdp_nsg_blocked.png)
+  ![Screenshot showing Arc-App-Client NSG with blocked RDP](./03.png)
 
-  ![Screenshot showing adding a new inbound security rule](./nsg_add_rule.png)
+  ![Screenshot showing adding a new inbound security rule](./04.png)
 
 - Specify the IP address that you will be connecting from and select RDP as the service with "Allow" set as the action. You can retrieve your public IP address by accessing [https://icanhazip.com](https://icanhazip.com) or [https://whatismyip.com](https://whatismyip.com).
 
   <img src="./nsg_add_rdp_rule.png" alt="Screenshot showing adding a new allow RDP inbound security rule" width="400">
 
-  ![Screenshot showing all inbound security rule](./rdp_nsg_all_rules.png)
+  ![Screenshot showing all inbound security rule](./05.png)
 
-  ![Screenshot showing connecting to the VM using RDP](./rdp_connect.png)
+  ![Screenshot showing connecting to the VM using RDP](./06.png)
 
 ### Connect using Azure Bastion
 
 - If you have chosen to deploy Azure Bastion in your deployment, use it to connect to the VM.
 
-  ![Screenshot showing connecting to the VM using Bastion](./bastion_connect.png)
+  ![Screenshot showing connecting to the VM using Bastion](./07.png)
 
   > **NOTE: When using Azure Bastion, the desktop background image is not visible. Therefore some screenshots in this guide may not exactly match your experience if you are connecting to _ArcBox-Client_ with Azure Bastion.**
 
@@ -181,37 +181,17 @@ If you already have [Microsoft Defender for Cloud](https://docs.microsoft.com/az
 
 - In the Client VM configuration pane, enable just-in-time. This will enable the default settings.
 
-  ![Screenshot showing the Microsoft Defender for cloud portal, allowing RDP on the client VM](./jit_allowing_rdp.png)
+  ![Screenshot showing the Microsoft Defender for cloud portal, allowing RDP on the client VM](./08.png)
 
-  ![Screenshot showing connecting to the VM using RDP](./rdp_connect.png)
+  ![Screenshot showing connecting to the VM using RDP](./09.png)
 
-  ![Screenshot showing connecting to the VM using JIT](./jit_connect_rdp.png)
-
-- Now that the first phase of the automation is completed, it is time to RDP to the client VM. If you have not chosen to deploy Azure Bastion in the ARM template, RDP to the VM using its public IP.
-
-    ![Screenshot showing the Client VM public IP](./03.png)
-
-- If you have chosen to deploy Azure Bastion in the ARM template, use it to connect to the VM.
-
-    ![Screenshot showing connection to the Client VM using Bastion](./04.png)
+  ![Screenshot showing connecting to the VM using JIT](./10.png)
 
 - At first login, as mentioned in the "Automation Flow" section above, the [_AppServicesLogonScript_](https://github.com/microsoft/azure_arc/blob/main/azure_arc_app_services_jumpstart/aks/ARM/artifacts/AppServicesLogonScript.ps1) PowerShell logon script will start it's run.
 
 - Let the script to run its course and **do not close** the PowerShell session, this will be done for you once completed. Once the script will finish it's run, the logon script PowerShell session will be closed, the Windows wallpaper will change and the Azure web application will be deployed on the cluster and be ready to use.
 
     > **NOTE: As you will notices from the screenshots below, during the Azure Arc-enabled app services environment, the _log-processor_ service pods will be restarted and will go through multiple Kubernetes pod lifecycle stages. This is normal and can safely be ignored. To learn more about the various Azure Arc-enabled app services Kubernetes components, visit the official [Azure Docs page](https://docs.microsoft.com/azure/app-service/overview-arc-integration#pods-created-by-the-app-service-extension).**
-
-    ![Screenshot showing PowerShell logon script run](./05.png)
-
-    ![Screenshot showing PowerShell logon script run](./06.png)
-
-    ![Screenshot showing PowerShell logon script run](./07.png)
-
-    ![Screenshot showing PowerShell logon script run](./08.png)
-
-    ![Screenshot showing PowerShell logon script run](./09.png)
-
-    ![Screenshot showing PowerShell logon script run](./10.png)
 
     ![Screenshot showing PowerShell logon script run](./11.png)
 
@@ -229,9 +209,21 @@ If you already have [Microsoft Defender for Cloud](https://docs.microsoft.com/az
 
     ![Screenshot showing PowerShell logon script run](./18.png)
 
+    ![Screenshot showing PowerShell logon script run](./19.png)
+
+    ![Screenshot showing PowerShell logon script run](./20.png)
+
+    ![Screenshot showing PowerShell logon script run](./21.png)
+
+    ![Screenshot showing PowerShell logon script run](./22.png)
+
+    ![Screenshot showing PowerShell logon script run](./23.png)
+
+    ![Screenshot showing PowerShell logon script run](./24.png)
+
   Once the script finishes it's run, the logon script PowerShell session will be closed, the Windows wallpaper will change, and both the app service plan and the sample web application deployed on the cluster will be ready.
 
-    ![Screenshot showing desktop wallpaper change](./19.png)
+    ![Screenshot showing desktop wallpaper change](./25.png)
 
 - Since this scenario is deploying both the app service plan and a sample web application, you will also notice additional, newly deployed Azure resources in the resources group. The important ones to notice are:
 
@@ -245,15 +237,15 @@ If you already have [Microsoft Defender for Cloud](https://docs.microsoft.com/az
 
   - [**App Service**](https://docs.microsoft.com/azure/app-service/overview) - Azure App Service is an HTTP-based service for hosting web applications, REST APIs, and mobile back ends.
 
-  ![Screenshot showing additional Azure resources in the resource group](20.png)
+  ![Screenshot showing additional Azure resources in the resource group](26.png)
 
 - In this scenario, **a Docker, custom container Linux-based** sample Jumpstart web application was deployed. To open the deployed web application in your web browser, simply click the App Service resource and the created URL or the Browse button.
 
-  ![Screenshot showing App Service resource in a resource group](./21.png)
+  ![Screenshot showing App Service resource in a resource group](./27.png)
 
-  ![Screenshot showing the web application URL](./22.png)
+  ![Screenshot showing the web application URL](./28.png)
 
-  ![Screenshot showing the web application open in a web browser](./23.png)
+  ![Screenshot showing the web application open in a web browser](./29.png)
 
 ## Cluster extensions
 
@@ -261,12 +253,12 @@ In this scenario, the Azure Arc-enabled app services cluster extension was deplo
 
 - In order to view cluster extensions, click on the Azure Arc-enabled Kubernetes resource Extensions settings.
 
-  ![Screenshot showing the Azure Arc-enabled Kubernetes resource](./24.png)
+  ![Screenshot showing the Azure Arc-enabled Kubernetes resource](./30.png)
 
-  ![Screenshot showing Azure Arc-enabled Kubernetes cluster extensions settings](./25.png)
+  ![Screenshot showing Azure Arc-enabled Kubernetes cluster extensions settings](./31.png)
 
 ## Cleanup
 
 - If you want to delete the entire environment, simply delete the deployed resource group from the Azure portal.
 
-  ![Screenshot showing the Delete Azure resource group button](./26.png)
+  ![Screenshot showing the Delete Azure resource group button](./32.png)
