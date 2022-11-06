@@ -180,7 +180,7 @@ By design, port 3389 is not allowed on the network security group. Therefore, yo
 
 ### Connect using Azure Bastion
 
-- If you have chosen to deploy Azure Bastion in your deployment, use it to connect to the VM. Please make sure to use User Principal Name of the domain user i.e. **arcdemo@jupstart.local** to login to Client VM through Bastion. Login will fail if using **jumpstart\arcdemo** format.
+- If you have chosen to deploy Azure Bastion in your deployment, use it to connect to the VM.
 
   ![Screenshot showing connecting to the VM using Bastion](./09.png)
 
