@@ -114,7 +114,6 @@ As mentioned, this deployment will leverage ARM templates. You will deploy a sin
   - `spnTenantId` - Your Azure tenant id.
   - `windowsAdminUsername` - Client Windows VM Administrator name.
   - `windowsAdminPassword` - Client Windows VM Password. Password must have 3 of the following: 1 lower case character, 1 upper case character, 1 number, and 1 special character. The value must be between 12 and 123 characters long.
-  - `myIpAddress` - Your local IP address/CIDR range. This is used to allow remote RDP and SSH connections to the Client Windows VM and Microk8s VM.
   - `logAnalyticsWorkspaceName` - Unique name for log analytics workspace deployment.
   - `deploySQLMI` - Boolean that sets whether or not to deploy SQL Managed Instance, for this data controller and Azure PostgreSQL scenario, we will set it to _**false**_.
   - `deployPostgreSQL` - Boolean that sets whether or not to deploy PostgreSQL, for this data controller and Azure PostgreSQL scenario, we leave it set to _**true**_.
@@ -158,9 +157,48 @@ As mentioned, this deployment will leverage ARM templates. You will deploy a sin
 
 ## Windows Login & Post Deployment
 
-- Now that the first phase of the automation is completed, it is time to RDP to the Client VM using its public IP.
+Various options are available to connect to _Arc-Data-Client_ VM, depending on the parameters you supplied during deployment.
 
-  ![Client VM public IP](./05.png)
+- [RDP](https://azurearcjumpstart.io/azure_jumpstart_arcbox/DataOps/#connecting-directly-with-rdp) - available after configuring access to port 3389 on the _Arc-App-Client-NSG_, or by enabling [Just-in-Time access (JIT)](https://azurearcjumpstart.io/azure_jumpstart_arcbox/DataOps/#connect-using-just-in-time-accessjit).
+- [Azure Bastion](https://azurearcjumpstart.io/azure_jumpstart_arcbox/DataOps/#connect-using-azure-bastion) - available if ```true``` was the value of your _`deployBastion`_ parameter during deployment.
+
+### Connecting directly with RDP
+
+By design, port 3389 is not allowed on the network security group. Therefore, you must create an NSG rule to allow inbound 3389.
+
+- Open the _Arc-Data-Client-NSG_ resource in Azure portal and click "Add" to add a new rule.
+
+  ![Screenshot showing Arc-App-Client NSG with blocked RDP](./05.png)
+
+  ![Screenshot showing adding a new inbound security rule](./06.png)
+
+- Specify the IP address that you will be connecting from and select RDP as the service with "Allow" set as the action. You can retrieve your public IP address by accessing [https://icanhazip.com](https://icanhazip.com) or [https://whatismyip.com](https://whatismyip.com).
+
+  ![Screenshot showing all inbound security rule](./07.png)
+
+  ![Screenshot showing all NSG rules after opening RDP](./08.png)
+
+  ![Screenshot showing connecting to the VM using RDP](./09.png)
+
+### Connect using Azure Bastion
+
+- If you have chosen to deploy Azure Bastion in your deployment, use it to connect to the VM. Please make sure to use User Principal Name of the domain user i.e. **arcdemo@jupstart.local** to login to Client VM through Bastion. Login will fail if using **jumpstart\arcdemo** format.
+
+  ![Screenshot showing connecting to the VM using Bastion](./10.png)
+
+  > **NOTE: When using Azure Bastion, the desktop background image is not visible. Therefore some screenshots in this guide may not exactly match your experience if you are connecting to _ArcBox-Client_ with Azure Bastion.**
+
+### Connect using just-in-time access (JIT)
+
+If you already have [Microsoft Defender for Cloud](https://docs.microsoft.com/azure/defender-for-cloud/just-in-time-access-usage?tabs=jit-config-asc%2Cjit-request-asc) enabled on your subscription and would like to use JIT to access the Client VM, use the following steps:
+
+- In the Client VM configuration pane, enable just-in-time. This will enable the default settings.
+
+  ![Screenshot showing the Microsoft Defender for cloud portal, allowing RDP on the client VM](./11.png)
+
+  ![Screenshot showing connecting to the VM using JIT](./12.png)
+
+### Post Deployment
 
 - At first login, as mentioned in the "Automation Flow" section above, the [_DataServicesLogonScript_](https://github.com/microsoft/azure_arc/blob/main/azure_arc_data_jumpstart/microk8s/azure/arm_template/artifacts/DataServicesLogonScript.ps1) PowerShell logon script will start it's run.
 
@@ -170,7 +208,7 @@ As mentioned, this deployment will leverage ARM templates. You will deploy a sin
 
   Once the script will finish it's run, the logon script PowerShell session will be closed, the Windows wallpaper will change and both the Azure Arc Data Controller and the PostgreSQL will be deployed on the cluster and be ready to use:
 
-  ![Wallpaper Change](./06.png)
+  ![Wallpaper Change](./13.png)
 
 - Since this scenario is deploying the Azure Arc Data Controller and PostgreSQL instance, you will also notice additional newly deployed Azure resources in the resources group (at this point you should have **17 various Azure resources deployed**. The important ones to notice are:
 
@@ -182,15 +220,15 @@ As mentioned, this deployment will leverage ARM templates. You will deploy a sin
 
   - **Azure Arc-enabled PostgreSQL** - The PostgreSQL that is now deployed on the Kubernetes cluster.
 
-  ![Addtional Azure resources in the resource group](./07.png)
+  ![Addtional Azure resources in the resource group](./14.png)
 
 - Another tool automatically deployed is Azure Data Studio along with the _Azure Data CLI_, the _Azure Arc_ and the _PostgreSQL_ extensions. Using the Desktop shortcut created for you, open Azure Data Studio and click the Extensions settings to see both extensions.
 
-  ![Azure Data Studio shortcut](./08.png)
+  ![Azure Data Studio shortcut](./15.png)
 
 - Additionally, the PostgreSQL connection will be configured within Data Studio, as well as the sample [_AdventureWorks_](https://docs.microsoft.com/sql/samples/adventureworks-install-configure?view=sql-server-ver15&tabs=ssms) database will be restored automatically for you.
 
-  ![Configured PostgreSQL connection](./09.png)
+  ![Configured PostgreSQL connection](./16.png)
 
 ## Cluster extensions
 
@@ -204,15 +242,15 @@ In this scenario, **three** Azure Arc-enabled Kubernetes cluster extensions were
 
   In order to view these cluster extensions, click on the Azure Arc-enabled Kubernetes resource Extensions settings.
 
-  ![Azure Arc-enabled Kubernetes resource](./10.png)
+  ![Azure Arc-enabled Kubernetes resource](./17.png)
 
   And we see the installed extensions:
-  ![Azure Arc-enabled Kubernetes Cluster Extensions settings](./11.png)
+  ![Azure Arc-enabled Kubernetes Cluster Extensions settings](./18.png)
 
 ## Cleanup
 
 - If you want to delete the entire environment, simply delete the deployed resource group from the Azure portal.
 
-  ![Delete Azure resource group](./12.png)
+  ![Delete Azure resource group](./19.png)
 
 <!-- ## Known Issues -->
