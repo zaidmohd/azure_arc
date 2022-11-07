@@ -166,20 +166,20 @@ As mentioned, this deployment will leverage ARM templates. You will deploy a sin
 
 Various options are available to connect to _Arc-Data-Client_ VM, depending on the parameters you supplied during deployment.
 
-- [RDP](https://azurearcjumpstart.io/azure_jumpstart_arcbox/DataOps/#connecting-directly-with-rdp) - available after configuring access to port 3389 on the _Arc-App-Client-NSG_, or by enabling [Just-in-Time access (JIT)](https://azurearcjumpstart.io/azure_jumpstart_arcbox/DataOps/#connect-using-just-in-time-accessjit).
-- [Azure Bastion](https://azurearcjumpstart.io/azure_jumpstart_arcbox/DataOps/#connect-using-azure-bastion) - available if ```true``` was the value of your _`deployBastion`_ parameter during deployment.
+- [SSH](https://azurearcjumpstart.io/azure_arc_jumpstart/azure_arc_servers/azure/azure_arm_template_linux/#connecting-directly-with-ssh) - available after configuring access to port 3389 on the _Arc-App-Client-NSG_, or by enabling [Just-in-Time access (JIT)](https://azurearcjumpstart.io/azure_jumpstart_arcbox/DataOps/#connect-using-just-in-time-accessjit).
+- [Azure Bastion](https://azurearcjumpstart.io/azure_arc_jumpstart/azure_arc_servers/azure/azure_arm_template_linux/#connecting-directly-with-ssh#connect-using-azure-bastion) - available if ```true``` was the value of your _`deployBastion`_ parameter during deployment.
 
-### Connecting directly with RDP
+### Connecting directly with SSH
 
-By design, port 3389 is not allowed on the network security group. Therefore, you must create an NSG rule to allow inbound 3389.
+By design, port ssh is not allowed on the network security group. Therefore, you must create an NSG rule to allow inbound ssh.
 
 - Open the _Arc-Data-Client-NSG_ resource in Azure portal and click "Add" to add a new rule.
 
-  ![Screenshot showing Arc-App-Client NSG with blocked RDP](./05.png)
+  ![Screenshot showing Arc-App-Client NSG with blocked ssh](./05.png)
 
   ![Screenshot showing adding a new inbound security rule](./06.png)
 
-- Specify the IP address that you will be connecting from and select RDP as the service with "Allow" set as the action. You can retrieve your public IP address by accessing [https://icanhazip.com](https://icanhazip.com) or [https://whatismyip.com](https://whatismyip.com).
+- Specify the IP address that you will be connecting from and select SSH as the service with "Allow" set as the action. You can retrieve your public IP address by accessing [https://icanhazip.com](https://icanhazip.com) or [https://whatismyip.com](https://whatismyip.com).
 
   ![Screenshot showing all inbound security rule](./07.png)
 
@@ -201,7 +201,7 @@ If you already have [Microsoft Defender for Cloud](https://docs.microsoft.com/az
 
 - In the Client VM configuration pane, enable just-in-time. This will enable the default settings.
 
-  ![Screenshot showing the Microsoft Defender for cloud portal, allowing RDP on the client VM](./11.png)
+  ![Screenshot showing the Microsoft Defender for cloud portal, allowing SSH on the client VM](./11.png)
 
   ![Screenshot showing connecting to the VM using JIT](./12.png)
 
