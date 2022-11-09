@@ -164,7 +164,7 @@ As mentioned, this deployment will leverage ARM templates. You will deploy a sin
 
 Various options are available to connect to _Arc-Data-Client_ VM, depending on the parameters you supplied during deployment.
 
-- [RDP](https://azurearcjumpstart.io/azure_arc_jumpstart/azure_arc_data/aro/aro_dc_vanilla_arm_template/#connecting-directly-with-rdp) - available after configuring access to port 3389 on the _Arc-App-Client-NSG_, or by enabling [Just-in-Time access (JIT)](https://azurearcjumpstart.io/azure_arc_jumpstart/azure_arc_data/aro/aro_dc_vanilla_arm_template/#connect-using-just-in-time-accessjit).
+- [RDP](https://azurearcjumpstart.io/azure_arc_jumpstart/azure_arc_data/aro/aro_dc_vanilla_arm_template/#connecting-directly-with-rdp) - available after configuring access to port 3389 on the _Arc-Data-Client-NSG_, or by enabling [Just-in-Time access (JIT)](https://azurearcjumpstart.io/azure_arc_jumpstart/azure_arc_data/aro/aro_dc_vanilla_arm_template/#connect-using-just-in-time-accessjit).
 - [Azure Bastion](https://azurearcjumpstart.io/azure_arc_jumpstart/azure_arc_data/aro/aro_dc_vanilla_arm_template/#connect-using-azure-bastion) - available if ```true``` was the value of your _`deployBastion`_ parameter during deployment.
 
 ### Connecting directly with RDP
@@ -173,7 +173,7 @@ By design, port 3389 is not allowed on the network security group. Therefore, yo
 
 - Open the _Arc-Data-Client-NSG_ resource in Azure portal and click "Add" to add a new rule.
 
-  ![Screenshot showing Arc-App-Client NSG with blocked RDP](./05.png)
+  ![Screenshot showing Arc-Data-Client-NSG with blocked RDP](./05.png)
 
   ![Screenshot showing adding a new inbound security rule](./06.png)
 
