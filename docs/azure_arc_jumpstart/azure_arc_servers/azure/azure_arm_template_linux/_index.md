@@ -193,7 +193,7 @@ By design, port ssh is not allowed on the network security group. Therefore, you
 
   ![Screenshot showing connecting to the VM using Bastion](./10.png)
 
-  > **NOTE: When using Azure Bastion, the desktop background image is not visible. Therefore some screenshots in this guide may not exactly match your experience if you are connecting to _ArcBox-Client_ with Azure Bastion.**
+  > **NOTE: When using Azure Bastion, the desktop background image is not visible. Therefore some screenshots in this guide may not exactly match your experience if you are connecting with Azure Bastion.**
 
 ### Connect using just-in-time access (JIT)
 
