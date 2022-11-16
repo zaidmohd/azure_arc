@@ -165,7 +165,7 @@ As mentioned, this deployment will leverage ARM templates. You will deploy a sin
 
 ## Windows Login & Post Deployment
 
-Various options are available to connect to _Arc-Data-Client_ VM, depending on the parameters you supplied during deployment.
+- Now that the first phase of the automation is completed, it is time to RDP to the Client VM using its public IP.
 
   ![Screenshot showing Client VM public IP](./04.png)
 
