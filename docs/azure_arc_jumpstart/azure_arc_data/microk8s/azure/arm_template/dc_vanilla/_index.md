@@ -206,6 +206,7 @@ If you already have [Microsoft Defender for Cloud](https://docs.microsoft.com/az
   ![Screenshot showing connecting to the VM using JIT](./11.png)
 
 ### Post Deployment
+
 - At first login, as mentioned in the "Automation Flow" section above, the [_DataServicesLogonScript_](https://github.com/microsoft/azure_arc/blob/main/azure_arc_data_jumpstart/microk8s/azure/arm_template/artifacts/DataServicesLogonScript.ps1) PowerShell logon script will start it's run.
 
 - Let the script run it's course and **do not close** the PowerShell session, this will be done for you once completed.
