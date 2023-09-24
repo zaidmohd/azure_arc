@@ -1,8 +1,8 @@
 ---
 type: docs
-title: "Using Azure Arc to deliver Extended Security Updates for Windows Server and SQL Server 2012"
+title: "Using Azure Arc to deliver Extended Security Updates for Windows Server 2012 and SQL Server 2012"
 linkTitle: "Using Azure Arc to deliver Extended Security Updates for Windows Server and SQL Server 2012"
-weight: 18
+weight: 1
 description: >
 ---
 
@@ -105,8 +105,6 @@ For you to get familiar with the automation and deployment flow, below is an exp
 - Once the automation finishes its run, you should see an output as follows:
 
   ![Screenshot of automation output](./02.png)
-
- > **NOTE: For the script to work properly you must run this command from the deployment folder.**
 
 - After the script has finished its run verify the resources are created on the Azure Portal:
 
