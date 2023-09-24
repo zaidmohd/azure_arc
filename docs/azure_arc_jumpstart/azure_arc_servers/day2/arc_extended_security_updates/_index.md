@@ -8,15 +8,14 @@ description: >
 
 ## Using Azure Arc to deliver Extended Security Updates for Windows Server and SQL Server 2012
 
-The following Jumpstart scenario will guide you on how to use Azure Arc to enroll Windows Server and SQL Server 2012/2012 R2 machines in [Extented Security Updates (ESUs)](https://learn.microsoft.com/windows-server/get-started/extended-security-updates-overview). This scenario creates an Azure VM with Hyper-V installed where the Windows Server and/or and SQL Server VMs will run and will be onboarded to Azure Arc-enabled server and Azure Arc-enabled SQL server respectively. Once these VMs are registered in Azure you will have visibility into their ESU coverage and will be able to enroll them through the Azure portal one month before Windows Server 2012 end of support.
+The following Jumpstart scenario will guide you on how to use Azure Arc to enroll Windows Server and SQL Server 2012/2012 R2 machines in [Extented Security Updates (ESUs)](https://learn.microsoft.com/windows-server/get-started/extended-security-updates-overview). This scenario creates an Azure VM with Hyper-V installed where the Windows Server and/or SQL Server VMs will run and will be onboard as Azure Arc-enabled server and/or Azure Arc-enabled SQL Server respectively. Once these VMs are registered in Azure you will have visibility into their ESU coverage and can enroll them through the Azure portal one month before Windows Server 2012 end of support.
+In this scenario you can choose between working with Windows Server 2012 R2, SQL Server 2012 Standard edition or both.
 
-In this scenario you can choose between working with Windows Server, SQL Server 2012 R2 or both.
-
-**NOTE: this scenario will not provide or create ESU licenses, you will need to provisioned them separately. The scenario will however create Windows Server 2012 R2 and/or SQL Server 2012 machines connected to Azure Arc that you will be able to enroll on Extended Security Updates via the Azure portal and you'll be billed monthly via your Azure subscription.**
+**NOTE: In this scenario, ESU licenses are not provided or created, and will require you to provision them separately. The scenario will however create Windows Server 2012 R2 and/or SQL Server 2012 (Standard) machines that are connected to Azure Arc that you will be able to enroll on Extended Security Updates via the Azure portal and get billed monthly via your Azure subscription.**
 
 ## Prerequisites
 
-- [Install or update Azure CLI](https://docs.microsoft.com/cli/azure/install-azure-cli?view=azure-cli-latest). Azure CLI should be running version 2.42.0 or later. Use ```az --version``` to check your current installed version.
+- [Install or update Azure CLI](https://docs.microsoft.com/cli/azure/install-azure-cli?view=azure-cli-latest). Azure CLI should be running version 2.49.0 or later. Use ```az --version``` to check your current installed version.
 
 - Create Azure service principal (SP)
 
@@ -80,57 +79,60 @@ For you to get familiar with the automation and deployment flow, below is an exp
   - _`windowsAdminPassword`_: password for the Windows admin username.
   - _`deployBastion`_: whether or not you'd like to deploy Azure Bastion to access the Azure VM. Values can be "true" or "false"
   - _`esu`_: this parameter will allow you to control what VMs will be deployed. It can be`_:
-    - _`ws`_: to only deploy a Windows Server 2012 VM that will be registered as an Arc-enabled server.
-    - _`sql`_: to only deploy a SQL Server 2012 VM that will be registered as an Arc-enabled SQL server.
-    - _`both`_: to deploy both a Windows Server 2012 VM and a SQL Server 2012 VM that will be Arc enabled.
+    - _`ws`_: to only deploy a Windows Server 2012 R2 VM that will be registered as an Arc-enabled server.
+    - _`sql`_: to only deploy a SQL Server 2012 Standard Edition VM that will be registered as an Arc-enabled SQL Server.
+    - _`both`_: to deploy both a Windows Server 2012 R2 VM and a SQL Server 2012 Standard Edition VM that will be Arc-enabled.
 
-  ![Parameters file](./01.png)
+  ![Screenshot of Parameters file](./01.png)
 
 - To run the automation, navigate to the [deployment folder](https://github.com/microsoft/azure_arc/tree/main/azure_arc_servers_jumpstart/esu/bicep). From the deployment folder run the below command:
 
   ```shell
-    az group create --name <your_resource_group> --location <your_azure_region>
-    az deployment group create --resource-group <your_resource_group> main.bicep --parameters main.parameters.json
+    az group create --name "<resource-group-name>"  --location "<preferred-location>"
+    az deployment group create -g "<resource-group-name>" \
+    -f "main.bicep" -p "main.parameters.json"
   ```
 
     For example:
 
   ```shell
     az group create --name Arc-ESU-Demo --location "westeurope"
-    az deployment group create --resource-group Arc-ESU-Demo --name Arc-ESU-Demo --template-file main.bicep --parameters main.parameters.jsonn
+    az deployment group create --resource-group Arc-ESU-Demo \
+    --name Arc-ESU-Demo --template-file main.bicep \
+    --parameters main.parameters.json
   ```
 
 - Once the automation finishes its run, you should see an output as follows:
 
-  ![Automation output](./02.png)
+  ![Screenshot of automation output](./02.png)
 
  > **NOTE: For the script to work properly you must run this command from the deployment folder.**
 
 - After the script has finished its run verify the resources are created on the Azure Portal:
 
-    ![Resources created on resource group](./03.png)
+    ![Screenshot of resources created on resource group](./03.png)
 
-    ![Resources created on resource group](./04.png)
+    ![Screenshot of resources created on resource group](./04.png)
 
 ## Windows Login & Post Deployment
 
 - Now that the Azure Windows Server VM is created, it is time to connect to it using either RDP or Azure Bastion.
 
-    ![Azure Bastion session 01](./05.png)
+    ![Screenshot of Azure Bastion session 01](./05.png)
 
-    ![Azure Bastion session 02](./06.png)
+    ![Screenshot of Azure Bastion session 02](./06.png)
 
-    ![Azure Bastion session 03](./07.png)
+    ![Screenshot of Azure Bastion session 03](./07.png)
 
 - At first login, as mentioned in the "Automation Flow" section, a logon script will get executed. This script was created as part of the automated deployment process.
 
-    ![Script's output](./08.png)
+    ![Screenshot of script's output](./08.png)
 
-    ![Script's output](./09.png)
+    ![Screenshot of script's output](./09.png)
 
-    ![Script's output](./10.png)
+    ![Screenshot of script's output](./10.png)
 
-    ![Script's output](./11.png)
+    ![Screenshot of script's output](./11.png)
 
 - Let the script to run its course and **do not close** the Powershell session, this will be done for you once completed.
 
@@ -144,7 +146,7 @@ For you to get familiar with the automation and deployment flow, below is an exp
 
 ## Extended Security Updates (ESU)
 
-Now that you have Windows Server 2012 and/or SQL Server 2012 R2 Arc-enabled, you are able to manage ESU licenses for these servers.
+Now that you have Windows Server 2012 R2 and/or SQL Server 2012 Arc-enabled, you are able to manage ESU licenses for these servers.
 
 - Navigate to the Azure Arc page
 
@@ -170,4 +172,4 @@ Complete the following steps to clean up your environment.
 
 Remove the Azure Resource group from the portal.
 
-![Azure Resource Group delete](./18.png)
+![Screenshot of Azure Resource Group delete](./18.png)
