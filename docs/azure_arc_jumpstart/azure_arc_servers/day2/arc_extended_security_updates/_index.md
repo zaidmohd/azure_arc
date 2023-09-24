@@ -8,9 +8,11 @@ description: >
 
 ## Using Azure Arc to deliver Extended Security Updates for Windows Server and SQL Server 2012
 
-The following Jumpstart scenario will guide you on how to use Azure Arc to enroll Windows Server and SQL Server 2012/2012 R2 machines in [Extented Security Updates (ESUs)](https://learn.microsoft.com/windows-server/get-started/extended-security-updates-overview). This scenario creates an Azure VM with Hyper-V installed where the Windows Server and/or and SQL Server VMs will run and will be onboarded to Azure Arc-enabled server and Azure Arc-enabled SQL server respectively. Once these VMs are registered in Azure you will have visibility into their ESU coverage and will be able to enroll them through the Azure portal or using Azure Policy one month before Windows Server 2012 end of support.
+The following Jumpstart scenario will guide you on how to use Azure Arc to enroll Windows Server and SQL Server 2012/2012 R2 machines in [Extented Security Updates (ESUs)](https://learn.microsoft.com/windows-server/get-started/extended-security-updates-overview). This scenario creates an Azure VM with Hyper-V installed where the Windows Server and/or and SQL Server VMs will run and will be onboarded to Azure Arc-enabled server and Azure Arc-enabled SQL server respectively. Once these VMs are registered in Azure you will have visibility into their ESU coverage and will be able to enroll them through the Azure portal one month before Windows Server 2012 end of support.
 
 In this scenario you can choose between working with Windows Server, SQL Server 2012 R2 or both.
+
+**NOTE: this scenario will not provide or create ESU licenses, you will need to provisioned them separately. The scenario will however create Windows Server 2012 R2 and/or SQL Server 2012 machines connected to Azure Arc that you will be able to enroll on Extended Security Updates via the Azure portal and you'll be billed monthly via your Azure subscription.**
 
 ## Prerequisites
 
@@ -77,7 +79,7 @@ For you to get familiar with the automation and deployment flow, below is an exp
   - _`windowsAdminUsername`_: Windows admin username for your Azure VM.
   - _`windowsAdminPassword`_: password for the Windows admin username.
   - _`deployBastion`_: whether or not you'd like to deploy Azure Bastion to access the Azure VM. Values can be "true" or "false"
-  - _`esu`_: this variable will allow you to control what VMs will be deployed. It can be`_:
+  - _`esu`_: this parameter will allow you to control what VMs will be deployed. It can be`_:
     - _`ws`_: to only deploy a Windows Server 2012 VM that will be registered as an Arc-enabled server.
     - _`sql`_: to only deploy a SQL Server 2012 VM that will be registered as an Arc-enabled SQL server.
     - _`both`_: to deploy both a Windows Server 2012 VM and a SQL Server 2012 VM that will be Arc enabled.
