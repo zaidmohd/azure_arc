@@ -1,12 +1,12 @@
 ---
 type: docs
-title: "Using Azure Arc-enabled SQL Server to deliver Extended Security Updates SQL Server 2012/R2"
-linkTitle: "Using Azure Arc-enabled SQL servers to deliver Extended Security Updates SQL Server 2012/R2"
+title: "Using Azure Arc-enabled SQL Server to deliver Extended Security Updates SQL Server 2012"
+linkTitle: "Using Azure Arc-enabled SQL servers to deliver Extended Security Updates SQL Server 2012"
 weight: 1
 description: >
 ---
 
-## Using Azure Arc-enabled SQL Server to deliver Extended Security Updates SQL Server 2012/R2
+## Using Azure Arc-enabled SQL Server to deliver Extended Security Updates SQL Server 2012
 
 This Jumpstart scenario leverages the automation found on "Using Azure Arc to deliver Extended Security Updates for Windows Server and SQL Server 2012", follow the guide and automation under Azure Arc-enabled servers choosing to deploy either only SQL Server or both SQL and Windows Server, to do that make sure to set up the parameters as follows:
 

@@ -2,7 +2,7 @@
 type: docs
 title: "Monitoring, Alerting, and Visualization"
 linkTitle: "Monitoring, Alerting, and Visualization"
-weight: 3
+weight: 4
 description: >
 ---
 

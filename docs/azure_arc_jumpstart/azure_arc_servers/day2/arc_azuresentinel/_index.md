@@ -2,7 +2,7 @@
 type: docs
 title: "Microsoft Sentinel"
 linkTitle: "Microsoft Sentinel"
-weight: 8
+weight: 9
 description: >
 ---
 

@@ -2,7 +2,7 @@
 type: docs
 title: "Monitoring Azure Arc-enabled servers with Datadog"
 linkTitle: "Monitoring Azure Arc-enabled servers with Datadog"
-weight: 18
+weight: 19
 description: >
 ---
 
