@@ -73,7 +73,7 @@ For you to get familiar with the automation and deployment flow, below is an exp
 
 - Edit the parameter file to match your environment. You will need to provide:
   - _`spnClientId`_: the AppId of the service principal you created before.
-  - _`spnClientSecret`_the password of the service principal you created before.
+  - _`spnClientSecret`_: the password of the service principal you created before.
   - _`spnTenantId`_: your Azure AD's tenant ID.
   - _`windowsAdminUsername`_: Windows admin username for your Azure VM.
   - _`windowsAdminPassword`_: password for the Windows admin username.
@@ -82,6 +82,8 @@ For you to get familiar with the automation and deployment flow, below is an exp
     - _`ws`_: to only deploy a Windows Server 2012 R2 VM that will be registered as an Arc-enabled server.
     - _`sql`_: to only deploy a SQL Server 2012 Standard Edition VM that will be registered as an Arc-enabled SQL Server.
     - _`both`_: to deploy both a Windows Server 2012 R2 VM and a SQL Server 2012 Standard Edition VM that will be Arc-enabled.
+
+    > **NOTE: Make sure to set the _esu_ parameter to _sql_ or _both_ to have an Arc-enabled SQL server deployed**.
 
   ![Screenshot of Parameters file](./01.png)
 
@@ -164,10 +166,30 @@ Now that you have Windows Server 2012 R2 and/or SQL Server 2012 Arc-enabled, you
 
   ![Screenshot Enable ESU Licenses](./17.png)
 
+**NOTE: Verify that the databases running on your Azure Arc-enabled SQL server are being discovered. If the databases are not shown in the Azure Portal, follow these steps to fix it.**
+
+- Select the Azure Arc-enabled SQL server.
+
+ ![Screenshot Azure Arc-enabled SQL Server resource](./18.png)
+
+- Select "Databases" under "Data Management". Click on "Change License Type".
+
+ ![Screenshot Azure Arc-enabled SQL Server resource](./19.png)
+
+ ![Screenshot Change License Type](./20.png)
+
+- Choose "License with Software Assurance".
+
+ ![Screenshot software assurance](./21.png)
+
+- The databases will be discovered and shown in the Azure Portal after a few seconds.
+
+ ![Screenshot Databases in Portal](./22.png)
+
 ## Clean up environment
 
 Complete the following steps to clean up your environment.
 
 Remove the Azure Resource group from the portal.
 
-![Screenshot of Azure Resource Group delete](./18.png)
+![Screenshot of Azure Resource Group delete](./23.png)
