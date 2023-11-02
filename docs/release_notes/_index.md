@@ -36,7 +36,6 @@ weight: 6
 - [Bug: ArcBox deployment fails to complete. ArcBox-CAPI-VM custom script extension never finishes. #2162](https://github.com/microsoft/azure_arc/issues/2162)
 - [Documentation: ArcBox readme typos #2187](https://github.com/microsoft/azure_arc/issues/2187)
 
-
 #### Jumpstart HCIBox
 
 - [Enhancement: HCIBox host nodes still use Az CLI 32bit #2157](https://github.com/microsoft/azure_arc/issues/2157)
@@ -46,6 +45,10 @@ weight: 6
 #### Azure Arc-enabled servers
 
 - [New scenario: Using Azure Arc to deliver Extended Security Updates (ESU) for Windows Server and SQL Server 2012](https://azurearcjumpstart.io/azure_arc_jumpstart/azure_arc_servers/day2/arc_extended_security_updates/)
+
+#### Azure Arc-enabled SQL Server
+
+- [New scenario: Using Azure Arc to deliver Extended Security Updates (ESU) for Windows Server and SQL Server 2012](https://azurearcjumpstart.io/azure_arc_jumpstart/azure_arc_sqlsrv/day2/esu/)
 
 #### Azure Arc-enabled Kubernetes
 
