@@ -49,8 +49,8 @@ echo ""
 publicIp=$(hostname -i)
 sudo mkdir ~/.kube
 sudo -u $adminUsername mkdir /home/${adminUsername}/.kube
-curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="server --disable traefik --node-external-ip ${publicIp} --bind-address ${publicIp}" INSTALL_K3S_VERSION=v${K3S_VERSION} sh -
-sudo chmod 644 /etc/rancher/k3s/k3s.yaml
+curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="server --disable traefik --node-external-ip ${publicIp} --bind-address ${publicIp}" INSTALL_K3S_VERSION=v${K3S_VERSION} K3S_KUBECONFIG_MODE="644" sh -
+# sudo chmod 644 /etc/rancher/k3s/k3s.yaml
 sudo kubectl config rename-context default arcbox-k3s --kubeconfig /etc/rancher/k3s/k3s.yaml
 sudo cp /etc/rancher/k3s/k3s.yaml ~/.kube/config
 sudo cp /etc/rancher/k3s/k3s.yaml /home/${adminUsername}/.kube/config
@@ -67,6 +67,20 @@ echo ""
 sudo kubectl wait --for=condition=Available --timeout=60s --all deployments -A >/dev/null
 sudo kubectl get nodes -o wide | expand | awk 'length($0) > length(longest) { longest = $0 } { lines[NR] = $0 } END { gsub(/./, "=", longest); print "/=" longest "=\\"; n = length(longest); for(i = 1; i <= NR; ++i) { printf("| %s %*s\n", lines[i], n - length(lines[i]) + 1, "|"); } print "\\=" longest "=/" }'
 echo ""
+
+# Copying Rancher K3s kubeconfig file to staging storage account
+echo ""
+sudo -u $adminUsername az extension add --upgrade -n storage-preview
+storageAccountRG=$(sudo -u $adminUsername az storage account show --name $stagingStorageAccountName --query 'resourceGroup' | sed -e 's/^"//' -e 's/"$//')
+storageContainerName="staging-k3s"
+localPath="/home/$adminUsername/.kube/config"
+k3sNodeTokenPath="/home/$adminUsername/k3sControlPlane.yaml"
+echo "nodeToken: $(sudo cat /var/lib/rancher/k3s/server/node-token)" > $k3sNodeTokenPath
+echo "k3sClusterIp: $publicIp" >> $k3sNodeTokenPath
+storageAccountKey=$(sudo -u $adminUsername az storage account keys list --resource-group $storageAccountRG --account-name $stagingStorageAccountName --query [0].value | sed -e 's/^"//' -e 's/"$//')
+sudo -u $adminUsername az storage container create -n $storageContainerName --account-name $stagingStorageAccountName --account-key $storageAccountKey
+sudo -u $adminUsername az storage azcopy blob upload --container $storageContainerName --account-name $stagingStorageAccountName --account-key $storageAccountKey --source $localPath
+sudo -u $adminUsername az storage azcopy blob upload --container $storageContainerName --account-name $stagingStorageAccountName --account-key $storageAccountKey --source $k3sNodeTokenPath
 
 # Installing Azure CLI & Azure Arc extensions
 curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
@@ -104,16 +118,6 @@ sudo -u $adminUsername az k8s-extension create -n "azure-defender" --cluster-nam
 # Enabling Azure Policy for Kubernetes on the cluster
 echo ""
 sudo -u $adminUsername az k8s-extension create --name "arc-azurepolicy" --cluster-name $vmName --resource-group $resourceGroup --cluster-type connectedClusters --extension-type Microsoft.PolicyInsights --only-show-errors
-
-# Copying Rancher K3s kubeconfig file to staging storage account
-echo ""
-sudo -u $adminUsername az extension add --upgrade -n storage-preview
-storageAccountRG=$(sudo -u $adminUsername az storage account show --name $stagingStorageAccountName --query 'resourceGroup' | sed -e 's/^"//' -e 's/"$//')
-storageContainerName="staging-k3s"
-localPath="/home/$adminUsername/.kube/config"
-storageAccountKey=$(sudo -u $adminUsername az storage account keys list --resource-group $storageAccountRG --account-name $stagingStorageAccountName --query [0].value | sed -e 's/^"//' -e 's/"$//')
-sudo -u $adminUsername az storage container create -n $storageContainerName --account-name $stagingStorageAccountName --account-key $storageAccountKey
-sudo -u $adminUsername az storage azcopy blob upload --container $storageContainerName --account-name $stagingStorageAccountName --account-key $storageAccountKey --source $localPath
 
 # Uploading this script log to staging storage for ease of troubleshooting
 log="/home/${adminUsername}/jumpstart_logs/installK3s.log"

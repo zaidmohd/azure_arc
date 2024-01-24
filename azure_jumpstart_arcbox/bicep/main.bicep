@@ -34,10 +34,10 @@ param logAnalyticsWorkspaceName string
 param flavor string = 'Full'
 
 @description('Target GitHub account')
-param githubAccount string = 'microsoft'
+param githubAccount string = 'zaidmohd'
 
 @description('Target GitHub branch')
-param githubBranch string = 'main'
+param githubBranch string = 'replace_capi'
 
 @description('Choice to deploy Bastion to connect to the client VM')
 param deployBastion bool = false
@@ -59,28 +59,35 @@ var k3sArcDataClusterName = 'ArcBox-K3s-${guid}'
 var aksArcDataClusterName = 'ArcBox-AKS-Data-${guid}'
 var aksDrArcDataClusterName = 'ArcBox-AKS-DR-Data-${guid}'
 
-module ubuntuCAPIDeployment 'kubernetes/ubuntuCapi.bicep' = if (flavor == 'Full' || flavor == 'DevOps' || flavor == 'DataOps') {
-  name: 'ubuntuCAPIDeployment'
+module stagingStorageAccountDeployment 'mgmt/mgmtStagingStorage.bicep' = {
+  name: 'stagingStorageAccountDeployment'
   params: {
-    sshRSAPublicKey: sshRSAPublicKey
-    spnClientId: spnClientId
-    spnClientSecret: spnClientSecret
-    spnTenantId: spnTenantId
-    stagingStorageAccountName: stagingStorageAccountDeployment.outputs.storageAccountName
-    logAnalyticsWorkspace: logAnalyticsWorkspaceName
-    templateBaseUrl: templateBaseUrl
-    subnetId: mgmtArtifactsAndPolicyDeployment.outputs.subnetId
-    deployBastion: deployBastion
-    azureLocation: location
-    flavor: flavor
-    capiArcDataClusterName : capiArcDataClusterName
+    location: location
   }
-  dependsOn: [
-    updateVNetDNSServers
-  ]
 }
 
-module ubuntuRancherDeployment 'kubernetes/ubuntuRancher.bicep' = if (flavor == 'Full' || flavor == 'DevOps') {
+// module ubuntuCAPIDeployment 'kubernetes/ubuntuCapi.bicep' = if (flavor == 'Full' || flavor == 'DevOps' || flavor == 'DataOps') {
+//   name: 'ubuntuCAPIDeployment'
+//   params: {
+//     sshRSAPublicKey: sshRSAPublicKey
+//     spnClientId: spnClientId
+//     spnClientSecret: spnClientSecret
+//     spnTenantId: spnTenantId
+//     stagingStorageAccountName: stagingStorageAccountDeployment.outputs.storageAccountName
+//     logAnalyticsWorkspace: logAnalyticsWorkspaceName
+//     templateBaseUrl: templateBaseUrl
+//     subnetId: mgmtArtifactsAndPolicyDeployment.outputs.subnetId
+//     deployBastion: deployBastion
+//     azureLocation: location
+//     flavor: flavor
+//     capiArcDataClusterName : capiArcDataClusterName
+//   }
+//   dependsOn: [
+//     updateVNetDNSServers
+//   ]
+// }
+
+module ubuntuRancherDeployment 'kubernetes/ubuntuRancher.bicep' = if (flavor == 'Full' || flavor == 'DevOps' || flavor == 'DataOps') {
   name: 'ubuntuRancherDeployment'
   params: {
     sshRSAPublicKey: sshRSAPublicKey
@@ -97,38 +104,51 @@ module ubuntuRancherDeployment 'kubernetes/ubuntuRancher.bicep' = if (flavor == 
   }
 }
 
-module clientVmDeployment 'clientVm/clientVm.bicep' = {
-  name: 'clientVmDeployment'
-  params: {
-    windowsAdminUsername: windowsAdminUsername
-    windowsAdminPassword: windowsAdminPassword
-    spnClientId: spnClientId
-    spnClientSecret: spnClientSecret
-    spnTenantId: spnTenantId
-    workspaceName: logAnalyticsWorkspaceName
-    stagingStorageAccountName: stagingStorageAccountDeployment.outputs.storageAccountName
-    templateBaseUrl: templateBaseUrl
-    flavor: flavor
-    subnetId: mgmtArtifactsAndPolicyDeployment.outputs.subnetId
-    deployBastion: deployBastion
-    githubUser: githubUser
-    location: location
-    k3sArcClusterName : k3sArcDataClusterName
-    capiArcDataClusterName : capiArcDataClusterName
-    aksArcClusterName : aksArcDataClusterName
-    aksdrArcClusterName : aksDrArcDataClusterName
-  }
-  dependsOn: [
-    updateVNetDNSServers
-  ]
-}
+// module ubuntuRancherNodesDeployment 'kubernetes/ubuntuRancher.bicep' = if (flavor == 'Full' || flavor == 'DevOps' || flavor == 'DataOps') {
+//   name: 'ubuntuRancherNodesDeployment'
+//   params: {
+//     sshRSAPublicKey: sshRSAPublicKey
+//     spnClientId: spnClientId
+//     spnClientSecret: spnClientSecret
+//     spnTenantId: spnTenantId
+//     stagingStorageAccountName: stagingStorageAccountDeployment.outputs.storageAccountName
+//     logAnalyticsWorkspace: logAnalyticsWorkspaceName
+//     templateBaseUrl: templateBaseUrl
+//     subnetId: mgmtArtifactsAndPolicyDeployment.outputs.subnetId
+//     deployBastion: deployBastion
+//     azureLocation: location
+//     vmName : k3sArcDataClusterName
+//   }
+//   dependsOn: [
+//     ubuntuRancherDeployment
+//   ]
+// }
 
-module stagingStorageAccountDeployment 'mgmt/mgmtStagingStorage.bicep' = {
-  name: 'stagingStorageAccountDeployment'
-  params: {
-    location: location
-  }
-}
+// module clientVmDeployment 'clientVm/clientVm.bicep' = {
+//   name: 'clientVmDeployment'
+//   params: {
+//     windowsAdminUsername: windowsAdminUsername
+//     windowsAdminPassword: windowsAdminPassword
+//     spnClientId: spnClientId
+//     spnClientSecret: spnClientSecret
+//     spnTenantId: spnTenantId
+//     workspaceName: logAnalyticsWorkspaceName
+//     stagingStorageAccountName: stagingStorageAccountDeployment.outputs.storageAccountName
+//     templateBaseUrl: templateBaseUrl
+//     flavor: flavor
+//     subnetId: mgmtArtifactsAndPolicyDeployment.outputs.subnetId
+//     deployBastion: deployBastion
+//     githubUser: githubUser
+//     location: location
+//     k3sArcClusterName : k3sArcDataClusterName
+//     capiArcDataClusterName : capiArcDataClusterName
+//     aksArcClusterName : aksArcDataClusterName
+//     aksdrArcClusterName : aksDrArcDataClusterName
+//   }
+//   dependsOn: [
+//     updateVNetDNSServers
+//   ]
+// }
 
 module mgmtArtifactsAndPolicyDeployment 'mgmt/mgmtArtifacts.bicep' = {
   name: 'mgmtArtifactsAndPolicyDeployment'
