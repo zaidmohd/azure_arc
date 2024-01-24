@@ -68,6 +68,19 @@ sudo kubectl wait --for=condition=Available --timeout=60s --all deployments -A >
 sudo kubectl get nodes -o wide | expand | awk 'length($0) > length(longest) { longest = $0 } { lines[NR] = $0 } END { gsub(/./, "=", longest); print "/=" longest "=\\"; n = length(longest); for(i = 1; i <= NR; ++i) { printf("| %s %*s\n", lines[i], n - length(lines[i]) + 1, "|"); } print "\\=" longest "=/" }'
 echo ""
 
+# Installing Azure CLI & Azure Arc extensions
+curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+
+sudo -u $adminUsername az extension add --name connectedk8s
+sudo -u $adminUsername az extension add --name k8s-configuration
+sudo -u $adminUsername az extension add --name k8s-extension
+
+echo ""
+echo "Log in to Azure"
+sudo -u $adminUsername az login --service-principal --username $SPN_CLIENT_ID --password=$SPN_CLIENT_SECRET --tenant $SPN_TENANT_ID
+az -v
+echo ""
+
 # Copying Rancher K3s kubeconfig file to staging storage account
 echo ""
 sudo -u $adminUsername az extension add --upgrade -n storage-preview
@@ -81,19 +94,6 @@ storageAccountKey=$(sudo -u $adminUsername az storage account keys list --resour
 sudo -u $adminUsername az storage container create -n $storageContainerName --account-name $stagingStorageAccountName --account-key $storageAccountKey
 sudo -u $adminUsername az storage azcopy blob upload --container $storageContainerName --account-name $stagingStorageAccountName --account-key $storageAccountKey --source $localPath
 sudo -u $adminUsername az storage azcopy blob upload --container $storageContainerName --account-name $stagingStorageAccountName --account-key $storageAccountKey --source $k3sNodeTokenPath
-
-# Installing Azure CLI & Azure Arc extensions
-curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
-
-sudo -u $adminUsername az extension add --name connectedk8s
-sudo -u $adminUsername az extension add --name k8s-configuration
-sudo -u $adminUsername az extension add --name k8s-extension
-
-echo ""
-echo "Log in to Azure"
-sudo -u $adminUsername az login --service-principal --username $SPN_CLIENT_ID --password=$SPN_CLIENT_SECRET --tenant $SPN_TENANT_ID
-az -v
-echo ""
 
 # Registering Azure resource providers
 sudo -u $adminUsername az provider register --namespace 'Microsoft.Kubernetes' --wait
