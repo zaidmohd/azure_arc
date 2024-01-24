@@ -1,5 +1,5 @@
 @description('The name of you Virtual Machine')
-param vmName string = 'ArcBox-K3s'
+param vmName string = 'ArcBox-K3s-Node'
 
 @description('Username for the Virtual Machine')
 param adminUsername string = 'arcdemo'

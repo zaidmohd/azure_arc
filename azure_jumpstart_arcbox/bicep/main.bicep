@@ -56,6 +56,7 @@ var templateBaseUrl = 'https://raw.githubusercontent.com/${githubAccount}/azure_
 var location = resourceGroup().location
 var capiArcDataClusterName = 'ArcBox-CAPI-Data-${guid}'
 var k3sArcDataClusterName = 'ArcBox-K3s-${guid}'
+var k3sArcDataClusterNodesName = 'ArcBox-K3s-Node-${guid}'
 var aksArcDataClusterName = 'ArcBox-AKS-Data-${guid}'
 var aksDrArcDataClusterName = 'ArcBox-AKS-DR-Data-${guid}'
 
@@ -117,7 +118,7 @@ module ubuntuRancherNodesDeployment 'kubernetes/ubuntuRancherNodes.bicep' = if (
     subnetId: mgmtArtifactsAndPolicyDeployment.outputs.subnetId
     deployBastion: deployBastion
     azureLocation: location
-    vmName : k3sArcDataClusterName
+    vmName : k3sArcDataClusterNodesName
   }
   dependsOn: [
     ubuntuRancherDeployment
