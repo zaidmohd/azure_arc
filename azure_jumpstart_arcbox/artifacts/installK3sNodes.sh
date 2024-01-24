@@ -44,21 +44,30 @@ sudo curl -v -o /etc/profile.d/welcomeK3s.sh ${templateBaseUrl}artifacts/welcome
 sudo -u $adminUsername mkdir -p /home/${adminUsername}/jumpstart_logs
 while sleep 1; do sudo -s rsync -a /var/lib/waagent/custom-script/download/0/installK3sNodes.log /home/${adminUsername}/jumpstart_logs/installK3sNodes.log; done &
 
+# Installing Azure CLI
+curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+
+echo ""
+echo "Log in to Azure"
+sudo -u $adminUsername az login --service-principal --username $SPN_CLIENT_ID --password=$SPN_CLIENT_SECRET --tenant $SPN_TENANT_ID
+az -v
+echo ""
+
 # Downloading k3s control plane details
 echo ""
 sudo -u $adminUsername az extension add --upgrade -n storage-preview
 storageAccountRG=$(sudo -u $adminUsername az storage account show --name $stagingStorageAccountName --query 'resourceGroup' | sed -e 's/^"//' -e 's/"$//')
 storageContainerName="staging-k3s"
-localPath="/home/$adminUsername/.kube/config"
-k3sNodeTokenPath="/var/lib/rancher/k3s/server/node-token"
+k3sControlPlaneConfig="k3sControlPlane.yaml"
 storageAccountKey=$(sudo -u $adminUsername az storage account keys list --resource-group $storageAccountRG --account-name $stagingStorageAccountName --query [0].value | sed -e 's/^"//' -e 's/"$//')
-sudo -u $adminUsername az storage container create -n $storageContainerName --account-name $stagingStorageAccountName --account-key $storageAccountKey
-sudo -u $adminUsername az storage azcopy blob upload --container $storageContainerName --account-name $stagingStorageAccountName --account-key $storageAccountKey --source $localPath
-sudo -u $adminUsername az storage azcopy blob upload --container $storageContainerName --account-name $stagingStorageAccountName --account-key $storageAccountKey --source $k3sNodeTokenPath
+sudo -u $adminUsername az storage azcopy blob download --container $storageContainerName --account-name $stagingStorageAccountName --account-key $storageAccountKey --source "$storageContainerName/$k3sControlPlaneConfig"  --destination "/home/$adminUsername/$k3sControlPlaneConfig"
+
+k3sNodeToken=$(grep 'k3sNodeToken' "/home/$adminUsername/$k3sControlPlaneConfig" | awk '{print $2}')
+k3sClusterIp=$(grep 'k3sClusterIp' "/home/$adminUsername/$k3sControlPlaneConfig" | awk '{print $2}')
 
 # Installing Rancher K3s cluster (single worker node)
 echo ""
-curl -sfL https://get.k3s.io | K3S_URL=https://${publicIp}:6443 K3S_TOKEN=${k3sToken} sh -
+curl -sfL https://get.k3s.io | K3S_URL=https://${k3sClusterIp}:6443 K3S_TOKEN=${k3sNodeToken} sh -
 # publicIp=$(hostname -i)
 # sudo mkdir ~/.kube
 # sudo -u $adminUsername mkdir /home/${adminUsername}/.kube
