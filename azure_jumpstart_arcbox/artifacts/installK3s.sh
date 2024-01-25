@@ -85,16 +85,16 @@ echo ""
 echo ""
 sudo -u $adminUsername az extension add --upgrade -n storage-preview
 sleep 300
-storageAccountRG=$(sudo -u $adminUsername az storage account show --name $stagingStorageAccountName --query 'resourceGroup' --verbose | sed -e 's/^"//' -e 's/"$//')
+storageAccountRG=$(sudo -u $adminUsername az storage account show --name $stagingStorageAccountName --query 'resourceGroup' | sed -e 's/^"//' -e 's/"$//')
 storageContainerName="staging-k3s"
 localPath="/home/$adminUsername/.kube/config"
 k3sControlPlaneConfig="/home/$adminUsername/k3sControlPlane.yaml"
 echo "k3sNodeToken: $(sudo cat /var/lib/rancher/k3s/server/node-token)" > $k3sControlPlaneConfig
 echo "k3sClusterIp: $publicIp" >> $k3sControlPlaneConfig
 storageAccountKey=$(sudo -u $adminUsername az storage account keys list --resource-group $storageAccountRG --account-name $stagingStorageAccountName --query [0].value | sed -e 's/^"//' -e 's/"$//')
-sudo -u $adminUsername az storage container create -n $storageContainerName --account-name $stagingStorageAccountName --account-key $storageAccountKey --verbose
-sudo -u $adminUsername az storage azcopy blob upload --container $storageContainerName --account-name $stagingStorageAccountName --account-key $storageAccountKey --source $localPath --verbose
-sudo -u $adminUsername az storage azcopy blob upload --container $storageContainerName --account-name $stagingStorageAccountName --account-key $storageAccountKey --source $k3sControlPlaneConfig --verbose
+sudo -u $adminUsername az storage container create -n $storageContainerName --account-name $stagingStorageAccountName --account-key $storageAccountKey
+sudo -u $adminUsername az storage azcopy blob upload --container $storageContainerName --account-name $stagingStorageAccountName --account-key $storageAccountKey --source $localPath
+sudo -u $adminUsername az storage azcopy blob upload --container $storageContainerName --account-name $stagingStorageAccountName --account-key $storageAccountKey --source $k3sControlPlaneConfig
 
 # Registering Azure resource providers
 sudo -u $adminUsername az provider register --namespace 'Microsoft.Kubernetes' --wait
