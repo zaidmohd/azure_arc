@@ -54,13 +54,12 @@ param guid string = substring(newGuid(),0,4)
 var templateBaseUrl = 'https://raw.githubusercontent.com/${githubAccount}/azure_arc/${githubBranch}/azure_jumpstart_arcbox/'
 
 var location = resourceGroup().location
-var capiArcDataClusterName = 'ArcBox-CAPI-Data-${guid}'
-var k3sArcDataClusterName = 'ArcBox-K3s-${guid}'
-var k3sArcDataClusterNodesName = 'ArcBox-K3s-Node-${guid}'
+// var capiArcDataClusterName = 'ArcBox-CAPI-Data-${guid}'
+// var k3sArcDataClusterName = 'ArcBox-K3s-${guid}'
+// var k3sArcDataClusterNodesName = 'ArcBox-K3s-Node-${guid}'
 var aksArcDataClusterName = 'ArcBox-AKS-Data-${guid}'
 var aksDrArcDataClusterName = 'ArcBox-AKS-DR-Data-${guid}'
-var k3sClusterName = 'ArcBox-K3s-${guid}'
-var k3sClusterNodesName = 'ArcBox-K3s-Node-${guid}'
+var k3sArcDataClusterName = 'ArcBox-K3s-${guid}'
 var k3sClusterNodesCount = 2
 
 module stagingStorageAccountDeployment 'mgmt/mgmtStagingStorage.bicep' = {
@@ -104,7 +103,7 @@ module ubuntuRancherDeployment 'kubernetes/ubuntuRancher.bicep' = if (flavor == 
     subnetId: mgmtArtifactsAndPolicyDeployment.outputs.subnetId
     deployBastion: deployBastion
     azureLocation: location
-    vmName : k3sClusterName
+    vmName : k3sArcDataClusterName
   }
 }
 
@@ -121,7 +120,7 @@ module ubuntuRancherNodesDeployment 'kubernetes/ubuntuRancherNodes.bicep' = [for
     subnetId: mgmtArtifactsAndPolicyDeployment.outputs.subnetId
     deployBastion: deployBastion
     azureLocation: location
-    vmName : '${k3sClusterNodesName}-0${i}' 
+    vmName : '${k3sArcDataClusterName}-Node-0${i}' 
   }
   dependsOn: [
     ubuntuRancherDeployment

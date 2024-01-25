@@ -49,12 +49,12 @@ param templateBaseUrl string
 @description('Choice to deploy Bastion to connect to the client VM')
 param deployBastion bool = false
 
-var publicIpAddressName = '${vmName}-PIP'
+// var publicIpAddressName = '${vmName}-PIP'
 var networkInterfaceName = '${vmName}-NIC'
 var osDiskType = 'Premium_LRS'
-var PublicIPNoBastion = {
-  id: publicIpAddress.id
-}
+// var PublicIPNoBastion = {
+//   id: publicIpAddress.id
+// }
 
 
 resource networkInterface 'Microsoft.Network/networkInterfaces@2022-01-01' = {
@@ -69,25 +69,25 @@ resource networkInterface 'Microsoft.Network/networkInterfaces@2022-01-01' = {
             id: subnetId
           }
           privateIPAllocationMethod: 'Dynamic'
-          publicIPAddress: deployBastion== false  ? PublicIPNoBastion : json('null')
+          // publicIPAddress: deployBastion== false  ? PublicIPNoBastion : json('null')
         }
       }
     ]
   }
 }
 
-resource publicIpAddress 'Microsoft.Network/publicIpAddresses@2022-01-01' = if(deployBastion == false){
-  name: publicIpAddressName
-  location: azureLocation
-  properties: {
-    publicIPAllocationMethod: 'Static'
-    publicIPAddressVersion: 'IPv4'
-    idleTimeoutInMinutes: 4
-  }
-  sku: {
-    name: 'Basic'
-  }
-}
+// resource publicIpAddress 'Microsoft.Network/publicIpAddresses@2022-01-01' = if(deployBastion == false){
+//   name: publicIpAddressName
+//   location: azureLocation
+//   properties: {
+//     publicIPAllocationMethod: 'Static'
+//     publicIPAddressVersion: 'IPv4'
+//     idleTimeoutInMinutes: 4
+//   }
+//   sku: {
+//     name: 'Basic'
+//   }
+// }
 
 resource vm 'Microsoft.Compute/virtualMachines@2022-03-01' = {
   name: vmName
