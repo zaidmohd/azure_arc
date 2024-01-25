@@ -84,6 +84,7 @@ echo ""
 # Copying Rancher K3s kubeconfig file to staging storage account
 echo ""
 sudo -u $adminUsername az extension add --upgrade -n storage-preview
+sleep 300
 storageAccountRG=$(sudo -u $adminUsername az storage account show --name $stagingStorageAccountName --query 'resourceGroup' --verbose | sed -e 's/^"//' -e 's/"$//')
 storageContainerName="staging-k3s"
 localPath="/home/$adminUsername/.kube/config"
