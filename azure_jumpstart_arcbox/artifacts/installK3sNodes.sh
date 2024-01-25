@@ -60,7 +60,7 @@ storageAccountRG=$(sudo -u $adminUsername az storage account show --name $stagin
 storageContainerName="staging-k3s"
 k3sControlPlaneConfig="k3sControlPlane.yaml"
 storageAccountKey=$(sudo -u $adminUsername az storage account keys list --resource-group $storageAccountRG --account-name $stagingStorageAccountName --query [0].value | sed -e 's/^"//' -e 's/"$//')
-sudo -u $adminUsername az storage azcopy blob download --container $storageContainerName --account-name $stagingStorageAccountName --account-key $storageAccountKey --source "$storageContainerName/$k3sControlPlaneConfig"  --destination "/home/$adminUsername/$k3sControlPlaneConfig"
+sudo -u $adminUsername az storage azcopy blob download --container $storageContainerName --account-name $stagingStorageAccountName --account-key $storageAccountKey --source "$k3sControlPlaneConfig"  --destination "/home/$adminUsername/$k3sControlPlaneConfig"
 
 k3sNodeToken=$(grep 'k3sNodeToken' "/home/$adminUsername/$k3sControlPlaneConfig" | awk '{print $2}')
 k3sClusterIp=$(grep 'k3sClusterIp' "/home/$adminUsername/$k3sControlPlaneConfig" | awk '{print $2}')
