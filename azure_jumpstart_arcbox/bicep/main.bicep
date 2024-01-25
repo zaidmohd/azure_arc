@@ -59,6 +59,9 @@ var k3sArcDataClusterName = 'ArcBox-K3s-${guid}'
 var k3sArcDataClusterNodesName = 'ArcBox-K3s-Node-${guid}'
 var aksArcDataClusterName = 'ArcBox-AKS-Data-${guid}'
 var aksDrArcDataClusterName = 'ArcBox-AKS-DR-Data-${guid}'
+var k3sClusterName = 'ArcBox-K3s-${guid}'
+var k3sClusterNodesName = 'ArcBox-K3s-Node-${guid}'
+var k3sClusterNodesCount = 2
 
 module stagingStorageAccountDeployment 'mgmt/mgmtStagingStorage.bicep' = {
   name: 'stagingStorageAccountDeployment'
@@ -101,11 +104,11 @@ module ubuntuRancherDeployment 'kubernetes/ubuntuRancher.bicep' = if (flavor == 
     subnetId: mgmtArtifactsAndPolicyDeployment.outputs.subnetId
     deployBastion: deployBastion
     azureLocation: location
-    vmName : k3sArcDataClusterName
+    vmName : k3sClusterName
   }
 }
 
-module ubuntuRancherNodesDeployment 'kubernetes/ubuntuRancherNodes.bicep' = if (flavor == 'Full' || flavor == 'DevOps' || flavor == 'DataOps') {
+module ubuntuRancherNodesDeployment 'kubernetes/ubuntuRancherNodes.bicep' = [for i in range(0, k3sClusterNodesCount): if (flavor == 'Full' || flavor == 'DevOps' || flavor == 'DataOps') {
   name: 'ubuntuRancherNodesDeployment'
   params: {
     sshRSAPublicKey: sshRSAPublicKey
@@ -118,12 +121,12 @@ module ubuntuRancherNodesDeployment 'kubernetes/ubuntuRancherNodes.bicep' = if (
     subnetId: mgmtArtifactsAndPolicyDeployment.outputs.subnetId
     deployBastion: deployBastion
     azureLocation: location
-    vmName : k3sArcDataClusterNodesName
+    vmName : '${k3sClusterNodesName}-0${i}' 
   }
   dependsOn: [
     ubuntuRancherDeployment
   ]
-}
+}]
 
 // module clientVmDeployment 'clientVm/clientVm.bicep' = {
 //   name: 'clientVmDeployment'
