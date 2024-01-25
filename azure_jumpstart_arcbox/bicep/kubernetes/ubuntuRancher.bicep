@@ -229,7 +229,7 @@ resource vmNode 'Microsoft.Compute/virtualMachines@2022-03-01' = [for i in range
     }
   }
   dependsOn: [
-    vm // wait for control plane vm to be created before creating network interface for nodes
+    vmInstallscriptK3s // wait for control plane vm configuration to be completed before creating nodes vms
   ]
 }]
 
