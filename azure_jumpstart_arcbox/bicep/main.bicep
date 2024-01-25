@@ -51,6 +51,9 @@ param addsDomainName string = 'jumpstart.local'
 @description('Random GUID for cluster names')
 param guid string = substring(newGuid(),0,4)
 
+@description('Number of nodes to deploy in the K3s cluster')
+param k3sClusterNodesCount int = 2
+
 var templateBaseUrl = 'https://raw.githubusercontent.com/${githubAccount}/azure_arc/${githubBranch}/azure_jumpstart_arcbox/'
 
 var location = resourceGroup().location
@@ -60,7 +63,6 @@ var location = resourceGroup().location
 var aksArcDataClusterName = 'ArcBox-AKS-Data-${guid}'
 var aksDrArcDataClusterName = 'ArcBox-AKS-DR-Data-${guid}'
 var k3sArcDataClusterName = 'ArcBox-K3s-${guid}'
-var k3sClusterNodesCount = 2
 
 module stagingStorageAccountDeployment 'mgmt/mgmtStagingStorage.bicep' = {
   name: 'stagingStorageAccountDeployment'
@@ -104,28 +106,29 @@ module ubuntuRancherDeployment 'kubernetes/ubuntuRancher.bicep' = if (flavor == 
     deployBastion: deployBastion
     azureLocation: location
     vmName : k3sArcDataClusterName
+    k3sClusterNodesCount: k3sClusterNodesCount
   }
 }
 
-module ubuntuRancherNodesDeployment 'kubernetes/ubuntuRancherNodes.bicep' = [for i in range(0, k3sClusterNodesCount): if (flavor == 'Full' || flavor == 'DevOps' || flavor == 'DataOps') {
-  name: 'ubuntuRancherNodesDeployment-${i}'
-  params: {
-    sshRSAPublicKey: sshRSAPublicKey
-    spnClientId: spnClientId
-    spnClientSecret: spnClientSecret
-    spnTenantId: spnTenantId
-    stagingStorageAccountName: stagingStorageAccountDeployment.outputs.storageAccountName
-    logAnalyticsWorkspace: logAnalyticsWorkspaceName
-    templateBaseUrl: templateBaseUrl
-    subnetId: mgmtArtifactsAndPolicyDeployment.outputs.subnetId
-    deployBastion: deployBastion
-    azureLocation: location
-    vmName : '${k3sArcDataClusterName}-Node-0${i}' 
-  }
-  dependsOn: [
-    ubuntuRancherDeployment
-  ]
-}]
+// module ubuntuRancherNodesDeployment 'kubernetes/ubuntuRancher.bicep' = [for i in range(0, k3sClusterNodesCount): if (flavor == 'Full' || flavor == 'DevOps' || flavor == 'DataOps') {
+//   name: 'ubuntuRancherNodesDeployment-${i}'
+//   params: {
+//     sshRSAPublicKey: sshRSAPublicKey
+//     spnClientId: spnClientId
+//     spnClientSecret: spnClientSecret
+//     spnTenantId: spnTenantId
+//     stagingStorageAccountName: stagingStorageAccountDeployment.outputs.storageAccountName
+//     logAnalyticsWorkspace: logAnalyticsWorkspaceName
+//     templateBaseUrl: templateBaseUrl
+//     subnetId: mgmtArtifactsAndPolicyDeployment.outputs.subnetId
+//     deployBastion: deployBastion
+//     azureLocation: location
+//     vmName : '${k3sArcDataClusterName}-Node-0${i}' 
+//   }
+//   dependsOn: [
+//     ubuntuRancherDeployment
+//   ]
+// }]
 
 // module clientVmDeployment 'clientVm/clientVm.bicep' = {
 //   name: 'clientVmDeployment'

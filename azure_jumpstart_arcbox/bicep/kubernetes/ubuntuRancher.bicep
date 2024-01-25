@@ -49,14 +49,29 @@ param templateBaseUrl string
 @description('Choice to deploy Bastion to connect to the client VM')
 param deployBastion bool = false
 
+@description('Number of nodes to deploy in the cluster')
+param k3sClusterNodesCount int = 2
+
 var publicIpAddressName = '${vmName}-PIP'
 var networkInterfaceName = '${vmName}-NIC'
 var osDiskType = 'Premium_LRS'
 var PublicIPNoBastion = {
   id: publicIpAddress.id
 }
-var k3sControlPlane = 'true'
+var k3sControlPlane = 'false' // default to false for single node cluster
 
+resource publicIpAddress 'Microsoft.Network/publicIpAddresses@2022-01-01' = if(deployBastion == false){
+  name: publicIpAddressName
+  location: azureLocation
+  properties: {
+    publicIPAllocationMethod: 'Static'
+    publicIPAddressVersion: 'IPv4'
+    idleTimeoutInMinutes: 4
+  }
+  sku: {
+    name: 'Basic'
+  }
+}
 
 resource networkInterface 'Microsoft.Network/networkInterfaces@2022-01-01' = {
   name: networkInterfaceName
@@ -74,19 +89,6 @@ resource networkInterface 'Microsoft.Network/networkInterfaces@2022-01-01' = {
         }
       }
     ]
-  }
-}
-
-resource publicIpAddress 'Microsoft.Network/publicIpAddresses@2022-01-01' = if(deployBastion == false){
-  name: publicIpAddressName
-  location: azureLocation
-  properties: {
-    publicIPAllocationMethod: 'Static'
-    publicIPAddressVersion: 'IPv4'
-    idleTimeoutInMinutes: 4
-  }
-  sku: {
-    name: 'Basic'
   }
 }
 
@@ -157,3 +159,89 @@ resource vmInstallscriptK3s 'Microsoft.Compute/virtualMachines/extensions@2022-0
     }
   }
 }
+
+resource networkInterfaceNode 'Microsoft.Network/networkInterfaces@2022-01-01' = [for i in range(0, k3sClusterNodesCount): {
+  name: '${networkInterfaceName}-Node-0${i}'
+  location: azureLocation
+  properties: {
+    ipConfigurations: [
+      {
+        name: 'ipconfig1'
+        properties: {
+          subnet: {
+            id: subnetId
+          }
+          privateIPAllocationMethod: 'Dynamic'
+        }
+      }
+    ]
+  }
+}]
+
+resource vmNode 'Microsoft.Compute/virtualMachines@2022-03-01' = [for i in range(0, k3sClusterNodesCount): {
+  name: '${vmName}-Node-0${i}'
+  location: azureLocation
+  tags: resourceTags
+  properties: {
+    hardwareProfile: {
+      vmSize: vmSize
+    }
+    storageProfile: {
+      osDisk: {
+        name: '${vmName}-Node-0${i}-OSDisk'
+        caching: 'ReadWrite'
+        createOption: 'FromImage'
+        managedDisk: {
+          storageAccountType: osDiskType
+        }
+      }
+      imageReference: {
+        publisher: 'canonical'
+        offer: '0001-com-ubuntu-server-jammy'
+        sku: ubuntuOSVersion
+        version: 'latest'
+      }
+    }
+    networkProfile: {
+      networkInterfaces: [
+        {
+          id: networkInterfaceNode[i].id
+        }
+      ]
+    }
+    osProfile: {
+      computerName: '${vmName}-Node-0${i}'
+      adminUsername: adminUsername
+      linuxConfiguration: {
+        disablePasswordAuthentication: true
+        ssh: {
+          publicKeys: [
+            {
+              path: '/home/${adminUsername}/.ssh/authorized_keys'
+              keyData: sshRSAPublicKey
+            }
+          ]
+        }
+      }
+    }
+  }
+}]
+
+resource vmInstallscriptK3sNode 'Microsoft.Compute/virtualMachines/extensions@2022-03-01' = [for i in range(0, k3sClusterNodesCount): {
+  parent: vmNode[i]
+  name: 'installscript_k3s'
+  location: azureLocation
+  properties: {
+    publisher: 'Microsoft.Azure.Extensions'
+    type: 'CustomScript'
+    typeHandlerVersion: '2.1'
+    autoUpgradeMinorVersion: true
+    settings: {}
+    protectedSettings: {
+      commandToExecute: 'bash installK3s.sh ${adminUsername} ${spnClientId} ${spnClientSecret} ${spnTenantId} ${vmName} ${azureLocation} ${stagingStorageAccountName} ${logAnalyticsWorkspace} ${templateBaseUrl}'
+      fileUris: [
+        '${templateBaseUrl}artifacts/installK3s.sh'
+      ]
+    }
+  }
+}]
