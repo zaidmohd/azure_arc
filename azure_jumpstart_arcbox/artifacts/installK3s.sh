@@ -151,5 +151,5 @@ else
 fi
 
 # Uploading this script log to staging storage for ease of troubleshooting
-log="/home/${adminUsername}/jumpstart_logs/installK3s-$vmName.log"
-sudo -u $adminUsername az storage azcopy blob upload --container $storageContainerName --account-name $stagingStorageAccountName --account-key $storageAccountKey --source $log
+log="/home/${adminUsername}/jumpstart_logs/installK3s.log"
+sudo -u $adminUsername az storage azcopy blob upload --container $storageContainerName --account-name $stagingStorageAccountName --account-key $storageAccountKey --source $log --destination "installK3s-$vmName.log"
