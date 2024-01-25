@@ -176,6 +176,9 @@ resource networkInterfaceNode 'Microsoft.Network/networkInterfaces@2022-01-01' =
       }
     ]
   }
+  dependsOn: [
+    networkInterface // wait for control plane network interface to be created before creating network interface for nodes
+  ]
 }]
 
 resource vmNode 'Microsoft.Compute/virtualMachines@2022-03-01' = [for i in range(0, k3sClusterNodesCount): {
@@ -225,6 +228,9 @@ resource vmNode 'Microsoft.Compute/virtualMachines@2022-03-01' = [for i in range
       }
     }
   }
+  dependsOn: [
+    vm // wait for control plane vm to be created before creating network interface for nodes
+  ]
 }]
 
 resource vmInstallscriptK3sNode 'Microsoft.Compute/virtualMachines/extensions@2022-03-01' = [for i in range(0, k3sClusterNodesCount): {
