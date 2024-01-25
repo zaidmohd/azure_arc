@@ -109,7 +109,7 @@ module ubuntuRancherDeployment 'kubernetes/ubuntuRancher.bicep' = if (flavor == 
 }
 
 module ubuntuRancherNodesDeployment 'kubernetes/ubuntuRancherNodes.bicep' = [for i in range(0, k3sClusterNodesCount): if (flavor == 'Full' || flavor == 'DevOps' || flavor == 'DataOps') {
-  name: 'ubuntuRancherNodesDeployment'
+  name: 'ubuntuRancherNodesDeployment-${i}'
   params: {
     sshRSAPublicKey: sshRSAPublicKey
     spnClientId: spnClientId
