@@ -18,8 +18,8 @@ echo $vmName:$5 | awk '{print substr($1,2); }' >> vars.sh
 echo $location:$6 | awk '{print substr($1,2); }' >> vars.sh
 echo $stagingStorageAccountName:$7 | awk '{print substr($1,2); }' >> vars.sh
 echo $logAnalyticsWorkspace:$8 | awk '{print substr($1,2); }' >> vars.sh
+echo $k3sControlPlane:$9 | awk '{print substr($1,2); }' >> vars.sh
 echo $templateBaseUrl:${10} | awk '{print substr($1,2); }' >> vars.sh
-echo $k3sControlPlane:$11 | awk '{print substr($1,2); }' >> vars.sh
 
 sed -i '2s/^/export adminUsername=/' vars.sh
 sed -i '3s/^/export SPN_CLIENT_ID=/' vars.sh
@@ -29,9 +29,8 @@ sed -i '6s/^/export vmName=/' vars.sh
 sed -i '7s/^/export location=/' vars.sh
 sed -i '8s/^/export stagingStorageAccountName=/' vars.sh
 sed -i '9s/^/export logAnalyticsWorkspace=/' vars.sh
-sed -i '10s/^/export deployBastion=/' vars.sh
+sed -i '10s/^/export k3sControlPlane=/' vars.sh
 sed -i '11s/^/export templateBaseUrl=/' vars.sh
-sed -i '11s/^/export k3sControlPlane=/' vars.sh
 
 export K3S_VERSION="1.28.2+k3s1" # Do not change!
 
