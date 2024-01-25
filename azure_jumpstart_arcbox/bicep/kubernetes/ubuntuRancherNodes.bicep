@@ -46,15 +46,8 @@ param logAnalyticsWorkspace string
 @description('The base URL used for accessing artifacts and automation artifacts')
 param templateBaseUrl string
 
-@description('Choice to deploy Bastion to connect to the client VM')
-param deployBastion bool = false
-
-// var publicIpAddressName = '${vmName}-PIP'
 var networkInterfaceName = '${vmName}-NIC'
 var osDiskType = 'Premium_LRS'
-// var PublicIPNoBastion = {
-//   id: publicIpAddress.id
-// }
 
 
 resource networkInterface 'Microsoft.Network/networkInterfaces@2022-01-01' = {
@@ -69,25 +62,11 @@ resource networkInterface 'Microsoft.Network/networkInterfaces@2022-01-01' = {
             id: subnetId
           }
           privateIPAllocationMethod: 'Dynamic'
-          // publicIPAddress: deployBastion== false  ? PublicIPNoBastion : json('null')
         }
       }
     ]
   }
 }
-
-// resource publicIpAddress 'Microsoft.Network/publicIpAddresses@2022-01-01' = if(deployBastion == false){
-//   name: publicIpAddressName
-//   location: azureLocation
-//   properties: {
-//     publicIPAllocationMethod: 'Static'
-//     publicIPAddressVersion: 'IPv4'
-//     idleTimeoutInMinutes: 4
-//   }
-//   sku: {
-//     name: 'Basic'
-//   }
-// }
 
 resource vm 'Microsoft.Compute/virtualMachines@2022-03-01' = {
   name: vmName
@@ -149,7 +128,7 @@ resource vmInstallscriptK3s 'Microsoft.Compute/virtualMachines/extensions@2022-0
     autoUpgradeMinorVersion: true
     settings: {}
     protectedSettings: {
-      commandToExecute: 'bash installK3s.sh ${adminUsername} ${spnClientId} ${spnClientSecret} ${spnTenantId} ${vmName} ${azureLocation} ${stagingStorageAccountName} ${logAnalyticsWorkspace} ${deployBastion}'
+      commandToExecute: 'bash installK3s.sh ${adminUsername} ${spnClientId} ${spnClientSecret} ${spnTenantId} ${vmName} ${azureLocation} ${stagingStorageAccountName} ${logAnalyticsWorkspace}'
       fileUris: [
         '${templateBaseUrl}artifacts/installK3s.sh'
       ]
