@@ -53,7 +53,7 @@ sudo -u $adminUsername az login --service-principal --username $SPN_CLIENT_ID --
 az -v
 echo ""
 
-if [ $k3sControlPlane = true ]; then
+if [ $k3sControlPlane = "true" ]; then
 
     # Installing Azure Arc extensions
     sudo -u $adminUsername az extension add --name connectedk8s

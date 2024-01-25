@@ -55,7 +55,7 @@ var osDiskType = 'Premium_LRS'
 var PublicIPNoBastion = {
   id: publicIpAddress.id
 }
-var k3sControlPlane = true // deploy control plane node
+var k3sControlPlane = 'true' // deploy control plane node
 
 resource publicIpAddress 'Microsoft.Network/publicIpAddresses@2022-01-01' = if(deployBastion == false){
   name: publicIpAddressName
