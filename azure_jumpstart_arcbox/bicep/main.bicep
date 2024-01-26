@@ -104,31 +104,31 @@ module ubuntuRancherNodesDeployment 'kubernetes/ubuntuRancherNodes.bicep' = [for
   ]
 }]
 
-// module clientVmDeployment 'clientVm/clientVm.bicep' = {
-//   name: 'clientVmDeployment'
-//   params: {
-//     windowsAdminUsername: windowsAdminUsername
-//     windowsAdminPassword: windowsAdminPassword
-//     spnClientId: spnClientId
-//     spnClientSecret: spnClientSecret
-//     spnTenantId: spnTenantId
-//     workspaceName: logAnalyticsWorkspaceName
-//     stagingStorageAccountName: stagingStorageAccountDeployment.outputs.storageAccountName
-//     templateBaseUrl: templateBaseUrl
-//     flavor: flavor
-//     subnetId: mgmtArtifactsAndPolicyDeployment.outputs.subnetId
-//     deployBastion: deployBastion
-//     githubUser: githubUser
-//     location: location
-//     k3sArcClusterName : k3sArcDataClusterName
-//     capiArcDataClusterName : capiArcDataClusterName
-//     aksArcClusterName : aksArcDataClusterName
-//     aksdrArcClusterName : aksDrArcDataClusterName
-//   }
-//   dependsOn: [
-//     updateVNetDNSServers
-//   ]
-// }
+module clientVmDeployment 'clientVm/clientVm.bicep' = {
+  name: 'clientVmDeployment'
+  params: {
+    windowsAdminUsername: windowsAdminUsername
+    windowsAdminPassword: windowsAdminPassword
+    spnClientId: spnClientId
+    spnClientSecret: spnClientSecret
+    spnTenantId: spnTenantId
+    workspaceName: logAnalyticsWorkspaceName
+    stagingStorageAccountName: stagingStorageAccountDeployment.outputs.storageAccountName
+    templateBaseUrl: templateBaseUrl
+    flavor: flavor
+    subnetId: mgmtArtifactsAndPolicyDeployment.outputs.subnetId
+    deployBastion: deployBastion
+    githubUser: githubUser
+    location: location
+    k3sArcClusterName : k3sArcDataClusterName
+    k3sArcDataClusterName : k3sArcDataClusterName
+    aksArcClusterName : aksArcDataClusterName
+    aksdrArcClusterName : aksDrArcDataClusterName
+  }
+  dependsOn: [
+    updateVNetDNSServers
+  ]
+}
 
 module mgmtArtifactsAndPolicyDeployment 'mgmt/mgmtArtifacts.bicep' = {
   name: 'mgmtArtifactsAndPolicyDeployment'
