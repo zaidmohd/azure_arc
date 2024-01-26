@@ -19,7 +19,9 @@ echo $location:$6 | awk '{print substr($1,2); }' >> vars.sh
 echo $stagingStorageAccountName:$7 | awk '{print substr($1,2); }' >> vars.sh
 echo $logAnalyticsWorkspace:$8 | awk '{print substr($1,2); }' >> vars.sh
 echo $templateBaseUrl:$9 | awk '{print substr($1,2); }' >> vars.sh
-echo $k3sControlPlane:${10} | awk '{print substr($1,2); }' >> vars.sh
+echo $storageContainerName:${10} | awk '{print substr($1,2); }' >> vars.sh
+echo $k3sSingleNode:${11} | awk '{print substr($1,2); }' >> vars.sh
+
 
 sed -i '2s/^/export adminUsername=/' vars.sh
 sed -i '3s/^/export SPN_CLIENT_ID=/' vars.sh
@@ -30,8 +32,10 @@ sed -i '7s/^/export location=/' vars.sh
 sed -i '8s/^/export stagingStorageAccountName=/' vars.sh
 sed -i '9s/^/export logAnalyticsWorkspace=/' vars.sh
 sed -i '10s/^/export templateBaseUrl=/' vars.sh
-sed -i '11s/^/export k3sControlPlane=/' vars.sh
+sed -i '11s/^/export storageContainerName=/' vars.sh
+sed -i '12s/^/export k3sSingleNode=/' vars.sh
 
+# Set k3 deployment variables
 export K3S_VERSION="1.28.2+k3s1" # Do not change!
 
 chmod +x vars.sh
@@ -53,7 +57,7 @@ sudo -u $adminUsername az login --service-principal --username $SPN_CLIENT_ID --
 az -v
 echo ""
 
-if [ $k3sControlPlane = "true" ]; then
+if [ $k3sSingleNode = "true" ]; then
 
     # Installing Azure Arc extensions
     sudo -u $adminUsername az extension add --name connectedk8s
@@ -66,8 +70,8 @@ if [ $k3sControlPlane = "true" ]; then
     sudo mkdir ~/.kube
     sudo -u $adminUsername mkdir /home/${adminUsername}/.kube
     curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="server --disable traefik --node-external-ip ${publicIp} --bind-address ${publicIp}" INSTALL_K3S_VERSION=v${K3S_VERSION} K3S_KUBECONFIG_MODE="644" sh -
-    if [ $? -ne 0 ]; then
-        echo "K3s installation failed"
+    if [[ $? -ne 0 ]]; then
+        echo "ERROR: K3s installation failed"
         exit 1
     fi
 
@@ -90,17 +94,17 @@ if [ $k3sControlPlane = "true" ]; then
 
     # Copying Rancher K3s kubeconfig file to staging storage account
     echo ""
-    storageContainerName="staging-k3s"
+    # storageContainerName="staging-k3s"
     localPath="/home/$adminUsername/.kube/config"
-    k3sControlPlaneConfig="/home/$adminUsername/k3sControlPlane.yaml"
-    echo "k3sNodeToken: $(sudo cat /var/lib/rancher/k3s/server/node-token)" >> $k3sControlPlaneConfig
-    echo "k3sClusterIp: $publicIp" >> $k3sControlPlaneConfig
+    k3sClusterNodeConfig="/home/$adminUsername/k3sClusterNodeConfig.yaml"
+    echo "k3sNodeToken: $(sudo cat /var/lib/rancher/k3s/server/node-token)" >> $k3sClusterNodeConfig
+    echo "k3sClusterIp: $publicIp" >> $k3sClusterNodeConfig
     sudo -u $adminUsername az extension add --upgrade -n storage-preview
     storageAccountRG=$(sudo -u $adminUsername az storage account show --name $stagingStorageAccountName --query 'resourceGroup' | sed -e 's/^"//' -e 's/"$//')
     storageAccountKey=$(sudo -u $adminUsername az storage account keys list --resource-group $storageAccountRG --account-name $stagingStorageAccountName --query [0].value | sed -e 's/^"//' -e 's/"$//')
     sudo -u $adminUsername az storage container create -n $storageContainerName --account-name $stagingStorageAccountName --account-key $storageAccountKey
     sudo -u $adminUsername az storage azcopy blob upload --container $storageContainerName --account-name $stagingStorageAccountName --account-key $storageAccountKey --source $localPath
-    sudo -u $adminUsername az storage azcopy blob upload --container $storageContainerName --account-name $stagingStorageAccountName --account-key $storageAccountKey --source $k3sControlPlaneConfig
+    sudo -u $adminUsername az storage azcopy blob upload --container $storageContainerName --account-name $stagingStorageAccountName --account-key $storageAccountKey --source $k3sClusterNodeConfig
 
     # Registering Azure resource providers
     sudo -u $adminUsername az provider register --namespace 'Microsoft.Kubernetes' --wait
@@ -129,20 +133,20 @@ if [ $k3sControlPlane = "true" ]; then
 else
     # Downloading k3s control plane details
     echo ""
-    storageContainerName="staging-k3s"
-    k3sControlPlaneConfig="k3sControlPlane.yaml"
+    # storageContainerName="staging-k3s"
+    k3sClusterNodeConfig="k3sClusterNodeConfig.yaml"
     sudo -u $adminUsername az extension add --upgrade -n storage-preview
     storageAccountRG=$(sudo -u $adminUsername az storage account show --name $stagingStorageAccountName --query 'resourceGroup' | sed -e 's/^"//' -e 's/"$//')
     storageAccountKey=$(sudo -u $adminUsername az storage account keys list --resource-group $storageAccountRG --account-name $stagingStorageAccountName --query [0].value | sed -e 's/^"//' -e 's/"$//')
-    sudo -u $adminUsername az storage azcopy blob download --container $storageContainerName --account-name $stagingStorageAccountName --account-key $storageAccountKey --source "$k3sControlPlaneConfig"  --destination "/home/$adminUsername/$k3sControlPlaneConfig"
+    sudo -u $adminUsername az storage azcopy blob download --container $storageContainerName --account-name $stagingStorageAccountName --account-key $storageAccountKey --source "$k3sClusterNodeConfig"  --destination "/home/$adminUsername/$k3sClusterNodeConfig"
 
     # Installing Rancher K3s cluster (single worker node)
     echo ""
-    k3sNodeToken=$(grep 'k3sNodeToken' "/home/$adminUsername/$k3sControlPlaneConfig" | awk '{print $2}')
-    k3sClusterIp=$(grep 'k3sClusterIp' "/home/$adminUsername/$k3sControlPlaneConfig" | awk '{print $2}')
+    k3sNodeToken=$(grep 'k3sNodeToken' "/home/$adminUsername/$k3sClusterNodeConfig" | awk '{print $2}')
+    k3sClusterIp=$(grep 'k3sClusterIp' "/home/$adminUsername/$k3sClusterNodeConfig" | awk '{print $2}')
     curl -sfL https://get.k3s.io | K3S_URL=https://${k3sClusterIp}:6443 K3S_TOKEN=${k3sNodeToken} sh -
-    if [ $? -ne 0 ]; then
-        echo "Error: Failed to add k3s worker nodes"
+    if [[ $? -ne 0 ]]; then
+        echo "ERROR: Failed to add k3s worker nodes"
         exit 1
     fi
 

@@ -17,9 +17,6 @@ param ubuntuOSVersion string = '22_04-lts-gen2'
 @description('Location for all resources.')
 param azureLocation string = resourceGroup().location
 
-@description('The size of the VM')
-param vmSize string = 'Standard_B4ms'
-
 @description('Resource Id of the subnet in the virtual network')
 param subnetId string
 
@@ -46,8 +43,21 @@ param logAnalyticsWorkspace string
 @description('The base URL used for accessing artifacts and automation artifacts')
 param templateBaseUrl string
 
+@description('The flavor of ArcBox you want to deploy. Valid values are: \'Full\', \'ITPro\'')
+@allowed([
+  'Full'
+  'ITPro'
+  'DevOps'
+  'DataOps'
+])
+param flavor string
+
+@description('Storage account container name for artifacts')
+param storageContainerName string
+
 var networkInterfaceName = '${vmName}-NIC'
 var osDiskType = 'Premium_LRS'
+var vmSize = (flavor == 'DevOps') ? 'Standard_B2ms' : 'Standard_B8ms'
 
 
 resource networkInterface 'Microsoft.Network/networkInterfaces@2022-01-01' = {
@@ -128,7 +138,7 @@ resource vmInstallscriptK3s 'Microsoft.Compute/virtualMachines/extensions@2022-0
     autoUpgradeMinorVersion: true
     settings: {}
     protectedSettings: {
-      commandToExecute: 'bash installK3s.sh ${adminUsername} ${spnClientId} ${spnClientSecret} ${spnTenantId} ${vmName} ${azureLocation} ${stagingStorageAccountName} ${logAnalyticsWorkspace}'
+      commandToExecute: 'bash installK3s.sh ${adminUsername} ${spnClientId} ${spnClientSecret} ${spnTenantId} ${vmName} ${azureLocation} ${stagingStorageAccountName} ${logAnalyticsWorkspace} ${storageContainerName}'
       fileUris: [
         '${templateBaseUrl}artifacts/installK3s.sh'
       ]

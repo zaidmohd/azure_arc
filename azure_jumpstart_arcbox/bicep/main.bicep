@@ -60,6 +60,9 @@ var location = resourceGroup().location
 var aksArcDataClusterName = 'ArcBox-AKS-Data-${guid}'
 var aksDrArcDataClusterName = 'ArcBox-AKS-DR-Data-${guid}'
 var k3sArcDataClusterName = 'ArcBox-K3s-${guid}'
+var k3sArcDataStagingContainerName = 'staging-${k3sArcDataClusterName}'
+var k3sArcDemoClusterName = 'ArcBox-Demo-${guid}'
+var k3sArcDemoStagingContainerName = 'staging-${k3sArcDataClusterName}'
 
 module stagingStorageAccountDeployment 'mgmt/mgmtStagingStorage.bicep' = {
   name: 'stagingStorageAccountDeployment'
@@ -82,6 +85,7 @@ module ubuntuRancherDeployment 'kubernetes/ubuntuRancher.bicep' = if (flavor == 
     deployBastion: deployBastion
     azureLocation: location
     vmName : k3sArcDataClusterName
+    storageContainerName: k3sArcDataStagingContainerName
   }
 }
 
@@ -97,12 +101,32 @@ module ubuntuRancherNodesDeployment 'kubernetes/ubuntuRancherNodes.bicep' = [for
     templateBaseUrl: templateBaseUrl
     subnetId: mgmtArtifactsAndPolicyDeployment.outputs.subnetId
     azureLocation: location
+    flavor: flavor
     vmName : '${k3sArcDataClusterName}-Node-0${i}' 
+    storageContainerName: k3sArcDataStagingContainerName
   }
   dependsOn: [
     ubuntuRancherDeployment
   ]
 }]
+
+module ubuntuRancherDemoDeployment 'kubernetes/ubuntuRancher.bicep' = if (flavor == 'Full' || flavor == 'DevOps') {
+  name: 'ubuntuRancherDemoDeployment'
+  params: {
+    sshRSAPublicKey: sshRSAPublicKey
+    spnClientId: spnClientId
+    spnClientSecret: spnClientSecret
+    spnTenantId: spnTenantId
+    stagingStorageAccountName: stagingStorageAccountDeployment.outputs.storageAccountName
+    logAnalyticsWorkspace: logAnalyticsWorkspaceName
+    templateBaseUrl: templateBaseUrl
+    subnetId: mgmtArtifactsAndPolicyDeployment.outputs.subnetId
+    deployBastion: deployBastion
+    azureLocation: location
+    vmName : k3sArcDemoClusterName
+    storageContainerName: k3sArcDemoStagingContainerName
+  }
+}
 
 // module clientVmDeployment 'clientVm/clientVm.bicep' = {
 //   name: 'clientVmDeployment'
