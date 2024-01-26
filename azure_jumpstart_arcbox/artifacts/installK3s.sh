@@ -66,12 +66,11 @@ if [ $k3sControlPlane = "true" ]; then
     sudo mkdir ~/.kube
     sudo -u $adminUsername mkdir /home/${adminUsername}/.kube
     curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="server --disable traefik --node-external-ip ${publicIp} --bind-address ${publicIp}" INSTALL_K3S_VERSION=v${K3S_VERSION} K3S_KUBECONFIG_MODE="644" sh -
-    if [ $? -eq 0 ]; then
-        echo "K3s installation completed successfully."
-    else
-        echo "K3s installation failed."
+    if [ $? -ne 0 ]; then
+        echo "K3s installation failed"
         exit 1
     fi
+
     sudo kubectl config rename-context default arcbox-k3s --kubeconfig /etc/rancher/k3s/k3s.yaml
     sudo cp /etc/rancher/k3s/k3s.yaml ~/.kube/config
     sudo cp /etc/rancher/k3s/k3s.yaml /home/${adminUsername}/.kube/config
@@ -91,13 +90,13 @@ if [ $k3sControlPlane = "true" ]; then
 
     # Copying Rancher K3s kubeconfig file to staging storage account
     echo ""
-    sudo -u $adminUsername az extension add --upgrade -n storage-preview
-    storageAccountRG=$(sudo -u $adminUsername az storage account show --name $stagingStorageAccountName --query 'resourceGroup' | sed -e 's/^"//' -e 's/"$//')
     storageContainerName="staging-k3s"
     localPath="/home/$adminUsername/.kube/config"
     k3sControlPlaneConfig="/home/$adminUsername/k3sControlPlane.yaml"
     echo "k3sNodeToken: $(sudo cat /var/lib/rancher/k3s/server/node-token)" >> $k3sControlPlaneConfig
     echo "k3sClusterIp: $publicIp" >> $k3sControlPlaneConfig
+    sudo -u $adminUsername az extension add --upgrade -n storage-preview
+    storageAccountRG=$(sudo -u $adminUsername az storage account show --name $stagingStorageAccountName --query 'resourceGroup' | sed -e 's/^"//' -e 's/"$//')
     storageAccountKey=$(sudo -u $adminUsername az storage account keys list --resource-group $storageAccountRG --account-name $stagingStorageAccountName --query [0].value | sed -e 's/^"//' -e 's/"$//')
     sudo -u $adminUsername az storage container create -n $storageContainerName --account-name $stagingStorageAccountName --account-key $storageAccountKey
     sudo -u $adminUsername az storage azcopy blob upload --container $storageContainerName --account-name $stagingStorageAccountName --account-key $storageAccountKey --source $localPath
@@ -130,10 +129,10 @@ if [ $k3sControlPlane = "true" ]; then
 else
     # Downloading k3s control plane details
     echo ""
-    sudo -u $adminUsername az extension add --upgrade -n storage-preview
-    storageAccountRG=$(sudo -u $adminUsername az storage account show --name $stagingStorageAccountName --query 'resourceGroup' | sed -e 's/^"//' -e 's/"$//')
     storageContainerName="staging-k3s"
     k3sControlPlaneConfig="k3sControlPlane.yaml"
+    sudo -u $adminUsername az extension add --upgrade -n storage-preview
+    storageAccountRG=$(sudo -u $adminUsername az storage account show --name $stagingStorageAccountName --query 'resourceGroup' | sed -e 's/^"//' -e 's/"$//')
     storageAccountKey=$(sudo -u $adminUsername az storage account keys list --resource-group $storageAccountRG --account-name $stagingStorageAccountName --query [0].value | sed -e 's/^"//' -e 's/"$//')
     sudo -u $adminUsername az storage azcopy blob download --container $storageContainerName --account-name $stagingStorageAccountName --account-key $storageAccountKey --source "$k3sControlPlaneConfig"  --destination "/home/$adminUsername/$k3sControlPlaneConfig"
 
