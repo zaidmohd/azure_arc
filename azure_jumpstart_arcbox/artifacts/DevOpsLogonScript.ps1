@@ -31,20 +31,23 @@ if(-not $($cliDir.Parent.Attributes.HasFlag([System.IO.FileAttributes]::Hidden))
 
 $Env:AZURE_CONFIG_DIR = $cliDir.FullName
 
-$Env:capiArcDataClusterName=(Get-AzResource -ResourceGroupName $Env:resourceGroup -ResourceType microsoft.kubernetes/connectedclusters).Name | Select-String "CAPI" | Where-Object { $_ -ne "" }
-$Env:capiArcDataClusterName=$Env:capiArcDataClusterName -replace "`n",""
+# $Env:capiArcDataClusterName=(Get-AzResource -ResourceGroupName $Env:resourceGroup -ResourceType microsoft.kubernetes/connectedclusters).Name | Select-String "CAPI" | Where-Object { $_ -ne "" }
+# $Env:capiArcDataClusterName=$Env:capiArcDataClusterName -replace "`n",""
+
+$Env:k3sArcDataClusterName=(Get-AzResource -ResourceGroupName $Env:resourceGroup -ResourceType microsoft.kubernetes/connectedclusters).Name | Select-String "k3s" | Where-Object { $_ -ne "" }
+$Env:k3sArcDataClusterName=$Env:k3sArcDataClusterName -replace "`n",""
 
 # Required for CLI commands
 Write-Header "Az CLI Login"
 az login --service-principal --username $Env:spnClientID --password=$Env:spnClientSecret --tenant $Env:spnTenantId
 
-# Downloading CAPI Kubernetes cluster kubeconfig file
-Write-Header "Downloading CAPI K8s Kubeconfig"
-$sourceFile = "https://$Env:stagingStorageAccountName.blob.core.windows.net/staging-capi/config"
-$context = (Get-AzStorageAccount -ResourceGroupName $Env:resourceGroup).Context
-$sas = New-AzStorageAccountSASToken -Context $context -Service Blob -ResourceType Object -Permission racwdlup
-$sourceFile = $sourceFile + "?" + $sas
-azcopy cp --check-md5 FailIfDifferentOrMissing $sourceFile  "C:\Users\$Env:USERNAME\.kube\config"
+# # Downloading CAPI Kubernetes cluster kubeconfig file
+# Write-Header "Downloading CAPI K8s Kubeconfig"
+# $sourceFile = "https://$Env:stagingStorageAccountName.blob.core.windows.net/staging-capi/config"
+# $context = (Get-AzStorageAccount -ResourceGroupName $Env:resourceGroup).Context
+# $sas = New-AzStorageAccountSASToken -Context $context -Service Blob -ResourceType Object -Permission racwdlup
+# $sourceFile = $sourceFile + "?" + $sas
+# azcopy cp --check-md5 FailIfDifferentOrMissing $sourceFile  "C:\Users\$Env:USERNAME\.kube\config"
 
 # Downloading Rancher K3s cluster kubeconfig file
 Write-Header "Downloading K3s Kubeconfig"
@@ -52,13 +55,15 @@ $sourceFile = "https://$Env:stagingStorageAccountName.blob.core.windows.net/stag
 $context = (Get-AzStorageAccount -ResourceGroupName $Env:resourceGroup).Context
 $sas = New-AzStorageAccountSASToken -Context $context -Service Blob -ResourceType Object -Permission racwdlup
 $sourceFile = $sourceFile + "?" + $sas
-azcopy cp --check-md5 FailIfDifferentOrMissing $sourceFile  "C:\Users\$Env:USERNAME\.kube\config-k3s"
+azcopy cp --check-md5 FailIfDifferentOrMissing $sourceFile  "C:\Users\$Env:USERNAME\.kube\config"
+$Env:KUBECONFIG="C:\users\$Env:USERNAME\.kube\config"
+kubectx
 
-# Downloading 'installCAPI.log' log file
-Write-Header "Downloading CAPI Install Logs"
-$sourceFile = "https://$Env:stagingStorageAccountName.blob.core.windows.net/staging-capi/installCAPI.log"
-$sourceFile = $sourceFile + "?" + $sas
-azcopy cp --check-md5 FailIfDifferentOrMissing $sourceFile  "$Env:ArcBoxLogsDir\installCAPI.log"
+# # Downloading 'installCAPI.log' log file
+# Write-Header "Downloading CAPI Install Logs"
+# $sourceFile = "https://$Env:stagingStorageAccountName.blob.core.windows.net/staging-capi/installCAPI.log"
+# $sourceFile = $sourceFile + "?" + $sas
+# azcopy cp --check-md5 FailIfDifferentOrMissing $sourceFile  "$Env:ArcBoxLogsDir\installCAPI.log"
 
 # Downloading 'installK3s.log' log file
 Write-Header "Downloading K3s Install Logs"
@@ -66,17 +71,17 @@ $sourceFile = "https://$Env:stagingStorageAccountName.blob.core.windows.net/stag
 $sourceFile = $sourceFile + "?" + $sas
 azcopy cp --check-md5 FailIfDifferentOrMissing $sourceFile  "$Env:ArcBoxLogsDir\installK3s.log"
 
-# Merging kubeconfig files from CAPI and Rancher K3s
-Write-Header "Merging CAPI & K3s Kubeconfigs"
-Copy-Item -Path "C:\Users\$Env:USERNAME\.kube\config" -Destination "C:\Users\$Env:USERNAME\.kube\config.backup"
-$Env:KUBECONFIG="C:\Users\$Env:USERNAME\.kube\config;C:\Users\$Env:USERNAME\.kube\config-k3s"
-kubectl config view --raw > C:\users\$Env:USERNAME\.kube\config_tmp
-kubectl config get-clusters --kubeconfig=C:\users\$Env:USERNAME\.kube\config_tmp
-Remove-Item -Path "C:\Users\$Env:USERNAME\.kube\config"
-Remove-Item -Path "C:\Users\$Env:USERNAME\.kube\config-k3s"
-Move-Item -Path "C:\Users\$Env:USERNAME\.kube\config_tmp" -Destination "C:\users\$Env:USERNAME\.kube\config"
-$Env:KUBECONFIG="C:\users\$Env:USERNAME\.kube\config"
-kubectx
+# # Merging kubeconfig files from CAPI and Rancher K3s
+# Write-Header "Merging CAPI & K3s Kubeconfigs"
+# Copy-Item -Path "C:\Users\$Env:USERNAME\.kube\config" -Destination "C:\Users\$Env:USERNAME\.kube\config.backup"
+# $Env:KUBECONFIG="C:\Users\$Env:USERNAME\.kube\config;C:\Users\$Env:USERNAME\.kube\config-k3s"
+# kubectl config view --raw > C:\users\$Env:USERNAME\.kube\config_tmp
+# kubectl config get-clusters --kubeconfig=C:\users\$Env:USERNAME\.kube\config_tmp
+# Remove-Item -Path "C:\Users\$Env:USERNAME\.kube\config"
+# Remove-Item -Path "C:\Users\$Env:USERNAME\.kube\config-k3s"
+# Move-Item -Path "C:\Users\$Env:USERNAME\.kube\config_tmp" -Destination "C:\users\$Env:USERNAME\.kube\config"
+# $Env:KUBECONFIG="C:\users\$Env:USERNAME\.kube\config"
+# kubectx
 
 # Download OSM binaries
 Write-Header "Downloading OSM Binaries"
@@ -114,7 +119,7 @@ az k8s-extension create `
     --name $osmMeshName `
     --extension-type Microsoft.openservicemesh `
     --scope cluster `
-    --cluster-name $Env:capiArcDataClusterName `
+    --cluster-name $Env:k3sArcDataClusterName `
     --resource-group $Env:resourceGroup `
     --cluster-type connectedClusters `
     --version $osmReleaseVersion `
@@ -144,7 +149,7 @@ Write-Header "Applying GitOps Configs"
 # Create GitOps config for NGINX Ingress Controller
 Write-Host "Creating GitOps config for NGINX Ingress Controller"
 az k8s-configuration flux create `
-    --cluster-name $Env:capiArcDataClusterName `
+    --cluster-name $Env:k3sArcDataClusterName `
     --resource-group $Env:resourceGroup `
     --name config-nginx `
     --namespace $ingressNamespace `
@@ -157,7 +162,7 @@ az k8s-configuration flux create `
 # Create GitOps config for Bookstore application
 Write-Host "Creating GitOps config for Bookstore application"
 az k8s-configuration flux create `
-    --cluster-name $Env:capiArcDataClusterName `
+    --cluster-name $Env:k3sArcDataClusterName `
     --resource-group $Env:resourceGroup `
     --name config-bookstore `
     --cluster-type connectedClusters `
@@ -168,7 +173,7 @@ az k8s-configuration flux create `
 # Create GitOps config for Bookstore RBAC
 Write-Host "Creating GitOps config for Bookstore RBAC"
 az k8s-configuration flux create `
-    --cluster-name $Env:capiArcDataClusterName `
+    --cluster-name $Env:k3sArcDataClusterName `
     --resource-group $Env:resourceGroup `
     --name config-bookstore-rbac `
     --cluster-type connectedClusters `
@@ -181,7 +186,7 @@ az k8s-configuration flux create `
 # Create GitOps config for Bookstore Traffic Split
 Write-Host "Creating GitOps config for Bookstore Traffic Split"
 az k8s-configuration flux create `
-    --cluster-name $Env:capiArcDataClusterName `
+    --cluster-name $Env:k3sArcDataClusterName `
     --resource-group $Env:resourceGroup `
     --name config-bookstore-osm `
     --cluster-type connectedClusters `
@@ -194,7 +199,7 @@ az k8s-configuration flux create `
 # Create GitOps config for Hello-Arc application
 Write-Host "Creating GitOps config for Hello-Arc application"
 az k8s-configuration flux create `
-    --cluster-name $Env:capiArcDataClusterName `
+    --cluster-name $Env:k3sArcDataClusterName `
     --resource-group $Env:resourceGroup `
     --name config-helloarc `
     --namespace hello-arc `
@@ -228,7 +233,7 @@ az k8s-extension create `
     --name 'akvsecretsprovider' `
     --extension-type Microsoft.AzureKeyVaultSecretsProvider `
     --scope cluster `
-    --cluster-name $Env:capiArcDataClusterName `
+    --cluster-name $Env:k3sArcDataClusterName `
     --resource-group $Env:resourceGroup `
     --cluster-type connectedClusters `
     --release-namespace kube-system `
@@ -286,8 +291,8 @@ New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Edge\ExtensionInstallFo
 
 Write-Header "Creating Desktop Icons"
 
-# Creating CAPI Hello Arc Icon on Desktop
-$shortcutLocation = "$Env:Public\Desktop\CAPI Hello-Arc.lnk"
+# Creating K3s Hello Arc Icon on Desktop
+$shortcutLocation = "$Env:Public\Desktop\K3s Hello-Arc.lnk"
 $wScriptShell = New-Object -ComObject WScript.Shell
 $shortcut = $wScriptShell.CreateShortcut($shortcutLocation)
 $shortcut.TargetPath = "https://$certdns"
@@ -295,8 +300,8 @@ $shortcut.IconLocation="$Env:ArcBoxIconDir\arc.ico, 0"
 $shortcut.WindowStyle = 3
 $shortcut.Save()
 
-# Creating CAPI Bookstore Icon on Desktop
-$shortcutLocation = "$Env:Public\Desktop\CAPI Bookstore.lnk"
+# Creating K3s Bookstore Icon on Desktop
+$shortcutLocation = "$Env:Public\Desktop\K3s Bookstore.lnk"
 $wScriptShell = New-Object -ComObject WScript.Shell
 $shortcut = $wScriptShell.CreateShortcut($shortcutLocation)
 $shortcut.TargetPath = "powershell.exe"
