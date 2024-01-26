@@ -20,7 +20,7 @@ echo $stagingStorageAccountName:$7 | awk '{print substr($1,2); }' >> vars.sh
 echo $logAnalyticsWorkspace:$8 | awk '{print substr($1,2); }' >> vars.sh
 echo $templateBaseUrl:$9 | awk '{print substr($1,2); }' >> vars.sh
 echo $storageContainerName:${10} | awk '{print substr($1,2); }' >> vars.sh
-echo $k3sSingleNode:${11} | awk '{print substr($1,2); }' >> vars.sh
+echo $k3sControlPlane:${11} | awk '{print substr($1,2); }' >> vars.sh
 
 
 sed -i '2s/^/export adminUsername=/' vars.sh
@@ -33,7 +33,7 @@ sed -i '8s/^/export stagingStorageAccountName=/' vars.sh
 sed -i '9s/^/export logAnalyticsWorkspace=/' vars.sh
 sed -i '10s/^/export templateBaseUrl=/' vars.sh
 sed -i '11s/^/export storageContainerName=/' vars.sh
-sed -i '12s/^/export k3sSingleNode=/' vars.sh
+sed -i '12s/^/export k3sControlPlane=/' vars.sh
 
 # Set k3 deployment variables
 export K3S_VERSION="1.28.2+k3s1" # Do not change!
@@ -57,7 +57,7 @@ sudo -u $adminUsername az login --service-principal --username $SPN_CLIENT_ID --
 az -v
 echo ""
 
-if [ $k3sSingleNode = "true" ]; then
+if [ $k3sControlPlane = "true" ]; then
 
     # Installing Azure Arc extensions
     sudo -u $adminUsername az extension add --name connectedk8s
