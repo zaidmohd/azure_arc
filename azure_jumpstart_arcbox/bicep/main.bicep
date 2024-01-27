@@ -59,10 +59,10 @@ var templateBaseUrl = 'https://raw.githubusercontent.com/${githubAccount}/azure_
 var location = resourceGroup().location
 var aksArcDataClusterName = 'ArcBox-AKS-Data-${guid}'
 var aksDrArcDataClusterName = 'ArcBox-AKS-DR-Data-${guid}'
-var k3sArcDataClusterName = 'ArcBox-K3s-${guid}'
-var k3sArcDataStagingContainerName = toLower('staging-${k3sArcDataClusterName}')
-var k3sArcDemoClusterName = 'ArcBox-Demo-${guid}'
-var k3sArcDemoStagingContainerName = toLower('staging-${k3sArcDemoClusterName}')
+var k3sArcDataClusterName = 'ArcBox-DataSvc-K3s-${guid}'
+// var k3sArcDataStagingContainerName = toLower('staging-${k3sArcDataClusterName}')
+var k3sArcClusterName = 'ArcBox-K3s-${guid}'
+// var k3sArcDemoStagingContainerName = toLower('staging-${k3sArcClusterName}')
 
 module stagingStorageAccountDeployment 'mgmt/mgmtStagingStorage.bicep' = {
   name: 'stagingStorageAccountDeployment'
@@ -85,7 +85,7 @@ module ubuntuRancherDeployment 'kubernetes/ubuntuRancher.bicep' = if (flavor == 
     deployBastion: deployBastion
     azureLocation: location
     vmName : k3sArcDataClusterName
-    storageContainerName: k3sArcDataStagingContainerName
+    storageContainerName: toLower(k3sArcDataClusterName)
   }
 }
 
@@ -103,7 +103,7 @@ module ubuntuRancherNodesDeployment 'kubernetes/ubuntuRancherNodes.bicep' = [for
     azureLocation: location
     flavor: flavor
     vmName : '${k3sArcDataClusterName}-Node-0${i}' 
-    storageContainerName: k3sArcDataStagingContainerName
+    storageContainerName: toLower(k3sArcDataClusterName)
   }
   dependsOn: [
     ubuntuRancherDeployment
@@ -123,8 +123,8 @@ module ubuntuRancherDemoDeployment 'kubernetes/ubuntuRancher.bicep' = if (flavor
     subnetId: mgmtArtifactsAndPolicyDeployment.outputs.subnetId
     deployBastion: deployBastion
     azureLocation: location
-    vmName : k3sArcDemoClusterName
-    storageContainerName: k3sArcDemoStagingContainerName
+    vmName : k3sArcClusterName
+    storageContainerName: toLower(k3sArcClusterName)
   }
 }
 
