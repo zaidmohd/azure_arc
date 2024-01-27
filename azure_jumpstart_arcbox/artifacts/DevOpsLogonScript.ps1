@@ -43,7 +43,7 @@ az login --service-principal --username $Env:spnClientID --password=$Env:spnClie
 
 # Downloading ArcBox-DataSvc-K3s Kubernetes cluster kubeconfig file
 Write-Header "Downloading ArcBox-DataSvc-K3s K8s Kubeconfig"
-$sourceFile = "https://$Env:stagingStorageAccountName.blob.core.windows.net/$k3sArcDataClusterName/config"
+$sourceFile = "https://$Env:stagingStorageAccountName.blob.core.windows.net/$($Env:k3sArcDataClusterName.ToLower())/config"
 $context = (Get-AzStorageAccount -ResourceGroupName $Env:resourceGroup).Context
 $sas = New-AzStorageAccountSASToken -Context $context -Service Blob -ResourceType Object -Permission racwdlup
 $sourceFile = $sourceFile + "?" + $sas
@@ -51,7 +51,7 @@ azcopy cp --check-md5 FailIfDifferentOrMissing $sourceFile  "C:\Users\$Env:USERN
 
 # Downloading ArcBox-K3s cluster kubeconfig file
 Write-Header "Downloading ArcBox-K3s Kubeconfig"
-$sourceFile = "https://$Env:stagingStorageAccountName.blob.core.windows.net/$k3sArcClusterName/config"
+$sourceFile = "https://$Env:stagingStorageAccountName.blob.core.windows.net/$($Env:k3sArcClusterName.ToLower())/config"
 $context = (Get-AzStorageAccount -ResourceGroupName $Env:resourceGroup).Context
 $sas = New-AzStorageAccountSASToken -Context $context -Service Blob -ResourceType Object -Permission racwdlup
 $sourceFile = $sourceFile + "?" + $sas
@@ -61,13 +61,13 @@ kubectx
 
 # Downloading ArcBox-DataSvc-K3s log file
 Write-Header "Downloading ArcBox-DataSvc-K3s Install Logs"
-$sourceFile = "https://$Env:stagingStorageAccountName.blob.core.windows.net/$k3sArcDataClusterName/*.log"
+$sourceFile = "https://$Env:stagingStorageAccountName.blob.core.windows.net/$($Env:k3sArcDataClusterName.ToLower())/*.log"
 $sourceFile = $sourceFile + "?" + $sas
 azcopy cp --check-md5 FailIfDifferentOrMissing $sourceFile  "$Env:ArcBoxLogsDir\"
 
 # Downloading ArcBox-K3s log file
 Write-Header "Downloading ArcBox-K3s Install Logs"
-$sourceFile = "https://$Env:stagingStorageAccountName.blob.core.windows.net/$k3sArcClusterName/*.log"
+$sourceFile = "https://$Env:stagingStorageAccountName.blob.core.windows.net/$($Env:k3sArcClusterName.ToLower())/*.log"
 $sourceFile = $sourceFile + "?" + $sas
 azcopy cp --check-md5 FailIfDifferentOrMissing $sourceFile  "$Env:ArcBoxLogsDir\"
 
