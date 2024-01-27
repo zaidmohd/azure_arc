@@ -74,8 +74,9 @@ if [[ "$k3sControlPlane" == "true" ]]; then
         echo "ERROR: K3s installation failed"
         exit 1
     fi
-    # Renaming default context to k3s cluster name (storageContainerName)
-    sudo kubectl config rename-context default $storageContainerName --kubeconfig /etc/rancher/k3s/k3s.yaml
+    # Renaming default context to k3s cluster name
+    context=$(echo $storageContainerName | sed 's/-[^-]*$//')
+    sudo kubectl config rename-context default $context --kubeconfig /etc/rancher/k3s/k3s.yaml
     sudo cp /etc/rancher/k3s/k3s.yaml ~/.kube/config
     sudo cp /etc/rancher/k3s/k3s.yaml /home/${adminUsername}/.kube/config
     sudo cp /etc/rancher/k3s/k3s.yaml /home/${adminUsername}/.kube/config.staging
@@ -147,7 +148,7 @@ else
         echo "ERROR: Failed to add k3s worker nodes"
         exit 1
     fi
-
+    
     sudo service sshd restart
 fi
 
