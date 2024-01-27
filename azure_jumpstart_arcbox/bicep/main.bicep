@@ -60,9 +60,7 @@ var location = resourceGroup().location
 var aksArcDataClusterName = 'ArcBox-AKS-Data-${guid}'
 var aksDrArcDataClusterName = 'ArcBox-AKS-DR-Data-${guid}'
 var k3sArcDataClusterName = 'ArcBox-DataSvc-K3s-${guid}'
-// var k3sArcDataStagingContainerName = toLower('staging-${k3sArcDataClusterName}')
 var k3sArcClusterName = 'ArcBox-K3s-${guid}'
-// var k3sArcDemoStagingContainerName = toLower('staging-${k3sArcClusterName}')
 
 module stagingStorageAccountDeployment 'mgmt/mgmtStagingStorage.bicep' = {
   name: 'stagingStorageAccountDeployment'
