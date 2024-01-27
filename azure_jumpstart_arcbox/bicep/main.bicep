@@ -52,7 +52,7 @@ param addsDomainName string = 'jumpstart.local'
 param guid string = substring(newGuid(),0,4)
 
 @description('Number of nodes to deploy in the K3s cluster')
-param k3sClusterNodesCount int = 0
+param k3sClusterNodesCount int = 1
 
 var templateBaseUrl = 'https://raw.githubusercontent.com/${githubAccount}/azure_arc/${githubBranch}/azure_jumpstart_arcbox/'
 
@@ -128,31 +128,31 @@ module ubuntuRancherDemoDeployment 'kubernetes/ubuntuRancher.bicep' = if (flavor
   }
 }
 
-// module clientVmDeployment 'clientVm/clientVm.bicep' = {
-//   name: 'clientVmDeployment'
-//   params: {
-//     windowsAdminUsername: windowsAdminUsername
-//     windowsAdminPassword: windowsAdminPassword
-//     spnClientId: spnClientId
-//     spnClientSecret: spnClientSecret
-//     spnTenantId: spnTenantId
-//     workspaceName: logAnalyticsWorkspaceName
-//     stagingStorageAccountName: stagingStorageAccountDeployment.outputs.storageAccountName
-//     templateBaseUrl: templateBaseUrl
-//     flavor: flavor
-//     subnetId: mgmtArtifactsAndPolicyDeployment.outputs.subnetId
-//     deployBastion: deployBastion
-//     githubUser: githubUser
-//     location: location
-//     k3sArcClusterName : k3sArcDataClusterName
-//     k3sArcDataClusterName : k3sArcDataClusterName
-//     aksArcClusterName : aksArcDataClusterName
-//     aksdrArcClusterName : aksDrArcDataClusterName
-//   }
-//   dependsOn: [
-//     updateVNetDNSServers
-//   ]
-// }
+module clientVmDeployment 'clientVm/clientVm.bicep' = {
+  name: 'clientVmDeployment'
+  params: {
+    windowsAdminUsername: windowsAdminUsername
+    windowsAdminPassword: windowsAdminPassword
+    spnClientId: spnClientId
+    spnClientSecret: spnClientSecret
+    spnTenantId: spnTenantId
+    workspaceName: logAnalyticsWorkspaceName
+    stagingStorageAccountName: stagingStorageAccountDeployment.outputs.storageAccountName
+    templateBaseUrl: templateBaseUrl
+    flavor: flavor
+    subnetId: mgmtArtifactsAndPolicyDeployment.outputs.subnetId
+    deployBastion: deployBastion
+    githubUser: githubUser
+    location: location
+    k3sArcDataClusterName : k3sArcDataClusterName
+    k3sArcClusterName : k3sArcClusterName
+    aksArcClusterName : aksArcDataClusterName
+    aksdrArcClusterName : aksDrArcDataClusterName
+  }
+  dependsOn: [
+    updateVNetDNSServers
+  ]
+}
 
 module mgmtArtifactsAndPolicyDeployment 'mgmt/mgmtArtifacts.bicep' = {
   name: 'mgmtArtifactsAndPolicyDeployment'
