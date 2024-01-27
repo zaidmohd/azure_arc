@@ -52,7 +52,7 @@ param addsDomainName string = 'jumpstart.local'
 param guid string = substring(newGuid(),0,4)
 
 @description('Number of nodes to deploy in the K3s cluster')
-param k3sClusterNodesCount int = 0
+param k3sClusterNodesCount int = 1
 
 var templateBaseUrl = 'https://raw.githubusercontent.com/${githubAccount}/azure_arc/${githubBranch}/azure_jumpstart_arcbox/'
 
