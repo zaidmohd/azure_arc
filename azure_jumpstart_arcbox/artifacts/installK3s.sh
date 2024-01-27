@@ -74,8 +74,8 @@ if [[ "$k3sControlPlane" == "true" ]]; then
         echo "ERROR: K3s installation failed"
         exit 1
     fi
-
-    sudo kubectl config rename-context default arcbox-k3s --kubeconfig /etc/rancher/k3s/k3s.yaml
+    # Renaming default context to k3s cluster name (storageContainerName)
+    sudo kubectl config rename-context default $storageContainerName --kubeconfig /etc/rancher/k3s/k3s.yaml
     sudo cp /etc/rancher/k3s/k3s.yaml ~/.kube/config
     sudo cp /etc/rancher/k3s/k3s.yaml /home/${adminUsername}/.kube/config
     sudo cp /etc/rancher/k3s/k3s.yaml /home/${adminUsername}/.kube/config.staging
@@ -94,7 +94,6 @@ if [[ "$k3sControlPlane" == "true" ]]; then
 
     # Copying Rancher K3s kubeconfig file to staging storage account
     echo ""
-    # storageContainerName="staging-k3s"
     localPath="/home/$adminUsername/.kube/config"
     k3sClusterNodeConfig="/home/$adminUsername/k3sClusterNodeConfig.yaml"
     echo "k3sNodeToken: $(sudo cat /var/lib/rancher/k3s/server/node-token)" >> $k3sClusterNodeConfig
@@ -133,7 +132,6 @@ if [[ "$k3sControlPlane" == "true" ]]; then
 else
     # Downloading k3s control plane details
     echo ""
-    # storageContainerName="staging-k3s"
     k3sClusterNodeConfig="k3sClusterNodeConfig.yaml"
     sudo -u $adminUsername az extension add --upgrade -n storage-preview
     storageAccountRG=$(sudo -u $adminUsername az storage account show --name $stagingStorageAccountName --query 'resourceGroup' | sed -e 's/^"//' -e 's/"$//')

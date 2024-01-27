@@ -45,34 +45,34 @@ az login --service-principal --username $Env:spnClientID --password=$Env:spnClie
 Write-Header "Downloading ArcBox-DataSvc-K3s K8s Kubeconfig"
 $sourceFile = "https://$Env:stagingStorageAccountName.blob.core.windows.net/$($Env:k3sArcDataClusterName.ToLower())/config"
 $context = (Get-AzStorageAccount -ResourceGroupName $Env:resourceGroup).Context
-$sas = New-AzStorageAccountSASToken -Context $context -Service Blob -ResourceType Object -Permission racwdlup
+$sas = New-AzStorageAccountSASToken -Context $context -Service Blob -ResourceType Container,Object -Permission racwdlup
 $sourceFile = $sourceFile + "?" + $sas
 azcopy cp --check-md5 FailIfDifferentOrMissing $sourceFile  "C:\Users\$Env:USERNAME\.kube\config"
+
+# Downloading ArcBox-DataSvc-K3s log file
+Write-Header "Downloading ArcBox-DataSvc-K3s Install Logs"
+$sourceFile = "https://$Env:stagingStorageAccountName.blob.core.windows.net/$($Env:k3sArcDataClusterName.ToLower())/*"
+$sourceFile = $sourceFile + "?" + $sas
+azcopy cp --check-md5 FailIfDifferentOrMissing $sourceFile  "$Env:ArcBoxLogsDir\" --include-pattern "*.log"
 
 # Downloading ArcBox-K3s cluster kubeconfig file
 Write-Header "Downloading ArcBox-K3s Kubeconfig"
 $sourceFile = "https://$Env:stagingStorageAccountName.blob.core.windows.net/$($Env:k3sArcClusterName.ToLower())/config"
 $context = (Get-AzStorageAccount -ResourceGroupName $Env:resourceGroup).Context
-$sas = New-AzStorageAccountSASToken -Context $context -Service Blob -ResourceType Object -Permission racwdlup
+$sas = New-AzStorageAccountSASToken -Context $context -Service Blob -ResourceType Container,Object -Permission racwdlup
 $sourceFile = $sourceFile + "?" + $sas
 azcopy cp --check-md5 FailIfDifferentOrMissing $sourceFile  "C:\Users\$Env:USERNAME\.kube\config-k3s"
 $Env:KUBECONFIG="C:\users\$Env:USERNAME\.kube\config"
 kubectx
 
-# Downloading ArcBox-DataSvc-K3s log file
-Write-Header "Downloading ArcBox-DataSvc-K3s Install Logs"
-$sourceFile = "https://$Env:stagingStorageAccountName.blob.core.windows.net/$($Env:k3sArcDataClusterName.ToLower())/*.log"
-$sourceFile = $sourceFile + "?" + $sas
-azcopy cp --check-md5 FailIfDifferentOrMissing $sourceFile  "$Env:ArcBoxLogsDir\"
-
 # Downloading ArcBox-K3s log file
 Write-Header "Downloading ArcBox-K3s Install Logs"
-$sourceFile = "https://$Env:stagingStorageAccountName.blob.core.windows.net/$($Env:k3sArcClusterName.ToLower())/*.log"
+$sourceFile = "https://$Env:stagingStorageAccountName.blob.core.windows.net/$($Env:k3sArcClusterName.ToLower())/*"
 $sourceFile = $sourceFile + "?" + $sas
-azcopy cp --check-md5 FailIfDifferentOrMissing $sourceFile  "$Env:ArcBoxLogsDir\"
+azcopy cp --check-md5 FailIfDifferentOrMissing $sourceFile  "$Env:ArcBoxLogsDir\" --include-pattern "*.log"
 
-# Merging kubeconfig files from ArcBox-K3s and ArcBox-K3s Demo
-Write-Header "Merging ArcBox-K3s & ArcBox-K3s Demo Kubeconfigs"
+# Merging kubeconfig files from ArcBox-DataSvc-K3s and ArcBox-K3s
+Write-Header "Merging ArcBox-DataSvc-K3s & ArcBox-K3s Kubeconfigs"
 Copy-Item -Path "C:\Users\$Env:USERNAME\.kube\config" -Destination "C:\Users\$Env:USERNAME\.kube\config.backup"
 $Env:KUBECONFIG="C:\Users\$Env:USERNAME\.kube\config;C:\Users\$Env:USERNAME\.kube\config-k3s"
 kubectl config view --raw > C:\users\$Env:USERNAME\.kube\config_tmp
