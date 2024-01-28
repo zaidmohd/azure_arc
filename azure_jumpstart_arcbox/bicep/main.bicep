@@ -69,8 +69,8 @@ module stagingStorageAccountDeployment 'mgmt/mgmtStagingStorage.bicep' = {
   }
 }
 
-module ubuntuRancherDeployment 'kubernetes/ubuntuRancher.bicep' = if (flavor == 'Full' || flavor == 'DevOps' || flavor == 'DataOps') {
-  name: 'ubuntuRancherDeployment'
+module ubuntuRancherK3sDataSvcDeployment 'kubernetes/ubuntuRancher.bicep' = if (flavor == 'Full' || flavor == 'DevOps' || flavor == 'DataOps') {
+  name: 'ubuntuRancherK3sDataSvcDeployment'
   params: {
     sshRSAPublicKey: sshRSAPublicKey
     spnClientId: spnClientId
@@ -87,8 +87,8 @@ module ubuntuRancherDeployment 'kubernetes/ubuntuRancher.bicep' = if (flavor == 
   }
 }
 
-module ubuntuRancherNodesDeployment 'kubernetes/ubuntuRancherNodes.bicep' = [for i in range(0, k3sClusterNodesCount): if (flavor == 'Full' || flavor == 'DevOps' || flavor == 'DataOps') {
-  name: 'ubuntuRancherNodesDeployment-${i}'
+module ubuntuRancherK3sDataSvcNodesDeployment 'kubernetes/ubuntuRancherNodes.bicep' = [for i in range(0, k3sClusterNodesCount): if (flavor == 'Full' || flavor == 'DevOps' || flavor == 'DataOps') {
+  name: 'ubuntuRancherK3sDataSvcNodesDeployment-${i}'
   params: {
     sshRSAPublicKey: sshRSAPublicKey
     spnClientId: spnClientId
@@ -104,12 +104,12 @@ module ubuntuRancherNodesDeployment 'kubernetes/ubuntuRancherNodes.bicep' = [for
     storageContainerName: toLower(k3sArcDataClusterName)
   }
   dependsOn: [
-    ubuntuRancherDeployment
+    ubuntuRancherK3sDataSvcDeployment
   ]
 }]
 
-module ubuntuRancherDemoDeployment 'kubernetes/ubuntuRancher.bicep' = if (flavor == 'Full' || flavor == 'DevOps') {
-  name: 'ubuntuRancherDemoDeployment'
+module ubuntuRancherK3sDeployment 'kubernetes/ubuntuRancher.bicep' = if (flavor == 'Full' || flavor == 'DevOps') {
+  name: 'ubuntuRancherK3sDeployment'
   params: {
     sshRSAPublicKey: sshRSAPublicKey
     spnClientId: spnClientId
