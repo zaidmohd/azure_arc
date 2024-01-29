@@ -14,26 +14,28 @@ echo $adminUsername:$1 | awk '{print substr($1,2); }' >> vars.sh
 echo $SPN_CLIENT_ID:$2 | awk '{print substr($1,2); }' >> vars.sh
 echo $SPN_CLIENT_SECRET:$3 | awk '{print substr($1,2); }' >> vars.sh
 echo $SPN_TENANT_ID:$4 | awk '{print substr($1,2); }' >> vars.sh
-echo $vmName:$5 | awk '{print substr($1,2); }' >> vars.sh
-echo $location:$6 | awk '{print substr($1,2); }' >> vars.sh
-echo $stagingStorageAccountName:$7 | awk '{print substr($1,2); }' >> vars.sh
-echo $logAnalyticsWorkspace:$8 | awk '{print substr($1,2); }' >> vars.sh
-echo $templateBaseUrl:$9 | awk '{print substr($1,2); }' >> vars.sh
-echo $storageContainerName:${10} | awk '{print substr($1,2); }' >> vars.sh
-echo $k3sControlPlane:${11} | awk '{print substr($1,2); }' >> vars.sh
+echo $subscriptionId:$5 | awk '{print substr($1,2); }' >> vars.sh
+echo $vmName:$6 | awk '{print substr($1,2); }' >> vars.sh
+echo $location:$7 | awk '{print substr($1,2); }' >> vars.sh
+echo $stagingStorageAccountName:$8 | awk '{print substr($1,2); }' >> vars.sh
+echo $logAnalyticsWorkspace:$9 | awk '{print substr($1,2); }' >> vars.sh
+echo $templateBaseUrl:$10 | awk '{print substr($1,2); }' >> vars.sh
+echo $storageContainerName:${11} | awk '{print substr($1,2); }' >> vars.sh
+echo $k3sControlPlane:${12} | awk '{print substr($1,2); }' >> vars.sh
 
 
 sed -i '2s/^/export adminUsername=/' vars.sh
 sed -i '3s/^/export SPN_CLIENT_ID=/' vars.sh
 sed -i '4s/^/export SPN_CLIENT_SECRET=/' vars.sh
 sed -i '5s/^/export SPN_TENANT_ID=/' vars.sh
-sed -i '6s/^/export vmName=/' vars.sh
-sed -i '7s/^/export location=/' vars.sh
-sed -i '8s/^/export stagingStorageAccountName=/' vars.sh
-sed -i '9s/^/export logAnalyticsWorkspace=/' vars.sh
-sed -i '10s/^/export templateBaseUrl=/' vars.sh
-sed -i '11s/^/export storageContainerName=/' vars.sh
-sed -i '12s/^/export k3sControlPlane=/' vars.sh
+sed -i '6s/^/export subscriptionId=/' vars.sh
+sed -i '7s/^/export vmName=/' vars.sh
+sed -i '8s/^/export location=/' vars.sh
+sed -i '9s/^/export stagingStorageAccountName=/' vars.sh
+sed -i '10s/^/export logAnalyticsWorkspace=/' vars.sh
+sed -i '11s/^/export templateBaseUrl=/' vars.sh
+sed -i '12s/^/export storageContainerName=/' vars.sh
+sed -i '13s/^/export k3sControlPlane=/' vars.sh
 
 # Set k3 deployment variables
 export K3S_VERSION="1.28.2+k3s1" # Do not change!
@@ -54,6 +56,7 @@ curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
 echo ""
 echo "Log in to Azure"
 sudo -u $adminUsername az login --service-principal --username $SPN_CLIENT_ID --password=$SPN_CLIENT_SECRET --tenant $SPN_TENANT_ID
+sudo -u $adminUsername az account set --subscription $subscriptionId
 az -v
 echo ""
 
