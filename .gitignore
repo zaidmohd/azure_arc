@@ -54,4 +54,4 @@ terraform.rc
 *.out
 .VSCodeCounter/*
 
-azure_jumpstart_arcbox/bicep/parameters.json
+azure_jumpstart_arcbox/bicep/parameter2.json
