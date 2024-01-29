@@ -1,6 +1,6 @@
 $Env:ArcBoxDir = "C:\ArcBox"
 $Env:ArcBoxLogsDir = "C:\ArcBox\Logs"
-$connectedClusterName=$Env:capiArcDataClusterName
+$connectedClusterName=$Env:k3sArcDataClusterName
 Start-Transcript -Path $Env:ArcBoxLogsDir\DataServicesLogonScript.log
 
 # Required for azcopy and Get-AzResource
@@ -63,25 +63,25 @@ $Shortcut = $WScriptShell.CreateShortcut($ShortcutFile)
 $Shortcut.TargetPath = $TargetFile
 $Shortcut.Save()
 
-# Downloading CAPI Kubernetes cluster kubeconfig file
-Write-Header "Downloading CAPI K8s Kubeconfig"
-$sourceFile = "https://$Env:stagingStorageAccountName.blob.core.windows.net/staging-capi/config"
+# Downloading ArcBox-DataSvc-K3s Kubernetes cluster kubeconfig file
+Write-Header "Downloading ArcBox-DataSvc-K3s K8s Kubeconfig"
+$sourceFile = "https://$Env:stagingStorageAccountName.blob.core.windows.net/$($Env:k3sArcDataClusterName.ToLower())/config"
 $context = (Get-AzStorageAccount -ResourceGroupName $Env:resourceGroup).Context
-$sas = New-AzStorageAccountSASToken -Context $context -Service Blob -ResourceType Object -Permission racwdlup
+$sas = New-AzStorageAccountSASToken -Context $context -Service Blob -ResourceType Container,Object -Permission racwdlup
 $sourceFile = $sourceFile + "?" + $sas
 azcopy cp --check-md5 FailIfDifferentOrMissing $sourceFile  "C:\Users\$Env:USERNAME\.kube\config"
 
-# Downloading 'installCAPI.log' log file
-Write-Header "Downloading CAPI Install Logs"
-$sourceFile = "https://$Env:stagingStorageAccountName.blob.core.windows.net/staging-capi/installCAPI.log"
+# Downloading ArcBox-DataSvc-K3s log file
+Write-Header "Downloading ArcBox-DataSvc-K3s Install Logs"
+$sourceFile = "https://$Env:stagingStorageAccountName.blob.core.windows.net/$($Env:k3sArcDataClusterName.ToLower())/*"
 $sourceFile = $sourceFile + "?" + $sas
-azcopy cp --check-md5 FailIfDifferentOrMissing $sourceFile  "$Env:ArcBoxLogsDir\installCAPI.log"
+azcopy cp --check-md5 FailIfDifferentOrMissing $sourceFile  "$Env:ArcBoxLogsDir\" --include-pattern "*.log"
 
-# Downloading 'installK3s.log' log file
-Write-Header "Downloading K3s Install Logs"
-$sourceFile = "https://$Env:stagingStorageAccountName.blob.core.windows.net/staging-k3s/installK3s.log"
+# Downloading ArcBox-K3s log file
+Write-Header "Downloading ArcBox-K3s Install Logs"
+$sourceFile = "https://$Env:stagingStorageAccountName.blob.core.windows.net/staging-k3s/$($Env:k3sArcClusterName.ToLower())/*"
 $sourceFile = $sourceFile + "?" + $sas
-azcopy cp --check-md5 FailIfDifferentOrMissing $sourceFile  "$Env:ArcBoxLogsDir\installK3s.log"
+azcopy cp --check-md5 FailIfDifferentOrMissing $sourceFile  "$Env:ArcBoxLogsDir\" --include-pattern "*.log"
 
 Write-Header "Checking K8s Nodes"
 kubectl get nodes
@@ -118,12 +118,12 @@ Write-Header "Configuring Azure Arc Custom Location"
 $connectedClusterId = az connectedk8s show --name $connectedClusterName --resource-group $Env:resourceGroup --query id -o tsv
 $extensionId = az k8s-extension show --name arc-data-services --cluster-type connectedClusters --cluster-name $connectedClusterName --resource-group $Env:resourceGroup --query id -o tsv
 Start-Sleep -Seconds 20
-az customlocation create --name "$Env:capiArcDataClusterName-cl" --resource-group $Env:resourceGroup --namespace arc --host-resource-id $connectedClusterId --cluster-extension-ids $extensionId --kubeconfig "C:\Users\$Env:USERNAME\.kube\config"
+az customlocation create --name "$Env:k3sArcDataClusterName-cl" --resource-group $Env:resourceGroup --namespace arc --host-resource-id $connectedClusterId --cluster-extension-ids $extensionId --kubeconfig "C:\Users\$Env:USERNAME\.kube\config"
 
 # Deploying Azure Arc Data Controller
 Write-Header "Deploying Azure Arc Data Controller"
 
-$customLocationId = $(az customlocation show --name "$Env:capiArcDataClusterName-cl" --resource-group $Env:resourceGroup --query id -o tsv)
+$customLocationId = $(az customlocation show --name "$Env:k3sArcDataClusterName-cl" --resource-group $Env:resourceGroup --query id -o tsv)
 
 $workspaceId = $(az resource show --resource-group $Env:resourceGroup --name $Env:workspaceName --resource-type "Microsoft.OperationalInsights/workspaces" --query properties.customerId -o tsv)
 $workspaceKey = $(az monitor log-analytics workspace get-shared-keys --resource-group $Env:resourceGroup --workspace-name $Env:workspaceName --query primarySharedKey -o tsv)
@@ -175,14 +175,14 @@ Copy-Item -Path "$Env:ArcBoxDir\settingsTemplate.json" -Destination "C:\Users\$E
 
 # Downloading Rancher K3s kubeconfig file
 Write-Header "Downloading Rancher K3s Kubeconfig"
-$sourceFile = "https://$Env:stagingStorageAccountName.blob.core.windows.net/staging-k3s/config"
+$sourceFile = "https://$Env:stagingStorageAccountName.blob.core.windows.net/$($Env:k3sArcClusterName.ToLower())/config"
 $context = (Get-AzStorageAccount -ResourceGroupName $Env:resourceGroup).Context
-$sas = New-AzStorageAccountSASToken -Context $context -Service Blob -ResourceType Object -Permission racwdlup
+$sas = New-AzStorageAccountSASToken -Context $context -Service Blob -ResourceType Container,Object -Permission racwdlup
 $sourceFile = $sourceFile + "?" + $sas
 azcopy cp --check-md5 FailIfDifferentOrMissing $sourceFile  "C:\Users\$Env:USERNAME\.kube\config-k3s"
 
-# Merging kubeconfig files from CAPI and Rancher K3s
-Write-Header "Merging CAPI & K3s Kubeconfigs"
+# Merging kubeconfig files from ArcBox-DataSvc-K3s and ArcBox-K3s
+Write-Header "Merging ArcBox-DataSvc-K3s & ArcBox-K3s Kubeconfigs"
 Copy-Item -Path "C:\Users\$Env:USERNAME\.kube\config" -Destination "C:\Users\$Env:USERNAME\.kube\config.backup"
 $Env:KUBECONFIG="C:\Users\$Env:USERNAME\.kube\config;C:\Users\$Env:USERNAME\.kube\config-k3s"
 kubectl config view --raw > C:\users\$Env:USERNAME\.kube\config_tmp

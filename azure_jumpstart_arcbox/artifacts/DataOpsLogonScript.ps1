@@ -102,31 +102,31 @@ $sourceFile = "https://$Env:stagingStorageAccountName.blob.core.windows.net/$($E
 $sourceFile = $sourceFile + "?" + $sas
 azcopy cp --check-md5 FailIfDifferentOrMissing $sourceFile  "$Env:ArcBoxLogsDir\" --include-pattern "*.log"
 
-#VNet peering with K3s vnet
-$k3sVnetName = $clusters[0].clusterName + '-vnet'
-$dcVnetId = $(az network vnet show `
-        --resource-group $Env:resourceGroup `
-        --name "ArcBox-VNet" `
-        --query id --out tsv)
+# #VNet peering with K3s vnet
+# $k3sVnetName = $clusters[0].clusterName + '-vnet'
+# $dcVnetId = $(az network vnet show `
+#         --resource-group $Env:resourceGroup `
+#         --name "ArcBox-VNet" `
+#         --query id --out tsv)
 
-$k3sVnetId = $(az network vnet show `
-        --resource-group $Env:resourceGroup `
-        --name $k3sVnetName `
-        --query id --out tsv)
+# $k3sVnetId = $(az network vnet show `
+#         --resource-group $Env:resourceGroup `
+#         --name $k3sVnetName `
+#         --query id --out tsv)
 
-az network vnet peering create --name "dcVnet-k3sVnet" `
-    --resource-group $Env:resourceGroup `
-    --vnet-name "ArcBox-VNet" `
-    --remote-vnet $k3sVnetId `
-    --allow-vnet-access
+# az network vnet peering create --name "dcVnet-k3sVnet" `
+#     --resource-group $Env:resourceGroup `
+#     --vnet-name "ArcBox-VNet" `
+#     --remote-vnet $k3sVnetId `
+#     --allow-vnet-access
 
-az network vnet peering create --name "k3sVnet-dcVnet" `
-    --resource-group $Env:resourceGroup `
-    --vnet-name $k3sVnetName `
-    --remote-vnet $dcVnetId `
-    --allow-vnet-access
+# az network vnet peering create --name "k3sVnet-dcVnet" `
+#     --resource-group $Env:resourceGroup `
+#     --vnet-name $k3sVnetName `
+#     --remote-vnet $dcVnetId `
+#     --allow-vnet-access
 
-Start-Sleep -Seconds 10
+# Start-Sleep -Seconds 10
 
 Write-Host "`n"
 azdata --version
