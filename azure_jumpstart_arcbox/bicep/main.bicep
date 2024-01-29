@@ -43,16 +43,13 @@ param githubBranch string = 'replace_capi'
 param deployBastion bool = false
 
 @description('User github account where they have forked https://github.com/microsoft/azure-arc-jumpstart-apps')
-param githubUser string = 'microsoft'
+param githubUser string = 'zaidmohd'
 
 @description('Active directory domain services domain name')
 param addsDomainName string = 'jumpstart.local'
 
 @description('Random GUID for cluster names')
 param guid string = substring(newGuid(),0,4)
-
-@description('Number of nodes to deploy in the K3s cluster')
-param k3sClusterNodesCount int = 1
 
 var templateBaseUrl = 'https://raw.githubusercontent.com/${githubAccount}/azure_arc/${githubBranch}/azure_jumpstart_arcbox/'
 
@@ -61,6 +58,7 @@ var aksArcDataClusterName = 'ArcBox-AKS-Data-${guid}'
 var aksDrArcDataClusterName = 'ArcBox-AKS-DR-Data-${guid}'
 var k3sArcDataClusterName = 'ArcBox-DataSvc-K3s-${guid}'
 var k3sArcClusterName = 'ArcBox-K3s-${guid}'
+var k3sClusterNodesCount = 3 // Number of nodes to deploy in the K3s cluster
 
 module stagingStorageAccountDeployment 'mgmt/mgmtStagingStorage.bicep' = {
   name: 'stagingStorageAccountDeployment'
