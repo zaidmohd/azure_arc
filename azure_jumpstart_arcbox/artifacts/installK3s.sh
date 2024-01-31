@@ -102,7 +102,7 @@ if [[ "$k3sControlPlane" == "true" ]]; then
     k3sClusterNodeConfig="/home/$adminUsername/k3sClusterNodeConfig.yaml"
     echo "k3sNodeToken: $(sudo cat /var/lib/rancher/k3s/server/node-token)" >> $k3sClusterNodeConfig
     echo "k3sClusterIp: $publicIp" >> $k3sClusterNodeConfig
-    sudo -u $adminUsername az extension add --upgrade -n storage-preview
+    sudo -u $adminUsername az extension add --upgrade -n storage-preview --allow-preview false
     storageAccountRG=$(sudo -u $adminUsername az storage account show --name $stagingStorageAccountName --query 'resourceGroup' | sed -e 's/^"//' -e 's/"$//')
     storageAccountKey=$(sudo -u $adminUsername az storage account keys list --resource-group $storageAccountRG --account-name $stagingStorageAccountName --query [0].value | sed -e 's/^"//' -e 's/"$//')
     sudo -u $adminUsername az storage container create -n $storageContainerName --account-name $stagingStorageAccountName --account-key $storageAccountKey
@@ -137,7 +137,7 @@ else
     # Downloading k3s control plane details
     echo ""
     k3sClusterNodeConfig="k3sClusterNodeConfig.yaml"
-    sudo -u $adminUsername az extension add --upgrade -n storage-preview
+    sudo -u $adminUsername az extension add --upgrade -n storage-preview --allow-preview false
     storageAccountRG=$(sudo -u $adminUsername az storage account show --name $stagingStorageAccountName --query 'resourceGroup' | sed -e 's/^"//' -e 's/"$//')
     storageAccountKey=$(sudo -u $adminUsername az storage account keys list --resource-group $storageAccountRG --account-name $stagingStorageAccountName --query [0].value | sed -e 's/^"//' -e 's/"$//')
     sudo -u $adminUsername az storage azcopy blob download --container $storageContainerName --account-name $stagingStorageAccountName --account-key $storageAccountKey --source "$k3sClusterNodeConfig"  --destination "/home/$adminUsername/$k3sClusterNodeConfig"
