@@ -79,7 +79,7 @@ azcopy cp --check-md5 FailIfDifferentOrMissing $sourceFile  "$Env:ArcBoxLogsDir\
 
 # Downloading ArcBox-K3s log file
 Write-Header "Downloading ArcBox-K3s Install Logs"
-$sourceFile = "https://$Env:stagingStorageAccountName.blob.core.windows.net/staging-k3s/$($Env:k3sArcClusterName.ToLower())/*"
+$sourceFile = "https://$Env:stagingStorageAccountName.blob.core.windows.net/$($Env:k3sArcClusterName.ToLower())/*"
 $sourceFile = $sourceFile + "?" + $sas
 azcopy cp --check-md5 FailIfDifferentOrMissing $sourceFile  "$Env:ArcBoxLogsDir\" --include-pattern "*.log"
 
