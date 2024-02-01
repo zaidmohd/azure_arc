@@ -116,7 +116,7 @@ Write-Host "`n"
 # Create Custom Location
 az connectedk8s enable-features -n $connectedClusterName `
                                 -g $Env:resourceGroup `
-                                --custom-locations-oid "51dfe1e8-70c6-4de5-a08e-e18aff23d815" `
+                                --custom-locations-oid "af89a3ae-8ffe-4ce7-89fb-a615f4083dc3" `
                                 --features cluster-connect custom-locations
 
 # Configuring Azure Arc Custom Location on the cluster 
