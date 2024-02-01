@@ -113,6 +113,12 @@ Do {
 Write-Host "Bootstrapper pod is ready!"
 Write-Host "`n"
 
+# Create Custom Location
+az connectedk8s enable-features -n $connectedClusterName `
+                                -g $Env:resourceGroup `
+                                --custom-locations-oid "51dfe1e8-70c6-4de5-a08e-e18aff23d815" `
+                                --features cluster-connect custom-locations
+
 # Configuring Azure Arc Custom Location on the cluster 
 Write-Header "Configuring Azure Arc Custom Location"
 $connectedClusterId = az connectedk8s show --name $connectedClusterName --resource-group $Env:resourceGroup --query id -o tsv
