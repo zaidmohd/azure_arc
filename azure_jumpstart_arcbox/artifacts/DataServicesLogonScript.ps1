@@ -1,6 +1,7 @@
 $Env:ArcBoxDir = "C:\ArcBox"
 $Env:ArcBoxLogsDir = "C:\ArcBox\Logs"
 $connectedClusterName=$Env:k3sArcDataClusterName
+$customLocationRPOID=$Env:customLocationRPOID
 Start-Transcript -Path $Env:ArcBoxLogsDir\DataServicesLogonScript.log
 
 # Required for azcopy and Get-AzResource
@@ -116,7 +117,7 @@ Write-Host "`n"
 # Create Custom Location
 az connectedk8s enable-features -n $connectedClusterName `
                                 -g $Env:resourceGroup `
-                                --custom-locations-oid "af89a3ae-8ffe-4ce7-89fb-a615f4083dc3" `
+                                --custom-locations-oid $customLocationRPOID `
                                 --features cluster-connect custom-locations
 
 # Configuring Azure Arc Custom Location on the cluster 

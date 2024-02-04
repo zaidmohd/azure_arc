@@ -51,6 +51,9 @@ param addsDomainName string = 'jumpstart.local'
 @description('Random GUID for cluster names')
 param guid string = substring(newGuid(),0,4)
 
+@description('The custom location RPO ID')
+param customLocationRPOID string
+
 var templateBaseUrl = 'https://raw.githubusercontent.com/${githubAccount}/azure_arc/${githubBranch}/azure_jumpstart_arcbox/'
 
 var location = resourceGroup().location
@@ -144,6 +147,7 @@ module clientVmDeployment 'clientVm/clientVm.bicep' = {
     k3sArcClusterName : k3sArcClusterName
     aksArcClusterName : aksArcDataClusterName
     aksdrArcClusterName : aksDrArcDataClusterName
+    customLocationRPOID: customLocationRPOID
   }
   dependsOn: [
     updateVNetDNSServers
