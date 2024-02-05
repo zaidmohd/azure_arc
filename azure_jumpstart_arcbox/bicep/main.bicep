@@ -61,7 +61,7 @@ var aksArcDataClusterName = 'ArcBox-AKS-Data-${guid}'
 var aksDrArcDataClusterName = 'ArcBox-AKS-DR-Data-${guid}'
 var k3sArcDataClusterName = 'ArcBox-DataSvc-K3s-${guid}'
 var k3sArcClusterName = 'ArcBox-K3s-${guid}'
-var k3sClusterNodesCount = 0 // Number of nodes to deploy in the K3s cluster
+var k3sClusterNodesCount = 3 // Number of nodes to deploy in the K3s cluster
 
 module stagingStorageAccountDeployment 'mgmt/mgmtStagingStorage.bicep' = {
   name: 'stagingStorageAccountDeployment'
