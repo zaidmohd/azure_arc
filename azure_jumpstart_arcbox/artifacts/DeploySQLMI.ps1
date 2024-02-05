@@ -28,7 +28,7 @@ $vCoresLimit =  "4"
 $memoryLimit = "8Gi"
 
 # Storage
-$StorageClassName = "managed-premium"
+$StorageClassName = "longhorn"
 $dataStorageSize = "5Gi"
 $logsStorageSize = "5Gi"
 $dataLogsStorageSize = "5Gi"
