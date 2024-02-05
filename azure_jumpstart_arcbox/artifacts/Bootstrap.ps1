@@ -254,6 +254,7 @@ if ($flavor -eq "Full") {
     Invoke-WebRequest ($templateBaseUrl + "artifacts/sqlmi.parameters.json") -OutFile $Env:ArcBoxDir\sqlmi.parameters.json
     Invoke-WebRequest ($templateBaseUrl + "artifacts/SQLMIEndpoints.ps1") -OutFile $Env:ArcBoxDir\SQLMIEndpoints.ps1
     Invoke-WebRequest "https://github.com/ErikEJ/SqlQueryStress/releases/download/102/SqlQueryStressNet6.zip" -OutFile $Env:ArcBoxDir\SqlQueryStress.zip
+    Invoke-WebRequest ($templateBaseUrl + "artifacts/longhorn.yaml") -OutFile $Env:ArcBoxDir\longhorn.yaml
 }
 
 New-Item -path alias:kubectl -value 'C:\ProgramData\chocolatey\lib\kubernetes-cli\tools\kubernetes\client\bin\kubectl.exe'
