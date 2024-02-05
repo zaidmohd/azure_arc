@@ -90,10 +90,10 @@ kubectl get nodes
 Write-Host "`n"
 azdata --version
 
-# Longhorn setup for RWX-capable storage class
-Write-Host "Creating longhorn storage on K3scluster."
-kubectl apply -f "$Env:ArcBoxDir\longhorn.yaml"
-Start-Sleep -Seconds 30
+# # Longhorn setup for RWX-capable storage class
+# Write-Host "Creating longhorn storage on K3scluster."
+# kubectl apply -f "$Env:ArcBoxDir\longhorn.yaml"
+# Start-Sleep -Seconds 30
 
 # Installing the Azure Arc-enabled data services cluster extension
 Write-Host "Installing the Azure Arc-enabled data services cluster extension"
@@ -119,14 +119,14 @@ Do {
 Write-Host "Bootstrapper pod is ready!"
 Write-Host "`n"
 
-# Create Custom Location
+# Configuring Azure Arc Custom Location on the cluster 
+Write-Header "Configuring Azure Arc Custom Location"
+
 az connectedk8s enable-features -n $connectedClusterName `
                                 -g $Env:resourceGroup `
                                 --custom-locations-oid $customLocationRPOID `
                                 --features cluster-connect custom-locations
 
-# Configuring Azure Arc Custom Location on the cluster 
-Write-Header "Configuring Azure Arc Custom Location"
 $connectedClusterId = az connectedk8s show --name $connectedClusterName --resource-group $Env:resourceGroup --query id -o tsv
 $extensionId = az k8s-extension show --name arc-data-services --cluster-type connectedClusters --cluster-name $connectedClusterName --resource-group $Env:resourceGroup --query id -o tsv
 Start-Sleep -Seconds 20
