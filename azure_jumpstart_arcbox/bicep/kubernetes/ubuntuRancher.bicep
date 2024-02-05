@@ -108,6 +108,7 @@ resource vm 'Microsoft.Compute/virtualMachines@2022-03-01' = {
         managedDisk: {
           storageAccountType: osDiskType
         }
+        diskSizeGB: 256
       }
       imageReference: {
         publisher: 'canonical'
