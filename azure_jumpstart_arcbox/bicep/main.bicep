@@ -109,23 +109,23 @@ module ubuntuRancherK3sDataSvcNodesDeployment 'kubernetes/ubuntuRancherNodes.bic
   ]
 }]
 
-module ubuntuRancherK3sDeployment 'kubernetes/ubuntuRancher.bicep' = if (flavor == 'Full' || flavor == 'DevOps') {
-  name: 'ubuntuRancherK3sDeployment'
-  params: {
-    sshRSAPublicKey: sshRSAPublicKey
-    spnClientId: spnClientId
-    spnClientSecret: spnClientSecret
-    spnTenantId: spnTenantId
-    stagingStorageAccountName: stagingStorageAccountDeployment.outputs.storageAccountName
-    logAnalyticsWorkspace: logAnalyticsWorkspaceName
-    templateBaseUrl: templateBaseUrl
-    subnetId: mgmtArtifactsAndPolicyDeployment.outputs.subnetId
-    deployBastion: deployBastion
-    azureLocation: location
-    vmName : k3sArcClusterName
-    storageContainerName: toLower(k3sArcClusterName)
-  }
-}
+// module ubuntuRancherK3sDeployment 'kubernetes/ubuntuRancher.bicep' = if (flavor == 'Full' || flavor == 'DevOps') {
+//   name: 'ubuntuRancherK3sDeployment'
+//   params: {
+//     sshRSAPublicKey: sshRSAPublicKey
+//     spnClientId: spnClientId
+//     spnClientSecret: spnClientSecret
+//     spnTenantId: spnTenantId
+//     stagingStorageAccountName: stagingStorageAccountDeployment.outputs.storageAccountName
+//     logAnalyticsWorkspace: logAnalyticsWorkspaceName
+//     templateBaseUrl: templateBaseUrl
+//     subnetId: mgmtArtifactsAndPolicyDeployment.outputs.subnetId
+//     deployBastion: deployBastion
+//     azureLocation: location
+//     vmName : k3sArcClusterName
+//     storageContainerName: toLower(k3sArcClusterName)
+//   }
+// }
 
 module clientVmDeployment 'clientVm/clientVm.bicep' = {
   name: 'clientVmDeployment'

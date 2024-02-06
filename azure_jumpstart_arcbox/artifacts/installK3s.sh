@@ -107,15 +107,15 @@ if [[ "$k3sControlPlane" == "true" ]]; then
     sudo kubectl wait --for=condition=Available --timeout=60s --all deployments -A >/dev/null
     sudo kubectl get nodes -o wide | expand | awk 'length($0) > length(longest) { longest = $0 } { lines[NR] = $0 } END { gsub(/./, "=", longest); print "/=" longest "=\\"; n = length(longest); for(i = 1; i <= NR; ++i) { printf("| %s %*s\n", lines[i], n - length(lines[i]) + 1, "|"); } print "\\=" longest "=/" }'
 
-    # Longhorn setup for RWX-capable storage class
-    echo ""
-    echo "Installing Longhorn storage class"
-    echo ""
-    sudo -u $adminUsername kubectl apply -f ${templateBaseUrl}artifacts/longhorn.yaml
-    if [[ $? -ne 0 ]]; then
-        echo "ERROR: Longhorn installation failed"
-        exit 1
-    fi
+    # # Longhorn setup for RWX-capable storage class
+    # echo ""
+    # echo "Installing Longhorn storage class"
+    # echo ""
+    # sudo -u $adminUsername kubectl apply -f ${templateBaseUrl}artifacts/longhorn.yaml
+    # if [[ $? -ne 0 ]]; then
+    #     echo "ERROR: Longhorn installation failed"
+    #     exit 1
+    # fi
 
     # Copying Rancher K3s kubeconfig file to staging storage account
     echo ""

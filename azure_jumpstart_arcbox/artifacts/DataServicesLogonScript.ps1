@@ -90,10 +90,10 @@ kubectl get nodes
 Write-Host "`n"
 azdata --version
 
-# # Longhorn setup for RWX-capable storage class
-# Write-Host "Creating longhorn storage on K3scluster."
-# kubectl apply -f "$Env:ArcBoxDir\longhorn.yaml"
-# Start-Sleep -Seconds 30
+# Longhorn setup for RWX-capable storage class
+Write-Host "Creating longhorn storage on K3scluster."
+kubectl apply -f "$Env:ArcBoxDir\longhorn.yaml"
+Start-Sleep -Seconds 30
 
 # Installing the Azure Arc-enabled data services cluster extension
 Write-Host "Installing the Azure Arc-enabled data services cluster extension"
