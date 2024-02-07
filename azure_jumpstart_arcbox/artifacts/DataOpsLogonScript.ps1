@@ -2,7 +2,6 @@ $Env:ArcBoxDir = "C:\ArcBox"
 $Env:ArcBoxLogsDir = "C:\ArcBox\Logs"
 $Env:ArcBoxVMDir = "$Env:ArcBoxDir\Virtual Machines"
 $Env:ArcBoxIconDir = "C:\ArcBox\Icons"
-$customLocationRPOID=$Env:customLocationRPOID
 
 $clusters = @(
     [pscustomobject]@{clusterName = $Env:k3sArcDataClusterName; dataController = "$Env:k3sArcDataClusterName-dc" ; customLocation = "$Env:k3sArcDataClusterName-cl" ; storageClassName = 'longhorn' ; licenseType = 'LicenseIncluded' ; context = 'k3s' ; kubeConfig = "C:\Users\$Env:adminUsername\.kube\config-datasvc-k3s" }
@@ -218,7 +217,7 @@ foreach ($cluster in $clusters) {
         Write-Host "Enabling Custom Locations on the cluster"
         az connectedk8s enable-features -n $cluster.clusterName `
                                         -g $Env:resourceGroup `
-                                        --custom-locations-oid $customLocationRPOID `
+                                        --custom-locations-oid $Env:customLocationRPOID `
                                         --features cluster-connect custom-locations
 
         $connectedClusterId = az connectedk8s show --name $cluster.clusterName --resource-group $Env:resourceGroup --query id -o tsv
