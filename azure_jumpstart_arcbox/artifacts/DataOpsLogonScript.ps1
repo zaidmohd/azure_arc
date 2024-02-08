@@ -218,7 +218,8 @@ foreach ($cluster in $clusters) {
         az connectedk8s enable-features -n $cluster.clusterName `
                                         -g $Env:resourceGroup `
                                         --custom-locations-oid $Env:customLocationRPOID `
-                                        --features cluster-connect custom-locations
+                                        --features cluster-connect custom-locations `
+                                        --kube-config $cluster.kubeConfig
 
         $connectedClusterId = az connectedk8s show --name $cluster.clusterName --resource-group $Env:resourceGroup --query id -o tsv
         $extensionId = az k8s-extension show --name arc-data-services --cluster-type connectedClusters --cluster-name $cluster.clusterName --resource-group $Env:resourceGroup --query id -o tsv
