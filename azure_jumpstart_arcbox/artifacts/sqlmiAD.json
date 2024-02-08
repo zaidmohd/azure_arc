@@ -156,7 +156,7 @@
               "readableSecondaries": {
                 "type": "[parameters('readableSecondaries')]",
                 "dnsName": "[parameters('dnsNameSecondary')]",
-                "port": "[parameters('port')]"
+                "port": "[parameters('secondaryPort')]"
               }
             },
             "replicas": "[parameters('replicas')]",
