@@ -171,7 +171,7 @@ foreach ($cluster in $clusters) {
 Write-Header "Creating longhorn storage on K3scluster"
 foreach ($cluster in $clusters) {
     if ($cluster.context -eq 'k3s') {
-        kubectl apply -f "$Env:ArcBoxDir\longhorn.yaml"
+        kubectl apply -f "$Env:ArcBoxDir\longhorn.yaml" --kubeconfig $cluster.kubeConfig
         Start-Sleep -Seconds 30
         Write-Host "`n"
     }
