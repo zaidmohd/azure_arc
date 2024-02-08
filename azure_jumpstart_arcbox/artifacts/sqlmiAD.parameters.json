@@ -95,7 +95,7 @@
             "value": port-stage
         },
         "secondaryPort": {
-            "value": secondaryPort-stage
+            "value": portSecondary-stage
         }
     }
 }
