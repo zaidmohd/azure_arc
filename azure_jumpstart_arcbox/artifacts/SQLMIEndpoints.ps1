@@ -15,7 +15,7 @@ Add-Content $Endpoints ""
 
 Add-Content $Endpoints "Secondary SQL Managed Instance external endpoint:"
 $secondaryEndpoint = kubectl get sqlmanagedinstances jumpstart-sql -n arc -o=jsonpath='{.status.endpoints.secondary}'
-$secondaryEndpoint = $secondaryEndpoint.Substring(0, $secondaryEndpoint.IndexOf(',')) + ",11433" | Add-Content $Endpoints
+$secondaryEndpoint = $secondaryEndpoint.Substring(0, $secondaryEndpoint.IndexOf(',')) + ",11434" | Add-Content $Endpoints
 
 # Retrieving SQL MI connection username and password
 Add-Content $Endpoints ""
