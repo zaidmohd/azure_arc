@@ -52,6 +52,15 @@ param deployBastion bool = false
 @description('Storage account container name for artifacts')
 param storageContainerName string
 
+@description('The flavor of ArcBox you want to deploy. Valid values are: \'Full\', \'ITPro\'')
+@allowed([
+  'Full'
+  'ITPro'
+  'DevOps'
+  'DataOps'
+])
+param flavor string
+
 var publicIpAddressName = '${vmName}-PIP'
 var networkInterfaceName = '${vmName}-NIC'
 var osDiskType = 'Premium_LRS'
@@ -59,6 +68,7 @@ var PublicIPNoBastion = {
   id: publicIpAddress.id
 }
 var k3sControlPlane = 'true' // deploy single-node k3s control plane
+var diskSize = (flavor == 'DataOps') ? 512 : 64
 
 resource publicIpAddress 'Microsoft.Network/publicIpAddresses@2022-01-01' = if(deployBastion == false){
   name: publicIpAddressName
@@ -108,7 +118,7 @@ resource vm 'Microsoft.Compute/virtualMachines@2022-03-01' = {
         managedDisk: {
           storageAccountType: osDiskType
         }
-        diskSizeGB: 256
+        diskSizeGB: diskSize
       }
       imageReference: {
         publisher: 'canonical'

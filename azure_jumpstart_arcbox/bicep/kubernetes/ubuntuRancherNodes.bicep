@@ -58,7 +58,7 @@ param storageContainerName string
 var networkInterfaceName = '${vmName}-NIC'
 var osDiskType = 'Premium_LRS'
 var vmSize = (flavor == 'DevOps') ? 'Standard_B2ms' : 'Standard_B8ms'
-
+var diskSize = (flavor == 'DataOps') ? 512 : 64
 
 resource networkInterface 'Microsoft.Network/networkInterfaces@2022-01-01' = {
   name: networkInterfaceName
@@ -94,7 +94,7 @@ resource vm 'Microsoft.Compute/virtualMachines@2022-03-01' = {
         managedDisk: {
           storageAccountType: osDiskType
         }
-        diskSizeGB: 256
+        diskSizeGB: diskSize
       }
       imageReference: {
         publisher: 'canonical'

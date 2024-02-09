@@ -124,6 +124,7 @@ module ubuntuRancherK3sDeployment 'kubernetes/ubuntuRancher.bicep' = if (flavor 
     azureLocation: location
     vmName : k3sArcClusterName
     storageContainerName: toLower(k3sArcClusterName)
+    flavor: flavor
   }
 }
 
