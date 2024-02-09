@@ -87,6 +87,9 @@
     },
     "port": {
       "type": "int"
+    },
+    "secondaryPort": {
+      "type": "int"
     }
   },
   "variables": {},
