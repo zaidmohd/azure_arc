@@ -188,6 +188,16 @@ $kubectlMonShellAKS = Start-Process -PassThru PowerShell { $host.ui.RawUI.Window
 $kubectlMonShellAKSDr = Start-Process -PassThru PowerShell { $host.ui.RawUI.WindowTitle = 'AKS-DR Cluster'; for (0 -lt 1) { kubectl get pods -n arc --kubeconfig "C:\Users\$Env:USERNAME\.kube\config-aksdr" ; Start-Sleep -Seconds 5; Clear-Host } }
 
 Write-Header "Deploying Azure Arc Data Controller"
+
+# Enabling Custom Locations feature on the clusters. Doing this sequentially to avoid issues with helm charts download.
+foreach ($cluster in $clusters) {
+    az connectedk8s enable-features -n $cluster.clusterName `
+                                    -g $Env:resourceGroup `
+                                    --custom-locations-oid $Env:customLocationRPOID `
+                                    --features cluster-connect custom-locations `
+                                    --kube-config $cluster.kubeConfig --only-show-errors
+}
+
 foreach ($cluster in $clusters) {
     Start-Job -Name arcbox -ScriptBlock {
         $cluster = $using:cluster
@@ -214,12 +224,12 @@ foreach ($cluster in $clusters) {
         } while ($podStatus -eq "Nope")
         Write-Host "Bootstrapper pod is ready!"
 
-        Write-Host "Enabling Custom Locations on the cluster"
-        az connectedk8s enable-features -n $cluster.clusterName `
-                                        -g $Env:resourceGroup `
-                                        --custom-locations-oid $Env:customLocationRPOID `
-                                        --features cluster-connect custom-locations `
-                                        --kube-config $cluster.kubeConfig
+        # Write-Host "Enabling Custom Locations on the cluster"
+        # az connectedk8s enable-features -n $cluster.clusterName `
+        #                                 -g $Env:resourceGroup `
+        #                                 --custom-locations-oid $Env:customLocationRPOID `
+        #                                 --features cluster-connect custom-locations `
+        #                                 --kube-config $cluster.kubeConfig
 
         $connectedClusterId = az connectedk8s show --name $cluster.clusterName --resource-group $Env:resourceGroup --query id -o tsv
         $extensionId = az k8s-extension show --name arc-data-services --cluster-type connectedClusters --cluster-name $cluster.clusterName --resource-group $Env:resourceGroup --query id -o tsv
