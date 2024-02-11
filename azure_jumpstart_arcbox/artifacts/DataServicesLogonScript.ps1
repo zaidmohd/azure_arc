@@ -91,7 +91,7 @@ Write-Host "`n"
 azdata --version
 
 # Longhorn setup for RWX-capable storage class
-Write-Header "Creating longhorn storage on K3scluster."
+Write-Header "Creating longhorn storage on K3scluster"
 kubectl apply -f "$Env:ArcBoxDir\longhorn.yaml"
 Start-Sleep -Seconds 30
 

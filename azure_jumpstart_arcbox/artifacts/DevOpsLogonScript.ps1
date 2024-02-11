@@ -113,6 +113,11 @@ az config set extension.use_dynamic_install=yes_without_prompt
 Write-Host "`n"
 az -v
 
+# Longhorn setup for RWX-capable storage class
+Write-Header "Creating longhorn storage"
+kubectl apply -f "$Env:ArcBoxDir\longhorn.yaml"
+Start-Sleep -Seconds 30
+
 # "Create OSM Kubernetes extension instance"
 Write-Header "Creating OSM K8s Extension Instance"
 az k8s-extension create `

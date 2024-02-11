@@ -224,13 +224,6 @@ foreach ($cluster in $clusters) {
         } while ($podStatus -eq "Nope")
         Write-Host "Bootstrapper pod is ready!"
 
-        # Write-Host "Enabling Custom Locations on the cluster"
-        # az connectedk8s enable-features -n $cluster.clusterName `
-        #                                 -g $Env:resourceGroup `
-        #                                 --custom-locations-oid $Env:customLocationRPOID `
-        #                                 --features cluster-connect custom-locations `
-        #                                 --kube-config $cluster.kubeConfig
-
         $connectedClusterId = az connectedk8s show --name $cluster.clusterName --resource-group $Env:resourceGroup --query id -o tsv
         $extensionId = az k8s-extension show --name arc-data-services --cluster-type connectedClusters --cluster-name $cluster.clusterName --resource-group $Env:resourceGroup --query id -o tsv
         Start-Sleep -Seconds 10
