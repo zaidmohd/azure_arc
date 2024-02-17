@@ -40,7 +40,7 @@ spec:
     spec:
       containers:
       - name: web
-        image: azurearcjumpstart.azurecr.io/demoapp:dr
+        image: jumpstartprod.azurecr.io/demoapp:dr
         ports:
         - containerPort: 80
         volumeMounts:
