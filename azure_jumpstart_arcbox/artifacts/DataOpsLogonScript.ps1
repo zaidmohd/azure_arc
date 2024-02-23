@@ -180,91 +180,91 @@ $kubeVipDaemonset = @"
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
-creationTimestamp: null
-labels:
+  creationTimestamp: null
+  labels:
     app.kubernetes.io/name: kube-vip-ds
     app.kubernetes.io/version: v0.7.0
-name: kube-vip-ds
-namespace: kube-system
+  name: kube-vip-ds
+  namespace: kube-system
 spec:
-selector:
+  selector:
     matchLabels:
-    app.kubernetes.io/name: kube-vip-ds
-template:
+      app.kubernetes.io/name: kube-vip-ds
+  template:
     metadata:
-    creationTimestamp: null
-    labels:
+      creationTimestamp: null
+      labels:
         app.kubernetes.io/name: kube-vip-ds
         app.kubernetes.io/version: v0.7.0
     spec:
-    affinity:
+      affinity:
         nodeAffinity:
-        requiredDuringSchedulingIgnoredDuringExecution:
+          requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
             - matchExpressions:
-            - key: node-role.kubernetes.io/master
+              - key: node-role.kubernetes.io/master
                 operator: Exists
             - matchExpressions:
-            - key: node-role.kubernetes.io/control-plane
+              - key: node-role.kubernetes.io/control-plane
                 operator: Exists
-    containers:
-    - args:
+      containers:
+      - args:
         - manager
         env:
         - name: vip_arp
-        value: "true"
+          value: "true"
         - name: port
-        value: "6443"
+          value: "6443"
         - name: vip_interface
-        value: eth0
+          value: eth0
         - name: vip_cidr
-        value: "32"
+          value: "32"
         - name: dns_mode
-        value: first
+          value: first
         - name: cp_enable
-        value: "true"
+          value: "true"
         - name: cp_namespace
-        value: kube-system
+          value: kube-system
         - name: svc_enable
-        value: "true"
+          value: "true"
         - name: svc_leasename
-        value: plndr-svcs-lock
+          value: plndr-svcs-lock
         - name: vip_leaderelection
-        value: "true"
+          value: "true"
         - name: vip_leasename
-        value: plndr-cp-lock
+          value: plndr-cp-lock
         - name: vip_leaseduration
-        value: "5"
+          value: "5"
         - name: vip_renewdeadline
-        value: "3"
+          value: "3"
         - name: vip_retryperiod
-        value: "1"
+          value: "1"
         - name: address
-        value: "$k3sVIP"
+          value: "$k3sVIP"
         - name: prometheus_server
-        value: :2112
+          value: :2112
         image: ghcr.io/kube-vip/kube-vip:v0.7.0
         imagePullPolicy: Always
         name: kube-vip
         resources: {}
         securityContext:
-        capabilities:
+          capabilities:
             add:
             - NET_ADMIN
             - NET_RAW
-    hostNetwork: true
-    serviceAccountName: kube-vip
-    tolerations:
-    - effect: NoSchedule
+      hostNetwork: true
+      serviceAccountName: kube-vip
+      tolerations:
+      - effect: NoSchedule
         operator: Exists
-    - effect: NoExecute
+      - effect: NoExecute
         operator: Exists
-updateStrategy: {}
+  updateStrategy: {}
 status:
-currentNumberScheduled: 0
-desiredNumberScheduled: 0
-numberMisscheduled: 0
-numberReady: 0
+  currentNumberScheduled: 0
+  desiredNumberScheduled: 0
+  numberMisscheduled: 0
+  numberReady: 0
 "@
 
         $kubeVipDaemonset | kubectl apply -f -
