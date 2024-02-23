@@ -133,7 +133,7 @@ if [[ "$k3sControlPlane" == "true" ]]; then
     sudo -u $adminUsername az provider register --namespace 'Microsoft.AzureArcData' --wait
 
     sudo service sshd restart
-
+    sleep 30
     # Onboard the cluster to Azure Arc
     echo ""
     echo "Onboarding the cluster to Azure Arc"
