@@ -57,9 +57,9 @@ $sqlInstances = @(
 
     [pscustomobject]@{instanceName = 'k3s-sql'; dataController = "$Env:k3sArcDataClusterName-dc"; customLocation = "$Env:k3sArcDataClusterName-cl" ; storageClassName = 'longhorn' ; licenseType = 'LicenseIncluded' ; context = 'k3s' ; kubeConfig = "C:\Users\$Env:adminUsername\.kube\config-datasvc-k3s" }
 
-    [pscustomobject]@{instanceName = 'aks-sql'; dataController = "$Env:aksArcClusterName-dc" ; customLocation = "$Env:aksArcClusterName-cl" ; storageClassName = 'managed-premium' ; licenseType = 'LicenseIncluded' ; context = 'aks'; kubeConfig = "C:\Users\$Env:adminUsername\.kube\config-aks" }
+    # [pscustomobject]@{instanceName = 'aks-sql'; dataController = "$Env:aksArcClusterName-dc" ; customLocation = "$Env:aksArcClusterName-cl" ; storageClassName = 'managed-premium' ; licenseType = 'LicenseIncluded' ; context = 'aks'; kubeConfig = "C:\Users\$Env:adminUsername\.kube\config-aks" }
 
-    [pscustomobject]@{instanceName = 'aks-dr-sql'; dataController = "$Env:aksdrArcClusterName-dc" ; customLocation = "$Env:aksdrArcClusterName-cl" ; storageClassName = 'managed-premium' ; licenseType = 'DisasterRecovery' ; context = 'aks-dr'; kubeConfig = "C:\Users\$Env:adminUsername\.kube\config-aksdr" }
+    # [pscustomobject]@{instanceName = 'aks-dr-sql'; dataController = "$Env:aksdrArcClusterName-dc" ; customLocation = "$Env:aksdrArcClusterName-cl" ; storageClassName = 'managed-premium' ; licenseType = 'DisasterRecovery' ; context = 'aks-dr'; kubeConfig = "C:\Users\$Env:adminUsername\.kube\config-aksdr" }
 
 )
 $sqlmiouName = "ArcSQLMI"
@@ -257,7 +257,6 @@ foreach ($sqlInstance in $sqlInstances) {
 (Get-Content -Path $SQLParams) -replace 'dnsNameSecondary-stage' , $sqlmi_secondary_fqdn_name | Set-Content -Path $SQLParams
 (Get-Content -Path $SQLParams) -replace 'port-stage' , $sqlmi_port | Set-Content -Path $SQLParams
 (Get-Content -Path $SQLParams) -replace 'licenseType-stage' , $sqlInstance.licenseType | Set-Content -Path $SQLParams
-(Get-Content -Path $SQLParams) -replace 'portSecondary-stage' , 11434 | Set-Content -Path $SQLParams
 
         az deployment group create --resource-group $Env:resourceGroup --name $sqlInstance.instanceName --template-file "$Env:ArcBoxDir\sqlmiAD.json" --parameters "$Env:ArcBoxDir\sqlmiAD-$context-stage.parameters.json"
         Write-Host "`n"

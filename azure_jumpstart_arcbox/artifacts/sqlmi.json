@@ -126,7 +126,7 @@
               },
               "readableSecondaries": {
                 "type": "[parameters('readableSecondaries')]",
-                "port": "[parameters('secondaryPort')]"
+                "port": "[parameters('port')]"
               }
             },
             "replicas": "[parameters('replicas')]",
