@@ -89,26 +89,26 @@ module ubuntuRancherK3sDataSvcDeployment 'kubernetes/ubuntuRancher.bicep' = if (
   }
 }
 
-module ubuntuRancherK3sDataSvcNodesDeployment 'kubernetes/ubuntuRancherNodes.bicep' = [for i in range(0, k3sClusterNodesCount): if (flavor == 'Full' || flavor == 'DataOps') {
-  name: 'ubuntuRancherK3sDataSvcNodesDeployment-${i}'
-  params: {
-    sshRSAPublicKey: sshRSAPublicKey
-    spnClientId: spnClientId
-    spnClientSecret: spnClientSecret
-    spnTenantId: spnTenantId
-    stagingStorageAccountName: stagingStorageAccountDeployment.outputs.storageAccountName
-    logAnalyticsWorkspace: logAnalyticsWorkspaceName
-    templateBaseUrl: templateBaseUrl
-    subnetId: mgmtArtifactsAndPolicyDeployment.outputs.subnetId
-    azureLocation: location
-    flavor: flavor
-    vmName : '${k3sArcDataClusterName}-Node-0${i}' 
-    storageContainerName: toLower(k3sArcDataClusterName)
-  }
-  dependsOn: [
-    ubuntuRancherK3sDataSvcDeployment
-  ]
-}]
+// module ubuntuRancherK3sDataSvcNodesDeployment 'kubernetes/ubuntuRancherNodes.bicep' = [for i in range(0, k3sClusterNodesCount): if (flavor == 'Full' || flavor == 'DataOps') {
+//   name: 'ubuntuRancherK3sDataSvcNodesDeployment-${i}'
+//   params: {
+//     sshRSAPublicKey: sshRSAPublicKey
+//     spnClientId: spnClientId
+//     spnClientSecret: spnClientSecret
+//     spnTenantId: spnTenantId
+//     stagingStorageAccountName: stagingStorageAccountDeployment.outputs.storageAccountName
+//     logAnalyticsWorkspace: logAnalyticsWorkspaceName
+//     templateBaseUrl: templateBaseUrl
+//     subnetId: mgmtArtifactsAndPolicyDeployment.outputs.subnetId
+//     azureLocation: location
+//     flavor: flavor
+//     vmName : '${k3sArcDataClusterName}-Node-0${i}' 
+//     storageContainerName: toLower(k3sArcDataClusterName)
+//   }
+//   dependsOn: [
+//     ubuntuRancherK3sDataSvcDeployment
+//   ]
+// }]
 
 module ubuntuRancherK3sDeployment 'kubernetes/ubuntuRancher.bicep' = if (flavor == 'Full' || flavor == 'DevOps') {
   name: 'ubuntuRancherK3sDeployment'
@@ -129,32 +129,32 @@ module ubuntuRancherK3sDeployment 'kubernetes/ubuntuRancher.bicep' = if (flavor 
   }
 }
 
-module clientVmDeployment 'clientVm/clientVm.bicep' = {
-  name: 'clientVmDeployment'
-  params: {
-    windowsAdminUsername: windowsAdminUsername
-    windowsAdminPassword: windowsAdminPassword
-    spnClientId: spnClientId
-    spnClientSecret: spnClientSecret
-    spnTenantId: spnTenantId
-    workspaceName: logAnalyticsWorkspaceName
-    stagingStorageAccountName: stagingStorageAccountDeployment.outputs.storageAccountName
-    templateBaseUrl: templateBaseUrl
-    flavor: flavor
-    subnetId: mgmtArtifactsAndPolicyDeployment.outputs.subnetId
-    deployBastion: deployBastion
-    githubUser: githubUser
-    location: location
-    k3sArcDataClusterName : k3sArcDataClusterName
-    k3sArcClusterName : k3sArcClusterName
-    aksArcClusterName : aksArcDataClusterName
-    aksdrArcClusterName : aksDrArcDataClusterName
-    customLocationRPOID: customLocationRPOID
-  }
-  dependsOn: [
-    updateVNetDNSServers
-  ]
-}
+// module clientVmDeployment 'clientVm/clientVm.bicep' = {
+//   name: 'clientVmDeployment'
+//   params: {
+//     windowsAdminUsername: windowsAdminUsername
+//     windowsAdminPassword: windowsAdminPassword
+//     spnClientId: spnClientId
+//     spnClientSecret: spnClientSecret
+//     spnTenantId: spnTenantId
+//     workspaceName: logAnalyticsWorkspaceName
+//     stagingStorageAccountName: stagingStorageAccountDeployment.outputs.storageAccountName
+//     templateBaseUrl: templateBaseUrl
+//     flavor: flavor
+//     subnetId: mgmtArtifactsAndPolicyDeployment.outputs.subnetId
+//     deployBastion: deployBastion
+//     githubUser: githubUser
+//     location: location
+//     k3sArcDataClusterName : k3sArcDataClusterName
+//     k3sArcClusterName : k3sArcClusterName
+//     aksArcClusterName : aksArcDataClusterName
+//     aksdrArcClusterName : aksDrArcDataClusterName
+//     customLocationRPOID: customLocationRPOID
+//   }
+//   dependsOn: [
+//     updateVNetDNSServers
+//   ]
+// }
 
 module mgmtArtifactsAndPolicyDeployment 'mgmt/mgmtArtifacts.bicep' = {
   name: 'mgmtArtifactsAndPolicyDeployment'
