@@ -96,54 +96,54 @@ resource networkInterface 'Microsoft.Network/networkInterfaces@2022-01-01' = {
           }
           privateIPAllocationMethod: 'Dynamic'
           publicIPAddress: deployBastion== false  ? PublicIPNoBastion : json('null')
-          primary: true
+          // primary: true
         }
       }
-      {
-        name: 'ipconfig2'
-        properties: {
-          subnet: {
-            id: subnetId
-          }
-          privateIPAllocationMethod: 'Dynamic'
-        }
-      }
-      {
-        name: 'ipconfig3'
-        properties: {
-          subnet: {
-            id: subnetId
-          }
-          privateIPAllocationMethod: 'Dynamic'
-        }
-      }
-      {
-        name: 'ipconfig4'
-        properties: {
-          subnet: {
-            id: subnetId
-          }
-          privateIPAllocationMethod: 'Dynamic'
-        }
-      }
-      {
-        name: 'ipconfig5'
-        properties: {
-          subnet: {
-            id: subnetId
-          }
-          privateIPAllocationMethod: 'Dynamic'
-        }
-      }
-      {
-        name: 'ipconfig6'
-        properties: {
-          subnet: {
-            id: subnetId
-          }
-          privateIPAllocationMethod: 'Dynamic'
-        }
-      }
+      // {
+      //   name: 'ipconfig2'
+      //   properties: {
+      //     subnet: {
+      //       id: subnetId
+      //     }
+      //     privateIPAllocationMethod: 'Dynamic'
+      //   }
+      // }
+      // {
+      //   name: 'ipconfig3'
+      //   properties: {
+      //     subnet: {
+      //       id: subnetId
+      //     }
+      //     privateIPAllocationMethod: 'Dynamic'
+      //   }
+      // }
+      // {
+      //   name: 'ipconfig4'
+      //   properties: {
+      //     subnet: {
+      //       id: subnetId
+      //     }
+      //     privateIPAllocationMethod: 'Dynamic'
+      //   }
+      // }
+      // {
+      //   name: 'ipconfig5'
+      //   properties: {
+      //     subnet: {
+      //       id: subnetId
+      //     }
+      //     privateIPAllocationMethod: 'Dynamic'
+      //   }
+      // }
+      // {
+      //   name: 'ipconfig6'
+      //   properties: {
+      //     subnet: {
+      //       id: subnetId
+      //     }
+      //     privateIPAllocationMethod: 'Dynamic'
+      //   }
+      // }
     ]
   }
 }
