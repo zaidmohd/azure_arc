@@ -61,6 +61,9 @@ param storageContainerName string
 ])
 param flavor string
 
+@description('The number of IP addresses to create')
+param numberOfIPAddresses int = 5
+
 var publicIpAddressName = '${vmName}-PIP'
 var networkInterfaceName = '${vmName}-NIC'
 var osDiskType = 'Premium_LRS'
@@ -149,7 +152,7 @@ var diskSize = (flavor == 'DataOps') ? 512 : 64
 // }
 
 // Create multiple public IP addresses if deployBastion is false
-resource publicIpAddresses 'Microsoft.Network/publicIpAddresses@2022-01-01' = [for i in range(1, 3): if(deployBastion == false) {
+resource publicIpAddresses 'Microsoft.Network/publicIpAddresses@2022-01-01' = [for i in range(1, numberOfIPAddresses): if(deployBastion == false) {
   name: '${publicIpAddressName}${i}'
   location: azureLocation
   properties: {
@@ -167,7 +170,7 @@ resource networkInterface 'Microsoft.Network/networkInterfaces@2022-01-01' = {
   name: networkInterfaceName
   location: azureLocation
   properties: {
-    ipConfigurations: [for i in range(1, 3): {
+    ipConfigurations: [for i in range(1, numberOfIPAddresses): {
       name: 'ipconfig${i}'
       properties: {
         subnet: {
