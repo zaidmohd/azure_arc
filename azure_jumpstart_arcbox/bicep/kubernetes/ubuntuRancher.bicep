@@ -177,6 +177,7 @@ resource networkInterface 'Microsoft.Network/networkInterfaces@2022-01-01' = {
         publicIPAddress: deployBastion == false ? {
           id: publicIpAddresses[i-1].id
         } : null
+        primary: i == 1 ? true : false
       }
     }]
   }
