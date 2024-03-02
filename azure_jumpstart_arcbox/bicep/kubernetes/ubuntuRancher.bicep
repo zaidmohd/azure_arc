@@ -111,15 +111,15 @@ resource networkInterface 'Microsoft.Network/networkInterfaces@2022-01-01' = {
           privateIPAllocationMethod: 'Dynamic'
         }
       }
-      // {
-      //   name: 'ipconfig3'
-      //   properties: {
-      //     subnet: {
-      //       id: subnetId
-      //     }
-      //     privateIPAllocationMethod: 'Dynamic'
-      //   }
-      // }
+      {
+        name: 'ipconfig3'
+        properties: {
+          subnet: {
+            id: subnetId
+          }
+          privateIPAllocationMethod: 'Dynamic'
+        }
+      }
       // {
       //   name: 'ipconfig4'
       //   properties: {
