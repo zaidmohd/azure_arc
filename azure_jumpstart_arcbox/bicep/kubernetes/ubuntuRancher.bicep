@@ -62,7 +62,7 @@ param storageContainerName string
 param flavor string
 
 @description('The number of IP addresses to create')
-param numberOfIPAddresses int = 6
+param numberOfIPAddresses int = 8
 
 var publicIpAddressName = '${vmName}-PIP'
 var networkInterfaceName = '${vmName}-NIC'
