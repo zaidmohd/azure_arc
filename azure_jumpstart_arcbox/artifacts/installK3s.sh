@@ -77,7 +77,7 @@ if [[ "$k3sControlPlane" == "true" ]]; then
     publicIp=$(hostname -i)
     sudo mkdir ~/.kube
     sudo -u $adminUsername mkdir /home/${adminUsername}/.kube
-    curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="server --disable traefik --disable servicelb --node-external-ip ${publicIp} --bind-address ${publicIp} --tls-san ${publicIp}" INSTALL_K3S_VERSION=v${K3S_VERSION} K3S_KUBECONFIG_MODE="644" sh -
+    curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="server --disable traefik --disable servicelb --node-ip ${publicIp} --node-external-ip ${publicIp} --bind-address ${publicIp} --tls-san ${publicIp}" INSTALL_K3S_VERSION=v${K3S_VERSION} K3S_KUBECONFIG_MODE="644" sh -
     if [[ $? -ne 0 ]]; then
         echo "ERROR: K3s installation failed"
         exit 1
@@ -132,8 +132,7 @@ if [[ "$k3sControlPlane" == "true" ]]; then
     sudo -u $adminUsername az provider register --namespace 'Microsoft.ExtendedLocation' --wait
     sudo -u $adminUsername az provider register --namespace 'Microsoft.AzureArcData' --wait
 
-    sudo service sshd restart
-    sleep 30
+    # sudo service sshd restart
     # Onboard the cluster to Azure Arc
     echo ""
     echo "Onboarding the cluster to Azure Arc"
