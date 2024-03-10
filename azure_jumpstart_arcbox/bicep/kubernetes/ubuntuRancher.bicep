@@ -67,93 +67,14 @@ param numberOfIPAddresses int = 6
 var publicIpAddressName = '${vmName}-PIP'
 var networkInterfaceName = '${vmName}-NIC'
 var osDiskType = 'Premium_LRS'
-var PublicIPNoBastion = {
-  id: publicIpAddress.id
-}
+// var PublicIPNoBastion = {
+//   id: publicIpAddress.id
+// }
 var k3sControlPlane = 'true' // deploy single-node k3s control plane
 var diskSize = (flavor == 'DataOps') ? 512 : 64
 
-resource publicIpAddress 'Microsoft.Network/publicIpAddresses@2022-01-01' = if(deployBastion == false){
-  name: publicIpAddressName
-  location: azureLocation
-  properties: {
-    publicIPAllocationMethod: 'Static'
-    publicIPAddressVersion: 'IPv4'
-    idleTimeoutInMinutes: 4
-  }
-  sku: {
-    name: 'Basic'
-  }
-}
-
-resource networkInterface 'Microsoft.Network/networkInterfaces@2022-01-01' = {
-  name: networkInterfaceName
-  location: azureLocation
-  properties: {
-    ipConfigurations: [
-      {
-        name: 'ipconfig1'
-        properties: {
-          subnet: {
-            id: subnetId
-          }
-          privateIPAllocationMethod: 'Dynamic'
-          publicIPAddress: deployBastion== false  ? PublicIPNoBastion : json('null')
-          primary: true
-        }
-      }
-      {
-        name: 'ipconfig2'
-        properties: {
-          subnet: {
-            id: subnetId
-          }
-          privateIPAllocationMethod: 'Dynamic'
-        }
-      }
-      {
-        name: 'ipconfig3'
-        properties: {
-          subnet: {
-            id: subnetId
-          }
-          privateIPAllocationMethod: 'Dynamic'
-        }
-      }
-      {
-        name: 'ipconfig4'
-        properties: {
-          subnet: {
-            id: subnetId
-          }
-          privateIPAllocationMethod: 'Dynamic'
-        }
-      }
-      {
-        name: 'ipconfig5'
-        properties: {
-          subnet: {
-            id: subnetId
-          }
-          privateIPAllocationMethod: 'Dynamic'
-        }
-      }
-      {
-        name: 'ipconfig6'
-        properties: {
-          subnet: {
-            id: subnetId
-          }
-          privateIPAllocationMethod: 'Dynamic'
-        }
-      }
-    ]
-  }
-}
-
-// // Create multiple public IP addresses if deployBastion is false
-// resource publicIpAddresses 'Microsoft.Network/publicIpAddresses@2022-01-01' = [for i in range(1, numberOfIPAddresses): if(deployBastion == false) {
-//   name: '${publicIpAddressName}${i}'
+// resource publicIpAddress 'Microsoft.Network/publicIpAddresses@2022-01-01' = if(deployBastion == false){
+//   name: publicIpAddressName
 //   location: azureLocation
 //   properties: {
 //     publicIPAllocationMethod: 'Static'
@@ -163,28 +84,107 @@ resource networkInterface 'Microsoft.Network/networkInterfaces@2022-01-01' = {
 //   sku: {
 //     name: 'Basic'
 //   }
-// }]
+// }
 
-// // Create multiple NIC IP configurations and assign the public IP to the IP configuration if deployBastion is false
 // resource networkInterface 'Microsoft.Network/networkInterfaces@2022-01-01' = {
 //   name: networkInterfaceName
 //   location: azureLocation
 //   properties: {
-//     ipConfigurations: [for i in range(1, numberOfIPAddresses): {
-//       name: 'ipconfig${i}'
-//       properties: {
-//         subnet: {
-//           id: subnetId
+//     ipConfigurations: [
+//       {
+//         name: 'ipconfig1'
+//         properties: {
+//           subnet: {
+//             id: subnetId
+//           }
+//           privateIPAllocationMethod: 'Dynamic'
+//           publicIPAddress: deployBastion== false  ? PublicIPNoBastion : json('null')
+//           primary: true
 //         }
-//         privateIPAllocationMethod: 'Dynamic'
-//         publicIPAddress: deployBastion == false ? {
-//           id: publicIpAddresses[i-1].id
-//         } : null
-//         primary: i == 1 ? true : false
 //       }
-//     }]
+//       {
+//         name: 'ipconfig2'
+//         properties: {
+//           subnet: {
+//             id: subnetId
+//           }
+//           privateIPAllocationMethod: 'Dynamic'
+//         }
+//       }
+//       // {
+//       //   name: 'ipconfig3'
+//       //   properties: {
+//       //     subnet: {
+//       //       id: subnetId
+//       //     }
+//       //     privateIPAllocationMethod: 'Dynamic'
+//       //   }
+//       // }
+//       // {
+//       //   name: 'ipconfig4'
+//       //   properties: {
+//       //     subnet: {
+//       //       id: subnetId
+//       //     }
+//       //     privateIPAllocationMethod: 'Dynamic'
+//       //   }
+//       // }
+//       // {
+//       //   name: 'ipconfig5'
+//       //   properties: {
+//       //     subnet: {
+//       //       id: subnetId
+//       //     }
+//       //     privateIPAllocationMethod: 'Dynamic'
+//       //   }
+//       // }
+//       // {
+//       //   name: 'ipconfig6'
+//       //   properties: {
+//       //     subnet: {
+//       //       id: subnetId
+//       //     }
+//       //     privateIPAllocationMethod: 'Dynamic'
+//       //   }
+//       // }
+//     ]
 //   }
 // }
+
+// Create multiple public IP addresses if deployBastion is false
+resource publicIpAddresses 'Microsoft.Network/publicIpAddresses@2022-01-01' = [for i in range(1, numberOfIPAddresses): if(deployBastion == false) {
+  name: '${publicIpAddressName}${i}'
+  location: azureLocation
+  properties: {
+    publicIPAllocationMethod: 'Static'
+    publicIPAddressVersion: 'IPv4'
+    idleTimeoutInMinutes: 4
+  }
+  sku: {
+    name: 'Basic'
+  }
+}]
+
+// Create multiple NIC IP configurations and assign the public IP to the IP configuration if deployBastion is false
+resource networkInterface 'Microsoft.Network/networkInterfaces@2022-01-01' = {
+  name: networkInterfaceName
+  location: azureLocation
+  properties: {
+    ipConfigurations: [for i in range(1, numberOfIPAddresses): {
+      name: 'ipconfig${i}'
+      properties: {
+        subnet: {
+          id: subnetId
+        }
+        privateIPAllocationMethod: 'Dynamic'
+        publicIPAddress: deployBastion == false ? {
+          id: publicIpAddresses[i-1].id
+        } : null
+        primary: i == 1 ? true : false
+      }
+    }]
+  }
+}
 
 resource vm 'Microsoft.Compute/virtualMachines@2022-03-01' = {
   name: vmName
