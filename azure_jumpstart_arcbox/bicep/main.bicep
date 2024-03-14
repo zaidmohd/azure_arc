@@ -199,21 +199,21 @@ module updateVNetDNSServers 'mgmt/mgmtArtifacts.bicep' = if (flavor == 'DataOps'
   ]
 }
 
-// module aksDeployment 'kubernetes/aks.bicep' = if (flavor == 'DataOps') {
-//   name: 'aksDeployment'
-//   params: {
-//     sshRSAPublicKey: sshRSAPublicKey
-//     spnClientId: spnClientId
-//     spnClientSecret: spnClientSecret
-//     location: location
-//     aksClusterName : aksArcDataClusterName
-//     drClusterName : aksDrArcDataClusterName
-//   }
-//   dependsOn: [
-//     updateVNetDNSServers
-//     stagingStorageAccountDeployment
-//     mgmtArtifactsAndPolicyDeployment
-//   ]
-// }
+module aksDeployment 'kubernetes/aks.bicep' = if (flavor == 'DataOps') {
+  name: 'aksDeployment'
+  params: {
+    sshRSAPublicKey: sshRSAPublicKey
+    spnClientId: spnClientId
+    spnClientSecret: spnClientSecret
+    location: location
+    aksClusterName : aksArcDataClusterName
+    drClusterName : aksDrArcDataClusterName
+  }
+  dependsOn: [
+    updateVNetDNSServers
+    stagingStorageAccountDeployment
+    mgmtArtifactsAndPolicyDeployment
+  ]
+}
 
 output clientVmLogonUserName string = flavor == 'DataOps' ? '${windowsAdminUsername}@${addsDomainName}' : ''

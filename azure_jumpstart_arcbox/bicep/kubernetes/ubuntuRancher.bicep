@@ -152,7 +152,7 @@ var diskSize = (flavor == 'DataOps') ? 512 : 64
 // }
 
 // Create multiple public IP addresses if deployBastion is false
-resource publicIpAddresses 'Microsoft.Network/publicIpAddresses@2022-01-01' = [for i in range(1, numberOfIPAddresses): if(deployBastion == false) {
+resource publicIpAddresses 'Microsoft.Network/publicIpAddresses@2022-01-01' = [for i in range(1, numberOfIPAddresses): {
   name: '${publicIpAddressName}${i}'
   location: azureLocation
   properties: {
@@ -177,9 +177,9 @@ resource networkInterface 'Microsoft.Network/networkInterfaces@2022-01-01' = {
           id: subnetId
         }
         privateIPAllocationMethod: 'Dynamic'
-        publicIPAddress: deployBastion == false ? {
+        publicIPAddress: {
           id: publicIpAddresses[i-1].id
-        } : null
+        }
         primary: i == 1 ? true : false
       }
     }]
