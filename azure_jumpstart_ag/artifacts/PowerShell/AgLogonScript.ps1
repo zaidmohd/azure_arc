@@ -176,8 +176,8 @@ if ($industry -eq "retail") {
 if ($industry -eq "manufacturing") {
     Deploy-AIO
     Deploy-ManufacturingConfigs
-    $mqttIpArray=Configure-MQTTIpAddress
-    Deploy-MQTTSimulator -mqttIpArray $mqttIpArray
+    $mqttIpArray=Set-MQTTIpAddress
+    #Deploy-MQTTSimulator -mqttIpArray $mqttIpArray # this is now being done via helm
     Deploy-MQTTExplorer -mqttIpArray $mqttIpArray
 }
 
@@ -204,7 +204,11 @@ Deploy-ADXDashboardReports
 # Creating bookmarks
 ##############################################################
 Write-Host "[$(Get-Date -Format t)] INFO: Creating Microsoft Edge Bookmarks in Favorites Bar (Step 15/17)" -ForegroundColor DarkGreen
-#Deploy-Bookmarks
+if($industry -eq "retail"){
+    Deploy-RetailBookmarks
+}else{
+    Deploy-ManufacturingBookmarks
+}
 
 ##############################################################
 # Cleanup

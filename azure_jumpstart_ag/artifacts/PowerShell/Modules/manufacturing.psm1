@@ -32,7 +32,6 @@ function Deploy-ManufacturingConfigs {
 
             $AgConfig.AppConfig.GetEnumerator() | sort-object -Property @{Expression = { $_.value.Order }; Ascending = $true } | ForEach-Object {
                 $app = $_
-                $store = $cluster.value.Branch.ToLower()
                 $clusterName = $cluster.value.ArcClusterName + "-$namingGuid"
                 $branch = $cluster.value.Branch.ToLower()
                 $configName = $app.value.GitOpsConfigName.ToLower()
@@ -293,7 +292,7 @@ function Deploy-AIO {
         Write-Host "AIO deployed successfully on the $clusterName cluster" -ForegroundColor Green
         Write-Host "`n"
         Write-Host "[$(Get-Date -Format t)] INFO: Started Event Grid role assignment process" -ForegroundColor DarkGray
-        $extensionPrincipalId = (az k8s-extension show --cluster-name $arcClusterName --name "mq" --resource-group $resourceGroup --cluster-type "connectedClusters" --output json | ConvertFrom-Json).identity.principalId
+        $extensionPrincipalId =(az k8s-extension list --cluster-name $arcClusterName --resource-group $resourceGroup --cluster-type "connectedClusters" --query "[?extensionType=='microsoft.iotoperations.mq']" --output json | ConvertFrom-Json)[0].identity.principalId
         $eventGridTopicId = (az eventgrid topic list --resource-group $resourceGroup --query "[0].id" -o tsv --only-show-errors)
         $eventGridNamespaceName = (az eventgrid namespace list --resource-group $resourceGroup --query "[0].name" -o tsv --only-show-errors)
         $eventGridNamespaceId = (az eventgrid namespace list --resource-group $resourceGroup --query "[0].id" -o tsv --only-show-errors)
@@ -324,10 +323,12 @@ function Deploy-AIO {
         $eventGridHostName = (az eventgrid namespace list --resource-group $resourceGroup --query "[0].topicSpacesConfiguration.hostname" -o tsv --only-show-errors)
         (Get-Content -Path $bridgeConfig) -replace 'eventGridPlaceholder', $eventGridHostName | Set-Content -Path $bridgeConfig
         kubectl apply -f $bridgeConfig -n $aioNamespace
+
+        ## Patching MQTT listener
     }
 }
 
-function Configure-MQTTIpAddress {
+function Set-MQTTIpAddress {
     $mqttIpArray = @()
     $clusters = $AgConfig.SiteConfig.GetEnumerator()
     foreach ($cluster in $clusters) {
@@ -496,4 +497,83 @@ function Deploy-ADXDashboardReports {
 
     # Install azure.eventhub python module to run data emulator
     pip install azure.eventhub
+}
+
+function Deploy-ManufacturingBookmarks {
+    $bookmarksFileName = "$AgToolsDir\Bookmarks"
+    $edgeBookmarksPath = "$Env:LOCALAPPDATA\Microsoft\Edge\User Data\Default"
+
+    foreach ($cluster in $AgConfig.SiteConfig.GetEnumerator()) {
+        kubectx $cluster.Name.ToLower() | Out-File -Append -FilePath ($AgConfig.AgDirectories["AgLogsDir"] + "\Bookmarks.log")
+        $services = kubectl get services --all-namespaces -o json | ConvertFrom-Json
+
+        # Matching url: flask app
+        $matchingServices = $services.items | Where-Object {
+            $_.metadata.name -eq 'flask-app-service' -and
+            $_.spec.ports.port -contains 80
+        }
+        $flaskIps = $matchingServices.status.loadBalancer.ingress.ip
+
+        foreach ($flaskIp in $flaskIps) {
+            $output = "http://$flaskIp"
+            $output | Out-File -Append -FilePath ($AgConfig.AgDirectories["AgLogsDir"] + "\Bookmarks.log")
+
+            # Replace matching value in the Bookmarks file
+            $content = Get-Content -Path $bookmarksFileName
+            $newContent = $content -replace ("Flask-" + $cluster.Name + "-URL"), $output
+            $newContent | Set-Content -Path $bookmarksFileName
+
+            Start-Sleep -Seconds 2
+        }
+
+        # Matching url: Influxdb
+        $matchingServices = $services.items | Where-Object {
+            $_.metadata.name -eq 'Influxdb' -and
+            $_.spec.ports.port -contains 8086
+        }
+        $influxdbIps = $matchingServices.status.loadBalancer.ingress.ip
+
+        foreach ($influxdbIp in $influxdbIps) {
+            $output = "http://${influxdbIp}:8086"
+            $output | Out-File -Append -FilePath ($AgConfig.AgDirectories["AgLogsDir"] + "\Bookmarks.log")
+
+            # Replace matching value in the Bookmarks file
+            $content = Get-Content -Path $bookmarksFileName
+            $newContent = $content -replace ("Influxdb-" + $cluster.Name + "-URL"), $output
+            $newContent | Set-Content -Path $bookmarksFileName
+
+            Start-Sleep -Seconds 2
+        }
+
+        # Matching url: prometheus
+        $matchingServices = $services.items | Where-Object {
+            $_.spec.ports.port -contains 9090 -and
+            $_.spec.type -eq "LoadBalancer"
+        }
+        $prometheusIps = $matchingServices.status.loadBalancer.ingress.ip
+
+        foreach ($prometheusIp in $prometheusIps) {
+            $output = "http://${prometheusIp}:9090"
+            $output | Out-File -Append -FilePath ($AgConfig.AgDirectories["AgLogsDir"] + "\Bookmarks.log")
+
+            # Replace matching value in the Bookmarks file
+            $content = Get-Content -Path $bookmarksFileName
+            $newContent = $content -replace ("Prometheus-" + $cluster.Name + "-URL"), $output
+            $newContent | Set-Content -Path $bookmarksFileName
+
+            Start-Sleep -Seconds 2
+        }
+    }
+
+    Start-Sleep -Seconds 2
+
+    Copy-Item -Path $bookmarksFileName -Destination $edgeBookmarksPath -Force
+
+    ##############################################################
+    # Pinning important directories to Quick access
+    ##############################################################
+    Write-Host "[$(Get-Date -Format t)] INFO: Pinning important directories to Quick access (Step 16/17)" -ForegroundColor DarkGreen
+    $quickAccess = new-object -com shell.application
+    $quickAccess.Namespace($AgConfig.AgDirectories.AgDir).Self.InvokeVerb("pintohome")
+    $quickAccess.Namespace($AgConfig.AgDirectories.AgLogsDir).Self.InvokeVerb("pintohome")
 }
