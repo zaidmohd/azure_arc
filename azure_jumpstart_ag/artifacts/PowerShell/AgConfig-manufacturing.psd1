@@ -118,8 +118,8 @@
     )
 
     # VHDX blob url
-    ProdVHDBlobURL          = 'https://jsvhds.blob.core.windows.net/agora/base/prod-w11iot/AGBase.vhdx?si=Agora-RL&spr=https&sv=2022-11-02&sr=c&sig=kOFIb%2B3IWqnjd9soYUFjiIdSzH%2FXWiz3lgdKbZEAaXs%3D'
-    PreProdVHDBlobURL       = 'https://jsvhds.blob.core.windows.net/agora/base/preprod-w11iot/AGBase.vhdx?si=Agora-RL&spr=https&sv=2022-11-02&sr=c&sig=kOFIb%2B3IWqnjd9soYUFjiIdSzH%2FXWiz3lgdKbZEAaXs%3D'
+    ProdVHDBlobURL          = 'https://jsvhds.blob.core.windows.net/agora/base/prod-w11iot/AGBase.vhdx'
+    PreProdVHDBlobURL       = 'https://jsvhds.blob.core.windows.net/agora/base/preprod-w11iot/AGBase.vhdx'
 
     # L1 virtual machine configuration
     HostVMDrive             = "V"                                   # This value controls the drive letter where the nested virtual
@@ -209,7 +209,6 @@
     }
 
     Namespaces              = @(
-        "contoso-manufacturing"
         "observability"
         "images-cache"
     )
@@ -222,28 +221,6 @@
             Namespace = "contoso-motors"
             Order = 1
         }
-        # SensorMonitor = @{
-        #     GitOpsConfigName  = "config-sensormonitor"
-        #     KustomizationName = "sensor-monitor"
-        #     KustomizationPath = "./contoso_supermarket/operations/freezer_monitoring/release"
-        #     Namespace         = "sensor-monitor"
-        #     AppPath           = "freezer_monitoring"
-        #     ConfigMaps = @{
-        #         "mqtt-broker-config" = @{
-        #             ContainerName = "mqtt-broker"
-        #             RepoPath      = "contents/contoso_supermarket/developer/freezer_monitoring/src/mqtt-broker/mosquitto.conf"
-        #         }
-        #         "mqtt-simulator-config" = @{
-        #             ContainerName = "mqtt-simulator"
-        #             RepoPath      = "contents/contoso_supermarket/developer/freezer_monitoring/src/mqtt-simulator/config/settings.json"
-        #         }
-        #         "mqtt2prom-config" = @{
-        #             ContainerName = "mqtt2prom"
-        #             RepoPath      = "contents/contoso_supermarket/developer/freezer_monitoring/src/mqtt2prom/config.yaml"
-        #         }
-        #     }
-        #     Order = 7
-        # }
     }
 
     # Microsoft Edge startup settings variables
