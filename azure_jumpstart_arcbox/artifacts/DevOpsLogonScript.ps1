@@ -320,32 +320,33 @@ az k8s-configuration flux create `
     --cluster-type connectedClusters `
     --scope cluster `
     --url $appClonedRepo `
+    --kind git `
     --branch $env:githubBranch --sync-interval 3s `
     --kustomization name=nginx path=./nginx/release
 
-# Create GitOps config for Bookstore application
-Write-Host "Creating GitOps config for Bookstore application"
-az k8s-configuration flux create `
-    --cluster-name $Env:k3sArcDataClusterName `
-    --resource-group $Env:resourceGroup `
-    --name config-bookstore `
-    --cluster-type connectedClusters `
-    --url $appClonedRepo `
-    --branch $env:githubBranch --sync-interval 3s `
-    --kustomization name=bookstore path=./bookstore/yaml
+# # Create GitOps config for Bookstore application
+# Write-Host "Creating GitOps config for Bookstore application"
+# az k8s-configuration flux create `
+#     --cluster-name $Env:k3sArcDataClusterName `
+#     --resource-group $Env:resourceGroup `
+#     --name config-bookstore `
+#     --cluster-type connectedClusters `
+#     --url $appClonedRepo `
+#     --branch $env:githubBranch --sync-interval 3s `
+#     --kustomization name=bookstore path=./bookstore/yaml
 
-# Create GitOps config for Bookstore RBAC
-Write-Host "Creating GitOps config for Bookstore RBAC"
-az k8s-configuration flux create `
-    --cluster-name $Env:k3sArcDataClusterName `
-    --resource-group $Env:resourceGroup `
-    --name config-bookstore-rbac `
-    --cluster-type connectedClusters `
-    --scope namespace `
-    --namespace bookstore `
-    --url $appClonedRepo `
-    --branch $env:githubBranch --sync-interval 3s `
-    --kustomization name=bookstore path=./bookstore/rbac-sample
+# # Create GitOps config for Bookstore RBAC
+# Write-Host "Creating GitOps config for Bookstore RBAC"
+# az k8s-configuration flux create `
+#     --cluster-name $Env:k3sArcDataClusterName `
+#     --resource-group $Env:resourceGroup `
+#     --name config-bookstore-rbac `
+#     --cluster-type connectedClusters `
+#     --scope namespace `
+#     --namespace bookstore `
+#     --url $appClonedRepo `
+#     --branch $env:githubBranch --sync-interval 3s `
+#     --kustomization name=bookstore path=./bookstore/rbac-sample
 
 # Create GitOps config for Hello-Arc application
 Write-Host "Creating GitOps config for Hello-Arc application"
@@ -357,6 +358,7 @@ az k8s-configuration flux create `
     --cluster-type connectedClusters `
     --scope namespace `
     --url $appClonedRepo `
+    --kind git `
     --branch $env:githubBranch --sync-interval 3s `
     --kustomization name=helloarc path=./hello-arc/yaml
 
