@@ -62,3 +62,11 @@ az k8s-configuration flux create \
 --url $appClonedRepo \
 --branch main \
 --kustomization name=app path=./hello-arc/ingress
+
+az k8s-configuration flux create --resource-group "tailwind-manufacturing-chicago-rg" --cluster-name "hcibox-aks" --cluster-type connectedClusters --name config-app --scope namespace --namespace twt-app --kind git --url "https://github.com/zaidmohd/azure-arc-jumpstart-apps" --branch main --sync-interval 3s --kustomization name=app path=./hello-arc/yaml
+
+az k8s-configuration flux create --resource-group "tailwindtraders-hci-rg" --cluster-name "twt-hci-aks" --cluster-type connectedClusters --name config-app --scope namespace --namespace twt-app --kind git --url "https://github.com/zaidmohd/azure-arc-jumpstart-apps" --branch main --sync-interval 3s --kustomization name=app path=./hello-arc/yaml
+
+ az k8s-configuration flux delete --resource-group "tailwindtraders-hci-rg" --cluster-name "twt-hci-aks" --cluster-type connectedClusters --name config-app
+
+ az k8s-extension update --configuration-settings multiTenancy.enforce=true -c "twt-hci-aks" -g "tailwindtraders-hci-rg" -n flux -t connectedClusters
