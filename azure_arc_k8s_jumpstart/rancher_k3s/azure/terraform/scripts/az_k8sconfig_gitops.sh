@@ -63,6 +63,10 @@ az k8s-configuration flux create \
 --branch main \
 --kustomization name=app path=./hello-arc/ingress
 
+kubectl create ns twt-app 
+
 az k8s-configuration flux create --resource-group "tailwindtraders-hci-rg" --cluster-name "twt-hci-aks" --cluster-type connectedClusters --name config-hello-arc --scope namespace --namespace twt-app --kind git --url "https://github.com/zaidmohd/azure-arc-jumpstart-apps" --branch main --sync-interval 3s --kustomization name=app path=./hello-arc/yaml
 
  az k8s-configuration flux delete --resource-group "tailwindtraders-hci-rg" --cluster-name "twt-hci-aks" --cluster-type connectedClusters --name config-app
+
+ az k8s-configuration flux create --resource-group "twt-k8s-rg" --cluster-name "twt-k3s" --cluster-type connectedClusters --name config-twt-web --scope namespace --namespace twt-app --kind git --url "https://github.com/zaidmohd/azure-arc-jumpstart-apps" --branch main --sync-interval 3s --kustomization name=app path=./hello-arc/yaml
