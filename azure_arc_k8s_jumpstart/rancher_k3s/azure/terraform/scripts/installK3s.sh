@@ -71,9 +71,9 @@ sudo apt-get update
 curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
 
 sudo -u $adminUsername az extension add --name "connectedk8s" --version 1.9.3
-sudo -u $adminUsername az extension add --name "k8s-configuration"
-sudo -u $adminUsername az extension add --name "k8s-extension"
-sudo -u $adminUsername az extension add --name "customlocation"
+# sudo -u $adminUsername az extension add --name "k8s-configuration"
+# sudo -u $adminUsername az extension add --name "k8s-extension"
+# sudo -u $adminUsername az extension add --name "customlocation"
 
 sudo -u $adminUsername az login --service-principal --username $appId --password=$password --tenant $tenantId
 
