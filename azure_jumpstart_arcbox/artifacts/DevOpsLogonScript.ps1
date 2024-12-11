@@ -14,7 +14,7 @@ $Env:AZCOPY_AUTO_LOGIN_TYPE = "MSI"
 
 $certdns = "arcbox.devops.com"
 
-$appClonedRepo = "https://github.com/$Env:githubUser/azure-arc-jumpstart-apps"
+$appClonedRepo = "https://github.com/$Env:githubUser/jumpstart-apps"
 
 $clusters = @(
     [pscustomobject]@{clusterName = $Env:k3sArcDataClusterName; context = "$namingPrefix-k3s-data" ; kubeConfig = "C:\Users\$Env:adminUsername\.kube\config" }
@@ -312,7 +312,7 @@ az k8s-configuration flux create `
     --cluster-type connectedClusters `
     --scope cluster `
     --url $appClonedRepo `
-    --branch $env:githubBranch --sync-interval 3s `
+    --branch main --sync-interval 3s `
     --kustomization name=nginx path=./arcbox/nginx/release
 
 # Create GitOps config for Bookstore application
@@ -323,7 +323,7 @@ az k8s-configuration flux create `
     --name config-bookstore `
     --cluster-type connectedClusters `
     --url $appClonedRepo `
-    --branch $env:githubBranch --sync-interval 3s `
+    --branch main --sync-interval 3s `
     --kustomization name=bookstore path=./arcbox/bookstore/yaml
 
 # Create GitOps config for Bookstore RBAC
@@ -336,7 +336,7 @@ az k8s-configuration flux create `
     --scope namespace `
     --namespace bookstore `
     --url $appClonedRepo `
-    --branch $env:githubBranch --sync-interval 3s `
+    --branch main --sync-interval 3s `
     --kustomization name=bookstore path=./arcbox/bookstore/rbac-sample
 
 # Create GitOps config for Hello-Arc application
@@ -349,7 +349,7 @@ az k8s-configuration flux create `
     --cluster-type connectedClusters `
     --scope namespace `
     --url $appClonedRepo `
-    --branch $env:githubBranch --sync-interval 3s `
+    --branch main --sync-interval 3s `
     --kustomization name=helloarc path=./arcbox/hello_arc/yaml
 
 $configs = $(az k8s-configuration flux list --cluster-name $Env:k3sArcDataClusterName --cluster-type connectedClusters --resource-group $Env:resourceGroup --query "[].name" -otsv)
