@@ -37,6 +37,16 @@ sudo curl -v -o /etc/profile.d/welcomeK3s.sh ${templateBaseUrl}scripts/welcomeK3
 sudo -u $adminUsername mkdir -p /home/${adminUsername}/jumpstart_logs
 while sleep 1; do sudo -s rsync -a /var/lib/waagent/custom-script/download/0/installK3s.log /home/${adminUsername}/jumpstart_logs/installK3s.log; done &
 
+# Function to check if dpkg lock is in place
+check_dpkg_lock() {
+    while fuser /var/lib/dpkg/lock-frontend >/dev/null 2>&1; do
+        echo "Waiting for other package management processes to complete..."
+        sleep 5
+    done
+}
+# Run the lock check before attempting the installation
+check_dpkg_lock
+
 # Installing Rancher K3s cluster (single control plane)
 echo ""
 publicIp=$(hostname -i)
@@ -56,18 +66,35 @@ echo ""
 sudo snap install helm --classic
 
 # Installing Azure CLI & Azure Arc Extensions
-echo ""
-sudo apt-get update
-curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+
+# Run the lock check before attempting the installation
+check_dpkg_lock
+
+# Installing Azure CLI & Azure Arc extensions
+max_retries=5
+retry_count=0
+success=false
+
+while [ $retry_count -lt $max_retries ]; do
+    curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+    if [ $? -eq 0 ]; then
+        success=true
+        break
+    else
+        echo "Failed to install Az CLI. Retrying (Attempt $((retry_count+1)))..."
+        retry_count=$((retry_count+1))
+        sleep 10
+    fi
+done
 
 sudo -u $adminUsername az extension add --name "connectedk8s"
 sudo -u $adminUsername az extension add --name "k8s-configuration"
 sudo -u $adminUsername az extension add --name "k8s-extension"
 sudo -u $adminUsername az extension add --name "customlocation"
 
-# sudo -u $adminUsername az login --service-principal --username $appId --password=$password --tenant $tenantId
+sudo -u $adminUsername az login --service-principal --username $appId --password=$password --tenant $tenantId
 
-sudo -u $adminUsername az login --identity
+# sudo -u $adminUsername az login --identity
 
 # Onboard the cluster to Azure Arc and enabling Container Insights using Kubernetes extension
 echo ""
